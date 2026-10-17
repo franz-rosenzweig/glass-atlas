@@ -22,6 +22,7 @@ Exported 13 October 2026 from version 12 of the published artifact; light mode a
 | `research/references.md` | All 87 references, with links. |
 | `research/model-checks/` | Node scripts used to check the iron, thyroid, hand and gastric-emptying models against published data. |
 | `build-pipeline/` | Python scripts and manifests that turned BodyParts3D STL files into `anatomy.txt` (decimate, adapt the skin surface, pack). The raw BodyParts3D download (~500 MB) isn't included; the scripts expect it at `bp3d/assets/BodyParts3D_data/stl/`. |
+| `tools/check.py` | Checks that imports resolve and walks every screen in light and dark in headless Chrome. Run it before pushing. |
 | `tools/` | Headless-browser screenshot and test scripts (Playwright) and the Piper text-to-speech script used for the narration. Paths inside them point at the original build machine and need adjusting. |
 | `notes/` | Export of the app's shared notes (empty) and where local notes live. |
 | `screenshots/` | Screens from the offline copy, dark and light. |
@@ -46,6 +47,7 @@ Notes in the self-hosted copy are saved to the browser only (see `notes/README.m
 - `stations.js` – `stations4.js`: the instruments (tilt table, Beighton, neck, hand, stomach, thyroid, MCAS, iron, seizure threshold, lumbar, cervix, endometriosis, medicines planner)
 - `dive.js` and `dive-*.js`: the cell- and molecule-level dives and the field guide
 - `web.js`, `day.js`, `notes.js`, `tour.js`, `kit.js`: connections, the day view, notes, the tour, shared helpers
+- `requests.js`: the Suggest box (ideas, fixes, topics to learn, with private file attachments). It only appears in a browser that opened a private link with a key, and talks to `/api` on the live site
 - `theme.js`: light and dark. CSS tokens for the panels, `light-dark()` pairs for inline colours, and a remap for every 2D canvas (lightness turned over in OKLCH, hue kept), so the drawing code doesn't need to know which theme is on
 
 ## Credits and licenses

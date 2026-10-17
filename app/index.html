@@ -317,6 +317,7 @@ import { mastDive } from './dive-mast.js';
 import { potsDive } from './dive-pots.js';
 import { ironDive } from './dive-iron.js';
 import { kit } from './kit.js';
+import { makeRequests } from './requests.js';
 import { SYS, SYS_ORDER, CONDS, MEDS, ALERTS, EMERGENCY } from './data.js';
 import { REFS, REF_GROUPS } from './refs.js';
 
@@ -505,6 +506,14 @@ onTheme(syncTheme);syncTheme();
     A.start();
     addEventListener('resize',()=>{A.size();fitOffset();if(!active)home();});
     $('#loading').classList.add('done');
+    // the Suggest box: only in a browser that opened a private link with a key
+    const where=()=>{if(dive&&!dive.root.hidden)return byId[diveFor].name+', in the dive';
+      if(drawer.classList.contains('open'))return drawer.querySelector('h2')?.textContent||'a panel';
+      return listMode==='meds'?'the medicines list':'the main view';};
+    makeRequests({context:()=>({screen:where(),theme:theme(),size:innerWidth+'×'+innerHeight,
+        device:matchMedia('(pointer:coarse)').matches?(innerWidth<=860?'phone':'tablet'):'computer'}),
+      onOpen:render=>{if(dive&&!dive.root.hidden)dive.close();stopStation();active=null;renderPanel();
+        render(shell('Ideas and fixes','#BFE6E1','Suggest a change',null,null));A.refresh();hideHint();}});
     tour=makeTour(A,{onStart:()=>{stopStation();active=null;drawer.classList.remove('open');$('#app').classList.add('touring');hideHint();requestAnimationFrame(fitOffset);},onEnd:()=>{$('#app').classList.remove('touring');closeAll();},showWeb:v=>ST.web.show(v)});
     window.__atlas={tour,A,ST,open,closeAll,openMed,openSources,startDive,get dive(){return dive;}};window.__ready=true;
     const hash=location.hash.slice(1);if(byId[hash])open(hash);else if(hash==='sources')openSources();
