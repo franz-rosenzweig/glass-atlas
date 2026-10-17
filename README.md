@@ -50,7 +50,7 @@ Notes in the self-hosted copy are saved to the browser only (see `notes/README.m
 
 ## Credits and licenses
 
-- **Code and text:** MIT license, see [`LICENSE`](LICENSE). That covers everything here except the items below, which keep their own licenses.
+- **Code and text:** MIT license, see [`LICENSE`](LICENSE). That covers everything here except the items below, which keep their own licenses ([`NOTICE`](NOTICE) says the same in short).
 - **Anatomy:** BodyParts3D, © 2008 Life Science Integrated Database Center, licensed under CC BY-SA 2.1 Japan (Mitsuhashi et al., Nucleic Acids Res 2009), via K. Moerman's repository. The meshes in `app/anatomy.txt` are decimated and adapted derivatives, so they carry the same license: share-alike with attribution. <https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en>
 - **three.js** r160: MIT license, `app/vendor/three/LICENSE`.
 - **Fonts:** Gloock, Atkinson Hyperlegible and Martian Mono, SIL Open Font License 1.1, `app/vendor/fonts/OFL-*.txt`.
