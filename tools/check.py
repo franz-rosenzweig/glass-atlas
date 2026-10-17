@@ -3,6 +3,7 @@
 
     python3 tools/check.py              both checks; screenshots go to /tmp/glass-atlas-check/
     python3 tools/check.py --static     only the import check (no browser needed)
+    CHECK_EXTRA=shots.json python3 tools/check.py    also shoot extra screens (see extra_steps)
 
 The browser walk serves app/ on a free local port, drives headless Chrome over DevTools through
 window.__atlas (open, openMed, openSources, startDive, dive.api.go), and fails on any page error.
@@ -52,6 +53,9 @@ def steps():
     yield "day", f"{A}.closeAll();setTimeout(()=>document.getElementById('toDay').click(),200)", 2.5
     yield "notes", "document.getElementById('notesBtn').click()", 2
     yield "alert", "document.getElementById('alertBtn').click()", 1.5
+    # the left panel's medicines list (its own mode), then back to the chart so later steps find their buttons
+    yield "meds-list", f"{A}.closeAll();setTimeout(()=>document.getElementById('toMeds').click(),200)", 1.5
+    yield None, "document.getElementById('toChart').click()", .5
     for d, levels in DIVES.items():
         yield f"dive-{d}-{levels[0]}", f"{A}.closeAll();{A}.startDive('{d}')", 4
         for lv in levels[1:]:
@@ -59,6 +63,31 @@ def steps():
         yield f"dive-{d}-guide", f"{A}.dive.root.querySelector('.dv-guide').click()", 1
         yield None, f"{A}.dive.root.querySelector('.dv-pop').hidden=true;{A}.dive.close()", 1.2
     yield "tour", f"{A}.closeAll();{A}.tour.start()", 3
+    yield from extra_steps()
+
+
+def extra_steps():
+    """Screens the standard walk doesn't reach, asked for by whoever changed them (the automatic
+    worker writes them to .request/shots.json): a JSON list of {"name", "js", "wait"}. They run after
+    a fresh reload, in order, and are saved as <theme>-extra-<name>.png."""
+    path = os.environ.get("CHECK_EXTRA")
+    if not path or not Path(path).is_file():
+        return
+    try:
+        items = json.loads(Path(path).read_text())
+    except ValueError as e:
+        print(f"! CHECK_EXTRA: not valid JSON ({e})")
+        return
+    yield None, "location.reload()", 11
+    for i, it in enumerate(items[:12] if isinstance(items, list) else []):
+        if not isinstance(it, dict) or not isinstance(it.get("js", ""), str):
+            continue
+        name = re.sub(r"[^a-z0-9-]+", "-", str(it.get("name") or f"step{i}").lower()).strip("-")[:40] or f"step{i}"
+        try:
+            wait = min(max(float(it.get("wait", 2)), 0), 10)
+        except (TypeError, ValueError):
+            wait = 2
+        yield f"extra-{name}", str(it.get("js") or "void 0")[:2000], wait
 
 
 def walk(url, mode):
