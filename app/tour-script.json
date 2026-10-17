@@ -1,0 +1,273 @@
+[
+ {
+  "id": "intro",
+  "title": "A glass atlas",
+  "cam": {
+   "target": [
+    0,
+    0.86,
+    0
+   ],
+   "dist": 3.6,
+   "azim": 16,
+   "elev": 4
+  },
+  "parts": [],
+  "col": "#ECE6DA",
+  "text": "This is a glass atlas of one body: a teaching case, an adult woman we'll call the patient. The bones, organs and vessels you see are real anatomical models from a medical research database. Her chart lists twelve diagnoses and nine medicines. That can sound like a list of things that are wrong. This tour is something else: a map of how her body works, where it is having a hard time, and what is helping. It takes about eight minutes. You can pause at any point, and every stop has its own instrument to explore afterwards. Everything here is general education, not medical advice."
+ },
+ {
+  "id": "heds",
+  "title": "The connective tissue",
+  "cam": {
+   "target": [
+    -0.05,
+    0.55,
+    0.05
+   ],
+   "dist": 1.7,
+   "azim": 28,
+   "elev": 4
+  },
+  "parts": [
+   "#skeleton"
+  ],
+  "col": "#B193E3",
+  "text": "Start with the scaffolding. Connective tissue holds the whole body together: the ligaments around every joint, the walls of the blood vessels, the lining of the gut, the skin. In hypermobile Ehlers-Danlos syndrome, that tissue is built a little more elastic than usual. That is why one diagnosis can show up in so many places at once. The most useful thing to know is that the goal of therapy is stability, not flexibility. Stretching a body that already stretches too far can make it worse."
+ },
+ {
+  "id": "neck",
+  "title": "The neck",
+  "cam": {
+   "target": [
+    -0.02,
+    1.4,
+    -0.02
+   ],
+   "dist": 0.75,
+   "azim": -128,
+   "elev": 10
+  },
+  "parts": [
+   "Fifth cervical vertebra",
+   "Sixth cervical vertebra",
+   "Seventh cervical vertebra",
+   "Intervertebral disk of sixth cervical vertebra",
+   "#c7nerve"
+  ],
+  "force": [
+   "#c7nerve"
+  ],
+  "col": "#B193E3",
+  "text": "Loose ligaments may let the neck move more than it should, which is thought to make its joints and discs wear early. Between the sixth and seventh neck vertebrae, a disc has pushed out and presses on the C7 nerve root. That nerve, shown in gold, runs down the back of the arm to the middle finger. It also powers the muscles that open the hand. So a hand that will not open can come from here, or from rheumatoid arthritis. Tingling down one arm points to the neck. Most disc-related arm pain settles over weeks to months."
+ },
+ {
+  "id": "lumbar",
+  "title": "The lower back",
+  "cam": {
+   "target": [
+    -0.01,
+    0.93,
+    -0.05
+   ],
+   "dist": 0.8,
+   "azim": -140,
+   "elev": 10
+  },
+  "parts": [
+   "Third lumbar vertebra",
+   "Fourth lumbar vertebra",
+   "Fifth lumbar vertebra",
+   "Sacrum"
+  ],
+  "col": "#B193E3",
+  "text": "In the lower back there are bone spurs. They are very common with age, and most never touch a nerve. One idea is that they form where joints move too much, though a large study found hypermobile people don't have more lower-back arthritis. The ones that matter grow into the side openings where nerves leave the spine, and leaning forward widens those openings a little. New trouble peeing or leaking, numbness in the saddle area, or symptoms in both legs need the emergency department the same day. Not an urgent-care clinic."
+ },
+ {
+  "id": "pots",
+  "title": "Standing up",
+  "cam": {
+   "target": [
+    0,
+    0.95,
+    0.02
+   ],
+   "dist": 3.0,
+   "azim": 40,
+   "elev": 4
+  },
+  "parts": [
+   "Wall of heart",
+   "#legveins"
+  ],
+  "col": "#EE6F82",
+  "text": "Every time the patient stands, half a litre or more of blood heads for her legs and belly. Normally, pressure sensors in the neck and chest notice within a heartbeat, the heart speeds up a little, and within seconds nerves tighten the vessels of the legs and gut while the leg muscles help push blood back up. In POTS, that response falls short, so the heart races to make up the difference: a rise of thirty beats a minute or more, usually worst in the morning. Fluids, salt, waist-high compression and propranolol each target a different part of that loop. And in one clinic survey, when patients were asked what hurts most, the most common answer wasn't dizziness. It was fatigue."
+ },
+ {
+  "id": "iron",
+  "title": "Iron",
+  "cam": {
+   "target": [
+    0.02,
+    1.05,
+    0.03
+   ],
+   "dist": 2.2,
+   "azim": -18,
+   "elev": 4
+  },
+  "parts": [
+   "Liver",
+   "Spleen",
+   "#vessels"
+  ],
+  "col": "#D9A441",
+  "text": "Iron is how red blood cells carry oxygen. When stores run out, haemoglobin eventually falls, and then every heartbeat delivers a little less, so a heart that is already racing works harder still. Even before that, low iron on its own can cause fatigue. The test that matters is ferritin, with a catch: inflammation from the patient's arthritis can push ferritin up and hide a real shortage. Heavy periods drain iron, inflammation locks it away, and an iron tablet raises a hormone called hepcidin that makes the next day's dose absorb about a third less well. That is why every-other-day dosing is an option her doctor may consider."
+ },
+ {
+  "id": "mcas",
+  "title": "Mast cells",
+  "cam": {
+   "target": [
+    0,
+    1.05,
+    0
+   ],
+   "dist": 3.0,
+   "azim": 22,
+   "elev": 4
+  },
+  "parts": [
+   "Skin",
+   "Stomach",
+   "Jejunum",
+   "Ileum",
+   "colon, nsn",
+   "Trachea",
+   "Upper lobe of right lung",
+   "Upper lobe of left lung"
+  ],
+  "col": "#F29A55",
+  "text": "Mast cells are sentinels. They wait in the skin, the gut lining and the airways, right where the body meets the outside world. In mast cell activation syndrome they release their chemicals too easily: histamine for flushing, itch and hives, other signals for cramps or a racing heart. Antihistamines block where histamine lands. Cromolyn steadies the cells themselves, over a few weeks. If the patient's throat tightens or breathing gets hard, antihistamines aren't enough. Give epinephrine straight away and call 911, and keep her lying down. Her beta blocker can make epinephrine work less well, so it should still be given promptly, and the emergency team has a backup, glucagon, for exactly this."
+ },
+ {
+  "id": "ra",
+  "title": "The hands",
+  "cam": {
+   "target": [
+    0,
+    0.86,
+    0.06
+   ],
+   "dist": 1.4,
+   "azim": 6,
+   "elev": 10
+  },
+  "parts": [
+   "#righthand",
+   "#lefthand"
+  ],
+  "col": "#F29A55",
+  "text": "In rheumatoid arthritis, the patient's immune system attacks the thin lining of her joints, most of all the small joints of the hands. The lining swells, and stiffness after rest can last an hour or more. Hydroxychloroquine is slow, often two to three months before it helps, and steroids can bridge the gap for a short while. If the joints flare when a bridge wears off, call the rheumatologist. It's a sign the plan may need adjusting, not something to just put up with. Modern care aims for a target: if there's no clear improvement by about three months, the plan changes, often to methotrexate, sometimes to a biologic like Humira, which catches the signal called TNF."
+ },
+ {
+  "id": "thyroid",
+  "title": "The thyroid loop",
+  "cam": {
+   "target": [
+    0,
+    1.48,
+    0.02
+   ],
+   "dist": 0.75,
+   "azim": 34,
+   "elev": 6
+  },
+  "parts": [
+   "#thyroid",
+   "Pituitary gland",
+   "hypothalamus, nsn"
+  ],
+  "col": "#40C7AA",
+  "text": "In Hashimoto's, the immune system slowly takes apart the thyroid, the gland that sets the body's tempo. The brain notices falling hormone and sends more TSH, which is why TSH is the number the patient's doctors watch. Levothyroxine replaces the missing hormone exactly. It needs an empty stomach, and four hours away from iron or calcium, which bind it in the gut. After any dose change, TSH takes six to eight weeks to settle."
+ },
+ {
+  "id": "gastro",
+  "title": "The slow stomach",
+  "cam": {
+   "target": [
+    0.03,
+    1.1,
+    0.04
+   ],
+   "dist": 0.9,
+   "azim": 24,
+   "elev": 6
+  },
+  "parts": [
+   "Stomach",
+   "Esophagus",
+   "Duodenum"
+  ],
+  "col": "#DDB741",
+  "text": "Gastroparesis means the stomach empties too slowly, with nothing blocking it. In a healthy stomach, almost nothing of a test meal is left after four hours; more than ten percent is delayed. Food sits, and so do the tablets the patient swallows, because medicines are mostly absorbed after they leave the stomach. Small, low-fat meals of soft food empty fastest, and liquids often empty normally. Often no single cause is found. Autonomic problems like POTS, and possibly her connective tissue condition, are thought to contribute."
+ },
+ {
+  "id": "brain",
+  "title": "The brain",
+  "cam": {
+   "target": [
+    0,
+    1.55,
+    0
+   ],
+   "dist": 0.62,
+   "azim": -38,
+   "elev": 10
+  },
+  "parts": [
+   "#brain"
+  ],
+  "col": "#78A0F4",
+  "text": "In twenty twenty-three the patient had encephalitis, inflammation of the brain itself, with seizures. What can linger is fatigue, trouble with memory or finding words, and a higher chance of seizures later, though many people never have another. That makes sleep protective rather than optional. Three of her medicine labels carry seizure cautions. None of them is forbidden, but every prescriber, in every specialty, should know this history. If she ever has a seizure: time it, protect her head, roll her onto her side when it stops, and call 911 if it lasts more than five minutes."
+ },
+ {
+  "id": "pelvis",
+  "title": "The pelvis",
+  "cam": {
+   "target": [
+    0,
+    0.85,
+    -0.02
+   ],
+   "dist": 0.6,
+   "azim": 24,
+   "elev": 18
+  },
+  "parts": [
+   "#uterus",
+   "#ovaries",
+   "#cervix"
+  ],
+  "col": "#62BED3",
+  "text": "The patient's Pap result showed a low-grade lesion from HPV. It is not cancer, and most clear on their own within about two years; the one thing that matters is keeping the follow-up appointments. Endometriosis is still only suspected. Scans can see some forms well and miss others, and guidelines no longer require surgery to start treatment. If her periods are heavy, that alone could explain some of the iron deficiency."
+ },
+ {
+  "id": "web",
+  "title": "One body",
+  "cam": {
+   "target": [
+    0,
+    0.95,
+    0.05
+   ],
+   "dist": 3.4,
+   "azim": 14,
+   "elev": 6
+  },
+  "parts": [],
+  "col": "#ECE6DA",
+  "web": true,
+  "text": "Several of the patient's diagnoses are linked, and a few are separate stories. Inflammation links her joints to her iron. Autoimmune conditions tend to travel together. The autonomic nervous system ties the heart rate to the gut. Some popular links, like the one between hypermobility and mast cells, are still unproven. Each thread is in the Connections view, marked by how solid the evidence is. Everything in this atlas is general: in real care, a patient's own doctors know the numbers. But behind every chart is a body, and this one is doing a great deal of work. Thank you for taking the tour."
+ }
+]

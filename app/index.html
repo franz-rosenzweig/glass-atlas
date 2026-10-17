@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}html,body{margin:0;height:100%}body{background:#0A0F11}</style></head><body>
+<title>Glass Atlas</title>
+<link href="./vendor/fonts/fonts.css" rel="stylesheet">
+<style>
+/* Layout: a specimen vitrine. Real anatomy centre stage; the patient's chart on the left like a museum label;
+   the instrument you operate on the right. One dark world, deliberately. */
+:root{
+  color-scheme:dark;
+  --void:#0A0F11;--vitrine:rgba(14,21,23,.86);--solid:#111A1C;--line:#25353A;--line-2:#33474C;
+  --bone:#ECE6DA;--bone-2:#B9B6AD;--dim:#7E8E90;--glass:#BFE6E1;--alert:#F2705F;--ok:#7FD3A3;
+  --structural:#B193E3;--autonomic:#EE6F82;--immune:#F29A55;--endocrine:#40C7AA;--neuro:#78A0F4;--digestive:#DDB741;--reproductive:#62BED3;
+  --display:"Gloock",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Martian Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gut:16px;--left:300px;--right:400px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#152224 0%,#0D1416 48%,var(--void) 100%);color:var(--bone);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--glass);outline-offset:2px}
+#app{position:relative;height:100%;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+
+#loading{position:absolute;inset:0;display:grid;place-items:center;z-index:60;background:var(--void);transition:opacity .6s}
+#loading.done{opacity:0;pointer-events:none}
+#loading .in{text-align:center}
+#loading b{display:block;font:400 34px var(--display);margin-bottom:8px}
+#loading p{margin:0;font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+#loading .bar{width:180px;height:2px;background:var(--line);margin:14px auto 0}
+#loading .bar i{display:block;height:100%;width:0;background:var(--glass);transition:width .3s}
+
+.top{position:absolute;left:var(--gut);right:var(--gut);top:calc(14px + env(safe-area-inset-top,0px));display:flex;align-items:flex-start;gap:14px;z-index:30;pointer-events:none}
+.top>*{pointer-events:auto}
+.brand h1{font:400 30px/1 var(--display);margin:0}
+.brand p{margin:6px 0 0;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.layers{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.chip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px;color:var(--dim);background:rgba(10,15,17,.6)}
+.chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:rgba(236,230,218,.08)}
+.chip.alert{color:var(--alert);border-color:color-mix(in srgb,var(--alert) 60%,transparent)}
+
+.panel{position:absolute;left:var(--gut);top:calc(84px + env(safe-area-inset-top,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:var(--left);z-index:20;
+  background:var(--vitrine);border:1px solid var(--line);border-radius:3px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:auto;overscroll-behavior:contain;padding:14px 14px 18px}
+.eyebrow{font:10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.panel h2{font:400 23px/1.1 var(--display);margin:0 0 6px;text-wrap:balance}
+.lede{color:var(--bone-2);font-size:13.5px;margin:0 0 10px}
+.group{margin-top:14px}
+.ghead{display:flex;align-items:center;gap:8px;font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:3px}
+.ghead i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;width:100%;text-align:left;padding:7px 8px;border-radius:3px;border-left:2px solid transparent}
+.row:hover{background:rgba(255,255,255,.04)}
+.row.on{background:rgba(255,255,255,.07);border-left-color:var(--c)}
+.row .nm{font-size:14px;line-height:1.3}
+.row .sus{display:block;font:9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:2px}
+.badge{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border-radius:2px;border:1px solid var(--line-2);color:var(--dim);white-space:nowrap}
+.badge.inst{color:var(--void);background:var(--c);border-color:var(--c)}
+.medlist .row .nm small{display:block;color:var(--dim);font:10px var(--mono);margin-top:2px}
+
+.drawer{position:absolute;right:var(--gut);top:calc(84px + env(safe-area-inset-top,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:var(--right);z-index:25;
+  background:var(--solid);border:1px solid var(--line);border-top:3px solid var(--c,var(--glass));border-radius:3px;display:flex;flex-direction:column;
+  transform:translateX(calc(100% + 40px));transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.drawer.open{transform:none}
+.dr-head{padding:14px 18px 0}
+.dr-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tag{font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c);display:flex;align-items:center;gap:7px}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.close{font:10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:6px 2px}
+.close:hover{color:var(--bone)}
+.drawer h2{font:400 28px/1.05 var(--display);margin:10px 0 4px;text-wrap:balance}
+.fig{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.dtabs{display:flex;gap:2px;margin-top:12px;border-bottom:1px solid var(--line)}
+.dtab{font:10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px 10px 9px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.dtab[aria-selected="true"]{color:var(--bone);border-bottom-color:var(--c)}
+.dbody{overflow:auto;overscroll-behavior:contain;padding:14px 18px 22px;flex:1}
+.dbody h3{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:18px 0 6px}
+.dbody p,.dbody li{color:var(--bone-2);font-size:14.5px}
+.dbody p{margin:0 0 10px}.dbody ul{margin:0 0 10px;padding-left:18px}.dbody li{margin:4px 0}
+.dbody strong,.dbody b{color:var(--bone)}
+.tldr{font-size:15.5px;color:var(--bone)!important;margin:0 0 4px}
+.warn{border:1px solid color-mix(in srgb,var(--alert) 55%,transparent);background:rgba(50,18,15,.5);border-radius:3px;padding:10px 12px;margin:12px 0}
+.warn b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert)!important;margin-bottom:3px}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.lk{font-size:13px;padding:5px 10px 5px 8px;border:1px solid var(--line-2);border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.lk i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.lk:hover{border-color:var(--c)}
+.struct{font-size:13px;color:var(--dim)}
+
+/* instrument controls */
+.ctl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:12px 0 4px}
+.ctl-l{font-size:13.5px;color:var(--bone-2)}
+.ctl-v{font:12px var(--mono);color:var(--bone);font-variant-numeric:tabular-nums}
+.ctl input{grid-column:1/-1;width:100%;accent-color:var(--c,var(--glass));margin:4px 0 0}
+.tgs{display:grid;gap:6px;margin:8px 0}
+.tg{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px}
+.tg-box{width:14px;height:14px;border:1.5px solid var(--dim);border-radius:2px;flex:none;margin-top:2px}
+.tg[aria-pressed="true"]{border-color:var(--c,var(--glass));background:rgba(255,255,255,.04)}
+.tg[aria-pressed="true"] .tg-box{background:var(--c,var(--glass));border-color:var(--c,var(--glass))}
+.tg-t{font-size:13.5px}.tg-t small{display:block;color:var(--dim);font-size:12px;margin-top:1px}
+.btns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.btn{font:10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);border-radius:3px}
+.btn:hover{border-color:var(--dim)}
+.btn.primary{background:var(--bone);color:var(--void);border-color:var(--bone)}
+.fine{font-size:12.5px!important;color:var(--dim)!important;line-height:1.5;margin-top:12px!important}
+.readouts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0;margin-bottom:6px}
+.ro{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:6px 0;align-items:baseline}
+.ro>span:first-child{font-size:13.5px;color:var(--bone-2)}
+.ro b{font:500 15px var(--mono);font-variant-numeric:tabular-nums;color:var(--bone);text-align:right}
+.ro:has(b.sm){grid-template-columns:auto 1fr}
+.ro b.sm{font:500 12px/1.4 var(--mono);text-align:right;justify-self:end;padding-left:12px}
+.ro .note{grid-column:1/-1;font-size:11.5px;color:var(--dim)}
+.bar{grid-column:1/-1;position:relative;height:6px;background:var(--line);border-radius:3px;margin-top:6px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--c,var(--glass));border-radius:3px;transition:width .15s}
+.bar i.over{background:var(--alert)}
+.bar em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--bone)}
+.mon{background:#0D1517;border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin-bottom:6px}
+.mon-top{display:flex;align-items:baseline;gap:8px}
+.mon-l{font:10px var(--mono);color:var(--ok);letter-spacing:.1em}
+.mon-hr{font:400 44px/1 var(--display);color:var(--ok);font-variant-numeric:tabular-nums;min-width:2.1em}
+.mon-u{font:10px var(--mono);color:var(--dim)}
+.mon-bp{margin-left:auto;font:500 17px var(--mono);color:var(--bone)}.mon-bp small{font-size:9.5px;color:var(--dim);margin-left:4px}
+#ecg{width:100%;height:58px;display:block;margin:6px 0;background:#0D1517}
+.mon-row{display:grid;grid-template-columns:1fr auto;gap:0 10px;font-size:12.5px;color:var(--bone-2);padding:3px 0}
+.mon-row b{font:500 13px var(--mono);color:var(--bone)}
+.mon-row .note{grid-column:1/-1;font-size:11px;color:var(--dim)}
+.verdict{margin-top:8px;font-size:13px;color:var(--bone-2);border-left:2px solid var(--ok);padding-left:8px}
+.verdict b{color:var(--ok)}
+.score{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.score-n{font:400 52px/1 var(--display);color:var(--bone);font-variant-numeric:tabular-nums}
+.score-n.hit{color:var(--structural)}
+.score-d{font:400 22px var(--display);color:var(--dim)}
+.score-t{flex-basis:100%;font-size:12.5px;color:var(--dim)}
+.tests{display:grid;gap:4px;margin:10px 0}
+.test{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;text-align:left;padding:7px 8px;border:1px solid var(--line);border-radius:3px}
+.test[aria-selected="true"]{border-color:var(--structural);background:rgba(177,147,227,.08)}
+.tn{font:11px var(--mono);color:var(--dim)}.tk{font-size:13px}
+.tp{font:11px var(--mono);color:var(--dim)}.tp.hit{color:var(--structural)}
+.chart{width:100%;height:auto;display:block;margin:6px 0 0}
+.chart text{font:9px var(--mono);fill:var(--dim)}
+.legend{font-size:11.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;margin:2px 0 6px}
+.sw{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:4px}
+.sw-d{background:var(--digestive)}.sw-n{border-top:2px dashed var(--dim);height:0}.sw-c{width:7px;height:7px;border:1px solid var(--dim);border-radius:50%}
+.seg{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.seg button{font-size:12px;padding:5px 9px;border:1px solid var(--line-2);border-radius:999px;color:var(--bone-2)}
+.seg button[aria-checked="true"]{background:var(--bone);color:var(--void);border-color:var(--bone)}
+.alerts{margin:6px 0 0;padding:0;list-style:none;counter-reset:a}
+.alerts li{counter-increment:a;position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line);font-size:14px;color:var(--bone-2)}
+.alerts li::before{content:counter(a);position:absolute;left:0;top:8px;font:11px var(--mono);color:var(--alert)}
+
+#tip{position:absolute;z-index:40;pointer-events:none;background:rgba(10,15,17,.92);border:1px solid var(--line-2);border-radius:3px;padding:6px 9px;font-size:13px;max-width:260px;transform:translate(12px,12px);opacity:0;transition:opacity .15s}
+#tip.on{opacity:1}
+#tip small{display:block;font:9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:2px}
+.credit{margin:22px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dim);line-height:1.45}
+.credit a{color:var(--bone-2)}
+.warn.hot{border-color:var(--alert);box-shadow:0 0 0 2px color-mix(in srgb,var(--alert) 45%,transparent);animation:hotp 1.6s ease-in-out infinite}
+@keyframes hotp{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--alert) 20%,transparent)}}
+@media (prefers-reduced-motion:reduce){.warn.hot{animation:none}}
+.bar.band{background:linear-gradient(90deg,var(--line) 0 62%,color-mix(in srgb,var(--alert) 35%,var(--line)) 80%,color-mix(in srgb,var(--alert) 60%,var(--line)))}
+.bar.band i{background:var(--neuro,#78A0F4);opacity:.85}
+.mon-sim{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.edu{font-size:12px;color:var(--bone-2);border-left:2px solid var(--alert);padding:2px 0 2px 8px;margin:0 0 12px}
+.em{list-style:none;margin:8px 0 14px;padding:0;display:grid;gap:8px}
+.em li{border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:rgba(50,18,15,.35);border-radius:3px;padding:9px 11px;font-size:13.5px;color:var(--bone-2)}
+.em li b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert);margin-bottom:3px}
+.em li i{display:block;font-style:normal;color:var(--dim);font-size:12.5px;margin-bottom:3px}
+.em li span{color:var(--bone)}
+.srcs{margin:4px 0 0;padding:0;list-style:none}
+.srcs li{font-size:12.5px;color:var(--bone-2);padding:6px 0;border-top:1px solid var(--line);line-height:1.45;overflow-wrap:anywhere}
+.srcs li b{color:var(--bone);font-weight:500}
+.srcs a{color:var(--glass)}
+.srcline{font-size:12px;color:var(--dim);margin-top:14px;line-height:1.6}
+.srcline button{all:unset;cursor:pointer;color:var(--glass);border-bottom:1px dotted color-mix(in srgb,var(--glass) 60%,transparent)}
+.srcline button:focus-visible{outline:2px solid var(--glass);outline-offset:2px}
+.srcs li.flash{background:color-mix(in srgb,var(--glass) 10%,transparent)}
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);z-index:12;pointer-events:none;white-space:nowrap}
+
+
+.dbody .eyebrow{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:18px 0 8px}
+.tgs.two{grid-template-columns:1fr 1fr}.tgs.three{grid-template-columns:1fr 1fr 1fr}
+.tgs.two .tg,.tgs.three .tg{padding:7px 8px;gap:8px}.tgs.two .tg-t,.tgs.three .tg-t{font-size:12.5px}.tgs.three .tg-t small{font-size:11px}
+.bar em{transition:left .2s}
+.quotes{margin:4px 0 6px;padding-left:16px}.quotes li{font-size:13.5px!important;margin:5px 0!important}
+.regtext{font-size:14px!important;color:var(--bone-2)!important;border-left:2px solid var(--c);padding-left:10px;margin:8px 0!important}
+.lede-s{font-size:14px!important;color:var(--bone)!important;margin:0 0 10px!important}
+.foramen,.derm{width:100%;height:auto;display:block;margin:6px 0;background:#0D1517;border:1px solid var(--line);border-radius:3px}
+.derm{max-width:260px;background:none;border:0}
+.colpo{width:100%;height:auto;display:block;border-radius:4px;margin:0 0 8px;background:#140A0C}
+.icons{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin:6px 0}
+.icons i{aspect-ratio:1;border-radius:50%;transition:background .4s}
+.planner{width:100%;height:auto;display:block;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.planner text{font:9px var(--mono);fill:var(--dim)}.planner .pl{font:11px var(--body);fill:var(--bone-2)}.planner .pl.hi{fill:var(--bone);font-weight:700}
+.planner .tm{font:8.5px var(--mono);fill:var(--dim)}.planner .hd{cursor:grab}
+.legend span{display:inline-flex;align-items:center;gap:5px}.sw.dot{width:8px;height:8px;border-radius:50%}
+.rules{list-style:none;margin:8px 0;padding:0}
+.rules li{position:relative;padding:6px 0 6px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--bone-2)}
+.rules li::before{content:"";position:absolute;left:2px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.rules li.warn::before{background:var(--alert)}.rules li.note::before{background:#F2A65A}
+
+.web-labels{position:absolute;inset:0;z-index:18;pointer-events:none}
+.web-labels[hidden]{display:none}
+.wl{position:absolute;left:0;top:0;pointer-events:auto;font:10px var(--mono);letter-spacing:.06em;padding:4px 7px;border-radius:999px;background:rgba(10,15,17,.82);border:1px solid var(--c);color:var(--bone);white-space:nowrap;transition:opacity .2s}
+.wl.dim{opacity:.25!important}.wl.on{background:var(--c);color:var(--void)}
+.w-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:var(--dim);margin:4px 0}
+.w-legend span{display:inline-flex;align-items:center;gap:5px}.w-legend i{width:14px;height:3px;border-radius:2px}
+.wlink{display:grid;grid-template-columns:1fr auto;gap:2px 8px;width:100%;text-align:left;padding:9px 10px;border-top:1px solid var(--line);border-left:3px solid var(--s)}
+.wlink:hover{background:rgba(255,255,255,.03)}.wlink.on{background:rgba(255,255,255,.05)}
+.wl-pair{font:10px var(--mono);letter-spacing:.06em;color:var(--dim)}.wl-pair i{font-style:normal;color:var(--s)}
+.wl-t{grid-column:1;font-size:14px;color:var(--bone)}.wl-s{grid-column:2;grid-row:1/3;align-self:center;font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--s)}
+.wl-x{grid-column:1/-1;font-size:13.5px;color:var(--bone-2);margin-top:6px;line-height:1.5}
+
+.dy-top{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+.dy-dial{width:150px;height:150px}.dy-dial text{font:9px var(--mono);fill:var(--dim)}.dy-dial text.big{font:500 15px var(--mono);fill:var(--bone)}
+.dy-meters .ro{padding:3px 0}.dy-meters .ro b{font-size:13px}
+.dy-now{font-size:14px!important;color:var(--bone-2)!important;border-left:2px solid var(--bone);padding-left:10px;margin:10px 0!important;min-height:4.5em}
+.dy-now b{display:block;color:var(--bone);font-weight:700;margin-bottom:3px}
+.dy-list{display:grid;gap:2px;margin:8px 0}
+.dy-ev{display:grid;grid-template-columns:46px 1fr;gap:8px;text-align:left;padding:6px 8px;font-size:13px;color:var(--bone-2);border-left:2px solid transparent}
+.dy-ev span{font:11px var(--mono);color:var(--dim)}.dy-ev.on{border-left-color:var(--c);background:rgba(255,255,255,.05);color:var(--bone)}
+
+.n-comp{border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin:0 0 12px;background:rgba(255,255,255,.03)}
+.n-comp textarea{width:100%;background:#0A0F11;color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:8px;font:14px var(--body);resize:vertical;margin-top:8px}
+.note{border-top:1px solid var(--line);border-left:3px solid var(--c);padding:8px 10px;cursor:pointer}
+.note.on{background:rgba(255,255,255,.05)}
+.note-h{display:flex;justify-content:space-between;gap:8px}.note-k{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}.note-w{font:10px var(--mono);color:var(--dim);text-align:right}
+.note-t{margin:4px 0!important;font-size:14px!important;color:var(--bone)!important;white-space:pre-wrap}
+.note-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.note-del{font:10px var(--mono);color:var(--dim);text-decoration:underline}
+
+#app.touring .panel,#app.touring .drawer,#app.touring .hint{display:none}
+.tour{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(760px,calc(100% - 32px));z-index:40;background:var(--vitrine);border:1px solid var(--line);border-top:3px solid var(--bone);border-radius:3px;padding:12px 16px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.tour[hidden]{display:none}
+.tour-top{display:flex;align-items:baseline;gap:10px}.tour-n{font:10px var(--mono);color:var(--dim);letter-spacing:.1em}.tour-t{font:400 20px var(--display)}.tour-x{margin-left:auto;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.tour-c{font-size:14.5px;color:var(--bone-2);margin:6px 0 8px;max-height:7.5em;overflow:auto}
+.tour-ctl{display:flex;align-items:center;gap:8px}.tour-ctl button{font:16px var(--mono);border:1px solid var(--line-2);border-radius:3px;padding:4px 12px}.tour-play{font:10.5px var(--mono)!important;letter-spacing:.08em;text-transform:uppercase;background:var(--bone);color:var(--void);border-color:var(--bone)!important;padding:8px 14px!important}
+.tour-dots{display:flex;gap:4px;margin-left:auto}.tour-dots i{width:16px;height:3px;background:var(--line-2);border-radius:2px}.tour-dots i.done{background:var(--bone-2)}.tour-dots i.on{background:var(--bone)}
+@media (max-width:860px){
+  :root{--left:auto;--right:auto}
+  .brand h1{font-size:24px}.brand p{display:none}
+  .top{flex-wrap:wrap}
+  .layers{margin-left:0;width:100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}
+  .chip{padding:7px 8px;font-size:9.5px;flex:none}
+  .panel{top:auto;right:var(--gut);height:34%;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+  .drawer{left:var(--gut);right:var(--gut);top:auto;height:56%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 60px))}
+  .drawer.open{transform:none}
+  .drawer h2{font-size:23px}
+  .hint{display:none}
+  .tour-dots i{width:8px}.tour-c{max-height:5.2em}
+  .wl{font-size:8.5px;padding:3px 6px}
+}
+@media (prefers-reduced-motion:reduce){.drawer,#loading{transition:none}}
+</style>
+
+<div id="app">
+  <canvas id="gl" aria-label="Interactive 3D anatomy. Drag to rotate, scroll or pinch to zoom, point at any structure to name it."></canvas>
+  <header class="top">
+    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · nine medicines</p></div>
+    <div class="layers" role="group" aria-label="Layers">
+      <button class="chip" data-layer="skin" aria-pressed="true">Skin</button>
+      <button class="chip" data-layer="skeleton" aria-pressed="true">Skeleton</button>
+      <button class="chip" data-layer="organs" aria-pressed="true">Organs</button>
+      <button class="chip" data-layer="vessels" aria-pressed="true">Vessels</button>
+      <button class="chip" data-layer="nerves" aria-pressed="false">Nerves</button>
+      <button class="chip" id="webBtn" type="button">Connections</button>
+      <button class="chip" id="notesBtn" type="button">Notes</button>
+      <button class="chip alert" id="alertBtn" type="button">Tell any provider</button>
+    </div>
+  </header>
+  <aside class="panel" id="panel"></aside>
+  <aside class="drawer" id="drawer" aria-label="Details and instrument"></aside>
+  <div id="tip" role="status"></div>
+  <div class="hint" id="hint">Point at anything to name it · pick a condition to open its instrument</div>
+  <div id="loading"><div class="in"><b>Glass Atlas</b><p id="ltxt">Loading real anatomy</p><div class="bar"><i id="lbar"></i></div></div></div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/three.module.js",
+  "three/addons/": "./vendor/three/addons/"
+} }
+</script>
+<script type="module">
+import { createAtlas } from './core.js';
+import { makeStations } from './stations.js';
+import { makeStations2 } from './stations2.js';
+import { makeStations3 } from './stations3.js';
+import { makeStations4 } from './stations4.js';
+import { createDive } from './dive.js';
+import { makeWeb } from './web.js';
+import { makeDay } from './day.js';
+import { makeNotes } from './notes.js';
+import { makeTour } from './tour.js';
+import { raLevels, GUIDE } from './dive-ra.js';
+import { thyroidDive } from './dive-thyroid.js';
+import { mastDive } from './dive-mast.js';
+import { potsDive } from './dive-pots.js';
+import { ironDive } from './dive-iron.js';
+import { kit } from './kit.js';
+import { SYS, SYS_ORDER, CONDS, MEDS, ALERTS, EMERGENCY } from './data.js';
+import { REFS, REF_GROUPS } from './refs.js';
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isPhone=()=>innerWidth<=860;
+const CREDIT=`<p class="credit">Anatomy: <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/" target="_blank" rel="noopener">BodyParts3D</a>, Copyright © 2008 Life Science Integrated Database Center, licensed under <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a> (Mitsuhashi et al., Nucleic Acids Res 2009), via K. Moerman's repository. Decimated; skin surface adapted to a female form; thyroid gland, uterus, ovaries, nerve and leg-vein courses modelled. General education, not medical advice: a patient's own clinicians decide their care. In an emergency, call 911.</p>`;
+const byId=Object.fromEntries(CONDS.map(c=>[c.id,c]));
+
+let tour,K0,A,ST,active=null,curStation=null,listMode='chart';
+const canvas=$('#gl'),panel=$('#panel'),drawer=$('#drawer');
+
+/* ---------- layout band: keeps the figure in the free space between panels ---------- */
+function band(){
+  const W=canvas.clientWidth,H=canvas.clientHeight,open=drawer.classList.contains('open');
+  if($('#app').classList.contains('touring'))return {top:70,bottom:H-(isPhone()?250:190),left:0,right:W};
+  if(isPhone()){const top=$('.top').offsetTop+$('.top').offsetHeight+6;const bottom=(open?drawer.offsetTop:panel.offsetTop)-6;return {top,bottom:Math.max(bottom,top+140),left:0,right:W};}
+  return {top:70,bottom:H-20,left:16+300+8,right:open?W-16-400-8:W-8};
+}
+function fitOffset(){const W=canvas.clientWidth,H=canvas.clientHeight,b=band();A.viewOffT.x=isPhone()?0:(b.left+b.right)/2-W/2;A.viewOffT.y=H/2-(b.top+b.bottom)/2;}
+function homeDist(){const b=band(),H=canvas.clientHeight;return 1.82/(2*Math.tan(15*Math.PI/180))*H/Math.max(b.bottom-b.top,120);}
+function home(){A.flyTo({target:[0,0.84,0],dist:homeDist(),azim:16,elev:4},{raw:true});}
+function zoomFactor(){const b=band();return Math.min(1.9,Math.max(1,Math.sqrt(810/Math.max(b.bottom-b.top,120))));}
+
+/* ---------- left panel ---------- */
+function renderPanel(){
+  if(listMode==='chart'){
+    let h=`<p class="eyebrow">The patient's chart</p><h2>Choose a condition</h2><p class="lede">A teaching case: one adult woman, called “the patient” throughout, with twelve diagnoses and nine medicines. Each condition opens an instrument you operate on the real anatomy.</p><p class="edu">General education, not medical advice. In an emergency, call 911; the emergency steps are under <b>Tell any provider</b>.</p><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">How it all connects<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">18 threads between the patient's conditions</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Web</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">24 hours, hour by hour</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Day</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Take the guided tour<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">narrated · about 8 minutes</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Tour</span></button>`;
+    for(const s of SYS_ORDER){const list=CONDS.filter(c=>c.sys===s);if(!list.length)continue;
+      h+=`<div class="group" style="--c:${SYS[s].c}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
+      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${SYS[s].c}"><span class="nm">${esc(c.name)}${c.suspected?'<span class="sus">Suspected</span>':''}</span><span class="badge${DIVES[c.id]?' inst':''}" style="${DIVES[c.id]?'':'color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)'}">${DIVES[c.id]?'Dive':esc(c.suspected?'?':c.year)}</span></button>`;
+      h+='</div>';}
+    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines (9)<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">and the patient's day, hour by hour</small></span><span class="badge">open</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources and review<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">${Object.keys(REFS).length} references · checked Oct 2026</small></span><span class="badge">open</span></button></div>`;
+    panel.innerHTML=h+CREDIT;
+    $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
+  }else{
+    let h=`<p class="eyebrow">Medicines</p><h2>Nine medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
+    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" style="--c:${SYS[m.sys].c}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
+    panel.innerHTML=h+'</div>'+CREDIT;
+    $('#toChart').onclick=()=>{listMode='chart';renderPanel();};
+  }
+}
+panel.addEventListener('click',e=>{
+  const c=e.target.closest('[data-cond]');if(c)return open(c.dataset.cond);
+  const m=e.target.closest('[data-med]');if(m)return openMed(m.dataset.med||null);
+});
+
+/* ---------- drawer ---------- */
+function shell(c,col,title,fig,tabs){
+  drawer.style.setProperty('--c',col);
+  drawer.innerHTML=`<div class="dr-head"><div class="dr-top"><span class="tag"><i></i>${esc(c)}</span><button class="close" type="button">Close</button></div>
+    <h2>${esc(title)}</h2>${fig?`<div class="fig">${esc(fig)}</div>`:''}
+    ${tabs?`<div class="dtabs" role="tablist">${tabs.map((t,i)=>`<button class="dtab" role="tab" data-t="${t}" aria-selected="${i===0}">${t}</button>`).join('')}</div>`:''}</div>
+    <div class="dbody" id="dbody"></div>`;
+  drawer.querySelector('.close').onclick=closeAll;
+  drawer.classList.add('open');requestAnimationFrame(fitOffset);
+  return drawer.querySelector('#dbody');
+}
+function readHTML(c){
+  let h=`<p class="tldr">${esc(c.tldr)}</p>`;if(c.warn)h+=`<div class="warn"><b>For any provider</b>${esc(c.warn)}</div>`;h+=c.body;
+  const rs=[...A.resolve(c.parts)].filter(r=>r.layer!=='skin').slice(0,10);
+  if(rs.length)h+=`<h3>Lit on the model</h3><p class="struct">${rs.map(r=>esc(r.name)+(r.modelled?' (modelled)':'')).join(' · ')}</p>`;
+  const meds=MEDS.filter(m=>m.treats===c.id);
+  if(meds.length)h+=`<h3>Medicines</h3><div class="links">${meds.map(m=>`<button class="lk" data-med="${m.id}" style="--c:${SYS[m.sys].c}"><i></i>${esc(m.name)}</button>`).join('')}</div>`;
+  return h+srcLine(c.refs);
+}
+function stopStation(){if(curStation){curStation.exit();curStation=null;}A.mode={layers:null,focus:null,focusColor:'#ffffff',dim:.2,forceShow:null};A.skinUniforms.uScaffold.value=0;}
+const centreOf=names=>{const B=new A.THREE.Box3();for(const r of A.resolve(names)){r.geo.computeBoundingBox();B.union(r.geo.boundingBox);}return B.getCenter(new A.THREE.Vector3());};
+const DIVES={
+  ra:{color:'#F29A55',make:()=>({levels:raLevels(),guide:GUIDE}),top:{label:'Hand',size:'10 cm'},target:()=>A.hand.right.fingers[2][1].pivot,view:{dist:.13,azim:-20,elev:30},
+    text:'Zoom from the patient\'s knuckle into the joint, down to the cells of the lining where RA lives, and on to the molecules her medicines act on. Halfway down there is a game: hold the lining for a year.',
+    steps:[['Joint, 1 cm.','The knuckle cut open: healthy, active RA, years untreated, treated early.'],['Lining, 100 µm.','The cells, to scale. Catch TNF and IL-6 and use the patient\'s medicines to protect bone and cartilage for a year.'],['Molecules, 10 nm.','Humira catching TNF; hydroxychloroquine in the lysosome.']]},
+  hashi:{color:'#40C7AA',make:()=>thyroidDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['#thyroid']),view:{dist:.16,azim:10,elev:8},
+    text:'Look at the patient\'s thyroid the way a pathologist does, then run one follicle, the tiny hormone factory, for a year while the immune attack goes on. Your job is the endocrinologist\'s: keep T4 steady with the dose.',
+    steps:[['Tissue, 1 mm.','A stained slide: healthy follicles, then years of Hashimoto\'s.'],['Follicle, 100 µm.','The T4 assembly line. Adjust levothyroxine, check labs, and live with TSH\'s six-week lag.']]},
+  mcas:{color:'#F29A55',make:()=>mastDive(),top:{label:'Forearm',size:'10 cm'},target:()=>{const H=A.hand.right;return H.wrist.clone().lerp(H.elbow,.5).add(new A.THREE.Vector3(0,0,.02));},view:{dist:.14,azim:-30,elev:10},
+    text:'Under the skin of the patient\'s forearm: watch histamine cause a red spot, a spreading flare, a hive and itch. Then shrink to a single mast cell and keep it calm while triggers drift in.',
+    steps:[['Skin, 1 mm.','The triple response: red spot, flare and wheal, plus the itch, and what an antihistamine changes.'],['One mast cell, 20 µm.','Bat away triggers; see where cromolyn, H1 and H2 blockers each act.']]},
+  pots:{color:'#EE6F82',make:()=>potsDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['Right common carotid artery']),view:{dist:.2,azim:-40,elev:6},
+    text:'Follow the reflex that keeps blood in the head when the patient stands, and see the four ways it can fall short. Then play it: every heartbeat you catch on time fires a squeeze.',
+    steps:[['The circuit, 1 m.','Sensors, brainstem, nerves, heart and veins, for four POTS types.'],['The rhythm game.','Ten minutes upright in sixty seconds. Try compression, fluids and propranolol.']]},
+  iron:{color:'#D9A441',make:()=>ironDive(),top:{label:'Gut',size:'10 cm'},target:()=>centreOf(['Duodenum']),view:{dist:.2,azim:20,elev:6},
+    text:'Into the duodenum, where iron gets in, and then one gut cell with a single exit door. Dose it daily or every other day for two weeks and see why hepcidin changes the math.',
+    steps:[['Lining, 1 mm.','The villi that absorb iron.'],['One gut cell.','Fourteen days of doses: the door, the lock, and what orange juice or coffee do.']]},
+};
+let dive=null,diveFor=null;
+function startDive(id){
+  const D=DIVES[id];stopStation();
+  if(!dive||diveFor!==id){dive?.root.remove();const m=D.make();dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:()=>{open(id);}});dive.guideKeys=Object.keys(m.guide);diveFor=id;}
+  const p=D.target();K0.setMode({layers:{skin:.5,skeleton:.5,organs:.8,vessels:.9}});
+  A.flyTo({target:[p.x,p.y,p.z],...D.view});
+  setTimeout(()=>dive.open(),1150);
+}
+function diveTab(id){const D=DIVES[id];const n=(()=>{try{return JSON.parse(localStorage.getItem('glass-atlas-guide')||'[]').length;}catch(_){return 0;}})();
+  return `<p class="tldr">${D.text}</p>
+  <ol class="alerts">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
+  <div class="btns"><button class="btn primary" id="startDive" type="button">Start the dive</button></div>
+  <p class="fine">${n?`Your field guide has ${n} entries across all dives. `:''}Every cell and molecule you tap goes into a field guide. The biology is drawn from published reviews, guidelines and medicine labels; the games' numbers are illustrative.</p>`;}
+function tabbed(body,col,st,readFn,opt){
+  const show=t=>{drawer.querySelectorAll('.dtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+    if(t==='Instrument'){body.innerHTML='<div id="inst"></div>';body.style.setProperty('--c',col);if(curStation!==st){stopStation();curStation=st;}st.enter(body.querySelector('#inst'),opt);}
+    else if(t==='Dive'){stopStation();body.innerHTML=diveTab(opt.dive);body.querySelector('#startDive').onclick=()=>startDive(opt.dive);}
+    else body.innerHTML=readFn();
+    body.scrollTop=0;};
+  drawer.querySelectorAll('.dtab').forEach(b=>b.onclick=()=>show(b.dataset.t));
+  show('Instrument');
+}
+function open(id){
+  const c=byId[id];stopStation();active=id;renderPanel();
+  const col=SYS[c.sys].c;const st=ST[c.station];
+  const hasDive=!!DIVES[c.id];
+  const body=shell(SYS[c.sys].label+' · '+(c.suspected?'suspected':c.year),col,c.name,st.title+' · '+st.fig,hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
+  tabbed(body,col,st,()=>readHTML(c),hasDive?{dive:c.id}:undefined);
+  hideHint();
+}
+function medRead(m){
+  if(!m)return `<p class="tldr">Nine medicines across six systems.</p><ul class="quotes">${MEDS.map(x=>`<li><b>${esc(x.name)}</b> (${esc(x.cls)}). ${esc(x.text)}${x.warn?' <b>For any provider:</b> '+esc(x.warn):''}</li>`).join('')}</ul>`+srcLine([...new Set(MEDS.flatMap(x=>x.refs||[]))]);
+  let h=`<p class="tldr">${esc(m.text)}</p>${m.warn?`<div class="warn"><b>For any provider</b>${esc(m.warn)}</div>`:''}`;
+  if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${SYS[byId[m.treats].sys].c}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
+  return h+srcLine(m.refs);
+}
+function openMed(id){
+  const m=id?MEDS.find(x=>x.id===id):null;stopStation();active=null;renderPanel();
+  const col=m?SYS[m.sys].c:'#ECE6DA';
+  const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',['Instrument','Read']);
+  tabbed(body,col,ST.meds,()=>medRead(m),{focus:id||null});
+  hideHint();
+}
+/* ---------- sources ---------- */
+function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return '';
+  return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
+function openSources(focusKey){stopStation();active=null;renderPanel();
+  const b=shell('Checked October 2026','#BFE6E1','Sources and review',null,null);
+  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
+  for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
+    h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
+  b.innerHTML=h;A.refresh();home();hideHint();
+  if(focusKey){const el=b.querySelector('#src-'+focusKey);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'});}}}
+drawer.addEventListener('click',e=>{const s=e.target.closest('[data-src]');if(s){e.stopPropagation();openSources(s.dataset.src);}},true);
+function openWeb(){stopStation();active=null;renderPanel();const st=ST.web;
+  const body=shell('The patient\'s chart · eighteen threads','#ECE6DA','How it all connects',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
+function openDay(){stopStation();active=null;renderPanel();const st=ST.day;
+  const body=shell('The patient\'s chart · an imagined day','#ECE6DA','A day in the patient\'s body',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
+function openNotes(){stopStation();active=null;renderPanel();const st=ST.notes;
+  const body=shell('Notes','#BFE6E1','Notes on the body',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
+function closeAll(){stopStation();active=null;drawer.classList.remove('open');renderPanel();A.refresh();requestAnimationFrame(()=>{fitOffset();home();});}
+drawer.addEventListener('click',e=>{const m=e.target.closest('.lk[data-med]');if(m)return openMed(m.dataset.med);const c=e.target.closest('.lk[data-cond]');if(c)open(c.dataset.cond);});
+$('#webBtn').onclick=openWeb;
+$('#notesBtn').onclick=openNotes;
+$('#alertBtn').onclick=()=>{stopStation();active=null;renderPanel();const b=shell('Carry to any new clinic','#F2705F','Tell any provider',null,null);
+  b.innerHTML=`<p class="tldr">In an emergency</p><ul class="em">${EMERGENCY.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
+    <p class="tldr">The handful of facts that change what a stranger in scrubs should do.</p><ol class="alerts">${ALERTS.map(a=>`<li><b>${esc(a[0])}</b> ${esc(a[1])}</li>`).join('')}</ol>`+srcLine(['wao2020','cdcseizure','esc2018','girft','lbl_hcq','lbl_ntx','lbl_tiz','oka2014','audit2025','crediblemeds']);A.refresh();home();};
+
+/* ---------- layers ---------- */
+document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.layer;A.layerOn[k]=!A.layerOn[k];b.setAttribute('aria-pressed',A.layerOn[k]);A.refresh();}));
+
+/* ---------- hover / tap naming ---------- */
+const tip=$('#tip');let lastPick=0,downAt=null;
+function involved(rec){return CONDS.filter(c=>A.resolve(c.parts).has(rec)).map(c=>c.short);}
+function showTip(x,y,rec){const inv=rec.group==='skin'?[]:involved(rec);
+  tip.innerHTML=`${esc(rec.name.replace(/, nsn$/,''))}${rec.modelled?'<small>Modelled</small>':''}${inv.length?`<small>${esc(inv.join(' · '))}</small>`:''}`;
+  const r=canvas.getBoundingClientRect();tip.style.left=Math.min(x-r.left,r.width-280)+'px';tip.style.top=(y-r.top)+'px';tip.classList.add('on');}
+canvas.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||e.buttons)return;const now=performance.now();if(now-lastPick<70)return;lastPick=now;
+  const h=A.pick(e.clientX,e.clientY);if(h)showTip(e.clientX,e.clientY,h.rec);else tip.classList.remove('on');});
+canvas.addEventListener('pointerleave',()=>tip.classList.remove('on'));
+canvas.addEventListener('pointerdown',e=>{downAt=[e.clientX,e.clientY];A.stopTween();hideHint();});
+canvas.addEventListener('pointerup',e=>{if(!downAt)return;if(Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1])>6)return;
+  const h=A.pick(e.clientX,e.clientY);if(h&&A.onBodyTap){A.onBodyTap(h);return;}if(h){showTip(e.clientX,e.clientY,h.rec);if(e.pointerType!=='mouse')setTimeout(()=>tip.classList.remove('on'),2600);}});
+let hintGone=false;function hideHint(){if(!hintGone){hintGone=true;$('#hint').style.opacity=0;}}
+
+/* ---------- boot ---------- */
+(async()=>{
+  try{
+    A=await createAtlas(canvas,{binUrl:'anatomy.txt',onProgress:p=>{$('#lbar').style.width=p*100+'%';}});
+    K0=kit(A);
+    const _fly=A.flyTo;A.flyTo=(t,o={})=>_fly({...t,dist:t.dist*(o.raw?1:zoomFactor())},o);
+    ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
+    renderPanel();A.size();fitOffset();
+    A.camera.position.copy(A.sph([0,0.84,0],homeDist(),16,4));A.controls.target.set(0,0.84,0);A.controls.update();
+    A.start();
+    addEventListener('resize',()=>{A.size();fitOffset();if(!active)home();});
+    $('#loading').classList.add('done');
+    tour=makeTour(A,{onStart:()=>{stopStation();active=null;drawer.classList.remove('open');$('#app').classList.add('touring');hideHint();requestAnimationFrame(fitOffset);},onEnd:()=>{$('#app').classList.remove('touring');closeAll();},showWeb:v=>ST.web.show(v)});
+    window.__atlas={tour,A,ST,open,closeAll,openMed,openSources,startDive,get dive(){return dive;}};window.__ready=true;
+    const hash=location.hash.slice(1);if(byId[hash])open(hash);else if(hash==='sources')openSources();
+  }catch(err){$('#ltxt').textContent='Could not load the anatomy: '+err.message;console.error(err);}
+})();
+</script>
+
+</body></html>

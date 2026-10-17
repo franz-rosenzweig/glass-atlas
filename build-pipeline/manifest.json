@@ -1,0 +1,1302 @@
+{
+"skin": [
+[
+"FMA7163",
+"Skin"
+]
+],
+"skull": [
+[
+"FMA52734",
+"Frontal bone"
+],
+[
+"FMA52735",
+"Occipital bone"
+],
+[
+"FMA52736",
+"Sphenoid bone"
+],
+[
+"FMA52738",
+"Right temporal bone"
+],
+[
+"FMA52739",
+"Left temporal bone"
+],
+[
+"FMA52740",
+"Ethmoid"
+],
+[
+"FMA52748",
+"Mandible"
+],
+[
+"FMA52788",
+"Right parietal bone"
+],
+[
+"FMA52789",
+"Left parietal bone"
+],
+[
+"FMA52892",
+"Right zygomatic bone"
+],
+[
+"FMA52893",
+"Left zygomatic bone"
+],
+[
+"FMA53647",
+"Right nasal bone"
+],
+[
+"FMA53648",
+"Left nasal bone"
+],
+[
+"FMA53649",
+"Right maxilla"
+],
+[
+"FMA53650",
+"Left maxilla"
+],
+[
+"FMA54737",
+"Right inferior nasal concha"
+],
+[
+"FMA54738",
+"Left inferior nasal concha"
+]
+],
+"vert": [
+[
+"FMA10014",
+"Ninth thoracic vertebra"
+],
+[
+"FMA10037",
+"Tenth thoracic vertebra"
+],
+[
+"FMA10059",
+"Eleventh thoracic vertebra"
+],
+[
+"FMA10081",
+"Twelfth thoracic vertebra"
+],
+[
+"FMA12519",
+"Atlas"
+],
+[
+"FMA12520",
+"Axis"
+],
+[
+"FMA12521",
+"Third cervical vertebra"
+],
+[
+"FMA12522",
+"Fourth cervical vertebra"
+],
+[
+"FMA12523",
+"Fifth cervical vertebra"
+],
+[
+"FMA12524",
+"Sixth cervical vertebra"
+],
+[
+"FMA12525",
+"Seventh cervical vertebra"
+],
+[
+"FMA13072",
+"First lumbar vertebra"
+],
+[
+"FMA13073",
+"Second lumbar vertebra"
+],
+[
+"FMA13074",
+"Third lumbar vertebra"
+],
+[
+"FMA13075",
+"Fourth lumbar vertebra"
+],
+[
+"FMA13076",
+"Fifth lumbar vertebra"
+],
+[
+"FMA16202",
+"Sacrum"
+],
+[
+"FMA9165",
+"First thoracic vertebra"
+],
+[
+"FMA9187",
+"Second thoracic vertebra"
+],
+[
+"FMA9209",
+"Third thoracic vertebra"
+],
+[
+"FMA9248",
+"Fourth thoracic vertebra"
+],
+[
+"FMA9922",
+"Fifth thoracic vertebra"
+],
+[
+"FMA9945",
+"Sixth thoracic vertebra"
+],
+[
+"FMA9968",
+"Seventh thoracic vertebra"
+],
+[
+"FMA9991",
+"Eighth thoracic vertebra"
+]
+],
+"disc": [
+[
+"FMA10458",
+"Intervertebral disk of first thoracic vertebra"
+],
+[
+"FMA13495",
+"Intervertebral disk of second thoracic vertebra"
+],
+[
+"FMA13500",
+"Intervertebral disk of third thoracic vertebra"
+],
+[
+"FMA13501",
+"Intervertebral disk of fourth thoracic vertebra"
+],
+[
+"FMA13502",
+"Intervertebral disk of fifth thoracic vertebra"
+],
+[
+"FMA13503",
+"Intervertebral disk of sixth thoracic vertebra"
+],
+[
+"FMA13504",
+"Intervertebral disk of seventh thoracic vertebra"
+],
+[
+"FMA13505",
+"Intervertebral disk of eighth thoracic vertebra"
+],
+[
+"FMA13506",
+"Intervertebral disk of ninth thoracic vertebra"
+],
+[
+"FMA13507",
+"Intervertebral disk of tenth thoracic vertebra"
+],
+[
+"FMA13508",
+"Intervertebral disk of eleventh thoracic vertebra"
+],
+[
+"FMA13509",
+"Intervertebral disk of twelfth thoracic vertebra"
+],
+[
+"FMA13896",
+"Intervertebral disk of third cervical vertebra"
+],
+[
+"FMA13897",
+"Intervertebral disk of fourth cervical vertebra"
+],
+[
+"FMA13898",
+"Intervertebral disk of fifth cervical vertebra"
+],
+[
+"FMA13899",
+"Intervertebral disk of sixth cervical vertebra"
+],
+[
+"FMA13900",
+"Intervertebral disk of seventh cervical vertebra"
+],
+[
+"FMA16033",
+"Intervertebral disk of first lumbar vertebra"
+],
+[
+"FMA16034",
+"Intervertebral disk of second lumbar vertebra"
+],
+[
+"FMA16035",
+"Intervertebral disk of third lumbar vertebra"
+],
+[
+"FMA16036",
+"Intervertebral disk of fourth lumbar vertebra"
+],
+[
+"FMA16037",
+"Intervertebral disk of fifth lumbar vertebra"
+],
+[
+"FMA25058",
+"Intervertebral disk of axis"
+]
+],
+"thorax": [
+[
+"FMA13322",
+"Right clavicle"
+],
+[
+"FMA13323",
+"Left clavicle"
+],
+[
+"FMA13395",
+"Right scapula"
+],
+[
+"FMA13396",
+"Left scapula"
+],
+[
+"FMA7486",
+"Manubrium"
+],
+[
+"FMA7487",
+"Body of sternum"
+],
+[
+"FMA7488",
+"Xiphoid process"
+],
+[
+"FMA7857",
+"Right first rib"
+],
+[
+"FMA7882",
+"Right second rib"
+],
+[
+"FMA7909",
+"Right third rib"
+],
+[
+"FMA7957",
+"Right fourth rib"
+],
+[
+"FMA7987",
+"Left first rib"
+],
+[
+"FMA8012",
+"Left second rib"
+],
+[
+"FMA8039",
+"Left third rib"
+],
+[
+"FMA8066",
+"Right fifth rib"
+],
+[
+"FMA8093",
+"Left fifth rib"
+],
+[
+"FMA8148",
+"Left fourth rib"
+],
+[
+"FMA8175",
+"Right sixth rib"
+],
+[
+"FMA8202",
+"Left sixth rib"
+],
+[
+"FMA8229",
+"Right seventh rib"
+],
+[
+"FMA8256",
+"Left seventh rib"
+],
+[
+"FMA8283",
+"Right eighth rib"
+],
+[
+"FMA8310",
+"Left eighth rib"
+],
+[
+"FMA8364",
+"Right ninth rib"
+],
+[
+"FMA8391",
+"Left ninth rib"
+],
+[
+"FMA8445",
+"Right tenth rib"
+],
+[
+"FMA8472",
+"Left tenth rib"
+],
+[
+"FMA8531",
+"Right eleventh rib"
+],
+[
+"FMA8532",
+"Left eleventh rib"
+],
+[
+"FMA8533",
+"Right twelfth rib"
+],
+[
+"FMA8534",
+"Left twelfth rib"
+]
+],
+"arm": [
+[
+"FMA23130",
+"Right humerus"
+],
+[
+"FMA23131",
+"Left humerus"
+],
+[
+"FMA23464",
+"Right radius"
+],
+[
+"FMA23465",
+"Left radius"
+],
+[
+"FMA23467",
+"Right ulna"
+],
+[
+"FMA23468",
+"Left ulna"
+],
+[
+"FMA23725",
+"Right trapezoid"
+],
+[
+"FMA24435",
+"Right scaphoid"
+],
+[
+"FMA24436",
+"Left scaphoid"
+],
+[
+"FMA24437",
+"Right lunate"
+],
+[
+"FMA24438",
+"Left lunate"
+],
+[
+"FMA24439",
+"Right triquetral"
+],
+[
+"FMA24440",
+"Left triquetral"
+],
+[
+"FMA24441",
+"Right pisiform"
+],
+[
+"FMA24442",
+"Left pisiform"
+],
+[
+"FMA24443",
+"Right trapezium"
+],
+[
+"FMA24444",
+"Left trapezium"
+],
+[
+"FMA24445",
+"Left trapezoid"
+],
+[
+"FMA24446",
+"Right capitate"
+],
+[
+"FMA24447",
+"Left capitate"
+],
+[
+"FMA24448",
+"Right hamate"
+],
+[
+"FMA24449",
+"Left hamate"
+],
+[
+"FMA24464",
+"Right first metacarpal bone"
+],
+[
+"FMA24465",
+"Left first metacarpal bone"
+],
+[
+"FMA24466",
+"Right second metacarpal bone"
+],
+[
+"FMA24467",
+"Left second metacarpal bone"
+],
+[
+"FMA24468",
+"Right third metacarpal bone"
+],
+[
+"FMA24469",
+"Left third metacarpal bone"
+],
+[
+"FMA24470",
+"Right fourth metacarpal bone"
+],
+[
+"FMA24471",
+"Left fourth metacarpal bone"
+],
+[
+"FMA24472",
+"Right fifth metacarpal bone"
+],
+[
+"FMA24473",
+"Left fifth metacarpal bone"
+]
+],
+"finger": [
+[
+"FMA23938",
+"Middle phalanx of left index finger"
+],
+[
+"FMA23940",
+"Middle phalanx of left middle finger"
+],
+[
+"FMA23942",
+"Middle phalanx of left ring finger"
+],
+[
+"FMA23944",
+"Middle phalanx of left little finger"
+],
+[
+"FMA23951",
+"Distal phalanx of left thumb"
+],
+[
+"FMA23953",
+"Distal phalanx of left index finger"
+],
+[
+"FMA23955",
+"Distal phalanx of left middle finger"
+],
+[
+"FMA23957",
+"Distal phalanx of left ring finger"
+],
+[
+"FMA23959",
+"Distal phalanx of left little finger"
+],
+[
+"FMA24450",
+"Proximal phalanx of right thumb"
+],
+[
+"FMA24451",
+"Proximal phalanx of right index finger"
+],
+[
+"FMA24452",
+"Proximal phalanx of right middle finger"
+],
+[
+"FMA24453",
+"Proximal phalanx of right ring finger"
+],
+[
+"FMA24454",
+"Proximal phalanx of right little finger"
+],
+[
+"FMA24455",
+"Middle phalanx of right index finger"
+],
+[
+"FMA24456",
+"Middle phalanx of right middle finger"
+],
+[
+"FMA24457",
+"Middle phalanx of right ring finger"
+],
+[
+"FMA24458",
+"Middle phalanx of right little finger"
+],
+[
+"FMA24459",
+"Distal phalanx of right thumb"
+],
+[
+"FMA24460",
+"Distal phalanx of right index finger"
+],
+[
+"FMA24461",
+"Distal phalanx of right middle finger"
+],
+[
+"FMA24462",
+"Distal phalanx of right ring finger"
+],
+[
+"FMA24463",
+"Distal phalanx of right little finger"
+],
+[
+"FMA65470",
+"Proximal phalanx of left thumb"
+],
+[
+"FMA66791",
+"Proximal phalanx of left little finger"
+],
+[
+"FMA71908",
+"Proximal phalanx of left middle finger"
+],
+[
+"FMA71915",
+"Proximal phalanx of left index finger"
+],
+[
+"FMA71916",
+"Proximal phalanx of left ring finger"
+]
+],
+"pelvis": [
+[
+"FMA16586",
+"Right hip bone"
+],
+[
+"FMA16587",
+"Left hip bone"
+]
+],
+"leg": [
+[
+"FMA230986",
+"Middle phalanx of right little toe"
+],
+[
+"FMA230988",
+"Middle phalanx of left little toe"
+],
+[
+"FMA24474",
+"Right femur"
+],
+[
+"FMA24475",
+"Left femur"
+],
+[
+"FMA24477",
+"Right tibia"
+],
+[
+"FMA24478",
+"Left tibia"
+],
+[
+"FMA24480",
+"Right fibula"
+],
+[
+"FMA24481",
+"Left fibula"
+],
+[
+"FMA24482",
+"Right talus"
+],
+[
+"FMA24483",
+"Left talus"
+],
+[
+"FMA24486",
+"Right patella"
+],
+[
+"FMA24487",
+"Left patella"
+],
+[
+"FMA24497",
+"Right calcaneus"
+],
+[
+"FMA24498",
+"Left calcaneus"
+],
+[
+"FMA24500",
+"Navicular bone of right foot"
+],
+[
+"FMA24501",
+"Navicular bone of left foot"
+],
+[
+"FMA24507",
+"Right first metatarsal bone"
+],
+[
+"FMA24508",
+"Left first metatarsal bone"
+],
+[
+"FMA24509",
+"Right second metatarsal bone"
+],
+[
+"FMA24510",
+"Left second metatarsal bone"
+],
+[
+"FMA24511",
+"Right third metatarsal bone"
+],
+[
+"FMA24512",
+"Left third metatarsal bone"
+],
+[
+"FMA24513",
+"Right fourth metatarsal bone"
+],
+[
+"FMA24514",
+"Left fourth metatarsal bone"
+],
+[
+"FMA24515",
+"Right fifth metatarsal bone"
+],
+[
+"FMA24516",
+"Left fifth metatarsal bone"
+],
+[
+"FMA24521",
+"Right medial cuneiform bone"
+],
+[
+"FMA24522",
+"Left medial cuneiform bone"
+],
+[
+"FMA24523",
+"Right intermediate cuneiform bone"
+],
+[
+"FMA24524",
+"Left intermediate cuneiform bone"
+],
+[
+"FMA24525",
+"Right lateral cuneiform bone"
+],
+[
+"FMA24526",
+"Left lateral cuneiform bone"
+],
+[
+"FMA24528",
+"Right cuboid bone"
+],
+[
+"FMA24529",
+"Left cuboid bone"
+],
+[
+"FMA32634",
+"Proximal phalanx of right second toe"
+],
+[
+"FMA32635",
+"Proximal phalanx of left second toe"
+],
+[
+"FMA32636",
+"Proximal phalanx of right third toe"
+],
+[
+"FMA32637",
+"Proximal phalanx of left third toe"
+],
+[
+"FMA32638",
+"Proximal phalanx of right fourth toe"
+],
+[
+"FMA32639",
+"Proximal phalanx of left fourth toe"
+],
+[
+"FMA32640",
+"Proximal phalanx of right little toe"
+],
+[
+"FMA32641",
+"Proximal phalanx of left little toe"
+],
+[
+"FMA32642",
+"Middle phalanx of right second toe"
+],
+[
+"FMA32643",
+"Middle phalanx of left second toe"
+],
+[
+"FMA32644",
+"Middle phalanx of right third toe"
+],
+[
+"FMA32645",
+"Middle phalanx of left third toe"
+],
+[
+"FMA32646",
+"Middle phalanx of right fourth toe"
+],
+[
+"FMA32647",
+"Middle phalanx of left fourth toe"
+],
+[
+"FMA32650",
+"Distal phalanx of right big toe"
+],
+[
+"FMA32651",
+"Distal phalanx of left big toe"
+],
+[
+"FMA32652",
+"Distal phalanx of right second toe"
+],
+[
+"FMA32653",
+"Distal phalanx of left second toe"
+],
+[
+"FMA32654",
+"Distal phalanx of right third toe"
+],
+[
+"FMA32655",
+"Distal phalanx of left third toe"
+],
+[
+"FMA32656",
+"Distal phalanx of right fourth toe"
+],
+[
+"FMA32657",
+"Distal phalanx of left fourth toe"
+],
+[
+"FMA32658",
+"Distal phalanx of right little toe"
+],
+[
+"FMA32659",
+"Distal phalanx of left little toe"
+],
+[
+"FMA43253",
+"Proximal phalanx of right big toe"
+],
+[
+"FMA43254",
+"Proximal phalanx of left big toe"
+]
+],
+"heart": [
+[
+"FMA7274",
+"Wall of heart"
+]
+],
+"artery": [
+[
+"FMA14765",
+"Right common iliac artery"
+],
+[
+"FMA14766",
+"Left common iliac artery"
+],
+[
+"FMA18806",
+"Right external iliac artery"
+],
+[
+"FMA18807",
+"Left external iliac artery"
+],
+[
+"FMA18809",
+"Right internal iliac artery"
+],
+[
+"FMA18810",
+"Left internal iliac artery"
+],
+[
+"FMA3736",
+"Ascending aorta"
+],
+[
+"FMA3768",
+"Arch of aorta"
+],
+[
+"FMA3784",
+"Descending aorta"
+],
+[
+"FMA3941",
+"Right common carotid artery"
+],
+[
+"FMA3953",
+"Right subclavian artery"
+],
+[
+"FMA4058",
+"Left common carotid artery"
+],
+[
+"FMA4694",
+"Left subclavian artery"
+]
+],
+"vein": [
+[
+"FMA10951",
+"Inferior vena cava"
+],
+[
+"FMA18885",
+"Right external iliac vein"
+],
+[
+"FMA18886",
+"Left external iliac vein"
+],
+[
+"FMA18887",
+"Right internal iliac vein"
+],
+[
+"FMA18888",
+"Left internal iliac vein"
+],
+[
+"FMA21387",
+"Right common iliac vein"
+],
+[
+"FMA21388",
+"Left common iliac vein"
+],
+[
+"FMA4720",
+"Superior vena cava"
+],
+[
+"FMA4751",
+"Right brachiocephalic vein"
+],
+[
+"FMA4754",
+"Right internal jugular vein"
+],
+[
+"FMA4755",
+"Right subclavian vein"
+],
+[
+"FMA4761",
+"Left brachiocephalic vein"
+],
+[
+"FMA4762",
+"Left internal jugular vein"
+],
+[
+"FMA4763",
+"Left subclavian vein"
+]
+],
+"brain": [
+[
+"FMA258714",
+"Right thalamus"
+],
+[
+"FMA258716",
+"Left thalamus"
+],
+[
+"FMA61993nsn",
+"midbrain, nsn"
+],
+[
+"FMA62004",
+"Medulla oblongata"
+],
+[
+"FMA67943",
+"Pons"
+],
+[
+"FMA67944",
+"Cerebellum"
+],
+[
+"FMA72653",
+"Right superior frontal gyrus"
+],
+[
+"FMA72654",
+"Left superior frontal gyrus"
+],
+[
+"FMA72655",
+"Right middle frontal gyrus"
+],
+[
+"FMA72656",
+"Left middle frontal gyrus"
+],
+[
+"FMA72661",
+"Right precentral gyrus"
+],
+[
+"FMA72662",
+"Left precentral gyrus"
+],
+[
+"FMA72665",
+"Right postcentral gyrus"
+],
+[
+"FMA72666",
+"Left postcentral gyrus"
+],
+[
+"FMA72667",
+"Right supramarginal gyrus"
+],
+[
+"FMA72668",
+"Left supramarginal gyrus"
+],
+[
+"FMA72669",
+"Right angular gyrus"
+],
+[
+"FMA72670",
+"Left angular gyrus"
+],
+[
+"FMA72685",
+"Right middle temporal gyrus"
+],
+[
+"FMA72686",
+"Left middle temporal gyrus"
+],
+[
+"FMA72687",
+"Right inferior temporal gyrus"
+],
+[
+"FMA72688",
+"Left inferior temporal gyrus"
+],
+[
+"FMA72689",
+"Right fusiform gyrus"
+],
+[
+"FMA72690",
+"Left fusiform gyrus"
+],
+[
+"FMA72701",
+"Right accessory short gyrus"
+],
+[
+"FMA72702",
+"Left accessory short gyrus"
+],
+[
+"FMA72705",
+"Right parahippocampal gyrus"
+],
+[
+"FMA72706",
+"Left parahippocampal gyrus"
+],
+[
+"FMA72713",
+"Right hippocampus proper"
+],
+[
+"FMA72714",
+"Left hippocampus proper"
+],
+[
+"FMA72717",
+"Right cingulate gyrus"
+],
+[
+"FMA72718",
+"Left cingulate gyrus"
+],
+[
+"FMA72800",
+"Anterior part of right superior temporal gyrus"
+],
+[
+"FMA72801",
+"Anterior part of left superior temporal gyrus"
+],
+[
+"FMA72804",
+"Posterior part of right superior temporal gyrus"
+],
+[
+"FMA72805",
+"Posterior part of left superior temporal gyrus"
+],
+[
+"FMA72826",
+"Right caudate nucleus"
+],
+[
+"FMA72827",
+"Left caudate nucleus"
+],
+[
+"FMA72828",
+"Right putamen"
+],
+[
+"FMA72829",
+"Left putamen"
+],
+[
+"FMA72975",
+"Right occipital lobe"
+],
+[
+"FMA72976",
+"Left occipital lobe"
+],
+[
+"FMA72977",
+"Right insula"
+],
+[
+"FMA72978",
+"Left insula"
+],
+[
+"FMA73413",
+"Right stria medullaris of thalamus"
+],
+[
+"FMA73414",
+"Left stria medullaris of thalamus"
+],
+[
+"FMA86464",
+"Corpus callosum"
+]
+],
+"endo": [
+[
+"FMA13889",
+"Pituitary gland"
+],
+[
+"FMA55099",
+"Thyroid cartilage"
+],
+[
+"FMA62008nsn",
+"hypothalamus, nsn"
+]
+],
+"gut": [
+[
+"FMA14543nsn",
+"colon, nsn"
+],
+[
+"FMA14544",
+"Rectum"
+],
+[
+"FMA7131",
+"Esophagus"
+],
+[
+"FMA7148",
+"Stomach"
+],
+[
+"FMA7196",
+"Spleen"
+],
+[
+"FMA7197",
+"Liver"
+],
+[
+"FMA7198nsn",
+"pancreas, nsn"
+],
+[
+"FMA7202",
+"Gallbladder"
+],
+[
+"FMA7206",
+"Duodenum"
+],
+[
+"FMA7207",
+"Jejunum"
+],
+[
+"FMA7208",
+"Ileum"
+]
+],
+"other": [
+[
+"FMA15900",
+"Urinary bladder"
+],
+[
+"FMA7204",
+"Right kidney"
+],
+[
+"FMA7205",
+"Left kidney"
+],
+[
+"FMA7333",
+"Upper lobe of right lung"
+],
+[
+"FMA7337",
+"Lower lobe of right lung"
+],
+[
+"FMA7370",
+"Upper lobe of left lung"
+],
+[
+"FMA7371",
+"Lower lobe of left lung"
+],
+[
+"FMA7383",
+"Middle lobe of right lung"
+],
+[
+"FMA7394",
+"Trachea"
+]
+]
+}
