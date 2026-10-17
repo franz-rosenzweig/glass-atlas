@@ -16,7 +16,7 @@ Exported 13 October 2026 from version 12 of the published artifact; light mode a
 
 | Folder | Contents |
 |---|---|
-| `app/` | The complete app. `index.html` is a self-contained, fully offline copy (three.js and fonts are bundled in `vendor/`). `atlas.html` is the source exactly as published to claude.ai, which loads three.js from a CDN. |
+| `app/` | The complete app. `index.html` is a self-contained, fully offline copy (three.js and fonts are bundled in `vendor/`). `atlas.html` is the source exactly as published to claude.ai (dark only, before light mode), which loads three.js from a CDN. |
 | `app/tour/` | Narration audio for the 13 tour stops (MP3), and `tour-script.json` holds the text and camera positions. |
 | `app/anatomy.txt` | The anatomy meshes, gzip-compressed and base64-encoded; decoded in `core.js`. |
 | `research/references.md` | All 87 references, with links. |
