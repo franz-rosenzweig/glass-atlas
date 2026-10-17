@@ -1,6 +1,7 @@
 // Glass Atlas core: real anatomy (BodyParts3D), a joint rig derived from the bones themselves,
 // layers, highlighting, picking and the camera.
 import * as THREE from 'three';
+import { raw, toLight } from './theme.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LAYER_OF } from './data.js';
 
@@ -38,10 +39,10 @@ const OPACITY_BASE = n => /lung/i.test(n)?0.22 : n==='Liver'?0.85 : 1;
 /* ------------------------------------------------------------------ glass skin */
 const glassVert=`varying vec3 vN;varying vec3 vV;varying vec3 vP;
 void main(){vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=-mv.xyz;vP=position;gl_Position=projectionMatrix*mv;}`;
-const glassFrag=`uniform float uAlpha,uScaffold,uTime;uniform vec3 uRim,uFill,uScafCol;varying vec3 vN;varying vec3 vV;varying vec3 vP;
+const glassFrag=`uniform float uAlpha,uScaffold,uTime,uBody;uniform vec3 uRim,uFill,uScafCol;varying vec3 vN;varying vec3 vV;varying vec3 vP;
 void main(){vec3 n=normalize(vN),v=normalize(vV);float fr=1.-abs(dot(n,v));float rim=pow(fr,2.2);
 float key=max(dot(n,normalize(vec3(-.4,.7,.6))),0.);
-vec3 c=uFill*(.28+.5*key)+uRim*rim*1.2;float a=(.05+.06*key+rim*.72);
+vec3 c=uFill*(.28+.5*key)+uRim*rim*1.2;float a=(uBody*(.05+.06*key)+rim*.72);
 float x=vP.y*60.;float g=abs(fract(x-.5)-.5)/fwidth(x);float line=1.-min(g,1.);
 float sc=uScaffold*line;c=mix(c,uScafCol*1.3,clamp(sc,0.,1.)*.85);a+=sc*.5;
 gl_FragColor=vec4(c,clamp(a,0.,1.)*uAlpha);}`;
@@ -79,7 +80,7 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
   controls.maxPolarAngle=Math.PI*.66;controls.enablePan=false;controls.rotateSpeed=.7;
   Object.assign(A,{renderer,scene,camera,controls});
 
-  scene.add(new THREE.HemisphereLight(0xe3efe9,0x0b1113,1.15));
+  const hemi=new THREE.HemisphereLight(0xe3efe9,0x0b1113,1.15);scene.add(hemi);
   const key=new THREE.DirectionalLight(0xfff0e0,2.0);key.position.set(-1.5,3,2.5);scene.add(key);
   const rim=new THREE.DirectionalLight(0xa6dcff,1.1);rim.position.set(2,1.5,-2.5);scene.add(rim);
   const fill=new THREE.DirectionalLight(0xffffff,.45);fill.position.set(0,-1,2);scene.add(fill);
@@ -98,7 +99,7 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
   let off=16+hl;const P=new Int16Array(buf,off,pn);off+=pn*2;off+=(4-off%4)%4;const I=new Uint16Array(buf,off,inn);
 
   const MESH={};A.MESH=MESH;const recs=[];A.recs=recs;
-  const skinUniforms={uAlpha:{value:1},uScaffold:{value:0},uTime:{value:0},uRim:{value:new THREE.Color('#D3F1EC')},uFill:{value:new THREE.Color('#6F9E9A')},uScafCol:{value:new THREE.Color('#B193E3')}};
+  const skinUniforms={uAlpha:{value:1},uScaffold:{value:0},uTime:{value:0},uBody:{value:1},uRim:{value:new THREE.Color('#D3F1EC')},uFill:{value:new THREE.Color('#6F9E9A')},uScafCol:{value:new THREE.Color('#B193E3')}};
   A.skinUniforms=skinUniforms;
   for(const m of H.meshes){
     const pos=new Float32Array(m.vn*3);
@@ -262,9 +263,25 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
   A.pivots={hipR,hipL,hipMid};
 
   /* ---------- floor ---------- */
-  {const cv=document.createElement('canvas');cv.width=cv.height=256;const x=cv.getContext('2d');const gr=x.createRadialGradient(128,128,0,128,128,128);gr.addColorStop(0,'rgba(0,0,0,.5)');gr.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gr;x.fillRect(0,0,256,256);
+  {const cv=document.createElement('canvas');cv.width=cv.height=256;const x=cv.getContext('2d');raw(()=>{const gr=x.createRadialGradient(128,128,0,128,128,128);gr.addColorStop(0,'rgba(0,0,0,.5)');gr.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gr;x.fillRect(0,0,256,256);});
    const sh=new THREE.Mesh(new THREE.PlaneGeometry(.7,.7),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv),transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=0.001;scene.add(sh);A.shadow=sh;
    const ring=new THREE.Mesh(new THREE.RingGeometry(.4,.402,128),new THREE.MeshBasicMaterial({color:0x33474c,transparent:true,opacity:.8,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=0.002;scene.add(ring);A.floorRing=ring;}
+
+  /* ---------- light / dark: the same vitrine by daylight ---------- */
+  // Instruments register the overlay materials whose colour has to flip with the theme (a white
+  // pointer would vanish on paper); the anatomy keeps its own colours in both.
+  const themed=new Set();
+  A.themed=(mat,hex)=>{mat.userData.hex=hex;themed.add(mat);mat.addEventListener('dispose',()=>themed.delete(mat));mat.color.set(A.light?toLight(hex):hex);return mat;};
+  A.tm=(Cls,opt)=>A.themed(new Cls(opt),opt.color);
+  A.skinBase={fill:new THREE.Color('#6F9E9A'),rim:new THREE.Color('#D3F1EC')};
+  A.light=false;
+  A.setTheme=t=>{const L=A.light=t==='light';
+    hemi.color.set(L?0xffffff:0xe3efe9);hemi.groundColor.set(L?0x9a9284:0x0b1113);hemi.intensity=L?1.3:1.15;
+    rim.intensity=L?.6:1.1;renderer.toneMappingExposure=L?1:1.05;
+    A.skinBase.rim.set(L?'#3A8A82':'#D3F1EC');A.skinBase.fill.set(L?'#A9D3CD':'#6F9E9A');skinUniforms.uRim.value.copy(A.skinBase.rim);skinUniforms.uFill.value.copy(A.skinBase.fill);skinUniforms.uBody.value=L?.5:1;A.shadow.material.opacity=L?.5:1;skinUniforms.uScafCol.value.set(L?'#7652C2':'#B193E3');
+    A.floorRing.material.color.set(L?0xCBC3B3:0x33474c);
+    for(const m of themed)m.color.set(L?toLight(m.userData.hex):m.userData.hex);
+  };
 
   /* ---------- opacity / emphasis ---------- */
   A.layerOn={skin:true,skeleton:true,organs:true,vessels:true,nerves:false};

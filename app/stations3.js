@@ -179,7 +179,7 @@ export function makeStations3(A){
       enter(panel){
         K.resetRig();if(!patches)mkPatches();
         K.setMode({layers:{skin:0,skeleton:.12,organs:.06,vessels:0},focus:A.resolve(['#cervix']),focusColor:'#62BED3',dim:1});for(const r of A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']))if(!r.tags.includes('cervix'))r.tgt.op=.55;
-        panel.innerHTML=`<canvas id="c-cv" width="560" height="440" class="colpo" aria-label="Colposcope view of the cervix"></canvas>
+        panel.innerHTML=`<canvas id="c-cv" width="560" height="440" class="colpo" data-raw aria-label="Colposcope view of the cervix"></canvas>
           <div class="seg" role="radiogroup" aria-label="Stain">${[['none','No stain'],['acetic','Vinegar'],['iodine','Iodine']].map(([k,l])=>`<button role="radio" data-st="${k}" aria-checked="${k===v.stain}">${l}</button>`).join('')}</div>
           <p class="fine" style="margin-top:0!important">During colposcopy, dilute vinegar turns abnormal cells white for a minute or so: low-grade changes are thin and fade fast; high-grade ones are dense, sharp-edged and may show dotted (punctation) or tiled (mosaic) vessel patterns. Iodine stains healthy surface cells mahogany; abnormal areas, and some normal tissue near the opening, stay mustard-yellow. LSIL whitens thinly with soft, feathery edges inside the transformation zone (dotted ring), where HPV changes begin.</p>
           <p class="eyebrow">Follow one possible course</p>

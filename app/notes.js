@@ -2,6 +2,7 @@
 // otherwise kept on this device only.
 import * as THREE from 'three';
 import { kit } from './kit.js';
+import { cc } from './theme.js';
 
 const KINDS={pain:{l:'Pain',c:'#F2705F'},note:{l:'Note',c:'#BFE6E1'},question:{l:'Question for a doctor',c:'#B193E3'},good:{l:'Better today',c:'#7FD3A3'}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -21,10 +22,10 @@ export function makeNotes(A){
   const who=n=>mode==='local'||(n.author&&n.author===me)?'you':(profiles[n.author]?.name||'Someone');
   function pinsSync(){if(!G){G=new THREE.Group();A.root.add(G);}
     const seen=new Set();for(const n of notes){if(!Array.isArray(n.p))continue;seen.add(n.id);let m=pins.get(n.id);
-      if(!m){m=new THREE.Mesh(new THREE.SphereGeometry(.009,14,10),new THREE.MeshBasicMaterial({color:KINDS[n.kind]?.c||'#BFE6E1',depthTest:false,transparent:true}));m.renderOrder=60;G.add(m);pins.set(n.id,m);}
-      m.position.set(n.p[0],n.p[1],n.p[2]);m.material.color.set(KINDS[n.kind]?.c||'#BFE6E1');}
+      if(!m){m=new THREE.Mesh(new THREE.SphereGeometry(.009,14,10),A.tm(THREE.MeshBasicMaterial,{color:KINDS[n.kind]?.c||'#BFE6E1',depthTest:false,transparent:true}));m.renderOrder=60;G.add(m);pins.set(n.id,m);}
+      m.position.set(n.p[0],n.p[1],n.p[2]);A.themed(m.material,KINDS[n.kind]?.c||'#BFE6E1');}
     for(const [id,m] of pins)if(!seen.has(id)){G.remove(m);m.geometry.dispose();pins.delete(id);}
-    if(pending){let m=pins.get('__pending');if(!m){m=new THREE.Mesh(new THREE.SphereGeometry(.011,14,10),new THREE.MeshBasicMaterial({color:'#FFFFFF',depthTest:false,transparent:true}));m.renderOrder=61;G.add(m);pins.set('__pending',m);}m.position.copy(pending.p);}
+    if(pending){let m=pins.get('__pending');if(!m){m=new THREE.Mesh(new THREE.SphereGeometry(.011,14,10),A.tm(THREE.MeshBasicMaterial,{color:'#FFFFFF',depthTest:false,transparent:true}));m.renderOrder=61;G.add(m);pins.set('__pending',m);}m.position.copy(pending.p);}
     else if(pins.has('__pending')){const m=pins.get('__pending');G.remove(m);pins.delete('__pending');}}
   function ago(iso){const d=(Date.now()-Date.parse(iso))/1000;if(!isFinite(d))return '';if(d<60)return 'just now';if(d<3600)return Math.round(d/60)+' min ago';if(d<86400)return Math.round(d/3600)+' h ago';return new Date(iso).toLocaleDateString(undefined,{month:'short',day:'numeric'});}
   function render(){pinsSync();if(!ui)return;
@@ -32,7 +33,7 @@ export function makeNotes(A){
     ui.querySelector('#n-status').textContent=status;
     const comp=ui.querySelector('#n-comp');
     if(pending){comp.hidden=false;comp.querySelector('#n-where').textContent=pending.where;}else comp.hidden=true;
-    ui.querySelector('#n-list').innerHTML=notes.length?notes.map(n=>`<div class="note${sel===n.id?' on':''}" data-id="${esc(n.id)}" style="--c:${KINDS[n.kind]?.c||'#BFE6E1'}">
+    ui.querySelector('#n-list').innerHTML=notes.length?notes.map(n=>`<div class="note${sel===n.id?' on':''}" data-id="${esc(n.id)}" style="--c:${cc(KINDS[n.kind]?.c||'#BFE6E1')}">
         <div class="note-h"><span class="note-k">${esc(KINDS[n.kind]?.l||'Note')}${n.kind==='pain'&&n.level!=null?' · '+esc(n.level)+'/10':''}</span><span class="note-w">${esc(n.where||'')}</span></div>
         <p class="note-t"></p><div class="note-f"><span>${esc(who(n))} · ${esc(ago(n.at))}</span>${(n.author===me||mode==='local')?`<button class="note-del" data-del="${esc(n.id)}" type="button">Delete</button>`:''}</div></div>`).join(''):'<p class="fine">No notes yet. Tap any spot on the body to leave the first one.</p>';
     ui.querySelectorAll('.note').forEach(el=>{const n=notes.find(x=>x.id===el.dataset.id);el.querySelector('.note-t').textContent=n.text||'';

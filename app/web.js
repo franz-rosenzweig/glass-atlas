@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { CONDS, SYS } from './data.js';
 import { kit, clamp } from './kit.js';
+import { cc } from './theme.js';
 
 // Two separate questions per thread: how strong is the evidence in general, and is it known to apply to the patient?
 export const STRENGTH={
@@ -48,19 +49,19 @@ export function makeWeb(A){
       const p0=pos[L.a],p1=pos[L.b];const mid=p0.clone().add(p1).multiplyScalar(.5);const d=p0.distanceTo(p1);
       const bow=V3(((i%3)-1)*.04,0,.16+d*.32);const c=new THREE.QuadraticBezierCurve3(p0,mid.add(bow),p1);
       const col=new THREE.Color(STRENGTH[L.s].c);
-      const mat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending});
+      const mat=A.tm(THREE.MeshBasicMaterial,{color:col,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending});
       const m=new THREE.Mesh(new THREE.TubeGeometry(c,60,L.s==='contested'||L.s==='limited'?.0014:.0022,6,false),mat);m.renderOrder=30;G.add(m);
-      const pulses=[];for(let k=0;k<3;k++){const s=new THREE.Mesh(new THREE.SphereGeometry(.0065,10,8),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending}));s.renderOrder=31;G.add(s);pulses.push({m:s,u:k/3});}
+      const pulses=[];for(let k=0;k<3;k++){const s=new THREE.Mesh(new THREE.SphereGeometry(.0065,10,8),A.tm(THREE.MeshBasicMaterial,{color:col,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending}));s.renderOrder=31;G.add(s);pulses.push({m:s,u:k/3});}
       arcs.push({L,curve:c,mesh:m,pulses,col});
     });
-    for(const id in pos){const s=new THREE.Mesh(new THREE.SphereGeometry(.011,16,12),new THREE.MeshBasicMaterial({color:SYS[byId[id].sys].c,transparent:true,opacity:.95,depthWrite:false}));s.position.copy(pos[id]);s.renderOrder=32;G.add(s);}
+    for(const id in pos){const s=new THREE.Mesh(new THREE.SphereGeometry(.011,16,12),A.tm(THREE.MeshBasicMaterial,{color:SYS[byId[id].sys].c,transparent:true,opacity:.95,depthWrite:false}));s.position.copy(pos[id]);s.renderOrder=32;G.add(s);}
     labels=document.createElement('div');labels.className='web-labels';document.getElementById('app').appendChild(labels);
-    labels.innerHTML=Object.keys(pos).map(id=>`<button class="wl" data-n="${id}" style="--c:${SYS[byId[id].sys].c}">${byId[id].short}</button>`).join('');
+    labels.innerHTML=Object.keys(pos).map(id=>`<button class="wl" data-n="${id}" style="--c:${cc(SYS[byId[id].sys].c)}">${byId[id].short}</button>`).join('');
     labels.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)pickNode(b.dataset.n);});
   }
   function listHTML(){
     const show=LINKS.map((L,i)=>[L,i]).filter(([L])=>!node||L.a===node||L.b===node);
-    return show.map(([L,i])=>`<button class="wlink${sel===i?' on':''}" data-i="${i}" style="--s:${STRENGTH[L.s].c}"><span class="wl-pair">${byId[L.a].short} <i>↔</i> ${byId[L.b].short}</span><span class="wl-t">${L.t}</span><span class="wl-s">${STRENGTH[L.s].label}${L.h==='unknown'?' · not yet known for the patient':''}</span>${sel===i?`<span class="wl-x">${L.x}</span>`:''}</button>`).join('');
+    return show.map(([L,i])=>`<button class="wlink${sel===i?' on':''}" data-i="${i}" style="--s:${cc(STRENGTH[L.s].c)}"><span class="wl-pair">${byId[L.a].short} <i>↔</i> ${byId[L.b].short}</span><span class="wl-t">${L.t}</span><span class="wl-s">${STRENGTH[L.s].label}${L.h==='unknown'?' · not yet known for the patient':''}</span>${sel===i?`<span class="wl-x">${L.x}</span>`:''}</button>`).join('');
   }
   function render(){ui.querySelector('#w-list').innerHTML=listHTML();ui.querySelector('#w-node').innerHTML=node?`Showing links for <b>${byId[node].name}</b> <button class="btn" id="w-all" type="button">Show all</button>`:'Tap a condition label on the body to filter.';
     const all=ui.querySelector('#w-all');if(all)all.onclick=()=>{node=null;sel=null;render();frame();};
@@ -78,7 +79,7 @@ export function makeWeb(A){
       K.resetRig();if(!G)build();G.visible=true;labels.hidden=false;sel=null;node=null;
       K.setMode({layers:{skin:.35,skeleton:.12,organs:.18,vessels:.12}});
       panel.innerHTML=`<p class="lede-s">Several of the patient's diagnoses are linked; a few are separate stories. Each thread is a link researchers have described, coloured by how strong the evidence is, and marked when it isn't yet known whether it applies to her.</p>
-        <div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${s.c}"></i>${s.label}</span>`).join('')}</div>
+        <div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${cc(s.c)}"></i>${s.label}</span>`).join('')}</div>
         <p class="fine" id="w-node" style="margin:6px 0!important"></p>
         <div id="w-list"></div>
         <p class="fine">Links are drawn from published reviews, guidelines and medicine labels. Strong: consistent large studies or an established mechanism. Moderate: repeated observational studies. Limited: small, single-centre or expert-opinion evidence. Contested: studies using strict criteria haven't confirmed it. Co-occurring doesn't prove one condition causes the other, and a well-proven link in general can still be unknown for the patient. LSIL and encephalitis have few links because their causes (HPV, the original brain inflammation) are separate stories.</p>`;

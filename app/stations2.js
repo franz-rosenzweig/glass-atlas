@@ -31,7 +31,7 @@ export function makeStations2(A){
     function build(){
       for(const [k,n] of [['skin',240],['gut',150],['air',90],['cv',50]])for(const p of K.samplePts(ORG[k],n)){cellPts.push(p);cellSys.push(k);}
       cells=K.dots(cellPts.length,new THREE.SphereGeometry(.0032,8,6),new THREE.MeshBasicMaterial({color:'#F29A55',transparent:true,opacity:.9,depthWrite:false}));
-      med=K.dots(260,new THREE.SphereGeometry(.0015,6,4),new THREE.MeshBasicMaterial({color:'#FFE0B8',transparent:true,opacity:.85,depthWrite:false}));
+      med=K.dots(260,new THREE.SphereGeometry(.0015,6,4),A.tm(THREE.MeshBasicMaterial,{color:'#FFE0B8',transparent:true,opacity:.85,depthWrite:false}));
       for(let i=0;i<260;i++)MP.push({life:0,p:V3(),v:V3()});
     }
     function model(){
@@ -92,7 +92,7 @@ export function makeStations2(A){
         bindSlider(panel,'m-draw',x=>{lab.draw=x;lastKey='';},x=>x+' h');bindSlider(panel,'m-base',x=>{lab.base=x;lastKey='';panel.querySelector('#m-hat').hidden=x<8;},x=>x+' ng/mL');
         A.flyTo({target:[0,1.02,0],dist:3.1,azim:22,elev:4});
         const organs={};for(const k in ORG)organs[k]=K.recs(ORG[k]).filter(r=>r.group!=='skin');
-        const fill0=new THREE.Color('#6F9E9A'),rim0=new THREE.Color('#D3F1EC'),fillF=new THREE.Color('#D0505E'),rimF=new THREE.Color('#FF8E8A');
+        const fillF=new THREE.Color('#D0505E'),rimF=new THREE.Color('#FF8E8A');
         let t=0;
         tickOff=A.onTick(dt=>{
           t+=dt;const M=model();
@@ -103,7 +103,7 @@ export function makeStations2(A){
           for(const [k] of SYSL){const x=M.sym[k];ui.querySelector('#m-'+k).textContent=x<.05?'quiet':x<.35?'mild':x<.7?'moderate':'strong';const b=ui.querySelector('#m-'+k+'Bar');b.style.width=x*100+'%';b.classList.toggle('over',x>=.7);}
           const key=M.s.toFixed(3);if(key!==lastKey){lastKey=key;drawLab(M.s);}
           // skin flush
-          A.skinUniforms.uFill.value.copy(fill0).lerp(fillF,cur.skin*.9);A.skinUniforms.uRim.value.copy(rim0).lerp(rimF,cur.skin*.8);
+          A.skinUniforms.uFill.value.copy(A.skinBase.fill).lerp(fillF,cur.skin*.9);A.skinUniforms.uRim.value.copy(A.skinBase.rim).lerp(A.light?fillF:rimF,cur.skin*.8);
           for(const k in organs)for(const r of organs[k]){r.tgt.em=.06+cur[k]*.9;r.hi.set('#F29A55');}
           // mast cells pulse; flaring ones release mediators
           for(let i=0;i<cellPts.length;i++){const a=cur[cellSys[i]];K.put(cells,i,cellPts[i],1+a*(.6+.6*Math.sin(t*7+i*1.7)));}
@@ -116,7 +116,7 @@ export function makeStations2(A){
           MP.forEach((m,i)=>K.put(med,i,m.p,m.life>0?m.life/1.2:0));med.instanceMatrix.needsUpdate=true;
         });
       },
-      exit(){tickOff?.();cells.visible=med.visible=false;A.skinUniforms.uFill.value.set('#6F9E9A');A.skinUniforms.uRim.value.set('#D3F1EC');}
+      exit(){tickOff?.();cells.visible=med.visible=false;A.skinUniforms.uFill.value.copy(A.skinBase.fill);A.skinUniforms.uRim.value.copy(A.skinBase.rim);}
     };
   })();all.push(mcas);
 
@@ -241,7 +241,7 @@ export function makeStations2(A){
     function build(){
       const gyri=A.recs.filter(r=>r.group==='brain'&&/gyrus|lobe|insula/i.test(r.name)).map(r=>r.name);
       for(const p of K.samplePts(gyri,320))SP.push({p,ph:Math.random()*10,f:2+Math.random()*5});
-      sparks=K.dots(SP.length,new THREE.SphereGeometry(.0018,6,4),new THREE.MeshBasicMaterial({color:'#B9CCFF',transparent:true,opacity:.95,depthWrite:false}),A.N.head,12);
+      sparks=K.dots(SP.length,new THREE.SphereGeometry(.0018,6,4),A.tm(THREE.MeshBasicMaterial,{color:'#B9CCFF',transparent:true,opacity:.95,depthWrite:false}),A.N.head,12);
       sparks.position.copy(A.N.head.userData.pivot).negate();
     }
     const setRegion=()=>{K.setMode({layers:{skin:.08,skeleton:.06,organs:.5,vessels:.05},focus:A.resolve(REG[region].parts),focusColor:'#78A0F4',dim:.35});

@@ -1,6 +1,7 @@
 // A day in the patient's body: scrub 24 hours and watch the body respond. An imagined, typical day built from the patient's chart.
 import * as THREE from 'three';
 import { kit, clamp, lerp, fmt } from './kit.js';
+import { cc } from './theme.js';
 
 const EV=[
   {t:6.5,k:'wake',title:'Waking up stiff',parts:['#righthand','#lefthand'],col:'#F29A55',cam:'hands',
@@ -90,7 +91,7 @@ export function makeDay(A){
         <p class="dy-now" id="dy-now"></p>
         <div id="dy-chart"></div>
         <p class="legend"><span><i class="sw" style="background:#F29A55"></i>Stiffness</span><span><i class="sw" style="background:#EE6F82"></i>Heart rate</span><span><i class="sw" style="background:#DDB741"></i>Stomach</span><span><i class="sw sw-n" style="border-color:#F2705F"></i>Pain</span><span><i class="sw sw-n" style="border-color:#7FD3A3"></i>Energy</span></p>
-        <div class="dy-list">${EV.map((e,i)=>`<button class="dy-ev" data-i="${i}" style="--c:${e.col}"><span>${hhmm(e.t)}</span>${e.title}</button>`).join('')}</div>
+        <div class="dy-list">${EV.map((e,i)=>`<button class="dy-ev" data-i="${i}" style="--c:${cc(e.col)}"><span>${hhmm(e.t)}</span>${e.title}</button>`).join('')}</div>
         <p class="fine">A model, not a diary: the times, meals and medicine schedule are a plausible template, and the curves are illustrative shapes drawn from the patterns in the patient's diagnoses (RA morning stiffness, POTS on standing, a moderately slow stomach). Real days vary, and in real care medicine timing is set by the prescriber.</p>`;
       ui=panel;panel.querySelector('#dy-dial').innerHTML=dial();panel.querySelector('#dy-chart').innerHTML=chart();
       const r=panel.querySelector('#dy-r');r.oninput=()=>{h=+r.value;playing=false;panel.querySelector('#dy-play').textContent='Play the day';};

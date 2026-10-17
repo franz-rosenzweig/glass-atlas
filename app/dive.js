@@ -4,21 +4,22 @@ export const TAU=Math.PI*2;
 export const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const lerp=(a,b,t)=>a+(b-a)*t;
 export const rand=(a,b)=>a+Math.random()*(b-a);
+import { cc } from './theme.js';
 export const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 const CSS=`
-.dive{position:absolute;inset:0;z-index:50;background:#04070B;color:var(--bone);clip-path:circle(0% at 50% 50%);transition:clip-path .9s cubic-bezier(.7,0,.2,1);touch-action:none}
+.dive{position:absolute;inset:0;z-index:50;background:var(--scope);color:var(--bone);clip-path:circle(0% at 50% 50%);transition:clip-path .9s cubic-bezier(.7,0,.2,1);touch-action:none}
 .dive.on{clip-path:circle(150% at 50% 50%)}
 .dive canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .dv-top{position:absolute;left:16px;right:16px;top:calc(12px + env(safe-area-inset-top,0px));display:flex;gap:10px;align-items:center;z-index:3;pointer-events:none}
 .dv-top>*{pointer-events:auto}
 .dv-scale{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto}
-.dv-stop{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line-2);color:var(--dim);background:rgba(4,7,11,.7);white-space:nowrap}
+.dv-stop{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line-2);color:var(--dim);background:rgb(var(--lo) / .7);white-space:nowrap}
 .dv-stop b{display:block;font-weight:500;font-size:9px;color:var(--dim);letter-spacing:.04em;text-transform:none;margin-top:1px}
-.dv-stop[aria-current="true"]{color:var(--bone);border-color:var(--bone-2);background:rgba(236,230,218,.08)}
+.dv-stop[aria-current="true"]{color:var(--bone);border-color:var(--bone-2);background:rgb(var(--hi) / .08)}
 .dv-stop[disabled]{opacity:.45;cursor:default}
-.dv-exit{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);background:rgba(4,7,11,.7);white-space:nowrap}
-.dv-card{position:absolute;left:16px;top:70px;bottom:16px;width:360px;z-index:3;background:rgba(10,15,17,.9);border:1px solid var(--line);border-top:3px solid var(--c,#F29A55);border-radius:3px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow:auto;overscroll-behavior:contain;padding:16px 18px 20px}
+.dv-exit{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);background:rgb(var(--lo) / .7);white-space:nowrap}
+.dv-card{position:absolute;left:16px;top:70px;bottom:16px;width:360px;z-index:3;background:rgb(var(--lo) / .9);border:1px solid var(--line);border-top:3px solid var(--c,#F29A55);border-radius:3px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);overflow:auto;overscroll-behavior:contain;padding:16px 18px 20px}
 .dv-card h2{font:400 26px/1.1 var(--display);margin:4px 0 8px;text-wrap:balance}
 .dv-card p{color:var(--bone-2);font-size:14px;margin:0 0 10px}
 .dv-card .k{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--c,#F29A55);margin:0}
@@ -30,27 +31,27 @@ const CSS=`
 .dv-btns{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
 .dv-btn{font:10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:9px 11px;border:1px solid var(--line-2);border-radius:3px;text-align:left}
 .dv-btn small{display:block;font:11px var(--body);letter-spacing:0;text-transform:none;color:var(--dim);margin-top:3px}
-.dv-btn.on{border-color:var(--c,#F29A55);background:rgba(242,154,85,.1)}
+.dv-btn.on{border-color:var(--c,#F29A55);background:color-mix(in srgb,var(--c,#F29A55) 10%,transparent)}
 .dv-btn.go{background:var(--bone);color:var(--void);border-color:var(--bone)}
 .dv-btn[disabled]{opacity:.45}
 .dv-seg{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
 .dv-seg button{font-size:12px;padding:6px 10px;border:1px solid var(--line-2);border-radius:999px;color:var(--bone-2)}
 .dv-seg button[aria-checked="true"]{background:var(--bone);color:var(--void);border-color:var(--bone)}
 .dv-fine{font-size:12px!important;color:var(--dim)!important}
-.dv-guide{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);background:rgba(4,7,11,.75);border-radius:3px}
-.dv-pop{position:absolute;z-index:6;inset:0;display:grid;place-items:center;background:rgba(2,4,6,.55)}
+.dv-guide{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);background:rgb(var(--lo) / .75);border-radius:3px}
+.dv-pop{position:absolute;z-index:6;inset:0;display:grid;place-items:center;background:var(--scrim)}
 .dv-pop[hidden]{display:none}
-.dv-pc{width:min(360px,calc(100% - 32px));background:#0E1517;border:1px solid var(--line-2);border-radius:4px;padding:16px 18px 18px;max-height:80%;overflow:auto}
-.dv-pc canvas{position:static;width:100%;height:150px;background:#04070B;border-radius:3px;margin-bottom:10px}
+.dv-pc{width:min(360px,calc(100% - 32px));background:var(--solid);border:1px solid var(--line-2);border-radius:4px;padding:16px 18px 18px;max-height:80%;overflow:auto}
+.dv-pc canvas{position:static;width:100%;height:150px;background:var(--scope);border-radius:3px;margin-bottom:10px}
 .dv-pc h3{font:400 22px/1.15 var(--display);margin:2px 0 6px}
 .dv-pc p{color:var(--bone-2);font-size:14px;margin:0 0 8px}
 .dv-pc .sz{font:500 10.5px var(--mono);letter-spacing:.04em;color:var(--dim)}
-.dv-pc .new{color:#7FD3A3}
+.dv-pc .new{color:var(--ok)}
 .dv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
 .dv-grid button{border:1px solid var(--line-2);border-radius:3px;padding:6px;text-align:center;font-size:11.5px;color:var(--bone-2)}
 .dv-grid button[disabled]{opacity:.35}
-.dv-grid canvas{position:static;width:100%;height:56px;display:block;background:#04070B;border-radius:2px;margin-bottom:4px}
-.dv-toast{position:absolute;z-index:5;left:50%;top:80px;transform:translateX(-50%);font:11px var(--mono);letter-spacing:.06em;padding:8px 12px;background:rgba(10,15,17,.92);border:1px solid var(--line-2);border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.dv-grid canvas{position:static;width:100%;height:56px;display:block;background:var(--scope);border-radius:2px;margin-bottom:4px}
+.dv-toast{position:absolute;z-index:5;left:50%;top:80px;transform:translateX(-50%);font:11px var(--mono);letter-spacing:.06em;padding:8px 12px;background:rgb(var(--lo) / .92);border:1px solid var(--line-2);border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .dv-toast.on{opacity:1}
 @media (max-width:860px){
   .dv-card{left:12px;right:12px;width:auto;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:44%}
@@ -62,7 +63,7 @@ const CSS=`
 export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Hand',size:'10 cm'}}){
   const app=document.getElementById('app');
   if(!document.getElementById('dive-css')){const st=document.createElement('style');st.id='dive-css';st.textContent=CSS;document.head.appendChild(st);}
-  const root=document.createElement('div');root.className='dive';root.hidden=true;root.style.setProperty('--c',color);
+  const root=document.createElement('div');root.className='dive';root.hidden=true;root.style.setProperty('--c',cc(color));
   root.innerHTML=`<canvas aria-label="Microscope view"></canvas>
     <div class="dv-top"><nav class="dv-scale" aria-label="Zoom level"></nav><button class="dv-exit" type="button">Back to the body</button></div>
     <section class="dv-card" aria-live="polite"></section>
@@ -107,7 +108,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
     const c=pc.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);guide[k].draw(x,320,150,1.6,0);
     pc.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const ok=b.dataset.o===k;pc.querySelectorAll('[data-o]').forEach(y=>{y.disabled=true;if(y.dataset.o===k)y.setAttribute('aria-checked','true');});
       if(ok&&!found.has(k)){found.add(k);saveFound();guideBtn();}
-      pc.querySelector('#qz-f').innerHTML=`<b style="color:${ok?'#7FD3A3':'#F2705F'}">${ok?'Right.':'It\'s '+esc(guide[k].name)+'.'}</b> ${guide[k].text[0]}`;
+      pc.querySelector('#qz-f').innerHTML=`<b style="color:${ok?'var(--ok)':'var(--alert)'}">${ok?'Right.':'It\'s '+esc(guide[k].name)+'.'}</b> ${guide[k].text[0]}`;
       const nb=document.createElement('button');nb.className='dv-btn go';nb.type='button';nb.textContent='Next';nb.onclick=()=>quiz(score+(ok?1:0),n+1);pc.querySelector('.dv-btns').prepend(nb);});
     pop.hidden=false;}
   function guideList(){

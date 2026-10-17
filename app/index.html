@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>[hidden]{display:none!important}html,body{margin:0;height:100%}body{background:#0A0F11}</style></head><body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>try{document.documentElement.dataset.theme=localStorage.getItem('glass-atlas-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');}catch(e){document.documentElement.dataset.theme='dark';}</script><style>[hidden]{display:none!important}html,body{margin:0;height:100%}body{background:#0A0F11}html[data-theme="light"] body{background:#F4F1EA}</style></head><body>
 <title>Glass Atlas</title>
 <link href="./vendor/fonts/fonts.css" rel="stylesheet">
 <style>
 /* Layout: a specimen vitrine. Real anatomy centre stage; the patient's chart on the left like a museum label;
-   the instrument you operate on the right. One dark world, deliberately. */
+   the instrument you operate on the right. Dark by default, the original world; light is the same vitrine
+   in daylight, on paper (theme.js has the rest). */
 :root{
   color-scheme:dark;
   --void:#0A0F11;--vitrine:rgba(14,21,23,.86);--solid:#111A1C;--line:#25353A;--line-2:#33474C;
@@ -14,10 +15,21 @@
   --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Martian Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --gut:16px;--left:300px;--right:400px;
+  /* --hi and --lo are the ink and the ground as RGB triplets, for tints: rgb(var(--hi) / .05) */
+  --hi:255 255 255;--lo:10 15 17;--bg-a:#152224;--bg-b:#0D1416;--well:#0D1517;--input:#0A0F11;--scope:#04070B;
+  --warn-bg:rgba(50,18,15,.5);--warn-bg-2:rgba(50,18,15,.35);--scrim:rgba(2,4,6,.55);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --void:#F4F1EA;--vitrine:rgba(252,250,245,.9);--solid:#FFFDF8;--line:#DFD8CA;--line-2:#CCC4B4;
+  --bone:#1E2426;--bone-2:#4A5254;--dim:#687275;--glass:#2C7D74;--alert:#C63F2C;--ok:#23875A;
+  --structural:#7652C2;--autonomic:#C8364F;--immune:#C4651C;--endocrine:#13896F;--neuro:#3A64C8;--digestive:#9A7608;--reproductive:#1F7F96;
+  --hi:20 26 28;--lo:252 250 245;--bg-a:#FFFFFF;--bg-b:#F6F3EC;--well:#FFFFFF;--input:#FFFFFF;--scope:#F7F4EE;
+  --warn-bg:rgba(198,63,44,.07);--warn-bg-2:rgba(198,63,44,.05);--scrim:rgba(40,34,28,.28);
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#152224 0%,#0D1416 48%,var(--void) 100%);color:var(--bone);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+body{margin:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,var(--bg-a) 0%,var(--bg-b) 48%,var(--void) 100%);color:var(--bone);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 :focus-visible{outline:2px solid var(--glass);outline-offset:2px}
 #app{position:relative;height:100%;overflow:hidden}
@@ -36,9 +48,14 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .brand h1{font:400 30px/1 var(--display);margin:0}
 .brand p{margin:6px 0 0;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .layers{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-.chip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px;color:var(--dim);background:rgba(10,15,17,.6)}
-.chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:rgba(236,230,218,.08)}
+.chip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px;color:var(--dim);background:rgb(var(--lo) / .6)}
+.chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:rgb(var(--hi) / .08)}
 .chip.alert{color:var(--alert);border-color:color-mix(in srgb,var(--alert) 60%,transparent)}
+.chip.theme{display:grid;place-items:center;padding:0;width:33px;height:31px;flex:none;color:var(--bone-2)}
+.chip.theme:hover{color:var(--bone);border-color:var(--bone-2)}
+.chip.theme svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.chip.theme .moon,:root[data-theme="light"] .chip.theme .sun{display:none}
+:root[data-theme="light"] .chip.theme .moon{display:block}
 
 .panel{position:absolute;left:var(--gut);top:calc(84px + env(safe-area-inset-top,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:var(--left);z-index:20;
   background:var(--vitrine);border:1px solid var(--line);border-radius:3px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:auto;overscroll-behavior:contain;padding:14px 14px 18px}
@@ -49,8 +66,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .ghead{display:flex;align-items:center;gap:8px;font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:3px}
 .ghead i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;width:100%;text-align:left;padding:7px 8px;border-radius:3px;border-left:2px solid transparent}
-.row:hover{background:rgba(255,255,255,.04)}
-.row.on{background:rgba(255,255,255,.07);border-left-color:var(--c)}
+.row:hover{background:rgb(var(--hi) / .04)}
+.row.on{background:rgb(var(--hi) / .07);border-left-color:var(--c)}
 .row .nm{font-size:14px;line-height:1.3}
 .row .sus{display:block;font:9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:2px}
 .badge{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border-radius:2px;border:1px solid var(--line-2);color:var(--dim);white-space:nowrap}
@@ -78,7 +95,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .dbody p{margin:0 0 10px}.dbody ul{margin:0 0 10px;padding-left:18px}.dbody li{margin:4px 0}
 .dbody strong,.dbody b{color:var(--bone)}
 .tldr{font-size:15.5px;color:var(--bone)!important;margin:0 0 4px}
-.warn{border:1px solid color-mix(in srgb,var(--alert) 55%,transparent);background:rgba(50,18,15,.5);border-radius:3px;padding:10px 12px;margin:12px 0}
+.warn{border:1px solid color-mix(in srgb,var(--alert) 55%,transparent);background:var(--warn-bg);border-radius:3px;padding:10px 12px;margin:12px 0}
 .warn b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert)!important;margin-bottom:3px}
 .links{display:flex;flex-wrap:wrap;gap:6px}
 .lk{font-size:13px;padding:5px 10px 5px 8px;border:1px solid var(--line-2);border-radius:999px;display:inline-flex;align-items:center;gap:6px}
@@ -94,7 +111,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .tgs{display:grid;gap:6px;margin:8px 0}
 .tg{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px}
 .tg-box{width:14px;height:14px;border:1.5px solid var(--dim);border-radius:2px;flex:none;margin-top:2px}
-.tg[aria-pressed="true"]{border-color:var(--c,var(--glass));background:rgba(255,255,255,.04)}
+.tg[aria-pressed="true"]{border-color:var(--c,var(--glass));background:rgb(var(--hi) / .04)}
 .tg[aria-pressed="true"] .tg-box{background:var(--c,var(--glass));border-color:var(--c,var(--glass))}
 .tg-t{font-size:13.5px}.tg-t small{display:block;color:var(--dim);font-size:12px;margin-top:1px}
 .btns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
@@ -113,13 +130,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--c,var(--glass));border-radius:3px;transition:width .15s}
 .bar i.over{background:var(--alert)}
 .bar em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--bone)}
-.mon{background:#0D1517;border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin-bottom:6px}
+.mon{background:var(--well);border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin-bottom:6px}
 .mon-top{display:flex;align-items:baseline;gap:8px}
 .mon-l{font:10px var(--mono);color:var(--ok);letter-spacing:.1em}
 .mon-hr{font:400 44px/1 var(--display);color:var(--ok);font-variant-numeric:tabular-nums;min-width:2.1em}
 .mon-u{font:10px var(--mono);color:var(--dim)}
 .mon-bp{margin-left:auto;font:500 17px var(--mono);color:var(--bone)}.mon-bp small{font-size:9.5px;color:var(--dim);margin-left:4px}
-#ecg{width:100%;height:58px;display:block;margin:6px 0;background:#0D1517}
+#ecg{width:100%;height:58px;display:block;margin:6px 0;background:var(--well)}
 .mon-row{display:grid;grid-template-columns:1fr auto;gap:0 10px;font-size:12.5px;color:var(--bone-2);padding:3px 0}
 .mon-row b{font:500 13px var(--mono);color:var(--bone)}
 .mon-row .note{grid-column:1/-1;font-size:11px;color:var(--dim)}
@@ -132,7 +149,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .score-t{flex-basis:100%;font-size:12.5px;color:var(--dim)}
 .tests{display:grid;gap:4px;margin:10px 0}
 .test{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;text-align:left;padding:7px 8px;border:1px solid var(--line);border-radius:3px}
-.test[aria-selected="true"]{border-color:var(--structural);background:rgba(177,147,227,.08)}
+.test[aria-selected="true"]{border-color:var(--structural);background:color-mix(in srgb,var(--structural) 8%,transparent)}
 .tn{font:11px var(--mono);color:var(--dim)}.tk{font-size:13px}
 .tp{font:11px var(--mono);color:var(--dim)}.tp.hit{color:var(--structural)}
 .chart{width:100%;height:auto;display:block;margin:6px 0 0}
@@ -147,7 +164,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .alerts li{counter-increment:a;position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line);font-size:14px;color:var(--bone-2)}
 .alerts li::before{content:counter(a);position:absolute;left:0;top:8px;font:11px var(--mono);color:var(--alert)}
 
-#tip{position:absolute;z-index:40;pointer-events:none;background:rgba(10,15,17,.92);border:1px solid var(--line-2);border-radius:3px;padding:6px 9px;font-size:13px;max-width:260px;transform:translate(12px,12px);opacity:0;transition:opacity .15s}
+#tip{position:absolute;z-index:40;pointer-events:none;background:rgb(var(--lo) / .92);border:1px solid var(--line-2);border-radius:3px;padding:6px 9px;font-size:13px;max-width:260px;transform:translate(12px,12px);opacity:0;transition:opacity .15s}
 #tip.on{opacity:1}
 #tip small{display:block;font:9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:2px}
 .credit{margin:22px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dim);line-height:1.45}
@@ -160,7 +177,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .mon-sim{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .edu{font-size:12px;color:var(--bone-2);border-left:2px solid var(--alert);padding:2px 0 2px 8px;margin:0 0 12px}
 .em{list-style:none;margin:8px 0 14px;padding:0;display:grid;gap:8px}
-.em li{border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:rgba(50,18,15,.35);border-radius:3px;padding:9px 11px;font-size:13.5px;color:var(--bone-2)}
+.em li{border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:var(--warn-bg-2);border-radius:3px;padding:9px 11px;font-size:13.5px;color:var(--bone-2)}
 .em li b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert);margin-bottom:3px}
 .em li i{display:block;font-style:normal;color:var(--dim);font-size:12.5px;margin-bottom:3px}
 .em li span{color:var(--bone)}
@@ -182,7 +199,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .quotes{margin:4px 0 6px;padding-left:16px}.quotes li{font-size:13.5px!important;margin:5px 0!important}
 .regtext{font-size:14px!important;color:var(--bone-2)!important;border-left:2px solid var(--c);padding-left:10px;margin:8px 0!important}
 .lede-s{font-size:14px!important;color:var(--bone)!important;margin:0 0 10px!important}
-.foramen,.derm{width:100%;height:auto;display:block;margin:6px 0;background:#0D1517;border:1px solid var(--line);border-radius:3px}
+.foramen,.derm{width:100%;height:auto;display:block;margin:6px 0;background:var(--well);border:1px solid var(--line);border-radius:3px}
 .derm{max-width:260px;background:none;border:0}
 .colpo{width:100%;height:auto;display:block;border-radius:4px;margin:0 0 8px;background:#140A0C}
 .icons{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin:6px 0}
@@ -198,12 +215,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 .web-labels{position:absolute;inset:0;z-index:18;pointer-events:none}
 .web-labels[hidden]{display:none}
-.wl{position:absolute;left:0;top:0;pointer-events:auto;font:10px var(--mono);letter-spacing:.06em;padding:4px 7px;border-radius:999px;background:rgba(10,15,17,.82);border:1px solid var(--c);color:var(--bone);white-space:nowrap;transition:opacity .2s}
+.wl{position:absolute;left:0;top:0;pointer-events:auto;font:10px var(--mono);letter-spacing:.06em;padding:4px 7px;border-radius:999px;background:rgb(var(--lo) / .82);border:1px solid var(--c);color:var(--bone);white-space:nowrap;transition:opacity .2s}
 .wl.dim{opacity:.25!important}.wl.on{background:var(--c);color:var(--void)}
 .w-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:var(--dim);margin:4px 0}
 .w-legend span{display:inline-flex;align-items:center;gap:5px}.w-legend i{width:14px;height:3px;border-radius:2px}
 .wlink{display:grid;grid-template-columns:1fr auto;gap:2px 8px;width:100%;text-align:left;padding:9px 10px;border-top:1px solid var(--line);border-left:3px solid var(--s)}
-.wlink:hover{background:rgba(255,255,255,.03)}.wlink.on{background:rgba(255,255,255,.05)}
+.wlink:hover{background:rgb(var(--hi) / .03)}.wlink.on{background:rgb(var(--hi) / .05)}
 .wl-pair{font:10px var(--mono);letter-spacing:.06em;color:var(--dim)}.wl-pair i{font-style:normal;color:var(--s)}
 .wl-t{grid-column:1;font-size:14px;color:var(--bone)}.wl-s{grid-column:2;grid-row:1/3;align-self:center;font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--s)}
 .wl-x{grid-column:1/-1;font-size:13.5px;color:var(--bone-2);margin-top:6px;line-height:1.5}
@@ -215,12 +232,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .dy-now b{display:block;color:var(--bone);font-weight:700;margin-bottom:3px}
 .dy-list{display:grid;gap:2px;margin:8px 0}
 .dy-ev{display:grid;grid-template-columns:46px 1fr;gap:8px;text-align:left;padding:6px 8px;font-size:13px;color:var(--bone-2);border-left:2px solid transparent}
-.dy-ev span{font:11px var(--mono);color:var(--dim)}.dy-ev.on{border-left-color:var(--c);background:rgba(255,255,255,.05);color:var(--bone)}
+.dy-ev span{font:11px var(--mono);color:var(--dim)}.dy-ev.on{border-left-color:var(--c);background:rgb(var(--hi) / .05);color:var(--bone)}
 
-.n-comp{border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin:0 0 12px;background:rgba(255,255,255,.03)}
-.n-comp textarea{width:100%;background:#0A0F11;color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:8px;font:14px var(--body);resize:vertical;margin-top:8px}
+.n-comp{border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin:0 0 12px;background:rgb(var(--hi) / .03)}
+.n-comp textarea{width:100%;background:var(--input);color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:8px;font:14px var(--body);resize:vertical;margin-top:8px}
 .note{border-top:1px solid var(--line);border-left:3px solid var(--c);padding:8px 10px;cursor:pointer}
-.note.on{background:rgba(255,255,255,.05)}
+.note.on{background:rgb(var(--hi) / .05)}
 .note-h{display:flex;justify-content:space-between;gap:8px}.note-k{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}.note-w{font:10px var(--mono);color:var(--dim);text-align:right}
 .note-t{margin:4px 0!important;font-size:14px!important;color:var(--bone)!important;white-space:pre-wrap}
 .note-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.note-del{font:10px var(--mono);color:var(--dim);text-decoration:underline}
@@ -238,6 +255,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   .top{flex-wrap:wrap}
   .layers{margin-left:0;width:100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}
   .chip{padding:7px 8px;font-size:9.5px;flex:none}
+  .chip.theme{order:1;margin-left:auto;width:31px;height:29px;padding:0}.layers{order:2}
   .panel{top:auto;right:var(--gut);height:34%;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
   .drawer{left:var(--gut);right:var(--gut);top:auto;height:56%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 60px))}
   .drawer.open{transform:none}
@@ -263,6 +281,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
       <button class="chip" id="notesBtn" type="button">Notes</button>
       <button class="chip alert" id="alertBtn" type="button">Tell any provider</button>
     </div>
+    <button class="chip theme" id="themeBtn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+    </button>
   </header>
   <aside class="panel" id="panel"></aside>
   <aside class="drawer" id="drawer" aria-label="Details and instrument"></aside>
@@ -278,6 +300,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 } }
 </script>
 <script type="module">
+import { theme, setTheme, onTheme, cc } from './theme.js';
 import { createAtlas } from './core.js';
 import { makeStations } from './stations.js';
 import { makeStations2 } from './stations2.js';
@@ -323,15 +346,15 @@ function renderPanel(){
   if(listMode==='chart'){
     let h=`<p class="eyebrow">The patient's chart</p><h2>Choose a condition</h2><p class="lede">A teaching case: one adult woman, called “the patient” throughout, with twelve diagnoses and nine medicines. Each condition opens an instrument you operate on the real anatomy.</p><p class="edu">General education, not medical advice. In an emergency, call 911; the emergency steps are under <b>Tell any provider</b>.</p><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">How it all connects<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">18 threads between the patient's conditions</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Web</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">24 hours, hour by hour</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Day</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Take the guided tour<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">narrated · about 8 minutes</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Tour</span></button>`;
     for(const s of SYS_ORDER){const list=CONDS.filter(c=>c.sys===s);if(!list.length)continue;
-      h+=`<div class="group" style="--c:${SYS[s].c}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
-      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${SYS[s].c}"><span class="nm">${esc(c.name)}${c.suspected?'<span class="sus">Suspected</span>':''}</span><span class="badge${DIVES[c.id]?' inst':''}" style="${DIVES[c.id]?'':'color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)'}">${DIVES[c.id]?'Dive':esc(c.suspected?'?':c.year)}</span></button>`;
+      h+=`<div class="group" style="--c:${cc(SYS[s].c)}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
+      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}${c.suspected?'<span class="sus">Suspected</span>':''}</span><span class="badge${DIVES[c.id]?' inst':''}" style="${DIVES[c.id]?'':'color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)'}">${DIVES[c.id]?'Dive':esc(c.suspected?'?':c.year)}</span></button>`;
       h+='</div>';}
     h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines (9)<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">and the patient's day, hour by hour</small></span><span class="badge">open</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources and review<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">${Object.keys(REFS).length} references · checked Oct 2026</small></span><span class="badge">open</span></button></div>`;
     panel.innerHTML=h+CREDIT;
     $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
   }else{
     let h=`<p class="eyebrow">Medicines</p><h2>Nine medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
-    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" style="--c:${SYS[m.sys].c}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
+    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
     panel.innerHTML=h+'</div>'+CREDIT;
     $('#toChart').onclick=()=>{listMode='chart';renderPanel();};
   }
@@ -343,7 +366,7 @@ panel.addEventListener('click',e=>{
 
 /* ---------- drawer ---------- */
 function shell(c,col,title,fig,tabs){
-  drawer.style.setProperty('--c',col);
+  drawer.style.setProperty('--c',cc(col));
   drawer.innerHTML=`<div class="dr-head"><div class="dr-top"><span class="tag"><i></i>${esc(c)}</span><button class="close" type="button">Close</button></div>
     <h2>${esc(title)}</h2>${fig?`<div class="fig">${esc(fig)}</div>`:''}
     ${tabs?`<div class="dtabs" role="tablist">${tabs.map((t,i)=>`<button class="dtab" role="tab" data-t="${t}" aria-selected="${i===0}">${t}</button>`).join('')}</div>`:''}</div>
@@ -357,7 +380,7 @@ function readHTML(c){
   const rs=[...A.resolve(c.parts)].filter(r=>r.layer!=='skin').slice(0,10);
   if(rs.length)h+=`<h3>Lit on the model</h3><p class="struct">${rs.map(r=>esc(r.name)+(r.modelled?' (modelled)':'')).join(' · ')}</p>`;
   const meds=MEDS.filter(m=>m.treats===c.id);
-  if(meds.length)h+=`<h3>Medicines</h3><div class="links">${meds.map(m=>`<button class="lk" data-med="${m.id}" style="--c:${SYS[m.sys].c}"><i></i>${esc(m.name)}</button>`).join('')}</div>`;
+  if(meds.length)h+=`<h3>Medicines</h3><div class="links">${meds.map(m=>`<button class="lk" data-med="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><i></i>${esc(m.name)}</button>`).join('')}</div>`;
   return h+srcLine(c.refs);
 }
 function stopStation(){if(curStation){curStation.exit();curStation=null;}A.mode={layers:null,focus:null,focusColor:'#ffffff',dim:.2,forceShow:null};A.skinUniforms.uScaffold.value=0;}
@@ -394,7 +417,7 @@ function diveTab(id){const D=DIVES[id];const n=(()=>{try{return JSON.parse(local
   <p class="fine">${n?`Your field guide has ${n} entries across all dives. `:''}Every cell and molecule you tap goes into a field guide. The biology is drawn from published reviews, guidelines and medicine labels; the games' numbers are illustrative.</p>`;}
 function tabbed(body,col,st,readFn,opt){
   const show=t=>{drawer.querySelectorAll('.dtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
-    if(t==='Instrument'){body.innerHTML='<div id="inst"></div>';body.style.setProperty('--c',col);if(curStation!==st){stopStation();curStation=st;}st.enter(body.querySelector('#inst'),opt);}
+    if(t==='Instrument'){body.innerHTML='<div id="inst"></div>';body.style.setProperty('--c',cc(col));if(curStation!==st){stopStation();curStation=st;}st.enter(body.querySelector('#inst'),opt);}
     else if(t==='Dive'){stopStation();body.innerHTML=diveTab(opt.dive);body.querySelector('#startDive').onclick=()=>startDive(opt.dive);}
     else body.innerHTML=readFn();
     body.scrollTop=0;};
@@ -412,7 +435,7 @@ function open(id){
 function medRead(m){
   if(!m)return `<p class="tldr">Nine medicines across six systems.</p><ul class="quotes">${MEDS.map(x=>`<li><b>${esc(x.name)}</b> (${esc(x.cls)}). ${esc(x.text)}${x.warn?' <b>For any provider:</b> '+esc(x.warn):''}</li>`).join('')}</ul>`+srcLine([...new Set(MEDS.flatMap(x=>x.refs||[]))]);
   let h=`<p class="tldr">${esc(m.text)}</p>${m.warn?`<div class="warn"><b>For any provider</b>${esc(m.warn)}</div>`:''}`;
-  if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${SYS[byId[m.treats].sys].c}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
+  if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${cc(SYS[byId[m.treats].sys].c)}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
   return h+srcLine(m.refs);
 }
 function openMed(id){
@@ -464,11 +487,17 @@ canvas.addEventListener('pointerup',e=>{if(!downAt)return;if(Math.hypot(e.client
   const h=A.pick(e.clientX,e.clientY);if(h&&A.onBodyTap){A.onBodyTap(h);return;}if(h){showTip(e.clientX,e.clientY,h.rec);if(e.pointerType!=='mouse')setTimeout(()=>tip.classList.remove('on'),2600);}});
 let hintGone=false;function hideHint(){if(!hintGone){hintGone=true;$('#hint').style.opacity=0;}}
 
+/* ---------- light / dark ---------- */
+const themeBtn=$('#themeBtn');
+function syncTheme(){const l=theme()==='light',t=l?'Switch to dark mode':'Switch to light mode';themeBtn.setAttribute('aria-label',t);themeBtn.title=t;A?.setTheme?.(theme());}
+themeBtn.onclick=()=>setTheme(theme()==='light'?'dark':'light');
+onTheme(syncTheme);syncTheme();
+
 /* ---------- boot ---------- */
 (async()=>{
   try{
     A=await createAtlas(canvas,{binUrl:'anatomy.txt',onProgress:p=>{$('#lbar').style.width=p*100+'%';}});
-    K0=kit(A);
+    K0=kit(A);A.setTheme(theme());
     const _fly=A.flyTo;A.flyTo=(t,o={})=>_fly({...t,dist:t.dist*(o.raw?1:zoomFactor())},o);
     ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
     renderPanel();A.size();fitOffset();

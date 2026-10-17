@@ -65,7 +65,7 @@ export function makeStations4(A){
     for(const m of MEALS)s+=`<g class="hd" data-k="meal:${m.id}" transform="translate(${px(M[m.id])},${top})"><rect x="-6" y="-6" width="12" height="12" rx="2" fill="#DDB741"/><circle r="13" fill="transparent"/></g>`;
     rows.forEach((r,i)=>{const y=top+rh*(i+1);const hi=inLens(r.id),f=focus===r.id;
       s+=`<text x="4" y="${y+4}" class="pl${hi||f?' hi':''}">${r.label}</text><line x1="${L0}" x2="${L1}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-dasharray="2 3"/>`;
-      s+=`<g class="hd" data-k="med:${r.id}" transform="translate(${px(T[r.id])},${y})"><circle r="${f?7:6}" fill="${hi?LENS[lens].col:f?'var(--bone)':'#B9B6AD'}" stroke="#0A0F11" stroke-width="1.5"/><circle r="13" fill="transparent"/></g>`;
+      s+=`<g class="hd" data-k="med:${r.id}" transform="translate(${px(T[r.id])},${y})"><circle r="${f?7:6}" fill="${hi?LENS[lens].col:f?'var(--bone)':'var(--bone-2)'}" stroke="var(--void)" stroke-width="1.5"/><circle r="13" fill="transparent"/></g>`;
       s+=`<text x="${clamp(px(T[r.id])+10,L0,L1-30)}" y="${y-7}" class="tm">${hhmm(T[r.id])}</text>`;});
     return s+'</svg>';
   }

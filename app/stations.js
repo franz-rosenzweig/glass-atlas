@@ -26,12 +26,12 @@ export function makeStations(A){
     const g=new THREE.Group();parent.add(g);g.position.copy(pivot).sub(parent.userData.pivot);
     u=u.clone().normalize();m=m.clone().normalize();const v=m.clone().cross(u).normalize();
     g.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(u,v,m));
-    const mk=(a0,a1,col,op,w=r*0.16)=>{const me=new THREE.Mesh(new THREE.RingGeometry(r,r+w,48,1,a0*D2R,(a1-a0)*D2R),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,side:THREE.DoubleSide,depthTest:false}));me.renderOrder=40;g.add(me);return me;};
+    const mk=(a0,a1,col,op,w=r*0.16)=>{const me=new THREE.Mesh(new THREE.RingGeometry(r,r+w,48,1,a0*D2R,(a1-a0)*D2R),A.tm(THREE.MeshBasicMaterial,{color:col,transparent:true,opacity:op,side:THREE.DoubleSide,depthTest:false}));me.renderOrder=40;g.add(me);return me;};
     mk(0,normal,'#7FD3A3',.55);mk(normal,thr,'#D8D2C2',.3);mk(thr,max,'#F2A65A',.75);
-    for(let a=0;a<=max;a+=10){const len=a%30===0?r*.35:r*.2;const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints([V3(Math.cos(a*D2R)*(r+r*.16),Math.sin(a*D2R)*(r+r*.16),0),V3(Math.cos(a*D2R)*(r+r*.16+len),Math.sin(a*D2R)*(r+r*.16+len),0)]),new THREE.LineBasicMaterial({color:'#ECE6DA',transparent:true,opacity:.8,depthTest:false}));ln.renderOrder=41;g.add(ln);}
-    const fixedArm=new THREE.Mesh(new THREE.BoxGeometry(r*1.9,r*.07,r*.02).translate(r*.95,0,0),new THREE.MeshBasicMaterial({color:'#ECE6DA',depthTest:false,transparent:true}));fixedArm.renderOrder=42;g.add(fixedArm);
-    const needle=new THREE.Group();g.add(needle);const nm=new THREE.Mesh(new THREE.BoxGeometry(r*2.1,r*.09,r*.02).translate(r*1.05,0,0),new THREE.MeshBasicMaterial({color:'#FFFFFF',depthTest:false,transparent:true}));nm.renderOrder=43;needle.add(nm);
-    const hub=new THREE.Mesh(new THREE.CircleGeometry(r*.12,20),new THREE.MeshBasicMaterial({color:'#FFFFFF',depthTest:false,transparent:true}));hub.renderOrder=44;g.add(hub);
+    for(let a=0;a<=max;a+=10){const len=a%30===0?r*.35:r*.2;const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints([V3(Math.cos(a*D2R)*(r+r*.16),Math.sin(a*D2R)*(r+r*.16),0),V3(Math.cos(a*D2R)*(r+r*.16+len),Math.sin(a*D2R)*(r+r*.16+len),0)]),A.tm(THREE.LineBasicMaterial,{color:'#ECE6DA',transparent:true,opacity:.8,depthTest:false}));ln.renderOrder=41;g.add(ln);}
+    const fixedArm=new THREE.Mesh(new THREE.BoxGeometry(r*1.9,r*.07,r*.02).translate(r*.95,0,0),A.tm(THREE.MeshBasicMaterial,{color:'#ECE6DA',depthTest:false,transparent:true}));fixedArm.renderOrder=42;g.add(fixedArm);
+    const needle=new THREE.Group();g.add(needle);const nm=new THREE.Mesh(new THREE.BoxGeometry(r*2.1,r*.09,r*.02).translate(r*1.05,0,0),A.tm(THREE.MeshBasicMaterial,{color:'#FFFFFF',depthTest:false,transparent:true}));nm.renderOrder=43;needle.add(nm);
+    const hub=new THREE.Mesh(new THREE.CircleGeometry(r*.12,20),A.tm(THREE.MeshBasicMaterial,{color:'#FFFFFF',depthTest:false,transparent:true}));hub.renderOrder=44;g.add(hub);
     return {group:g,set:a=>{needle.rotation.z=a*D2R;},dispose:()=>{parent.remove(g);g.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}};
   }
 
@@ -56,9 +56,9 @@ export function makeStations(A){
       const col=new THREE.Mesh(new THREE.BoxGeometry(.16,TABLE_H,.16),mat);col.position.set(0,TABLE_H/2,ZB-0.075);pedestal.add(col);
       const base=new THREE.Mesh(new THREE.BoxGeometry(.7,.05,.5),mat);base.position.set(0,.025,-0.075+ZB);pedestal.add(base);
       const arcG=new THREE.Group();arcG.position.set(0.34,TABLE_H,ZB-0.075);arcG.rotation.y=Math.PI/2;pedestal.add(arcG);
-      arcG.add(new THREE.Mesh(new THREE.RingGeometry(.2,.205,64,1,0,Math.PI/2),new THREE.MeshBasicMaterial({color:'#7E8E90',side:THREE.DoubleSide})));
-      for(let a=0;a<=90;a+=10){const L=a%30===0?.03:.015;arcG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([V3(Math.cos(a*D2R)*.205,Math.sin(a*D2R)*.205,0),V3(Math.cos(a*D2R)*(.205+L),Math.sin(a*D2R)*(.205+L),0)]),new THREE.LineBasicMaterial({color:a===70?'#F2A65A':'#B9B6AD'})));}
-      needleG=new THREE.Group();arcG.add(needleG);needleG.add(new THREE.Mesh(new THREE.BoxGeometry(.23,.006,.004).translate(.115,0,0),new THREE.MeshBasicMaterial({color:'#ECE6DA'})));
+      arcG.add(new THREE.Mesh(new THREE.RingGeometry(.2,.205,64,1,0,Math.PI/2),A.tm(THREE.MeshBasicMaterial,{color:'#7E8E90',side:THREE.DoubleSide})));
+      for(let a=0;a<=90;a+=10){const L=a%30===0?.03:.015;arcG.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([V3(Math.cos(a*D2R)*.205,Math.sin(a*D2R)*.205,0),V3(Math.cos(a*D2R)*(.205+L),Math.sin(a*D2R)*(.205+L),0)]),A.tm(THREE.LineBasicMaterial,{color:a===70?'#F2A65A':'#B9B6AD'})));}
+      needleG=new THREE.Group();arcG.add(needleG);needleG.add(new THREE.Mesh(new THREE.BoxGeometry(.23,.006,.004).translate(.115,0,0),A.tm(THREE.MeshBasicMaterial,{color:'#ECE6DA'})));
       // blood in the leg veins: particles that settle downward as the table rises
       const n=240;particles=new THREE.InstancedMesh(new THREE.SphereGeometry(.0042,8,6),new THREE.MeshBasicMaterial({color:'#6F8BE0'}),n);particles.renderOrder=6;A.root.add(particles);
       for(let i=0;i<n;i++)PT.push({c:i%4,u:Math.random(),sp:.7+Math.random()*.6});
@@ -487,7 +487,7 @@ export function makeStations(A){
       const pit=MESH['Pituitary gland'];pit.geo.computeBoundingBox();const pc=pit.geo.boundingBox.getCenter(V3());
       const tl=A.tagged('thyroid');const tb=new THREE.Box3();tl.forEach(r=>{r.geo.computeBoundingBox();tb.union(r.geo.boundingBox);});const tc=tb.getCenter(V3());
       curve=new THREE.CatmullRomCurve3([pc,V3(pc.x+0.03,pc.y-0.05,pc.z-0.01),V3(0.032,1.45,0.0),V3(0.03,tc.y+0.03,tc.z),V3(tc.x+0.012,tc.y,tc.z+0.006)]);
-      const mk=(col,n)=>{const m=new THREE.InstancedMesh(new THREE.SphereGeometry(.0024,8,6),new THREE.MeshBasicMaterial({color:col}),n);m.renderOrder=8;A.root.add(m);return m;};
+      const mk=(col,n)=>{const m=new THREE.InstancedMesh(new THREE.SphereGeometry(.0024,8,6),A.tm(THREE.MeshBasicMaterial,{color:col}),n);m.renderOrder=8;A.root.add(m);return m;};
       parts={tsh:mk('#78A0F4',60),t4:mk('#40C7AA',60),pT:Array.from({length:60},()=>Math.random()),pF:Array.from({length:60},()=>Math.random()),tc,pc};
       lym=new THREE.InstancedMesh(new THREE.SphereGeometry(.0026,10,8),new THREE.MeshStandardMaterial({color:'#EDE7F7',emissive:'#B193E3',emissiveIntensity:.4}),40);lym.renderOrder=8;A.root.add(lym);
       parts.L=Array.from({length:40},()=>({a:Math.random()*Math.PI*2,y:(Math.random()-.5)*0.04,r:0.026+Math.random()*0.01,s:.4+Math.random()}));
