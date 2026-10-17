@@ -4,7 +4,7 @@ export const TAU=Math.PI*2;
 export const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const lerp=(a,b,t)=>a+(b-a)*t;
 export const rand=(a,b)=>a+Math.random()*(b-a);
-import { cc } from './theme.js';
+import { cc, natural } from './theme.js';
 export const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 const CSS=`
@@ -79,6 +79,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   let found=new Set();try{found=new Set(JSON.parse(localStorage.getItem('glass-atlas-guide')||'[]'));}catch(_){}
   const saveFound=()=>{try{localStorage.setItem('glass-atlas-guide',JSON.stringify([...found]));}catch(_){}};
   const phone=()=>innerWidth<=860;
+  const art=(g,fn)=>g.natural?natural(fn):fn();  // true-colour entries keep their colours in light mode
   function resize(){dpr=Math.min(devicePixelRatio||1,2);W=root.clientWidth;H=root.clientHeight;cv.width=W*dpr;cv.height=H*dpr;}
   function stage(){if(phone()){const ch=card.offsetHeight||H*.44;return {x:0,y:100,w:W,h:Math.max(160,H-100-ch-20)};}return {x:392,y:64,w:W-392-16,h:H-64-16};}
   function fit(lv){const st=stage();const s=lv.fit==='cover'?Math.max(st.w/1000,st.h/700):Math.min(st.w/1000,st.h/700);return {s,ox:st.x+(st.w-1000*s)/2,oy:st.y+(st.h-700*s)/2,st};}
@@ -99,13 +100,13 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   function discover(key,quiet){const g=guide[key];if(!g)return;const isNew=!found.has(key);if(quiet&&!isNew)return;found.add(key);saveFound();guideBtn();showCard(key,isNew);}
   function showCard(key,isNew){const g=guide[key];
     pc.innerHTML=`<canvas width="640" height="300"></canvas><div class="sz">${esc(g.kind)} · ${esc(g.size)}${isNew?' · <span class="new">new in your field guide</span>':''}</div><h3>${esc(g.name)}</h3>${g.text.map(t=>`<p>${t}</p>`).join('')}<div class="dv-btns"><button class="dv-btn go" type="button" data-close>Back to the microscope</button></div>`;
-    const c=pc.querySelector('canvas');const x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);g.draw(x,320,150,1.6,performance.now()/1000);
+    const c=pc.querySelector('canvas');const x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);art(g,()=>g.draw(x,320,150,1.6,performance.now()/1000));
     pop.hidden=false;pc.querySelector('[data-close]').focus();}
   function quiz(score,n){
     const keys=Object.keys(guide);const pool=keys.filter(k=>found.has(k)).length>=4?keys.filter(k=>found.has(k)):keys;
     const k=pool[Math.floor(Math.random()*pool.length)];const others=keys.filter(x=>x!==k).sort(()=>Math.random()-.5).slice(0,3);const opts=[k,...others].sort(()=>Math.random()-.5);
     pc.innerHTML=`<div class="sz">Quiz · ${n} answered · ${score} right</div><h3>What is this?</h3><canvas width="640" height="300"></canvas><div class="dv-seg" role="group">${opts.map(o=>`<button type="button" data-o="${o}">${esc(guide[o].name)}</button>`).join('')}</div><p id="qz-f"></p><div class="dv-btns"><button class="dv-btn" type="button" data-close>Done</button></div>`;
-    const c=pc.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);guide[k].draw(x,320,150,1.6,0);
+    const c=pc.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);art(guide[k],()=>guide[k].draw(x,320,150,1.6,0));
     pc.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const ok=b.dataset.o===k;pc.querySelectorAll('[data-o]').forEach(y=>{y.disabled=true;if(y.dataset.o===k)y.setAttribute('aria-checked','true');});
       if(ok&&!found.has(k)){found.add(k);saveFound();guideBtn();}
       pc.querySelector('#qz-f').innerHTML=`<b style="color:${ok?'var(--ok)':'var(--alert)'}">${ok?'Right.':'It\'s '+esc(guide[k].name)+'.'}</b> ${guide[k].text[0]}`;
@@ -113,7 +114,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
     pop.hidden=false;}
   function guideList(){
     pc.innerHTML=`<div class="sz">Field guide</div><h3>Everything you've met</h3><p>Tap cells and molecules in the microscope to collect them.</p><div class="dv-grid">${Object.entries(guide).map(([k,g])=>`<button type="button" data-k="${k}" ${found.has(k)?'':'disabled'}><canvas width="200" height="112"></canvas>${found.has(k)?esc(g.name):'?'}</button>`).join('')}</div><div class="dv-btns"><button class="dv-btn go" type="button" data-quiz>Quiz me</button><button class="dv-btn" type="button" data-close>Close</button></div>`;
-    pc.querySelectorAll('.dv-grid button').forEach(b=>{const k=b.dataset.k;const c=b.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,200,112);if(found.has(k))guide[k].draw(x,100,56,.6,0);else{x.fillStyle='#1B2A30';x.font='28px Gloock, serif';x.textAlign='center';x.fillText('?',100,66);}
+    pc.querySelectorAll('.dv-grid button').forEach(b=>{const k=b.dataset.k;const c=b.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,200,112);if(found.has(k))art(guide[k],()=>guide[k].draw(x,100,56,.6,0));else{x.fillStyle='#1B2A30';x.font='28px Gloock, serif';x.textAlign='center';x.fillText('?',100,66);}
       b.onclick=()=>showCard(k,false);});
     pc.querySelector('[data-quiz]').onclick=()=>quiz(0,0);
     pop.hidden=false;}
@@ -130,11 +131,11 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   addEventListener('keydown',e=>{if(root.hidden)return;if(e.key==='Escape'){if(!pop.hidden)pop.hidden=true;else close();}});
   addEventListener('resize',()=>{if(!root.hidden)resize();});
   function frame(now){
-    const dt=Math.min((now-last)/1000,.05);last=now;
+    const dt=clamp((now-last)/1000,0,.05);last=now;  // the first frame can start before `last`
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#04070B';ctx.fillRect(0,0,W,H);
     const drawLv=(lv,alpha,zoom,focus)=>{const f=fit(lv);ctx.save();ctx.globalAlpha=alpha;
       ctx.translate(f.ox,f.oy);ctx.scale(f.s,f.s);if(zoom!==1){ctx.translate(focus.x,focus.y);ctx.scale(zoom,zoom);ctx.translate(-focus.x,-focus.y);}
-      lv.draw(ctx,api.paused?0:dt,now/1000,api);ctx.restore();};
+      const run=()=>lv.draw(ctx,api.paused?0:dt,now/1000,api);lv.natural?natural(run):run();ctx.restore();};
     if(trans){trans.t+=dt/1.1;const k=clamp(trans.t,0,1),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
       if(k<.6)drawLv(trans.from,1-k/.6,1+e*7,trans.focus);
       drawLv(trans.to,clamp((k-.35)/.65,0,1),.55+.45*e,{x:500,y:350});

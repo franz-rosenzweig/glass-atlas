@@ -7,11 +7,13 @@
 //  - every 2D canvas: fill, stroke, shadow and gradient colours pass through toLight() while the
 //    theme is light. Lightness is turned over in OKLCH and hue kept, so a dark slide becomes pale
 //    glass, a glow becomes a stain, and a cytokine stays the colour it was.
+//    Scenes drawn in true colours (an H&E slide, bone and cartilage) run inside natural(): there
+//    only the dark ground turns to paper and light lettering to ink; the tissue keeps its colours.
 // The 3D scene has its own light setup (core.js, A.setTheme).
 
 const KEY='glass-atlas-theme';
 const root=document.documentElement;
-let LIGHT=root.dataset.theme==='light',RAW=0;
+let LIGHT=root.dataset.theme==='light',RAW=0,NAT=0;
 const subs=new Set();
 
 // Hand-tuned partners for the named colours (chrome, the seven systems, alert, ok). Everything else is computed.
@@ -81,20 +83,42 @@ export function toLight(c){
 export const tc=c=>LIGHT?toLight(c):c;                 // the colour for the current theme
 export const cc=c=>`light-dark(${toLight(c)},${c})`;   // a CSS value that follows the theme by itself
 export function raw(fn){RAW++;try{return fn();}finally{RAW--;}}  // draw without the light-theme remap
+export function natural(fn){NAT++;try{return fn();}finally{NAT--;}} // true-colour drawing: swap only the ground
+
+const lum=new Map();
+function lightness(c){let L=lum.get(c);if(L===undefined){const p=parse(c);L=p?toLab(p[0],p[1],p[2])[0]:.5;if(lum.size>4000)lum.clear();lum.set(c,L);}return L;}
+// in natural(): darks are ground (to paper), everything else is the specimen (kept)
+const mapNat=c=>lightness(c)<.32?toLight(c):c;
+const mapFor=c=>NAT?mapNat(c):toLight(c);
 
 /* ---------------- every 2D canvas follows the theme */
 {
   const P=CanvasRenderingContext2D.prototype;
   const skip=ctx=>!LIGHT||RAW||ctx.canvas?.dataset?.raw!==undefined;
+  const native={};  // the browser's own setters, kept for writing a colour that is already mapped
   for(const prop of ['fillStyle','strokeStyle','shadowColor']){
-    const d=Object.getOwnPropertyDescriptor(P,prop);
+    const d=native[prop]=Object.getOwnPropertyDescriptor(P,prop);
     Object.defineProperty(P,prop,{configurable:true,get(){return d.get.call(this);},
-      set(v){d.set.call(this,typeof v==='string'&&!skip(this)?toLight(v):v);}});
+      set(v){d.set.call(this,typeof v==='string'&&!skip(this)?mapFor(v):v);}});
+  }
+  // lettering in natural(): light labels were written for the dark ground, so they become ink
+  for(const fn of ['fillText','strokeText']){
+    const draw=P[fn],dsc=native[fn==='fillText'?'fillStyle':'strokeStyle'];
+    P[fn]=function(...a){
+      const c=dsc.get.call(this);
+      if(!NAT||skip(this)||typeof c!=='string'||lightness(c)<=.6)return draw.apply(this,a);
+      dsc.set.call(this,toLight(c));try{return draw.apply(this,a);}finally{dsc.set.call(this,c);}
+    };
   }
   // additive glow turns to white on paper; multiply is its brightfield twin
   const g=Object.getOwnPropertyDescriptor(P,'globalCompositeOperation');
   Object.defineProperty(P,'globalCompositeOperation',{configurable:true,get(){return g.get.call(this);},
     set(v){g.set.call(this,v==='lighter'&&!skip(this)?'multiply':v);}});
+  // a gradient remembers whether the canvas that made it follows the theme
+  for(const fn of ['createLinearGradient','createRadialGradient','createConicGradient']){
+    const make=P[fn];if(!make)continue;
+    P[fn]=function(...a){const gr=make.apply(this,a);gr.__map=skip(this)?0:NAT?2:1;return gr;};
+  }
   const add=CanvasGradient.prototype.addColorStop;
-  CanvasGradient.prototype.addColorStop=function(o,c){return add.call(this,o,LIGHT&&!RAW?toLight(c):c);};
+  CanvasGradient.prototype.addColorStop=function(o,c){return add.call(this,o,!this.__map||RAW?c:this.__map===2?mapNat(c):toLight(c));};
 }

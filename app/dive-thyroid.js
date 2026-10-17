@@ -52,7 +52,7 @@ function slideLevel(){
     return c;}
   const HOT=[{x:fol[0]?.x??500,y:fol[0]?.y??350,k:'colloid'},{x:380,y:420,k:'lymph'}];
   const lf=fol.slice().sort((a,b)=>Math.hypot(a.x-640,a.y-300)-Math.hypot(b.x-640,b.y-300))[0]||{x:640,y:300};const lens={x:lf.x,y:lf.y};
-  return {id:'slide',label:'Tissue',size:'1 mm',fit:'contain',bar:{units:83,label:'100 µm'},zoomFocus:lens,
+  return {id:'slide',natural:true,label:'Tissue',size:'1 mm',fit:'contain',bar:{units:83,label:'100 µm'},zoomFocus:lens,
     card(){return `<p class="k">Level 1 · tissue</p><h2>The thyroid under a microscope</h2>
       <p>A slice of thyroid stained the way pathologists stain it: pink balls of stored hormone protein (colloid), each ringed by a single layer of purple worker cells. Slide to see what years of Hashimoto's do.</p>
       <label class="dv-meter"><span>Years of autoimmune attack</span><b id="ts-k"></b></label><input id="ts-r" type="range" min="0" max="1" step=".01" value=".45" style="width:100%;accent-color:#40C7AA">
@@ -123,7 +123,7 @@ function follicleLevel(){
   let last=0;function ui(api){const n=performance.now();if(n-last<180)return;last=n;const q=s=>api.card.querySelector(s);if(!q('#tf-w'))return;
     q('#tf-w').textContent=Math.floor(S.week);q('#tf-e').textContent=Math.round(S.E*100)+'% of normal';q('#tf-eB').style.width=S.E*100+'%';q('#tf-d').textContent=S.dose+' mcg';
     const f=S.ft4||0;q('#tf-feel').textContent=f<.8?'tired, cold, foggy, slowed down':f>1.8?'racing heart, jittery, hot, poor sleep':'steady';}
-  return {id:'follicle',label:'Follicle',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:100,label:'20 µm'},zoomFocus:{x:500,y:360},
+  return {id:'follicle',natural:true,label:'Follicle',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:100,label:'20 µm'},zoomFocus:{x:500,y:360},
     card(){return `<p class="k">Level 2 · cells · week <span id="tf-w">0</span> of 52</p><h2>Run the T4 factory</h2>
       <p>Worker cells pull iodine (yellow) from the blood, the TPO enzyme stitches it onto stored protein, and finished T4 leaves for the body. Immune cells keep knocking workers out, and no treatment yet stops that. Here years of loss are compressed into one; in real life it usually takes many years. <b style="color:var(--bone)">You play the patient's endocrinologist: keep T4 steady with the dose.</b></p>
       <div class="dv-meter"><span>Thyroid still working</span><b id="tf-e"></b><i><u id="tf-eB"></u></i></div>
@@ -146,4 +146,6 @@ function follicleLevel(){
     draw,
   };
 }
+// drawn in stain colours, so in light mode they keep them (see natural() in theme.js)
+for(const k in GUIDE_T)GUIDE_T[k].natural=true;
 export function thyroidDive(){return {levels:[slideLevel(),follicleLevel()],guide:GUIDE_T};}

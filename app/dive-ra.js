@@ -4,7 +4,7 @@ import { TAU, clamp, lerp, rand, esc } from './dive.js';
 
 /* ------------------------------------------------------------------ glyphs (design units) */
 const C={dapi:'#5B86FF',fls:'#43D99B',mac:'#FF6FA8',t:'#FFB547',b:'#71C6FF',pl:'#C08CFF',neu:'#E6DEFF',oc:'#FF8A5B',ch:'#A9DDEF',tnf:'#FF5A3C',il6:'#B98CFF',ab:'#5AA8FF',hcq:'#7CFFB2'};
-function glow(x,cx,cy,r,col,a=1){const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');x.globalAlpha*=a;x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,TAU);x.fill();x.globalAlpha/=a;}
+function glow(x,cx,cy,r,col,a=1){if(!(r>0))return;const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');x.globalAlpha*=a;x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,TAU);x.fill();x.globalAlpha/=a;}
 function rgba(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`;}
 function nucleus(x,cx,cy,rx,ry,rot=0,col=C.dapi){x.save();x.translate(cx,cy);x.rotate(rot);const g=x.createRadialGradient(-rx*.3,-ry*.3,0,0,0,Math.max(rx,ry));g.addColorStop(0,'#B9CCFF');g.addColorStop(1,col);x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,TAU);x.fill();x.restore();}
 function blob(x,cx,cy,r,seed,lobes=6,amp=.22,t=0){x.beginPath();for(let i=0;i<=48;i++){const a=i/48*TAU;const rr=r*(1+amp*Math.sin(a*lobes+seed)+amp*.5*Math.sin(a*(lobes+3)+seed*2+t));const px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr;i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();}
@@ -141,7 +141,7 @@ function jointLevel(){
     x.lineWidth=5;x.beginPath();x.moveTo(lens.x+27*pr,lens.y+27*pr);x.lineTo(lens.x+48*pr,lens.y+48*pr);x.stroke();
     x.fillStyle='#F29A55';x.font='12px "Martian Mono", monospace';x.fillText('zoom in',lens.x,lens.y+66*pr);
   }
-  return {id:'joint',label:'Joint',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:167,label:'5 mm'},zoomFocus:lens,
+  return {id:'joint',natural:true,label:'Joint',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:167,label:'5 mm'},zoomFocus:lens,
     card(){return `<p class="k">Level 2 · tissue</p><h2>Inside the knuckle</h2>
       <p>The middle-finger knuckle, cut lengthwise like a pathology slide. Choose a stage; tap any label to learn what it is.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Stage">${Object.entries(MODES).map(([k,m])=>`<button role="radio" data-m="${k}" aria-checked="${k===st.mode}">${m.l}</button>`).join('')}</div>
