@@ -4,7 +4,13 @@ An interactive 3D atlas of real human anatomy that walks through one teaching ca
 
 General education, not medical advice.
 
-Exported 13 October 2026 from version 12 of the published artifact.
+**Try it:** <https://stuffs.tiresia.xyz/body-atlas-1/>
+
+It comes in a dark mode and a light mode. It follows your system setting until you pick one with the sun/moon button in the top bar. In light mode the microscope dives switch from darkfield to brightfield, and the stained slides keep their real stain colours.
+
+Exported 13 October 2026 from version 12 of the published artifact; light mode added 17 October 2026.
+
+![Glass Atlas in light mode](screenshots/06-light-home.png)
 
 ## What's in this folder
 
@@ -13,13 +19,12 @@ Exported 13 October 2026 from version 12 of the published artifact.
 | `app/` | The complete app. `index.html` is a self-contained, fully offline copy (three.js and fonts are bundled in `vendor/`). `atlas.html` is the source exactly as published to claude.ai, which loads three.js from a CDN. |
 | `app/tour/` | Narration audio for the 13 tour stops (MP3), and `tour-script.json` holds the text and camera positions. |
 | `app/anatomy.txt` | The anatomy meshes, gzip-compressed and base64-encoded; decoded in `core.js`. |
-| `research/reviews/` | The five AI peer-review reports (rheumatology/immunology; endocrine, haematology and GI; neurology, cardiology and spine; gynecology and pharmacy; evidence methods). Every correction in them was applied in version 11. |
 | `research/references.md` | All 87 references, with links. |
 | `research/model-checks/` | Node scripts used to check the iron, thyroid, hand and gastric-emptying models against published data. |
 | `build-pipeline/` | Python scripts and manifests that turned BodyParts3D STL files into `anatomy.txt` (decimate, adapt the skin surface, pack). The raw BodyParts3D download (~500 MB) isn't included; the scripts expect it at `bp3d/assets/BodyParts3D_data/stl/`. |
 | `tools/` | Headless-browser screenshot and test scripts (Playwright) and the Piper text-to-speech script used for the narration. Paths inside them point at the original build machine and need adjusting. |
 | `notes/` | Export of the app's shared notes (empty) and where local notes live. |
-| `screenshots/` | Five screens from the offline copy. |
+| `screenshots/` | Screens from the offline copy, dark and light. |
 
 ## Running it
 
@@ -41,10 +46,7 @@ Notes in the self-hosted copy are saved to the browser only (see `notes/README.m
 - `stations.js` – `stations4.js`: the instruments (tilt table, Beighton, neck, hand, stomach, thyroid, MCAS, iron, seizure threshold, lumbar, cervix, endometriosis, medicines planner)
 - `dive.js` and `dive-*.js`: the cell- and molecule-level dives and the field guide
 - `web.js`, `day.js`, `notes.js`, `tour.js`, `kit.js`: connections, the day view, notes, the tour, shared helpers
-
-## A note on the research reports
-
-The five review reports were written before the app was reframed as a generic teaching case, so they still refer to the original framing ("her", "her chart"). The app itself no longer does.
+- `theme.js`: light and dark. CSS tokens for the panels, `light-dark()` pairs for inline colours, and a remap for every 2D canvas (lightness turned over in OKLCH, hue kept), so the drawing code doesn't need to know which theme is on
 
 ## Credits and licenses
 
@@ -52,4 +54,4 @@ The five review reports were written before the app was reframed as a generic te
 - **three.js** r160: MIT license, `app/vendor/three/LICENSE`.
 - **Fonts:** Gloock, Atkinson Hyperlegible and Martian Mono, SIL Open Font License 1.1, `app/vendor/fonts/OFL-*.txt`.
 - **Narration:** generated with Piper TTS using the en_US-lessac-high voice. Check that voice's model card for its license terms before redistributing the audio.
-- **Content:** written with Claude and reviewed by five AI reviewers (not physicians) against guidelines, FDA labels and primary studies, October 2026.
+- **Content:** written with Claude and reviewed by five AI reviewers (not physicians) against guidelines, FDA labels and primary studies, October 2026. The review reports themselves aren't included here.
