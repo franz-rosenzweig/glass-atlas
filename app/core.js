@@ -271,8 +271,10 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
   // Instruments register the overlay materials whose colour has to flip with the theme (a white
   // pointer would vanish on paper); the anatomy keeps its own colours in both.
   const themed=new Set();
-  A.themed=(mat,hex)=>{mat.userData.hex=hex;themed.add(mat);mat.addEventListener('dispose',()=>themed.delete(mat));mat.color.set(A.light?toLight(hex):hex);return mat;};
-  A.tm=(Cls,opt)=>A.themed(new Cls(opt),opt.color);
+  const paint=m=>{const L=A.light,u=m.userData;m.color.set(L?toLight(u.hex):u.hex);if(u.em)m.emissive.set(L?toLight(u.em):u.em);
+    const b=L&&u.blend===THREE.AdditiveBlending?THREE.NormalBlending:u.blend;if(m.blending!==b){m.blending=b;m.needsUpdate=true;}};
+  A.themed=(mat,hex)=>{const u=mat.userData;u.hex=hex;u.blend??=mat.blending;themed.add(mat);mat.addEventListener('dispose',()=>themed.delete(mat));paint(mat);return mat;};
+  A.tm=(Cls,opt)=>{const m=new Cls(opt);if(typeof opt.emissive==='string')m.userData.em=opt.emissive;return A.themed(m,opt.color);};
   A.skinBase={fill:new THREE.Color('#6F9E9A'),rim:new THREE.Color('#D3F1EC')};
   A.light=false;
   A.setTheme=t=>{const L=A.light=t==='light';
@@ -280,7 +282,8 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
     rim.intensity=L?.6:1.1;renderer.toneMappingExposure=L?1:1.05;
     A.skinBase.rim.set(L?'#3A8A82':'#D3F1EC');A.skinBase.fill.set(L?'#A9D3CD':'#6F9E9A');skinUniforms.uRim.value.copy(A.skinBase.rim);skinUniforms.uFill.value.copy(A.skinBase.fill);skinUniforms.uBody.value=L?.5:1;A.shadow.material.opacity=L?.5:1;skinUniforms.uScafCol.value.set(L?'#7652C2':'#B193E3');
     A.floorRing.material.color.set(L?0xCBC3B3:0x33474c);
-    for(const m of themed)m.color.set(L?toLight(m.userData.hex):m.userData.hex);
+    for(const m of themed)paint(m);
+    A.refresh?.();
   };
 
   /* ---------- opacity / emphasis ---------- */
@@ -295,7 +298,7 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
       let em=0;
       if(F&&F.size){
         if(F.has(r)){op=r.layer==='skin'?Math.max(op,.6):Math.max(op,r.base,0.95);em=.42;}
-        else op*=r.layer==='skin'?.55:A.mode.dim;
+        else op*=r.layer==='skin'?.55:A.mode.dim*(A.light?.5:1);
       }
       if(show&&show.has(r))op=Math.max(op,r.base,0.95);
       r.tgt.op=op;r.tgt.em=em;r.hi.set(A.mode.focusColor);

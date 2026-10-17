@@ -30,7 +30,7 @@ export function makeStations2(A){
     const tryp=(t,rise)=>lab.base+(t<=0?0:rise*(Math.exp(-KD*t)-Math.exp(-KA*t))/PKN);
     function build(){
       for(const [k,n] of [['skin',240],['gut',150],['air',90],['cv',50]])for(const p of K.samplePts(ORG[k],n)){cellPts.push(p);cellSys.push(k);}
-      cells=K.dots(cellPts.length,new THREE.SphereGeometry(.0032,8,6),new THREE.MeshBasicMaterial({color:'#F29A55',transparent:true,opacity:.9,depthWrite:false}));
+      cells=K.dots(cellPts.length,new THREE.SphereGeometry(.0032,8,6),A.tm(THREE.MeshBasicMaterial,{color:'#F29A55',transparent:true,opacity:.9,depthWrite:false}));
       med=K.dots(260,new THREE.SphereGeometry(.0015,6,4),A.tm(THREE.MeshBasicMaterial,{color:'#FFE0B8',transparent:true,opacity:.85,depthWrite:false}));
       for(let i=0;i<260;i++)MP.push({life:0,p:V3(),v:V3()});
     }
@@ -103,7 +103,7 @@ export function makeStations2(A){
           for(const [k] of SYSL){const x=M.sym[k];ui.querySelector('#m-'+k).textContent=x<.05?'quiet':x<.35?'mild':x<.7?'moderate':'strong';const b=ui.querySelector('#m-'+k+'Bar');b.style.width=x*100+'%';b.classList.toggle('over',x>=.7);}
           const key=M.s.toFixed(3);if(key!==lastKey){lastKey=key;drawLab(M.s);}
           // skin flush
-          A.skinUniforms.uFill.value.copy(A.skinBase.fill).lerp(fillF,cur.skin*.9);A.skinUniforms.uRim.value.copy(A.skinBase.rim).lerp(A.light?fillF:rimF,cur.skin*.8);
+          A.skinUniforms.uFill.value.copy(A.skinBase.fill).lerp(fillF,cur.skin*.9);A.skinUniforms.uBody.value=A.light?.5+cur.skin*1.4:1;A.skinUniforms.uRim.value.copy(A.skinBase.rim).lerp(A.light?fillF:rimF,cur.skin*.8);
           for(const k in organs)for(const r of organs[k]){r.tgt.em=.06+cur[k]*.9;r.hi.set('#F29A55');}
           // mast cells pulse; flaring ones release mediators
           for(let i=0;i<cellPts.length;i++){const a=cur[cellSys[i]];K.put(cells,i,cellPts[i],1+a*(.6+.6*Math.sin(t*7+i*1.7)));}
@@ -116,7 +116,7 @@ export function makeStations2(A){
           MP.forEach((m,i)=>K.put(med,i,m.p,m.life>0?m.life/1.2:0));med.instanceMatrix.needsUpdate=true;
         });
       },
-      exit(){tickOff?.();cells.visible=med.visible=false;A.skinUniforms.uFill.value.copy(A.skinBase.fill);A.skinUniforms.uRim.value.copy(A.skinBase.rim);}
+      exit(){tickOff?.();cells.visible=med.visible=false;A.skinUniforms.uFill.value.copy(A.skinBase.fill);A.skinUniforms.uRim.value.copy(A.skinBase.rim);A.skinUniforms.uBody.value=A.light?.5:1;}
     };
   })();all.push(mcas);
 

@@ -1,17 +1,20 @@
 // MCAS dive: skin (the triple response) → one mast cell, "keep it calm".
 import { TAU, clamp, lerp, rand } from './dive.js';
 import { G, glow, rgba, nucleus } from './dive-ra.js';
+import { theme, raw } from './theme.js';
+// histamine is white light on the dark slide; on paper white would turn to ink specks, so it's drawn purple
+const HIST=()=>theme()==='light'?'#7A4FB0':'#FFFFFF';
 
 const MC={cell:'#F29A55',gran:'#FFB36B',hist:'#FFFFFF',lt:'#7FD3A3',ige:'#C08CFF',mrg:'#71C6FF',h1:'#62BED3',h2:'#DDB741',block:'#5AA8FF'};
 function mastCell(x,cx,cy,r,t,act=0,grans){x.save();x.beginPath();for(let i=0;i<=60;i++){const a=i/60*TAU;const rr=r*(1+.05*Math.sin(a*5+t)+act*.03*Math.sin(a*11+t*8));i?x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr):x.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}x.closePath();
   x.fillStyle=rgba(MC.cell,.18+act*.12);x.fill();x.strokeStyle=rgba(MC.cell,.95);x.lineWidth=Math.max(1.5,r*.015);x.stroke();
   nucleus(x,cx-r*.15,cy+r*.05,r*.28,r*.24,.3);
-  if(grans)for(const g of grans){if(g.gone)continue;x.fillStyle=rgba(MC.gran,.9);x.beginPath();x.arc(cx+g.x*r,cy+g.y*r,r*.055,0,TAU);x.fill();x.fillStyle='rgba(255,255,255,.55)';x.beginPath();x.arc(cx+g.x*r-r*.015,cy+g.y*r-r*.015,r*.018,0,TAU);x.fill();}
+  if(grans)for(const g of grans){if(g.gone)continue;x.fillStyle=rgba(MC.gran,.9);x.beginPath();x.arc(cx+g.x*r,cy+g.y*r,r*.055,0,TAU);x.fill();raw(()=>{x.fillStyle='rgba(255,255,255,.55)';});x.beginPath();x.arc(cx+g.x*r-r*.015,cy+g.y*r-r*.015,r*.018,0,TAU);x.fill();}
   x.restore();}
 export const GUIDE_M={
   mast:{name:'Mast cell',kind:'Cell',size:'about 10–20 µm',draw:(x,cx,cy,s,t)=>{const gr=Array.from({length:22},(_,i)=>({x:Math.cos(i*2.4)*.6*((i%5)/5+.3),y:Math.sin(i*2.4)*.6*((i%5)/5+.3)}));mastCell(x,cx,cy,44*s,t||0,0,gr);},
     text:['A sentinel packed with granules, parked next to blood vessels and nerves in the skin, gut lining and airways, the places where the body meets the outside world.','When triggered it releases its granules within seconds and then makes new signalling molecules over the following minutes.']},
-  hist:{name:'Histamine',kind:'Signal molecule',size:'under 1 nm',draw:(x,cx,cy,s)=>{for(let i=0;i<9;i++){x.fillStyle='#FFF';x.beginPath();x.arc(cx+Math.cos(i*2.1)*20*s,cy+Math.sin(i*1.7)*16*s,4*s,0,TAU);x.fill();}},
+  hist:{name:'Histamine',kind:'Signal molecule',size:'under 1 nm',draw:(x,cx,cy,s)=>{for(let i=0;i<9;i++){x.fillStyle=HIST();x.beginPath();x.arc(cx+Math.cos(i*2.1)*20*s,cy+Math.sin(i*1.7)*16*s,4*s,0,TAU);x.fill();}},
     text:['Stored ready-made in the granules. On blood vessels it acts through H1 receptors: they widen and leak, giving redness and swelling. On nerves, H1 means itch.','In the stomach it acts through H2 receptors and turns up acid production.']},
   tryptase:{name:'Tryptase',kind:'Enzyme',size:'a protein, nanometres',draw:(x,cx,cy,s)=>{x.fillStyle='#FF9F43';for(let i=0;i<4;i++){x.beginPath();x.arc(cx+(i%2?14:-14)*s,cy+(i<2?-14:14)*s,11*s,0,TAU);x.fill();}},
     text:['Also stored in the granules, almost only in mast cells. That makes it the blood test for a mast-cell flare: a rise of more than 20% of baseline plus 2 ng/mL.']},
@@ -67,7 +70,7 @@ function skinLevel(){
       // nerve: flashes with itch
       x.strokeStyle=F>.15&&Math.sin(t*14)>0?'#FFE36E':'#C9A64E';x.lineWidth=4;x.beginPath();nerve.forEach((p,i)=>i?x.lineTo(p[0],p[1]-(i>3?lift(p[0]):0)):x.moveTo(p[0],p[1]));x.stroke();
       for(const m of mcs){const gr=Array.from({length:18},(_,i)=>({x:Math.cos(i*2.4)*.55*((i%4)/4+.3),y:Math.sin(i*2.4)*.55*((i%4)/4+.3),gone:S.ft>.5&&i%2===0}));mastCell(x,m.x,m.y,30,t,S.ft,gr);}
-      x.fillStyle='#FFF';for(const h of hist){x.beginPath();x.arc(h.x,h.y,2.4,0,TAU);x.fill();}
+      x.fillStyle=HIST();for(const h of hist){x.beginPath();x.arc(h.x,h.y,2.4,0,TAU);x.fill();}
       x.fillStyle='rgba(236,230,218,.55)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('EPIDERMIS',20,40);x.fillText('DERMIS',20,250);x.fillText('NERVE',150,610);
       const q=s=>api.card.querySelector(s);if(q('#sk-r')){const set=(k,v)=>{q('#sk-'+k).textContent=Math.round(v*100)+'%';q('#sk-'+k+'B').style.width=v*100+'%';};set('r',F);set('w',clamp(F*1.1-.1,0,1));set('i',clamp(F*1.2-.05,0,1));}
     },
@@ -109,12 +112,12 @@ function cellLevel(){
     x.font='11px "Atkinson Hyperlegible", sans-serif';x.textAlign='center';
     for(const tr of S.trig){x.save();x.globalCompositeOperation='lighter';glow(x,tr.x,tr.y,26,rgba(tr.K.col,.7));x.restore();x.fillStyle=tr.K.col;x.beginPath();x.arc(tr.x,tr.y,8,0,TAU);x.fill();x.fillStyle='rgba(236,230,218,.85)';x.fillText(tr.K.label,tr.x,tr.y-16);}
     // histamine and newly made mediators
-    x.fillStyle='#FFFFFF';for(const h of S.hist){x.beginPath();x.arc(h.x,h.y,3,0,TAU);x.fill();}
+    x.fillStyle=HIST();for(const h of S.hist){x.beginPath();x.arc(h.x,h.y,3,0,TAU);x.fill();}
     x.strokeStyle=MC.lt;x.lineWidth=2;for(const l of S.lt){x.beginPath();x.moveTo(l.x-6,l.y);x.lineTo(l.x+6,l.y+3);x.stroke();}
     // target tissue: vessel wall with H1 receptors (top), stomach acid cell with H2 (bottom)
     x.fillStyle=`rgba(${120+120*S.flush},40,60,.55)`;x.fillRect(840,110,200,330);x.fillStyle=`rgba(200,170,60,${.25+S.acid*.5})`;x.fillRect(840,490,200,170);
-    for(const r of S.h1r){x.fillStyle=r.busy>0?'#FFFFFF':MC.h1;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h1){x.fillStyle=MC.block;x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
-    for(const r of S.h2r){x.fillStyle=r.busy>0?'#FFFFFF':MC.h2;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h2){x.fillStyle='#E6C34A';x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
+    for(const r of S.h1r){x.fillStyle=r.busy>0?HIST():MC.h1;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h1){x.fillStyle=MC.block;x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
+    for(const r of S.h2r){x.fillStyle=r.busy>0?HIST():MC.h2;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h2){x.fillStyle='#E6C34A';x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
     x.fillStyle='rgba(236,230,218,.65)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('BLOOD VESSEL · H1',860,135);x.fillText('STOMACH · H2',860,515);
     const q=s=>api.card.querySelector(s);if(q('#mc-a')){q('#mc-a').textContent=Math.round(S.act)+'%';q('#mc-aB').style.width=Math.min(100,S.act)+'%';q('#mc-f').textContent=S.flares;q('#mc-c').textContent=Math.round(S.calm/Math.max(1,S.time)*100)+'%';
       q('#mc-fl').style.width=S.flush*100+'%';q('#mc-ac').style.width=S.acid*100+'%';}

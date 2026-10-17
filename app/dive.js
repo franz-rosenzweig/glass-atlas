@@ -4,7 +4,7 @@ export const TAU=Math.PI*2;
 export const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const lerp=(a,b,t)=>a+(b-a)*t;
 export const rand=(a,b)=>a+Math.random()*(b-a);
-import { cc, natural } from './theme.js';
+import { cc, natural, raw, theme } from './theme.js';
 export const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 const CSS=`
@@ -50,6 +50,7 @@ const CSS=`
 .dv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
 .dv-grid button{border:1px solid var(--line-2);border-radius:3px;padding:6px;text-align:center;font-size:11.5px;color:var(--bone-2)}
 .dv-grid button[disabled]{opacity:.35}
+:root[data-theme="light"] .dv-grid button[disabled]{opacity:.7}
 .dv-grid canvas{position:static;width:100%;height:56px;display:block;background:var(--scope);border-radius:2px;margin-bottom:4px}
 .dv-toast{position:absolute;z-index:5;left:50%;top:80px;transform:translateX(-50%);font:11px var(--mono);letter-spacing:.06em;padding:8px 12px;background:rgb(var(--lo) / .92);border:1px solid var(--line-2);border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .dv-toast.on{opacity:1}
@@ -114,7 +115,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
     pop.hidden=false;}
   function guideList(){
     pc.innerHTML=`<div class="sz">Field guide</div><h3>Everything you've met</h3><p>Tap cells and molecules in the microscope to collect them.</p><div class="dv-grid">${Object.entries(guide).map(([k,g])=>`<button type="button" data-k="${k}" ${found.has(k)?'':'disabled'}><canvas width="200" height="112"></canvas>${found.has(k)?esc(g.name):'?'}</button>`).join('')}</div><div class="dv-btns"><button class="dv-btn go" type="button" data-quiz>Quiz me</button><button class="dv-btn" type="button" data-close>Close</button></div>`;
-    pc.querySelectorAll('.dv-grid button').forEach(b=>{const k=b.dataset.k;const c=b.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,200,112);if(found.has(k))art(guide[k],()=>guide[k].draw(x,100,56,.6,0));else{x.fillStyle='#1B2A30';x.font='28px Gloock, serif';x.textAlign='center';x.fillText('?',100,66);}
+    pc.querySelectorAll('.dv-grid button').forEach(b=>{const k=b.dataset.k;const c=b.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,200,112);if(found.has(k))art(guide[k],()=>guide[k].draw(x,100,56,.6,0));else{raw(()=>{x.fillStyle=theme()==='light'?'#B9B2A4':'#1B2A30';x.font='28px Gloock, serif';x.textAlign='center';x.fillText('?',100,66);});}
       b.onclick=()=>showCard(k,false);});
     pc.querySelector('[data-quiz]').onclick=()=>quiz(0,0);
     pop.hidden=false;}

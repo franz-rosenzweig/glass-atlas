@@ -45,8 +45,8 @@ export function makeStations(A){
     function build(){
       built=true;
       tableVis=new THREE.Group();A.tableGroup.add(tableVis);tableVis.position.set(0,-PIVOT_Y,-(ZB-0.075));
-      const mat=new THREE.MeshStandardMaterial({color:'#3B4B4F',roughness:.6,metalness:.2});
-      const pad=new THREE.MeshStandardMaterial({color:'#24363A',roughness:.9});
+      const mat=A.tm(THREE.MeshStandardMaterial,{color:'#3B4B4F',roughness:.6,metalness:.2});
+      const pad=A.tm(THREE.MeshStandardMaterial,{color:'#24363A',roughness:.9});
       const board=new THREE.Mesh(new THREE.BoxGeometry(.56,1.92,.035),pad);board.position.set(0,0.9,-0.163);tableVis.add(board);
       const frame=new THREE.Mesh(new THREE.BoxGeometry(.6,1.96,.02),mat);frame.position.set(0,0.9,-0.19);tableVis.add(frame);
       const foot=new THREE.Mesh(new THREE.BoxGeometry(.5,.025,.26),mat);foot.position.set(0,-0.012,-0.04);tableVis.add(foot);
@@ -405,7 +405,7 @@ export function makeStations(A){
       dg.computeBoundingBox();duoC=dg.boundingBox.getCenter(V3());
       cand.sort((a,b)=>a.distanceTo(pyl)-b.distanceTo(pyl));
       pts=cand.map((p,i)=>({home:p,rank:i/cand.length}));
-      meal=new THREE.InstancedMesh(new THREE.SphereGeometry(.0035,8,6),new THREE.MeshStandardMaterial({color:'#F4E6A8',emissive:'#DDB741',emissiveIntensity:.35}),pts.length);meal.renderOrder=7;N.trunk.add(meal);meal.position.copy(N.trunk.userData.pivot).negate();
+      meal=new THREE.InstancedMesh(new THREE.SphereGeometry(.0035,8,6),A.tm(THREE.MeshStandardMaterial,{color:'#F4E6A8',emissive:'#DDB741',emissiveIntensity:.35}),pts.length);meal.renderOrder=7;N.trunk.add(meal);meal.position.copy(N.trunk.userData.pivot).negate();
     }
     function chart(){
       const W=300,H=150,px=t=>28+t/4*(W-40),py=r=>10+(1-r/100)*(H-34);
@@ -489,7 +489,7 @@ export function makeStations(A){
       curve=new THREE.CatmullRomCurve3([pc,V3(pc.x+0.03,pc.y-0.05,pc.z-0.01),V3(0.032,1.45,0.0),V3(0.03,tc.y+0.03,tc.z),V3(tc.x+0.012,tc.y,tc.z+0.006)]);
       const mk=(col,n)=>{const m=new THREE.InstancedMesh(new THREE.SphereGeometry(.0024,8,6),A.tm(THREE.MeshBasicMaterial,{color:col}),n);m.renderOrder=8;A.root.add(m);return m;};
       parts={tsh:mk('#78A0F4',60),t4:mk('#40C7AA',60),pT:Array.from({length:60},()=>Math.random()),pF:Array.from({length:60},()=>Math.random()),tc,pc};
-      lym=new THREE.InstancedMesh(new THREE.SphereGeometry(.0026,10,8),new THREE.MeshStandardMaterial({color:'#EDE7F7',emissive:'#B193E3',emissiveIntensity:.4}),40);lym.renderOrder=8;A.root.add(lym);
+      lym=new THREE.InstancedMesh(new THREE.SphereGeometry(.0026,10,8),A.tm(THREE.MeshStandardMaterial,{color:'#EDE7F7',emissive:'#B193E3',emissiveIntensity:.4}),40);lym.renderOrder=8;A.root.add(lym);
       parts.L=Array.from({length:40},()=>({a:Math.random()*Math.PI*2,y:(Math.random()-.5)*0.04,r:0.026+Math.random()*0.01,s:.4+Math.random()}));
     }
     return {

@@ -56,7 +56,7 @@ export function makeStations3(A){
         <path d="M106 114 h40 q8 0 8 8 v16 q0 6 -8 6 h-40 z" fill="${bone}"/>
         <path d="M134 116 q0 -38 6 -48 q4 -4 8 0 v48 z" fill="${bone}"/>
         ${sp>0?`<ellipse cx="${110+sp*1.6}" cy="106" rx="${sp*2.6}" ry="${2+sp*1.1}" fill="${spur}"/><ellipse cx="${136-sp*1.2}" cy="84" rx="${1.5+sp*1.4}" ry="${sp*2.6}" fill="${spur}"/>`:''}
-        <ellipse cx="122" cy="${60+drop*.7+Math.max(0,ext)*.5}" rx="8" ry="${8*nc}" fill="${M.comp>.55?'#FF6A3C':'#F2C14E'}" stroke="#0A0F11" stroke-width="1.2"/>
+        <ellipse cx="122" cy="${60+drop*.7+Math.max(0,ext)*.5}" rx="8" ry="${8*nc}" fill="${M.comp>.55?'#FF6A3C':'#F2C14E'}" stroke="var(--void)" stroke-width="1.2"/>
         <text x="60" y="136" text-anchor="middle" fill="#3A3A36" font-size="10.5">vertebra below</text>
         <text x="190" y="62" fill="var(--dim)" font-size="9.5">facet</text><text x="190" y="74" fill="var(--dim)" font-size="9.5">joint</text>
         <text x="122" y="174" text-anchor="middle" fill="var(--dim)" font-size="9.5">front ← → back</text>

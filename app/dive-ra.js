@@ -1,6 +1,7 @@
 // The RA dive: knuckle → joint → synovial lining (the game) → molecules.
 // Sizes are to scale within each level: the joint is ~3 cm across, the lining view ~250 µm, the molecule view ~60 nm.
 import { TAU, clamp, lerp, rand, esc } from './dive.js';
+import { theme, raw } from './theme.js';
 
 /* ------------------------------------------------------------------ glyphs (design units) */
 const C={dapi:'#5B86FF',fls:'#43D99B',mac:'#FF6FA8',t:'#FFB547',b:'#71C6FF',pl:'#C08CFF',neu:'#E6DEFF',oc:'#FF8A5B',ch:'#A9DDEF',tnf:'#FF5A3C',il6:'#B98CFF',ab:'#5AA8FF',hcq:'#7CFFB2'};
@@ -135,7 +136,8 @@ function jointLevel(){
     // labels
     x.font='13px "Atkinson Hyperlegible", sans-serif';x.textAlign='center';
     for(const h of HOT){const w=x.measureText(h.k).width+12;x.fillStyle='rgba(4,7,11,.62)';x.beginPath();x.roundRect(h.x-w/2,h.y-27,w,19,4);x.fill();
-      x.fillStyle=hover===h?'#FFFFFF':'rgba(236,230,218,.85)';x.beginPath();x.arc(h.x,h.y,4,0,TAU);x.fill();x.fillText(h.k,h.x,h.y-13);}
+      const lc=hover===h?'#FFFFFF':'rgba(236,230,218,.85)';if(theme()==='light')raw(()=>{x.fillStyle=hover===h?'#000000':'rgba(30,36,38,.8)';});else x.fillStyle=lc;
+      x.beginPath();x.arc(h.x,h.y,4,0,TAU);x.fill();x.fillStyle=lc;x.fillText(h.k,h.x,h.y-13);}
     // the lens: tap to zoom into the lining
     const pr=1+.08*Math.sin(pulse*3);x.strokeStyle='rgba(242,154,85,.95)';x.lineWidth=2.5;x.beginPath();x.arc(lens.x,lens.y,38*pr,0,TAU);x.stroke();
     x.lineWidth=5;x.beginPath();x.moveTo(lens.x+27*pr,lens.y+27*pr);x.lineTo(lens.x+48*pr,lens.y+48*pr);x.stroke();

@@ -49,9 +49,9 @@ export function makeWeb(A){
       const p0=pos[L.a],p1=pos[L.b];const mid=p0.clone().add(p1).multiplyScalar(.5);const d=p0.distanceTo(p1);
       const bow=V3(((i%3)-1)*.04,0,.16+d*.32);const c=new THREE.QuadraticBezierCurve3(p0,mid.add(bow),p1);
       const col=new THREE.Color(STRENGTH[L.s].c);
-      const mat=A.tm(THREE.MeshBasicMaterial,{color:col,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending});
+      const mat=A.tm(THREE.MeshBasicMaterial,{color:STRENGTH[L.s].c,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending});
       const m=new THREE.Mesh(new THREE.TubeGeometry(c,60,L.s==='contested'||L.s==='limited'?.0014:.0022,6,false),mat);m.renderOrder=30;G.add(m);
-      const pulses=[];for(let k=0;k<3;k++){const s=new THREE.Mesh(new THREE.SphereGeometry(.0065,10,8),A.tm(THREE.MeshBasicMaterial,{color:col,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending}));s.renderOrder=31;G.add(s);pulses.push({m:s,u:k/3});}
+      const pulses=[];for(let k=0;k<3;k++){const s=new THREE.Mesh(new THREE.SphereGeometry(.0065,10,8),A.tm(THREE.MeshBasicMaterial,{color:STRENGTH[L.s].c,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending}));s.renderOrder=31;G.add(s);pulses.push({m:s,u:k/3});}
       arcs.push({L,curve:c,mesh:m,pulses,col});
     });
     for(const id in pos){const s=new THREE.Mesh(new THREE.SphereGeometry(.011,16,12),A.tm(THREE.MeshBasicMaterial,{color:SYS[byId[id].sys].c,transparent:true,opacity:.95,depthWrite:false}));s.position.copy(pos[id]);s.renderOrder=32;G.add(s);}
