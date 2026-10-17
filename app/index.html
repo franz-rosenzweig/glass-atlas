@@ -73,6 +73,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .badge{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border-radius:2px;border:1px solid var(--line-2);color:var(--dim);white-space:nowrap}
 .badge.inst{color:var(--void);background:var(--c);border-color:var(--c)}
 .medlist .row .nm small{display:block;color:var(--dim);font:10px var(--mono);margin-top:2px}
+.medfind{display:block;width:100%;margin:14px 0 2px;background:var(--input);color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:8px 10px;font:16px var(--body)}
+.medfind::placeholder{color:var(--dim)}
+.medfind:focus{outline:none;border-color:var(--bone-2)}
+.medlist [hidden]{display:none}
+.medlist .none{font:10.5px var(--mono);color:var(--dim);padding:8px}
 
 .drawer{position:absolute;right:var(--gut);top:calc(84px + env(safe-area-inset-top,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:var(--right);z-index:25;
   background:var(--solid);border:1px solid var(--line);border-top:3px solid var(--c,var(--glass));border-radius:3px;display:flex;flex-direction:column;
@@ -328,7 +333,7 @@ const isPhone=()=>innerWidth<=860;
 const CREDIT=`<p class="credit">Anatomy: <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/" target="_blank" rel="noopener">BodyParts3D</a>, Copyright © 2008 Life Science Integrated Database Center, licensed under <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a> (Mitsuhashi et al., Nucleic Acids Res 2009), via K. Moerman's repository. Decimated; skin surface adapted to a female form; thyroid gland, uterus, ovaries, nerve and leg-vein courses modelled. General education, not medical advice: a patient's own clinicians decide their care. In an emergency, call 911.</p>`;
 const byId=Object.fromEntries(CONDS.map(c=>[c.id,c]));
 
-let tour,K0,A,ST,active=null,curStation=null,listMode='chart';
+let tour,K0,A,ST,active=null,curStation=null,listMode='chart',medQ='';
 const canvas=$('#gl'),panel=$('#panel'),drawer=$('#drawer');
 
 /* ---------- layout band: keeps the figure in the free space between panels ---------- */
@@ -355,10 +360,14 @@ function renderPanel(){
     panel.innerHTML=h+CREDIT;
     $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
   }else{
-    let h=`<p class="eyebrow">Medicines</p><h2>Nine medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
-    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
-    panel.innerHTML=h+'</div>'+CREDIT;
-    $('#toChart').onclick=()=>{listMode='chart';renderPanel();};
+    let h=`<p class="eyebrow">Medicines</p><h2>Nine medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><input class="medfind" id="medFind" type="search" placeholder="Search medicines" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
+    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
+    panel.innerHTML=h+'<p class="none" hidden>No medicine matches that.</p></div>'+CREDIT;
+    $('#toChart').onclick=()=>{medQ='';listMode='chart';renderPanel();};
+    const f=$('#medFind'),filt=()=>{medQ=f.value;const q=medQ.trim().toLowerCase();let n=0;
+      panel.querySelectorAll('.medlist [data-find]').forEach(r=>{const ok=r.dataset.find.includes(q);r.hidden=!ok;n+=ok;});
+      panel.querySelector('.medlist [data-med=""]').hidden=!!q;panel.querySelector('.medlist .none').hidden=n>0;};
+    f.value=medQ;f.oninput=filt;f.onkeydown=e=>{if(e.key==='Escape'&&f.value){f.value='';filt();e.stopPropagation();}};filt();
   }
 }
 panel.addEventListener('click',e=>{
