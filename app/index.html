@@ -497,7 +497,7 @@ onTheme(syncTheme);syncTheme();
 (async()=>{
   try{
     A=await createAtlas(canvas,{binUrl:'anatomy.txt',onProgress:p=>{$('#lbar').style.width=p*100+'%';}});
-    K0=kit(A);A.setTheme(theme());
+    K0=kit(A);A.setTheme?.(theme());
     const _fly=A.flyTo;A.flyTo=(t,o={})=>_fly({...t,dist:t.dist*(o.raw?1:zoomFactor())},o);
     ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
     renderPanel();A.size();fitOffset();
