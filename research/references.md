@@ -1,6 +1,6 @@
 # References
 
-All 87 sources cited in Glass Atlas, grouped as in the app's Sources panel. DOIs and PubMed IDs were checked against Crossref and PubMed in October 2026.
+All 125 sources cited in Glass Atlas, grouped as in the app's Sources panel. DOIs and PubMed IDs were checked against Crossref and PubMed in October 2026.
 
 ## POTS and fainting
 
@@ -118,3 +118,46 @@ All 87 sources cited in Glass Atlas, grouped as in the app's Sources panel. DOIs
 - **WAO 2020.** Cardona V et al. World Allergy Organization anaphylaxis guidance 2020. World Allergy Organ J 2020;13:100472. <https://pmc.ncbi.nlm.nih.gov/articles/PMC7607509/>
 - **CDC seizure first aid.** Centers for Disease Control and Prevention. First aid for seizures. <https://www.cdc.gov/epilepsy/first-aid-for-seizures/index.html>
 - **HealthLinkBC.** HealthLinkBC (Healthwise). Using ice and cold packs. <https://www.healthlinkbc.ca/healthwise/using-ice-and-cold-packs>
+
+## Added November 2026: Hadlima (adalimumab-bwwd)
+
+These came with the Hadlima material. Its citations were checked against PubMed in November 2026, and its claims were fact-checked against them by two AI reviewers.
+
+- **Hadlima label.** Hadlima (adalimumab-bwwd) US prescribing information, Medication Guide and Instructions for Use, revised April 2026 (Samsung Bioepis / Organon). <https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/761059s036lbl.pdf>
+- **FDA biosimilars.** US Food and Drug Administration. Biosimilars basics for patients; and the Public Health Service Act, 42 USC 262 (definitions of biosimilar and interchangeable). <https://www.fda.gov/drugs/biosimilars/biosimilars-basics-patients>
+- **Organon 2025.** Organon. FDA designates Hadlima interchangeable with all presentations of Humira (press release, 27 May 2025; earlier designation for the 40 mg/0.8 mL syringe in June 2024). <https://www.sec.gov/Archives/edgar/data/0001821825/000110465925052994/tm2516205d1_ex99-1.htm>
+- **Weinblatt 2018.** Weinblatt ME et al. Phase III randomized study of SB5, an adalimumab biosimilar, versus reference adalimumab in patients with moderate-to-severe rheumatoid arthritis. Arthritis Rheumatol 2018;70:40–48. <https://pmc.ncbi.nlm.nih.gov/articles/PMC5765475/>
+- **Weinblatt 2018 (switching).** Weinblatt ME et al. Switching from reference adalimumab to SB5 (adalimumab biosimilar) in patients with rheumatoid arthritis: fifty-two-week phase III randomized study results. Arthritis Rheumatol 2018;70:832–840. <https://pmc.ncbi.nlm.nih.gov/articles/PMC6001519/>
+- **ARMADA 2003.** Weinblatt ME et al. Adalimumab, a fully human anti-tumor necrosis factor alpha monoclonal antibody, for the treatment of rheumatoid arthritis in patients taking concomitant methotrexate: the ARMADA trial. Arthritis Rheum 2003;48:35–45. <https://pubmed.ncbi.nlm.nih.gov/12528101/>
+- **Pouw 2015.** Pouw MF et al. Key findings towards optimising adalimumab treatment: the concentration–effect curve. Ann Rheum Dis 2015;74:513–518. <https://pubmed.ncbi.nlm.nih.gov/24326008/>
+- **Bartelds 2011.** Bartelds GM et al. Development of antidrug antibodies against adalimumab and association with disease activity and treatment failure during long-term follow-up. JAMA 2011;305:1460–1468. <https://pubmed.ncbi.nlm.nih.gov/21486979/>
+- **Jang 2021.** Jang DI et al. The role of tumor necrosis factor alpha (TNF-α) in autoimmune disease and current TNF-α inhibitors in therapeutics. Int J Mol Sci 2021;22:2719. <https://pmc.ncbi.nlm.nih.gov/articles/PMC7962638/>
+- **ACR 2012.** Singh JA et al. 2012 update of the 2008 American College of Rheumatology recommendations for the use of DMARDs and biologic agents in rheumatoid arthritis (TB screening). Arthritis Care Res 2012;64:625–639. <https://pubmed.ncbi.nlm.nih.gov/22473917/>
+- **AGA 2025 hepatitis B.** Ali FS et al. AGA clinical practice guideline on the prevention and treatment of hepatitis B virus reactivation in at-risk individuals. Gastroenterology 2025;168:267–284. <https://doi.org/10.1053/j.gastro.2024.11.008>
+- **ACR/AAHKS 2022.** Goodman SM et al. 2022 American College of Rheumatology/American Association of Hip and Knee Surgeons guideline for the perioperative management of antirheumatic medication in patients with rheumatic diseases undergoing elective total hip or total knee arthroplasty. Arthritis Rheumatol 2022;74:1464–1473. <https://pubmed.ncbi.nlm.nih.gov/35722708/>
+- **ACR 2020 reproductive.** Sammaritano LR et al. 2020 American College of Rheumatology guideline for the management of reproductive health in rheumatic and musculoskeletal diseases. Arthritis Rheumatol 2020;72:529–556. <https://pubmed.ncbi.nlm.nih.gov/32090480/>
+- **EULAR 2024 pregnancy.** Rüegg L et al. EULAR recommendations for use of antirheumatic drugs in reproduction, pregnancy, and lactation: 2024 update. Ann Rheum Dis 2025;84:910–926. <https://pubmed.ncbi.nlm.nih.gov/40287311/>
+- **Julsgaard 2016.** Julsgaard M et al. Concentrations of adalimumab and infliximab in mothers and newborns, and effects on infection. Gastroenterology 2016;151:110–119. <https://pubmed.ncbi.nlm.nih.gov/27063728/>
+- **Wadström 2016.** Wadström H et al. Do RA or TNF inhibitors increase the risk of cervical neoplasia or of recurrence of previous neoplasia? A nationwide study from Sweden. Ann Rheum Dis 2016;75:1272–1278. <https://pubmed.ncbi.nlm.nih.gov/26755797/>
+- **Kim 2016.** Kim SC et al. Biologic disease-modifying antirheumatic drugs and risk of high-grade cervical dysplasia and cervical cancer in rheumatoid arthritis: a cohort study. Arthritis Rheumatol 2016;68:2106–2113. <https://pubmed.ncbi.nlm.nih.gov/27015113/>
+- **Strangfeld 2009.** Strangfeld A et al. Risk of herpes zoster in patients with rheumatoid arthritis treated with anti-TNF-alpha agents. JAMA 2009;301:737–744. <https://pubmed.ncbi.nlm.nih.gov/19224750/>
+- **Winthrop 2013.** Winthrop KL et al. Association between the initiation of anti-tumor necrosis factor therapy and the risk of herpes zoster. JAMA 2013;309:887–895. <https://pubmed.ncbi.nlm.nih.gov/23462785/>
+- **Xie 2024.** Xie W et al. Risk of inflammatory central nervous system diseases after tumor necrosis factor-inhibitor treatment for autoimmune diseases: a systematic review and meta-analysis. JAMA Neurol 2024;81:1284–1294. <https://pubmed.ncbi.nlm.nih.gov/39432288/>
+- **Slifman 2003.** Slifman NR et al. Listeria monocytogenes infection as a complication of treatment with tumor necrosis factor alpha-neutralizing agents. Arthritis Rheum 2003;48:319–324. <https://pubmed.ncbi.nlm.nih.gov/12571839/>
+- **Kaito 2012.** Kaito T et al. Effect of biological agents on cervical spine lesions in rheumatoid arthritis. Spine 2012;37:1742–1746. <https://pubmed.ncbi.nlm.nih.gov/22472805/>
+- **Joaquim 2014.** Joaquim AF et al. Cervical spine involvement in rheumatoid arthritis: a systematic review. Autoimmun Rev 2014;13:1195–1202. <https://pubmed.ncbi.nlm.nih.gov/25151973/>
+- **Papadaki 2002.** Papadaki HA et al. Anemia of chronic disease in rheumatoid arthritis is associated with increased apoptosis of bone marrow erythroid cells: improvement following anti-tumor necrosis factor-alpha antibody therapy. Blood 2002;100:474–482. <https://pubmed.ncbi.nlm.nih.gov/12091338/>
+- **Song 2013.** Song SN et al. Comparative evaluation of the effects of treatment with tocilizumab and TNF-α inhibitors on serum hepcidin, anemia response and disease activity in rheumatoid arthritis patients. Arthritis Res Ther 2013;15:R141. <https://pubmed.ncbi.nlm.nih.gov/24286116/>
+- **Furst 2013.** Furst DE et al. The effect of golimumab on haemoglobin levels in patients with rheumatoid arthritis, psoriatic arthritis or ankylosing spondylitis. Rheumatology 2013;52:1845–1855. <https://pubmed.ncbi.nlm.nih.gov/23838027/>
+- **Raterman 2011.** Raterman HG et al. Improvement of thyroid function in hypothyroid patients with rheumatoid arthritis after 6 months of adalimumab treatment: a pilot study. J Rheumatol 2011;38:247–251. <https://pubmed.ncbi.nlm.nih.gov/21078720/>
+- **Molderings 2016.** Molderings GJ et al. Pharmacological treatment options for mast cell activation disease. Naunyn Schmiedebergs Arch Pharmacol 2016;389:671–694. <https://pmc.ncbi.nlm.nih.gov/articles/PMC4903110/>
+- **Hendrix 2021.** Hendrix A et al. Adalimumab as a potential treatment for postural orthostatic tachycardia syndrome (case report). HeartRhythm Case Rep 2021;7:56–58. <https://pmc.ncbi.nlm.nih.gov/articles/PMC7813764/>
+- **Cochrane 2013.** Lu D et al. Anti-TNF-α treatment for pelvic pain associated with endometriosis. Cochrane Database Syst Rev 2013;CD008088. <https://pubmed.ncbi.nlm.nih.gov/23543560/>
+- **Nash 2016.** Nash P et al. Randomized crossover comparison of injection site pain with 40 mg/0.4 or 0.8 mL formulations of adalimumab in patients with rheumatoid arthritis. Rheumatol Ther 2016;3:257–270. <https://pmc.ncbi.nlm.nih.gov/articles/PMC5127965/>
+- **Liu 2018.** Liu L. Pharmacokinetics of monoclonal antibodies and Fc-fusion proteins. Protein Cell 2018;9:15–32. <https://pmc.ncbi.nlm.nih.gov/articles/PMC5777971/>
+- **Wollmann 2017.** Wollmann BM et al. 4β-Hydroxycholesterol level in patients with rheumatoid arthritis before vs. after initiation of bDMARDs and correlation with inflammatory state. Clin Transl Sci 2017;10:42–49. <https://pubmed.ncbi.nlm.nih.gov/27991741/>
+- **Manders 2016.** Manders SH et al. Effectiveness of TNF inhibitors in combination with various csDMARD in the treatment of rheumatoid arthritis: data from the DREAM registry. J Rheumatol 2016;43:1787–1794. <https://pubmed.ncbi.nlm.nih.gov/27481900/>
+- **Abbott 2015.** Abbott R et al. Tumour necrosis factor-α inhibitor therapy in chronic physical illness: a systematic review and meta-analysis of the effect on depression and anxiety. J Psychosom Res 2015;79:175–184. <https://pubmed.ncbi.nlm.nih.gov/25935351/>
+- **FDA naming 2017.** US Food and Drug Administration. Nonproprietary naming of biological products: guidance for industry (January 2017). <https://www.fda.gov/media/93218/download>
+- **CDC altered immunocompetence.** Centers for Disease Control and Prevention. General best practice guidelines for immunization: altered immunocompetence (updated 2024). <https://www.cdc.gov/vaccines/hcp/imz-best-practices/altered-immunocompetence.html>
+- **EULAR 2022 screening.** Fragoulis GE et al. 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in adults with autoimmune inflammatory rheumatic diseases. Ann Rheum Dis 2023;82:742–753. <https://pubmed.ncbi.nlm.nih.gov/36328476/>

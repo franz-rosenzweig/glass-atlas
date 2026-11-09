@@ -62,13 +62,13 @@ export const GUIDE={
   chondro:{name:'Chondrocyte',kind:'Cell',size:'about 10–20 µm',draw:(x,cx,cy,s)=>G.chondro(x,cx,cy,s*2,true),
     text:['Lives alone or in pairs in a small cavity inside the cartilage it maintains.','Cartilage has no blood supply, so it repairs very slowly. Joint space narrowing on an X-ray means cartilage has been lost.']},
   tnf:{name:'TNF',kind:'Signal protein',size:'a trimer about 5 nm across',draw:(x,cx,cy,s)=>G.tnf(x,cx,cy,s*1.8),
-    text:['Tumour necrosis factor: three identical units that dock onto receptors and switch on inflammation genes.','One of the master switches of RA. Adalimumab (Humira), etanercept and infliximab all block it.']},
+    text:['Tumour necrosis factor: three identical units that dock onto receptors and switch on inflammation genes.','One of the master switches of RA. Adalimumab (the patient\'s Hadlima), etanercept and infliximab all block it.']},
   il6:{name:'IL-6',kind:'Signal protein',size:'about 4 nm',draw:(x,cx,cy,s)=>G.il6(x,cx,cy,s*1.8),
     text:['Interleukin-6 tells the liver to make CRP, the inflammation blood test, and contributes to fatigue.','It also raises hepcidin, the hormone that locks iron away, one reason inflammation causes anaemia. Tocilizumab blocks its receptor.']},
   acpa:{name:'ACPA (anti-CCP antibody)',kind:'Antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8,0,'#C08CFF'),
     text:['An antibody that targets proteins in which the amino acid arginine has been converted to citrulline, a change made by enzymes called PADs.','It is one of the blood tests used to diagnose RA, and can be present years before the joints hurt.']},
-  ada:{name:'Adalimumab (Humira)',kind:'Medicine · antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8),
-    text:['A recombinant human IgG1 antibody that grabs TNF and blocks it from both of its receptors (p55 and p75).','Usually 40 mg under the skin every other week; it lasts about two weeks in the body. Before starting, people are tested for tuberculosis and hepatitis B; live vaccines are avoided while on it, and the label\'s boxed warning covers serious infections and some cancers. With the patient\'s history of brain inflammation, her neurologist should be in the loop, and her cervical screening may become more frequent. Many people now get a biosimilar, which works the same way.']},
+  ada:{name:'Adalimumab (Hadlima)',kind:'Medicine · antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8),
+    text:['A recombinant human IgG1 antibody that grabs TNF, free or sitting on a cell, and blocks it from both of its receptors (p55 and p75).','The patient\'s is Hadlima, adalimumab-bwwd: a biosimilar of Humira, with the same amino-acid sequence and no meaningful difference in effect or safety. In the head-to-head trial in RA, 72.4% on Hadlima and 72.2% on Humira improved by at least 20% at 24 weeks.','40 mg under the skin every other week; its half-life is about two weeks, so the level never empties between doses. Tuberculosis and hepatitis B are checked before starting, live vaccines are avoided, and a fever means a call the same day.']},
   hcq:{name:'Hydroxychloroquine',kind:'Medicine · small molecule',size:'about 1 nm',draw:(x,cx,cy,s)=>G.hcq(x,cx,cy,s*2.4,0,true),
     text:['A weak base that slips into the cell\'s acidic recycling compartments (lysosomes and endosomes), picks up a charge and gets trapped there, making them less acidic.','That blunts how immune cells chop up and display proteins and quiets the TLR7 and TLR9 alarm sensors. It builds up in the body slowly, which is why it takes months to reach full effect.']},
 };
@@ -273,7 +273,7 @@ function liningLevel(){
     const st=q('#dl-st');st.disabled=S.ster>.2||S.done;st.querySelector('small').textContent=S.ster>.02?`fading: ${Math.round(S.ster*100)}% strength`:'fast, but wears off';
     const hu=q('#dl-hum');hu.classList.toggle('on',S.hum);hu.querySelector('small').textContent=S.hum?'a dose every 2 weeks; grabs TNF only':'targets TNF';
   }
-  function finish(api){const prot=Math.round((1-(S.bone+S.cart)/2)*100);const used=[S.hcq&&'hydroxychloroquine',S.hum&&'Humira',S.sterUses&&'a steroid bridge'].filter(Boolean);
+  function finish(api){const prot=Math.round((1-(S.bone+S.cart)/2)*100);const used=[S.hcq&&'hydroxychloroquine',S.hum&&'Hadlima',S.sterUses&&'a steroid bridge'].filter(Boolean);
     const el=api.card.querySelector('#dl-end');if(el){el.hidden=false;el.innerHTML=`<p class="sub">A year in this lining</p><p><b style="color:var(--bone)">${prot}% of the joint protected.</b> ${S.caught} signals caught by hand${used.length?', with '+used.join(' and '):', no medicine'}.</p><p>${used.length?'The earlier a treatment starts, the less there is to undo: erosions mostly don\'t heal. That is the whole logic of treating RA early and to a target, and of changing the plan (often methotrexate, sometimes a biologic) if the first drug isn\'t enough by about three months. Hydroxychloroquine is the gentlest DMARD; many people need a stronger one, which is normal.':'Untreated, the lining keeps eroding bone and cartilage. Try again with the patient\'s medicines.'}</p>`;}
     api.toast(`Week 52 · ${prot}% protected`);}
   return {id:'lining',label:'Lining',size:'100 µm',fit:'cover',bar:{units:80,label:'20 µm'},zoomFocus:{x:600,y:330},
@@ -283,14 +283,14 @@ function liningLevel(){
       <div class="dv-meter"><span>Bone eroded</span><b id="dl-bone">0%</b><i><u id="dl-boneB"></u></i></div>
       <div class="dv-meter"><span>Cartilage lost</span><b id="dl-cart">0%</b><i><u id="dl-cartB"></u></i></div>
       <div class="dv-meter"><span>Signals caught</span><b id="dl-c">0</b></div>
-      <div class="dv-btns"><button class="dv-btn" id="dl-st" type="button">Steroid bridge<small>fast, but wears off</small></button><button class="dv-btn" id="dl-hcq" type="button">Hydroxychloroquine<small>slow: builds over months</small></button><button class="dv-btn" id="dl-hum" type="button">Humira<small>targets TNF</small></button></div>
+      <div class="dv-btns"><button class="dv-btn" id="dl-st" type="button">Steroid bridge<small>fast, but wears off</small></button><button class="dv-btn" id="dl-hcq" type="button">Hydroxychloroquine<small>slow: builds over months</small></button><button class="dv-btn" id="dl-hum" type="button">Hadlima<small>adalimumab: targets TNF</small></button></div>
       <div id="dl-end" hidden></div>
-      <div class="dv-btns"><button class="dv-btn" id="dl-re" type="button">Restart the year</button><button class="dv-btn go" id="dl-go" type="button">Zoom to the molecules<small>see TNF meet Humira</small></button></div>
+      <div class="dv-btns"><button class="dv-btn" id="dl-re" type="button">Restart the year</button><button class="dv-btn go" id="dl-go" type="button">Zoom to the molecules<small>see TNF meet Hadlima</small></button></div>
       <p class="dv-fine">Tap any cell to add it to your field guide. One week passes every two seconds. Each glowing dot stands for a burst of signal molecules far too small to see at this scale. Cell sizes are to scale; the game's numbers are illustrative, not a forecast for the patient's joints.</p>`;},
     bind(card,api){
       card.querySelector('#dl-st').onclick=()=>{if(S.ster>.2||S.done)return;S.ster=1;S.sterUses++;api.toast('Steroid: inflammation drops fast');};
       card.querySelector('#dl-hcq').onclick=()=>{if(S.hcq||S.done)return;S.hcq=true;S.hcqStart=S.week;api.toast('Hydroxychloroquine started: it builds slowly');};
-      card.querySelector('#dl-hum').onclick=()=>{if(S.hum||S.done)return;S.hum=true;S.humNext=S.week;api.toast('Humira: antibodies arrive from the blood');};
+      card.querySelector('#dl-hum').onclick=()=>{if(S.hum||S.done)return;S.hum=true;S.humNext=S.week;api.toast('Hadlima: adalimumab arrives from the blood');};
       card.querySelector('#dl-re').onclick=()=>{reset();card.querySelector('#dl-end').hidden=true;};
       card.querySelector('#dl-go').onclick=()=>api.go('molecule',{from:{x:600,y:330}});
     },
@@ -385,7 +385,7 @@ function moleculeLevel(){
   return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='tnf'?{units:83,label:'5 nm'}:{units:0,label:'schematic, not to scale'};},zoomFocus:{x:500,y:350},
     enter(){},exit(){drag=null;},
     card(){return `<p class="k">Level 4 · molecules</p><h2>How the patient's medicines work</h2>
-      <div class="dv-seg" role="radiogroup" aria-label="Molecule"><button role="radio" data-mm="tnf" aria-checked="${M.mode==='tnf'}">TNF and Humira</button><button role="radio" data-mm="hcq" aria-checked="${M.mode==='hcq'}">Hydroxychloroquine</button></div>
+      <div class="dv-seg" role="radiogroup" aria-label="Molecule"><button role="radio" data-mm="tnf" aria-checked="${M.mode==='tnf'}">TNF and Hadlima</button><button role="radio" data-mm="hcq" aria-checked="${M.mode==='hcq'}">Hydroxychloroquine</button></div>
       <div id="dm-body"></div>`;},
     bind(card,api){const body=card.querySelector('#dm-body');
       const render=()=>{body.innerHTML=M.mode==='tnf'?`<p>TNF trimers drift down and dock onto receptors, switching on inflammation inside the cell. Adalimumab is an antibody: one of its two arms grabs TNF before it can dock. <b style="color:var(--bone)">Drag an antibody onto a TNF</b>, or let them hunt.</p>

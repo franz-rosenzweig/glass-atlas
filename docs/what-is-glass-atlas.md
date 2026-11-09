@@ -2,7 +2,7 @@
 
 # What is Glass Atlas?
 
-Glass Atlas is an interactive 3D atlas of real human anatomy, built around ONE teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and nine medicines. It runs in the browser, on a computer or a phone, in a dark mode and a light mode, and it needs nothing installed.
+Glass Atlas is an interactive 3D atlas of real human anatomy, built around ONE teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and ten medicines. It runs in the browser, on a computer or a phone, in a dark mode and a light mode, and it needs nothing installed.
 
 ![The atlas: the body in the middle and the case on the left](images/hero-dark.png)
 *The home view: the body in the middle, the case on the left, the layers and the other views along the top.*

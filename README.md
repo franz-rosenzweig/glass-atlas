@@ -1,5 +1,5 @@
 <h1 align="center">Glass Atlas</h1>
-<p align="center"><b>An interactive 3D atlas of real human anatomy, built around one teaching case.</b><br>Twelve diagnoses and nine medicines, each one something you operate on the body, in the browser, in dark or light.</p>
+<p align="center"><b>An interactive 3D atlas of real human anatomy, built around one teaching case.</b><br>Twelve diagnoses and ten medicines, each one something you operate on the body, in the browser, in dark or light.</p>
 <p align="center">
   <img src="https://img.shields.io/badge/web-app-2c7d74?style=flat-square" alt="Web app">
   <img src="https://img.shields.io/badge/anatomy-BodyParts3D-2c7d74?style=flat-square" alt="Anatomy: BodyParts3D">
@@ -27,7 +27,7 @@
 
 Most anatomy apps show you a body, and most case studies are a few pages of text. I wanted to see what happens when you put the two together: ONE case, followed through real anatomy, where every condition is something you operate instead of a paragraph you read. So Glass Atlas has a tilt table that stands the body up and shows the heart racing, a hand that opens as the morning stiffness wears off, and a microscope that zooms from the knuckle all the way down to the molecule a medicine catches.
 
-The case is a teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and nine medicines. That sounds like a lot, and it is, but the interesting part is how they touch each other: why the iron matters for the heart rate, why the thyroid pill and the iron tablet need four hours apart, which links between the conditions are proven and which aren't yet. The connections web, the day view and the medicines planner are all about that. Every clinical claim has a source you can click.
+The case is a teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and ten medicines. That sounds like a lot, and it is, but the interesting part is how they touch each other: why the iron matters for the heart rate, why the thyroid pill and the iron tablet need four hours apart, which links between the conditions are proven and which aren't yet. The connections web, the day view and the medicines planner are all about that. Every clinical claim has a source you can click.
 
 It's for anyone learning how the body works and how conditions affect each other, like students in nursing, medicine and the other health sciences, and for anyone who'd rather move a slider than read a paragraph. You don't need to know any medicine to start: the tour walks you through the whole case in about eight minutes.
 
@@ -58,7 +58,7 @@ It's for anyone learning how the body works and how conditions affect each other
 - **The guided tour.** Thirteen narrated stops, about eight minutes, with the camera and the highlights following along.
 - **Tell any provider.** An emergency card with five emergencies and the handful of facts that change what a stranger in scrubs should do.
 - **Notes on the body.** Tap a spot and pin a note there, kept in your browser.
-- **Sources and review.** 87 references, each one a click away from the reading that cites it.
+- **Sources and review.** 125 references, each one a click away from the reading that cites it.
 
 ### Anywhere
 

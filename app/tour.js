@@ -1,5 +1,7 @@
 // The narrated tour: plays recorded narration stop by stop while the camera and highlights follow.
 import { kit } from './kit.js';
+// re-recorded clips get a version, because audio is cached for a day (00 and 07: Hadlima, November 2026)
+const AUDIO_V={0:2,7:2};
 
 export function makeTour(A,{onStart,onEnd,showWeb}){
   const K=kit(A);let segs=null,i=0,audio=null,bar=null,playing=false,timer=null,useAudio=true;
@@ -22,7 +24,7 @@ export function makeTour(A,{onStart,onEnd,showWeb}){
   function clearT(){clearTimeout(timer);timer=null;}
   function go(j){i=j;clearT();const s=segs[i];stage(s);
     if(audio){audio.pause();audio=null;}
-    if(useAudio){audio=new Audio(`tour/${String(i).padStart(2,'0')}.mp3`);audio.onended=()=>next();audio.onerror=()=>{useAudio=false;timed();};
+    if(useAudio){audio=new Audio(`tour/${String(i).padStart(2,'0')}.mp3${AUDIO_V[i]?'?v='+AUDIO_V[i]:''}`);audio.onended=()=>next();audio.onerror=()=>{useAudio=false;timed();};
       if(playing)audio.play().catch(()=>{useAudio=false;timed();});}
     else timed();
     render();}

@@ -14,7 +14,7 @@
   },
   "parts": [],
   "col": "#ECE6DA",
-  "text": "This is a glass atlas of one body: a teaching case, an adult woman we'll call the patient. The bones, organs and vessels you see are real anatomical models from a medical research database. Her chart lists twelve diagnoses and nine medicines. That can sound like a list of things that are wrong. This tour is something else: a map of how her body works, where it is having a hard time, and what is helping. It takes about eight minutes. You can pause at any point, and every stop has its own instrument to explore afterwards. Everything here is general education, not medical advice."
+  "text": "This is a glass atlas of one body: a teaching case, an adult woman we'll call the patient. The bones, organs and vessels you see are real anatomical models from a medical research database. Her chart lists twelve diagnoses and ten medicines. That can sound like a list of things that are wrong. This tour is something else: a map of how her body works, where it is having a hard time, and what is helping. It takes about eight minutes. You can pause at any point, and every stop has its own instrument to explore afterwards. Everything here is general education, not medical advice."
  },
  {
   "id": "heds",
@@ -168,7 +168,7 @@
    "#lefthand"
   ],
   "col": "#F29A55",
-  "text": "In rheumatoid arthritis, the patient's immune system attacks the thin lining of her joints, most of all the small joints of the hands. The lining swells, and stiffness after rest can last an hour or more. Hydroxychloroquine is slow, often two to three months before it helps, and steroids can bridge the gap for a short while. If the joints flare when a bridge wears off, call the rheumatologist. It's a sign the plan may need adjusting, not something to just put up with. Modern care aims for a target: if there's no clear improvement by about three months, the plan changes, often to methotrexate, sometimes to a biologic like Humira, which catches the signal called TNF."
+  "text": "In rheumatoid arthritis, the patient's immune system attacks the thin lining of her joints, most of all the small joints of the hands. The lining swells, and stiffness after rest can last an hour or more. Hydroxychloroquine is slow, often two to three months before it helps, and steroids can bridge the gap for a short while. If the joints flare when a bridge wears off, call the rheumatologist. It's a sign the plan may need adjusting, not something to just put up with. Modern care aims for a target: if there's no clear improvement by about three months, the plan changes. For the patient that meant Hadlima, a copy of Humira injected every other week, which catches the signal called TNF and works within weeks."
  },
  {
   "id": "thyroid",

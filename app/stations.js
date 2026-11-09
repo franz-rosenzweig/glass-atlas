@@ -325,7 +325,7 @@ export function makeStations(A){
 
   /* ==================================================================== HAND (RA) */
   const hand=(()=>{
-    let tickOff,ui,caps=[],openCur=1,trigSnap=0;const v={open:30,awake:20,months:0,ster:false,trig:false,next:false};
+    let tickOff,ui,caps=[],openCur=1,trigSnap=0;const v={open:30,awake:20,months:0,weeks:0,ster:false,trig:false,mtx:false};
     const CURL={mcp:52,pip:72,dip:34,tm:26,ti:28};
     function capsules(){
       if(caps.length){caps.forEach(c=>c.visible=true);return;}
@@ -336,11 +336,14 @@ export function makeStations(A){
       add(H.fingers[4][0].node,H.fingers[4][1].pivot,0.0068);
     }
     // HCQ: little effect for the first month, mostly there by 4–6 months (sigmoid). Alone it is a partial response.
-    // Steroids: short-term only, so their effect is shown for the first 3 months. Next step: methotrexate or a biologic.
+    // Steroids: short-term only, so their effect is shown for the first 3 months.
+    // Hadlima (adalimumab): responses can start in the first week or two (ARMADA) and are mostly there by
+    // about 12 weeks; methotrexate alongside raises its levels and clearly improves the response (RA-V: ACR50 62% versus 41%). Illustrative curve.
     const sig=m=>{const e=x=>1/(1+Math.exp(-(x-2)/.6));return (e(m)-e(0))/(1-e(0));};
+    const hdl=w=>1-Math.exp(-w/4);
     function model(){
       const sterOn=v.ster&&v.months<3;
-      let I=(1-0.4*sig(v.months))*(sterOn?.55:1);if(v.next)I*=.15+.85*(1-sig(v.months));
+      let I=(1-0.4*sig(v.months))*(sterOn?.55:1)*(1-(v.mtx?.8:.72)*hdl(v.weeks));
       const D=10+140*I;
       const S=I*Math.pow(clamp(1-v.awake/D,0,1),.8)*.5;
       return {I,D,S,max:1-S,sterOn};
@@ -360,12 +363,13 @@ export function makeStations(A){
         ${slider('h-open','Try to open the hand',0,100,1,30,'%')}
         ${slider('h-awake','Minutes since waking',0,180,5,20,' min')}
         ${slider('h-months','Months on hydroxychloroquine',0,6,.5,0,' mo')}
-        <div class="tgs">${toggle('h-ster','Steroid bridge (short-term)','covers the first weeks while the DMARD builds up')}${toggle('h-next','Next step: methotrexate or a biologic','what guidelines add if hydroxychloroquine isn\'t enough')}${toggle('h-trig','Trigger finger (middle)','a tendon that catches, then snaps free')}</div>
+        ${slider('h-weeks','Weeks on Hadlima',0,24,1,0,' wk')}
+        <div class="tgs">${toggle('h-ster','Steroid bridge (short-term)','covers the first weeks while the DMARD builds up')}${toggle('h-mtx','Methotrexate added','often paired with adalimumab')}${toggle('h-trig','Trigger finger (middle)','a tendon that catches, then snaps free')}</div>
         <p class="fine" id="h-sn" hidden style="margin-top:0!important">Steroids are kept short; by three months the DMARD should be doing the work. If the joints flare when a bridge ends, that's a reason to call the rheumatologist and review the plan.</p>
-        <p class="fine">Hand bones are real anatomy; joint-lining swelling is drawn schematically. Hydroxychloroquine usually takes two to three months to start helping and up to six for its full effect; on its own it is the gentlest DMARD, so the model leaves some stiffness. Treat-to-target care changes the plan if there's no clear improvement by about three months. In RA, making a full fist and gripping are often harder than opening. The stiffness curve is illustrative of the RA pattern, not the patient's measured response.</p>`;
+        <p class="fine">Hand bones are real anatomy; joint-lining swelling is drawn schematically. Hydroxychloroquine usually takes two to three months to start helping and up to six for its full effect; on its own it is the gentlest DMARD. Hadlima, the patient's adalimumab, works faster: in the original trials some people improved by the first week, and most of the effect comes within about three months. Treat-to-target care changes the plan if there's no clear improvement by about three months. In RA, making a full fist and gripping are often harder than opening. The stiffness curve is illustrative of the RA pattern, not the patient's measured response.</p>`;
         ui=panel;
-        bindSlider(panel,'h-open',x=>v.open=x,x=>x+'%');bindSlider(panel,'h-awake',x=>v.awake=x,x=>x+' min');bindSlider(panel,'h-months',x=>v.months=x,x=>x+' mo');
-        bindToggle(panel,'h-ster',on=>v.ster=on);bindToggle(panel,'h-next',on=>v.next=on);bindToggle(panel,'h-trig',on=>v.trig=on);
+        bindSlider(panel,'h-open',x=>v.open=x,x=>x+'%');bindSlider(panel,'h-awake',x=>v.awake=x,x=>x+' min');bindSlider(panel,'h-months',x=>v.months=x,x=>x+' mo');bindSlider(panel,'h-weeks',x=>v.weeks=x,x=>x+' wk');
+        bindToggle(panel,'h-ster',on=>v.ster=on);bindToggle(panel,'h-mtx',on=>v.mtx=on);bindToggle(panel,'h-trig',on=>v.trig=on);
         const H=A.hand.right;const c=H.fingers[2][1].pivot.clone().lerp(H.wrist,.35);
         viewAlong(c,H.volar.clone().multiplyScalar(-1).add(V3(-0.55,0.15,0)).normalize(),0.5);
         tickOff=A.onTick(dt=>{

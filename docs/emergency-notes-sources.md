@@ -8,7 +8,7 @@ Three things sit on the edges of the atlas and are easy to miss: the red **Tell 
 
 **Tell any provider** opens the case's emergency card, the page you'd carry to any new clinic. It's in two parts.
 
-The first is "In an emergency": five situations, each with the signs to look for and what to do, in plain words. They are a severe allergic reaction, a seizure, a faint, a back-and-bladder emergency and a neck-and-arm one, and each says when it's 911 and when it's the emergency department today.
+The first is "In an emergency": six situations, each with the signs to look for and what to do, in plain words. They are a severe allergic reaction, a seizure, a faint, a back-and-bladder emergency, a neck-and-arm one and a fever on Hadlima, and each says when it's 911 and when it's the emergency department today.
 
 The second is "the handful of facts that change what a stranger in scrubs should do": eleven short points about the case, numbered, like which medicines lengthen the QT interval together, which two need four hours apart, why local anaesthetics may work poorly, and what a beta blocker changes about treating a severe allergic reaction. The sources are at the bottom, as everywhere else.
 
@@ -28,7 +28,7 @@ The notes stay in your browser, on that device only: nothing is sent anywhere, a
 
 ## Sources and review
 
-**Sources and review**, at the bottom of the case, is where the numbers come from. It lists all 87 references, grouped the way the app is (POTS and fainting, hEDS and MCAS, the stomach and gut, iron, the thyroid and autoimmunity, rheumatoid arthritis, the brain, seizures and the spine, the cervix and endometriosis, medicine labels and interactions, and emergencies and first aid), each with a link to the guideline, label or study.
+**Sources and review**, at the bottom of the case, is where the numbers come from. It lists all 125 references, grouped the way the app is (POTS and fainting, hEDS and MCAS, the stomach and gut, iron, the thyroid and autoimmunity, rheumatoid arthritis, the brain, seizures and the spine, the cervix and endometriosis, medicine labels and interactions, and emergencies and first aid), each with a link to the guideline, label or study.
 
 ![Sources and review](images/sources.png)
 *Sources and review in light mode, with how the content was checked at the top.*

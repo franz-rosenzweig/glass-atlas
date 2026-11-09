@@ -2,7 +2,7 @@
 
 # The case and its instruments
 
-The panel on the left is the case. It's a teaching case: one adult woman, called "the patient" throughout, with twelve diagnoses, one more that's suspected, and nine medicines. The conditions are grouped by body system, each in its own colour, and every one of them opens something you can operate.
+The panel on the left is the case. It's a teaching case: one adult woman, called "the patient" throughout, with twelve diagnoses, one more that's suspected, and ten medicines. The conditions are grouped by body system, each in its own colour, and every one of them opens something you can operate.
 
 ![A condition open: the tilt table beside the body](images/instrument-tilt.png)
 *Postural Orthostatic Tachycardia Syndrome on the tilt table, three minutes into the test: the heart rate up 41, and more than half a litre of blood shifted to the legs and belly.*
@@ -21,7 +21,7 @@ Under them are the conditions, by system:
 - **Brain & nerves:** History of Encephalitis, with seizures
 - **Reproductive:** Low-Grade Squamous Intraepithelial Lesion (LSIL), and Endometriosis, which is marked "Suspected"
 
-A condition with a **Dive** badge has a microscope dive as well (see [The dives](dives.md)). At the bottom are **Medicines (9)** and **Sources and review**.
+A condition with a **Dive** badge has a microscope dive as well (see [The dives](dives.md)). At the bottom are **Medicines (10)** and **Sources and review**.
 
 ## A condition's drawer
 

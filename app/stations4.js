@@ -90,7 +90,7 @@ export function makeStations4(A){
         <p class="eyebrow">Where the patient's medicines overlap</p>
         <div class="seg" role="radiogroup" aria-label="Lens">${Object.entries(LENS).map(([k,l])=>`<button role="radio" data-lens="${k}" aria-checked="${k===lens}">${l.label}</button>`).join('')}</div>
         <div id="p-lens"></div>
-        <p class="fine">The times are a starting template, not a real schedule, and this is not a dosing plan: the patient's prescribers and pharmacist set the timing. The spacing rules come from the medicines' labels and standard guidance: levothyroxine 30–60 minutes before breakfast, or at bedtime 3–4 hours after eating; iron and levothyroxine 4 hours apart; Adderall XR on waking. The iron row is a supplement, not one of the nine listed medicines; its dose and timing are for her doctor to choose.</p>`;
+        <p class="fine">The times are a starting template, not a real schedule, and this is not a dosing plan: the patient's prescribers and pharmacist set the timing. The spacing rules come from the medicines' labels and standard guidance: levothyroxine 30–60 minutes before breakfast, or at bedtime 3–4 hours after eating; iron and levothyroxine 4 hours apart; Adderall XR on waking. The iron row is a supplement, not one of the ten listed medicines; its dose and timing are for her doctor to choose. Hadlima, an injection every other week, has its own bench.</p>`;
       ui=panel;
       for(const k of Object.keys(prnOn))bindToggle(panel,'p-'+k,on=>{prnOn[k]=on;if(ui===panel)render();});
       panel.querySelectorAll('[data-lens]').forEach(b=>b.onclick=()=>{lens=b.dataset.lens;render();});

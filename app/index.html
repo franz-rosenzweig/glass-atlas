@@ -276,7 +276,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 <div id="app">
   <canvas id="gl" aria-label="Interactive 3D anatomy. Drag to rotate, scroll or pinch to zoom, point at any structure to name it."></canvas>
   <header class="top">
-    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · nine medicines</p></div>
+    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · ten medicines</p></div>
     <div class="layers" role="group" aria-label="Layers">
       <button class="chip" data-layer="skin" aria-pressed="true">Skin</button>
       <button class="chip" data-layer="skeleton" aria-pressed="true">Skeleton</button>
@@ -312,6 +312,7 @@ import { makeStations } from './stations.js';
 import { makeStations2 } from './stations2.js';
 import { makeStations3 } from './stations3.js';
 import { makeStations4 } from './stations4.js';
+import { makeStations5 } from './stations5.js';
 import { createDive } from './dive.js';
 import { makeWeb } from './web.js';
 import { makeDay } from './day.js';
@@ -332,6 +333,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const isPhone=()=>innerWidth<=860;
 const CREDIT=`<p class="credit">Anatomy: <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/" target="_blank" rel="noopener">BodyParts3D</a>, Copyright © 2008 Life Science Integrated Database Center, licensed under <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a> (Mitsuhashi et al., Nucleic Acids Res 2009), via K. Moerman's repository. Decimated; skin surface adapted to a female form; thyroid gland, uterus, ovaries, nerve and leg-vein courses modelled. General education, not medical advice: a patient's own clinicians decide their care. In an emergency, call 911.</p>`;
 const byId=Object.fromEntries(CONDS.map(c=>[c.id,c]));
+const WORD=['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'],CAP=w=>w[0].toUpperCase()+w.slice(1);
 
 let tour,K0,A,ST,active=null,curStation=null,listMode='chart',medQ='';
 const canvas=$('#gl'),panel=$('#panel'),drawer=$('#drawer');
@@ -351,16 +353,16 @@ function zoomFactor(){const b=band();return Math.min(1.9,Math.max(1,Math.sqrt(81
 /* ---------- left panel ---------- */
 function renderPanel(){
   if(listMode==='chart'){
-    let h=`<p class="eyebrow">The patient's chart</p><h2>Choose a condition</h2><p class="lede">A teaching case: one adult woman, called “the patient” throughout, with twelve diagnoses and nine medicines. Each condition opens an instrument you operate on the real anatomy.</p><p class="edu">General education, not medical advice. In an emergency, call 911; the emergency steps are under <b>Tell any provider</b>.</p><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">How it all connects<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">18 threads between the patient's conditions</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Web</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">24 hours, hour by hour</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Day</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Take the guided tour<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">narrated · about 8 minutes</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Tour</span></button>`;
+    let h=`<p class="eyebrow">The patient's chart</p><h2>Choose a condition</h2><p class="lede">A teaching case: one adult woman, called “the patient” throughout, with twelve diagnoses and ${WORD[MEDS.length]} medicines. Each condition opens an instrument you operate on the real anatomy.</p><p class="edu">General education, not medical advice. In an emergency, call 911; the emergency steps are under <b>Tell any provider</b>.</p><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">How it all connects<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">18 threads between the patient's conditions</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Web</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">24 hours, hour by hour</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Day</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Take the guided tour<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">narrated · about 8 minutes</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Tour</span></button>`;
     for(const s of SYS_ORDER){const list=CONDS.filter(c=>c.sys===s);if(!list.length)continue;
       h+=`<div class="group" style="--c:${cc(SYS[s].c)}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
       for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}${c.suspected?'<span class="sus">Suspected</span>':''}</span><span class="badge${DIVES[c.id]?' inst':''}" style="${DIVES[c.id]?'':'color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)'}">${DIVES[c.id]?'Dive':esc(c.suspected?'?':c.year)}</span></button>`;
       h+='</div>';}
-    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines (9)<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">and the patient's day, hour by hour</small></span><span class="badge">open</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources and review<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">${Object.keys(REFS).length} references · checked Oct 2026</small></span><span class="badge">open</span></button></div>`;
+    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines (${MEDS.length})<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">and the patient's day, hour by hour</small></span><span class="badge">open</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources and review<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">${Object.keys(REFS).length} references · checked Oct–Nov 2026</small></span><span class="badge">open</span></button></div>`;
     panel.innerHTML=h+CREDIT;
     $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
   }else{
-    let h=`<p class="eyebrow">Medicines</p><h2>Nine medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><input class="medfind" id="medFind" type="search" placeholder="Search medicines" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
+    let h=`<p class="eyebrow">Medicines</p><h2>${CAP(WORD[MEDS.length])} medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><input class="medfind" id="medFind" type="search" placeholder="Search medicines" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
     for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
     panel.innerHTML=h+'<p class="none" hidden>No medicine matches that.</p></div>'+CREDIT;
     $('#toChart').onclick=()=>{medQ='';listMode='chart';renderPanel();};
@@ -399,7 +401,7 @@ const centreOf=names=>{const B=new A.THREE.Box3();for(const r of A.resolve(names
 const DIVES={
   ra:{color:'#F29A55',make:()=>({levels:raLevels(),guide:GUIDE}),top:{label:'Hand',size:'10 cm'},target:()=>A.hand.right.fingers[2][1].pivot,view:{dist:.13,azim:-20,elev:30},
     text:'Zoom from the patient\'s knuckle into the joint, down to the cells of the lining where RA lives, and on to the molecules her medicines act on. Halfway down there is a game: hold the lining for a year.',
-    steps:[['Joint, 1 cm.','The knuckle cut open: healthy, active RA, years untreated, treated early.'],['Lining, 100 µm.','The cells, to scale. Catch TNF and IL-6 and use the patient\'s medicines to protect bone and cartilage for a year.'],['Molecules, 10 nm.','Humira catching TNF; hydroxychloroquine in the lysosome.']]},
+    steps:[['Joint, 1 cm.','The knuckle cut open: healthy, active RA, years untreated, treated early.'],['Lining, 100 µm.','The cells, to scale. Catch TNF and IL-6 and use the patient\'s medicines to protect bone and cartilage for a year.'],['Molecules, 10 nm.','Hadlima (adalimumab) catching TNF; hydroxychloroquine in the lysosome.']]},
   hashi:{color:'#40C7AA',make:()=>thyroidDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['#thyroid']),view:{dist:.16,azim:10,elev:8},
     text:'Look at the patient\'s thyroid the way a pathologist does, then run one follicle, the tiny hormone factory, for a year while the immune attack goes on. Your job is the endocrinologist\'s: keep T4 steady with the dose.',
     steps:[['Tissue, 1 mm.','A stained slide: healthy follicles, then years of Hashimoto\'s.'],['Follicle, 100 µm.','The T4 assembly line. Adjust levothyroxine, check labs, and live with TSH\'s six-week lag.']]},
@@ -444,8 +446,9 @@ function open(id){
   hideHint();
 }
 function medRead(m){
-  if(!m)return `<p class="tldr">Nine medicines across six systems.</p><ul class="quotes">${MEDS.map(x=>`<li><b>${esc(x.name)}</b> (${esc(x.cls)}). ${esc(x.text)}${x.warn?' <b>For any provider:</b> '+esc(x.warn):''}</li>`).join('')}</ul>`+srcLine([...new Set(MEDS.flatMap(x=>x.refs||[]))]);
+  if(!m)return `<p class="tldr">${CAP(WORD[MEDS.length])} medicines across ${WORD[new Set(MEDS.map(x=>x.sys)).size]} systems.</p><ul class="quotes">${MEDS.map(x=>`<li><b>${esc(x.name)}</b> (${esc(x.cls)}). ${esc(x.text)}${x.warn?' <b>For any provider:</b> '+esc(x.warn):''}</li>`).join('')}</ul>`+srcLine([...new Set(MEDS.flatMap(x=>x.refs||[]))]);
   let h=`<p class="tldr">${esc(m.text)}</p>${m.warn?`<div class="warn"><b>For any provider</b>${esc(m.warn)}</div>`:''}`;
+  if(m.body)h+=m.body;
   if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${cc(SYS[byId[m.treats].sys].c)}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
   return h+srcLine(m.refs);
 }
@@ -453,15 +456,16 @@ function openMed(id){
   const m=id?MEDS.find(x=>x.id===id):null;stopStation();active=null;renderPanel();
   const col=m?SYS[m.sys].c:'#ECE6DA';
   const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',['Instrument','Read']);
-  tabbed(body,col,ST.meds,()=>medRead(m),{focus:id||null});
+  // a medicine with a bench of its own (Hadlima) opens that instead of the 24-hour planner
+  tabbed(body,col,m?.station?ST[m.station]:ST.meds,()=>medRead(m),{focus:id||null});
   hideHint();
 }
 /* ---------- sources ---------- */
 function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return '';
   return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
 function openSources(focusKey){stopStation();active=null;renderPanel();
-  const b=shell('Checked October 2026','#BFE6E1','Sources and review',null,null);
-  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
+  const b=shell('Checked October–November 2026','#BFE6E1','Sources and review',null,null);
+  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
   for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
     h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
   b.innerHTML=h;A.refresh();home();hideHint();
@@ -510,7 +514,7 @@ onTheme(syncTheme);syncTheme();
     A=await createAtlas(canvas,{binUrl:'anatomy.txt',onProgress:p=>{$('#lbar').style.width=p*100+'%';}});
     K0=kit(A);A.setTheme?.(theme());
     const _fly=A.flyTo;A.flyTo=(t,o={})=>_fly({...t,dist:t.dist*(o.raw?1:zoomFactor())},o);
-    ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
+    ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),...makeStations5(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
     renderPanel();A.size();fitOffset();
     A.camera.position.copy(A.sph([0,0.84,0],homeDist(),16,4));A.controls.target.set(0,0.84,0);A.controls.update();
     A.start();
