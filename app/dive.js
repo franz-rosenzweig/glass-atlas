@@ -90,9 +90,9 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   function toast(t){toastEl.textContent=t;toastEl.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>toastEl.classList.remove('on'),1800);}
   const api={ctx,toast,phone,discover,showCard,go,pause:v=>paused=v,get paused(){return paused||!pop.hidden;},card,root,
     fit:()=>fit(cur)};
-  function go(id,{from}={}){
+  function go(id,{from,opt}={}){
     const lv=levels.find(l=>l.id===id);if(!lv||lv===cur)return;
-    const prev=cur;if(prev)prev.exit?.();
+    const prev=cur;if(prev)prev.exit?.();lv.prep?.(opt);  // opt: a level's starting setup when another page links straight to it
     trans=prev?{from:prev,to:lv,t:0,focus:from||prev.zoomFocus||{x:500,y:350}}:null;
     cur=lv;visited.add(id);navHTML();
     card.innerHTML=lv.card();lv.bind?.(card,api);card.scrollTop=0;lv.enter?.(api);
@@ -147,9 +147,10 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
       ctx.fillStyle='rgba(236,230,218,.9)';ctx.fillRect(x0,y0,px,3);ctx.font='10px "Martian Mono", monospace';ctx.textAlign='right';ctx.fillText(cur.bar.label,x0+px,y0-6);}
     raf=requestAnimationFrame(frame);
   }
-  function open(startId){
-    root.hidden=false;resize();visited=new Set();cur=null;trans=null;guideBtn();A.paused=true;
-    go(startId||levels[0].id);last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+  function open(startId,opt){
+    root.hidden=false;resize();cur=null;trans=null;guideBtn();A.paused=true;
+    const i=Math.max(0,levels.findIndex(l=>l.id===startId));visited=new Set(levels.slice(0,i).map(l=>l.id));  // a deep link opens the levels above it too
+    go(levels[i].id,{opt});last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
     requestAnimationFrame(()=>root.classList.add('on'));
   }
   function close(){

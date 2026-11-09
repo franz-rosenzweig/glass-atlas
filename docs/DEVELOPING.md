@@ -26,7 +26,7 @@ A few things only work through a link:
 | `app/` | The complete app. `index.html` is a self-contained, fully offline copy (three.js and fonts are bundled in `vendor/`). `atlas.html` is the source exactly as published to claude.ai (dark only, before light mode), which loads three.js from a CDN. |
 | `app/tour/` | Narration audio for the 13 tour stops (MP3), and `tour-script.json` holds the text and camera positions. |
 | `app/anatomy.txt` | The anatomy meshes, gzip-compressed and base64-encoded; decoded in `core.js`. |
-| `research/references.md` | All 87 references, with links. |
+| `research/references.md` | All 210 references, with links. |
 | `research/model-checks/` | Node scripts used to check the iron, thyroid, hand and gastric-emptying models against published data. |
 | `build-pipeline/` | Python scripts and manifests that turned BodyParts3D STL files into `anatomy.txt` (decimate, adapt the skin surface, pack). The raw BodyParts3D download (~500 MB) isn't included; the scripts expect it at `bp3d/assets/BodyParts3D_data/stl/`. |
 | `tools/check.py` | Checks that imports resolve and walks every screen in light and dark in headless Chrome. Run it before pushing. |
@@ -43,7 +43,7 @@ Glass Atlas started as a published claude.ai artifact. This copy was exported on
 - `data.js`: conditions, medicines, alerts, emergency cards
 - `refs.js`: the references
 - `stations.js` to `stations4.js`: the instruments (tilt table, Beighton, neck, hand, stomach, thyroid, MCAS, iron, seizure threshold, lumbar, cervix, endometriosis, medicines planner)
-- `dive.js` and `dive-*.js`: the cell- and molecule-level dives and the field guide
+- `dive.js` and `dive-*.js`: the cell- and molecule-level dives and the field guide; `dive-med-<id>.js` is each medicine's dive, a module exporting `DIVE` (its colour, where the camera flies, the Dive tab's text, its sources, links into the condition dives, and `make()` for the levels), loaded the first time it opens
 - `web.js`, `day.js`, `notes.js`, `tour.js`, `kit.js`: connections, the day view, notes, the tour, shared helpers
 - `theme.js`: light and dark. CSS tokens for the panels, `light-dark()` pairs for inline colours, and a remap for every 2D canvas (lightness turned over in OKLCH, hue kept), so the drawing code doesn't need to know which theme is on
 
@@ -66,11 +66,12 @@ Once the app has loaded, `window.__ready` is true and `window.__atlas` lets a sc
 | `__atlas.open('pots')` | a condition, on its Instrument tab |
 | `__atlas.openMed('levothyroxine')`, `__atlas.openMed(null)` | one medicine, or the planner for the whole day |
 | `__atlas.openSources()` | the sources and review |
-| `__atlas.startDive('ra')` | a dive, and then `__atlas.dive.api.go('lining')` moves to a level |
+| `__atlas.startDive('ra')`, `__atlas.startDive('med:hadlima')` | a condition's or a medicine's dive, and then `__atlas.dive.api.go('lining')` moves to a level; `startDive('ra',{level:'molecule',opt:{mode:'hcq'}})` opens straight at a level |
+| `__atlas.openMed('hadlima','Dive')` | a medicine on a given tab |
 | `__atlas.tour.start()` | the guided tour |
 | `__atlas.closeAll()` | back to the body |
 
-The condition ids are `pots`, `heds`, `mcas`, `hashi`, `enceph`, `iron`, `gastro`, `carth`, `c67`, `lspurs`, `lsil`, `ra` and `endo`. The dives and their levels are `ra` (`joint`, `lining`, `molecule`), `hashi` (`slide`, `follicle`), `mcas` (`skin`, `mast`), `pots` (`circuit`, `rhythm`) and `iron` (`villi`, `cell`).
+The condition ids are `pots`, `heds`, `mcas`, `hashi`, `enceph`, `iron`, `gastro`, `carth`, `c67`, `lspurs`, `lsil`, `ra` and `endo`. The dives and their levels are `ra` (`joint`, `lining`, `molecule`), `hashi` (`slide`, `follicle`), `mcas` (`skin`, `mast`), `pots` (`circuit`, `rhythm`) and `iron` (`villi`, `cell`). The medicine dives are `med:` plus the medicine's id, with their levels listed in `DIVES` in `tools/check.py`.
 
 ## Checking a change
 
@@ -81,9 +82,9 @@ python3 tools/check.py              # both checks; screenshots go to /tmp/glass-
 python3 tools/check.py --static     # only the import check (no browser needed)
 ```
 
-The first part checks that every import in `index.html` and the modules resolves to a real file. The second serves `app/` on a free local port, drives headless Chrome over DevTools through `window.__atlas`, and walks every screen in light and then in dark: the home view, all thirteen conditions, the medicines, the sources, the connections, the day, the notes, the emergency card, the medicines list, every level of every dive with its field guide, and the tour. It fails on any page error, and it saves a screenshot of each screen, which you should look at too, since a screen can load and still look wrong.
+The first part checks that every import in `index.html` and the modules resolves to a real file. The second serves `app/` on a free local port, drives headless Chrome over DevTools through `window.__atlas`, and walks every screen in light and then in dark: the home view, all thirteen conditions, the medicines, the sources, the connections, the day, the notes, the emergency card, the medicines list, every level of every dive (the conditions' and the medicines') with its field guide, and the tour. It fails on any page error, and it saves a screenshot of each screen, which you should look at too, since a screen can load and still look wrong.
 
-It needs Chrome (set `CHROME=/path/to/chrome`; the default is Chrome for Testing in `~/.local/opt`) and the Python package `websocket-client`. `CHECK_OUT=` puts the screenshots somewhere else, and `CHECK_EXTRA=shots.json` also shoots screens the standard walk doesn't reach: a JSON list of `{"name", "js", "wait"}` steps, saved as `<theme>-extra-<name>.png`.
+It needs Chrome (set `CHROME=/path/to/chrome`; the default is Chrome for Testing in `~/.local/opt`) and the Python package `websocket-client`. `CHECK_OUT=` puts the screenshots somewhere else, and `CHECK_EXTRA=shots.json` also shoots screens the standard walk doesn't reach: a JSON list of `{"name", "js", "wait"}` steps (up to twelve), saved as `<theme>-extra-<name>.png`. While working on one screen, `--extra-only` skips the standard walk, `--phone` shoots at 390 × 844, and `--light` or `--dark` runs one theme. Headless Chrome draws only a few frames a second, so animations run slower in the shots than in a browser.
 
 Every screen has to work in light and dark, on a phone (390 px wide) and on a desktop, so check all four when you change one.
 
@@ -93,4 +94,4 @@ The meshes come from BodyParts3D, and `build-pipeline/` is how they became `app/
 
 ## The research
 
-[research/references.md](../research/references.md) lists all 87 references the app cites, grouped as in the app's Sources panel, and `research/model-checks/` has the small Node scripts that checked the iron, thyroid, hand and gastric-emptying models against published data. A new clinical claim or number needs a real source in `refs.js`, shown with `srcLine([...])`.
+[research/references.md](../research/references.md) lists all 210 references the app cites, grouped as in the app's Sources panel, and `research/model-checks/` has the small Node scripts that checked the iron, thyroid, hand and gastric-emptying models against published data. A new clinical claim or number needs a real source in `refs.js`, shown with `srcLine([...])`.

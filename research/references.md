@@ -1,6 +1,6 @@
 # References
 
-All 125 sources cited in Glass Atlas, grouped as in the app's Sources panel. DOIs and PubMed IDs were checked against Crossref and PubMed in October 2026.
+All 210 sources cited in Glass Atlas, grouped as in the app's Sources panel, with the November 2026 additions at the end. DOIs and PubMed IDs were checked against Crossref and PubMed in October and November 2026.
 
 ## POTS and fainting
 
@@ -36,7 +36,7 @@ All 125 sources cited in Glass Atlas, grouped as in the app's Sources panel. DOI
 - **Tougas 2000.** Tougas G et al. Assessment of gastric emptying using a low fat meal: establishment of international control values. Am J Gastroenterol 2000;95:1456–1462. <https://pubmed.ncbi.nlm.nih.gov/10894578/>
 - **Abell 2008.** Abell TL et al. Consensus recommendations for gastric emptying scintigraphy. Am J Gastroenterol 2008;103:753–763. <https://doi.org/10.1111/j.1572-0241.2007.01636.x>
 - **AGA 2025 gastroparesis.** Staller K et al. AGA clinical practice guideline on management of gastroparesis. Gastroenterology 2025;169:828–861. <https://doi.org/10.1053/j.gastro.2025.08.004>
-- **ACG 2022.** Camilleri M et al. ACG clinical guideline: gastroparesis. Am J Gastroenterol 2022;117:1197–1220. <https://pmc.ncbi.nlm.nih.gov/articles/PMC9666798/>
+- **ACG 2022.** Camilleri M et al. ACG clinical guideline: gastroparesis. Am J Gastroenterol 2022;117:1197–1220. <https://pmc.ncbi.nlm.nih.gov/articles/PMC9373497/>
 - **AGA 2025 hEDS update.** Aziz Q et al. AGA clinical practice update on GI manifestations and autonomic or immune dysfunction in hEDS: expert review. Clin Gastroenterol Hepatol 2025. <https://doi.org/10.1016/j.cgh.2025.02.015>
 - **Yaylali 2009.** Yaylali O et al. Does hypothyroidism affect gastrointestinal motility? Gastroenterol Res Pract 2009;2009:529802. <https://doi.org/10.1155/2009/529802>
 
@@ -161,3 +161,120 @@ These came with the Hadlima material. Its citations were checked against PubMed 
 - **FDA naming 2017.** US Food and Drug Administration. Nonproprietary naming of biological products: guidance for industry (January 2017). <https://www.fda.gov/media/93218/download>
 - **CDC altered immunocompetence.** Centers for Disease Control and Prevention. General best practice guidelines for immunization: altered immunocompetence (updated 2024). <https://www.cdc.gov/vaccines/hcp/imz-best-practices/altered-immunocompetence.html>
 - **EULAR 2022 screening.** Fragoulis GE et al. 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in adults with autoimmune inflammatory rheumatic diseases. Ann Rheum Dis 2023;82:742–753. <https://pubmed.ncbi.nlm.nih.gov/36328476/>
+
+## Added November 2026: the medicine dives
+
+### Hadlima
+
+- **Supersaxo 1990.** Supersaxo A, Hein WR, Steffen H. Effect of molecular weight on the lymphatic absorption of water-soluble compounds following subcutaneous administration. Pharm Res 1990;7:167–169. <https://pubmed.ncbi.nlm.nih.gov/2137911/>
+- **Richter 2012.** Richter WF, Bhansali SG, Morris ME. Mechanistic determinants of biotherapeutics absorption following SC administration. AAPS J 2012;14:559–570. <https://pmc.ncbi.nlm.nih.gov/articles/PMC3385825/>
+- **Roopenian 2007.** Roopenian DC, Akilesh S. FcRn: the neonatal Fc receptor comes of age. Nat Rev Immunol 2007;7:715–725. <https://pubmed.ncbi.nlm.nih.gov/17703228/>
+- **Pyzik 2019.** Pyzik M, Sand KMK, Hubbard JJ, Andersen JT, Sandlie I, Blumberg RS. The neonatal Fc receptor (FcRn): a misnomer? Front Immunol 2019;10:1540. <https://pubmed.ncbi.nlm.nih.gov/31354709/>
+- **Lee 2019.** Lee N, Lee JJ, Yang H, et al. Evaluation of similar quality attribute characteristics in SB5 and reference product of adalimumab. MAbs 2019;11:129–144. <https://pubmed.ncbi.nlm.nih.gov/30296198/>
+- **van Schouwenburg 2013.** van Schouwenburg PA, van de Stadt LA, de Jong RN, et al. Adalimumab elicits a restricted anti-idiotypic antibody response in autoimmune patients resulting in functional neutralisation. Ann Rheum Dis 2013;72:104–109. <https://pubmed.ncbi.nlm.nih.gov/22759910/>
+- **Krieckaert 2012.** Krieckaert CL, Nurmohamed MT, Wolbink GJ. Methotrexate reduces immunogenicity in adalimumab treated rheumatoid arthritis patients in a dose dependent manner. Ann Rheum Dis 2012;71:1914–1915. <https://pubmed.ncbi.nlm.nih.gov/22586169/>
+- **Hong 2014.** Hong SJ, Park E, Xu W, et al. Response of human mature adipocytes to hypoxia-reoxygenation. Cytotherapy 2014;16:1656–1665. <https://pubmed.ncbi.nlm.nih.gov/25231891/>
+- **Breslin 2018.** Breslin JW, Yang Y, Scallan JP, et al. Lymphatic vessel network structure and physiology. Compr Physiol 2018;9:207–299. <https://pubmed.ncbi.nlm.nih.gov/30549020/>
+
+### Hydroxychloroquine
+
+- **Tett 1988.** Tett SE, Cutler DJ, Day RO, Brown KF. A dose-ranging study of the pharmacokinetics of hydroxy-chloroquine following intravenous administration to healthy volunteers. Br J Clin Pharmacol 1988;26:303–313. <https://pubmed.ncbi.nlm.nih.gov/3179169/>
+- **Tett 1989.** Tett SE, Cutler DJ, Day RO, Brown KF. Bioavailability of hydroxychloroquine tablets in healthy volunteers. Br J Clin Pharmacol 1989;27:771–779. <https://pubmed.ncbi.nlm.nih.gov/2757893/>
+- **Schrezenmeier 2020.** Schrezenmeier E, Dörner T. Mechanisms of action of hydroxychloroquine and chloroquine: implications for rheumatology. Nat Rev Rheumatol 2020;16:155–166. <https://pubmed.ncbi.nlm.nih.gov/32034323/>
+- **Melles 2014.** Melles RB, Marmor MF. The risk of toxic retinopathy in patients on long-term hydroxychloroquine therapy. JAMA Ophthalmol 2014;132:1453–1460. <https://pubmed.ncbi.nlm.nih.gov/25275721/>
+- **Melles 2015.** Melles RB, Marmor MF. Pericentral retinopathy and racial differences in hydroxychloroquine toxicity. Ophthalmology 2015;122:110–116. <https://pubmed.ncbi.nlm.nih.gov/25182842/>
+- **Melles 2023.** Melles RB, Jorge AM, Marmor MF et al. Hydroxychloroquine dose and risk for incident retinopathy: a cohort study. Ann Intern Med 2023;176:166–173. <https://pubmed.ncbi.nlm.nih.gov/36645889/>
+- **Jorge 2024.** Jorge AM, Melles RB, Marmor MF, Zhou B, Zhang Y, Choi HK. Risk factors for hydroxychloroquine retinopathy and its subtypes. JAMA Netw Open 2024;7:e2410677. <https://pubmed.ncbi.nlm.nih.gov/38722628/>
+- **Marmor & Hu 2014.** Marmor MF, Hu J. Effect of disease stage on progression of hydroxychloroquine retinopathy. JAMA Ophthalmol 2014;132:1105–1112. <https://pubmed.ncbi.nlm.nih.gov/24922444/>
+- **Chen 2010.** Chen E, Brown DM, Benz MS et al. Spectral domain optical coherence tomography as an effective screening test for hydroxychloroquine retinopathy (the "flying saucer" sign). Clin Ophthalmol 2010;4:1151–1158. <https://pubmed.ncbi.nlm.nih.gov/21060664/>
+- **Yusuf 2017.** Yusuf IH, Sharma S, Luqmani R, Downes SM. Hydroxychloroquine retinopathy. Eye 2017;31:828–845. <https://pubmed.ncbi.nlm.nih.gov/28282061/>
+- **Staurenghi 2014.** Staurenghi G, Sadda S, Chakravarthy U, Spaide RF; IN•OCT Panel. Proposed lexicon for anatomic landmarks in normal posterior segment spectral-domain optical coherence tomography: the IN•OCT consensus. Ophthalmology 2014;121:1572–1578. <https://pubmed.ncbi.nlm.nih.gov/24755005/>
+- **Munster 2002.** Munster T, Gibbs JP, Shen D et al. Hydroxychloroquine concentration-response relationships in patients with rheumatoid arthritis. Arthritis Rheum 2002;46:1460–1469. <https://pubmed.ncbi.nlm.nih.gov/12115175/>
+- **Miller 1991.** Miller DR, Khalil SK, Nygard GA. Steady-state pharmacokinetics of hydroxychloroquine in rheumatoid arthritis patients. DICP 1991;25:1302–1305. <https://pubmed.ncbi.nlm.nih.gov/1815421/>
+
+### Propranolol XR
+
+- **DiFrancesco 2010.** DiFrancesco D. The role of the funny current in pacemaker activity. Circ Res 2010;106:434–446. <https://pubmed.ncbi.nlm.nih.gov/20167941/>
+- **Boyett 2000.** Boyett MR, Honjo H, Kodama I. The sinoatrial node, a heterogeneous pacemaker structure. Cardiovasc Res 2000;47:658–687. <https://pubmed.ncbi.nlm.nih.gov/10974216/>
+- **Baker 2005.** Baker JG. The selectivity of β-adrenoceptor antagonists at the human β1, β2 and β3 adrenoceptors. Br J Pharmacol 2005;144:317–322. <https://pubmed.ncbi.nlm.nih.gov/15655528/>
+- **White 1999.** White CM. A review of potential cardiovascular uses of intravenous glucagon administration. J Clin Pharmacol 1999;39:442–447. <https://pubmed.ncbi.nlm.nih.gov/10234590/>
+- **Sánchez-Quintana 2005.** Sánchez-Quintana D, Cabrera JA, Farré J, Climent V, Anderson RH, Ho SY. Sinus node revisited in the era of electroanatomical mapping and catheter ablation. Heart 2005;91:189–194. <https://pubmed.ncbi.nlm.nih.gov/15657230/>
+
+### Tizanidine
+
+- **Giovannitti 2015.** Giovannitti JA Jr, Thoms SM, Crawford JJ. Alpha-2 adrenergic receptor agonists: a review of current clinical applications. Anesth Prog 2015;62:31–39. <https://pubmed.ncbi.nlm.nih.gov/25849473/>
+- **Granfors 2004 (fluvoxamine).** Granfors MT, Backman JT, Neuvonen M, Ahonen J, Neuvonen PJ. Fluvoxamine drastically increases concentrations and effects of tizanidine: a potentially hazardous interaction. Clin Pharmacol Ther 2004;75:331–341. <https://pubmed.ncbi.nlm.nih.gov/15060511/>
+- **Granfors 2004 (ciprofloxacin).** Granfors MT, Backman JT, Neuvonen M, Neuvonen PJ. Ciprofloxacin greatly increases concentrations and hypotensive effect of tizanidine by inhibiting its cytochrome P450 1A2-mediated presystemic metabolism. Clin Pharmacol Ther 2004;76:598–606. <https://pubmed.ncbi.nlm.nih.gov/15592331/>
+- **Granfors 2005.** Granfors MT, Backman JT, Laitila J, Neuvonen PJ. Oral contraceptives containing ethinyl estradiol and gestodene markedly increase plasma concentrations and effects of tizanidine by inhibiting cytochrome P450 1A2. Clin Pharmacol Ther 2005;78:400–411. <https://pubmed.ncbi.nlm.nih.gov/16198659/>
+- **Ko 2004.** Ko HY, Park JH, Shin YB, Baek SY. Gross quantitative measurements of spinal cord segments in human. Spinal Cord 2004;42:35–40. <https://pubmed.ncbi.nlm.nih.gov/14713942/>
+- **Gilsbach 2012.** Gilsbach R, Hein L. Are the pharmacology and physiology of α2 adrenoceptors determined by α2-heteroreceptors and autoreceptors respectively? Br J Pharmacol 2012;165:90–102. <https://pubmed.ncbi.nlm.nih.gov/21658028/>
+- **Tjia 1996.** Tjia JF, Colbert J, Back DJ. Theophylline metabolism in human liver microsomes: inhibition studies. J Pharmacol Exp Ther 1996;276:912–917. <https://pubmed.ncbi.nlm.nih.gov/8786569/>
+- **Lin 1987.** Lin JH, Chremos AN, Chiou R, Yeh KC, Williams R. Comparative effect of famotidine and cimetidine on the pharmacokinetics of theophylline in normal volunteers. Br J Clin Pharmacol 1987;24:669–672. <https://pubmed.ncbi.nlm.nih.gov/2893637/>
+- **Bachmann 1995.** Bachmann K, Sullivan TJ, Reese JH, et al. Controlled study of the putative interaction between famotidine and theophylline in patients with chronic obstructive pulmonary disease. J Clin Pharmacol 1995;35:529–535. <https://pubmed.ncbi.nlm.nih.gov/7657856/>
+- **Dal Negro 1993.** Dal Negro R, Pomari C, Turco P. Famotidine and theophylline pharmacokinetics. An unexpected cimetidine-like interaction in patients with chronic obstructive pulmonary disease. Clin Pharmacokinet 1993;24:255–258. <https://pubmed.ncbi.nlm.nih.gov/8462230/>
+
+### Lexapro
+
+- **Charnay 2010.** Charnay Y, Léger L. Brain serotonergic circuitries. Dialogues Clin Neurosci 2010;12:471–487. <https://pubmed.ncbi.nlm.nih.gov/21319493/>
+- **Coleman 2016.** Coleman JA, Green EM, Gouaux E. X-ray structures and mechanism of the human serotonin transporter. Nature 2016;532:334–339. <https://pubmed.ncbi.nlm.nih.gov/27049939/>
+- **Meyer 2004.** Meyer JH, Wilson AA, Sagrati S, et al. Serotonin transporter occupancy of five selective serotonin reuptake inhibitors at different doses: an [11C]DASB positron emission tomography study. Am J Psychiatry 2004;161:826–835. <https://pubmed.ncbi.nlm.nih.gov/15121647/>
+- **Kim 2017.** Kim E, Howes OD, Kim BH, et al. Regional differences in serotonin transporter occupancy by escitalopram: an [11C]DASB PK-PD study. Clin Pharmacokinet 2017;56:371–381. <https://pubmed.ncbi.nlm.nih.gov/27557550/>
+- **Blier 1994.** Blier P, de Montigny C. Current advances and trends in the treatment of depression. Trends Pharmacol Sci 1994;15:220–226. <https://pubmed.ncbi.nlm.nih.gov/7940983/>
+- **Harmer 2017.** Harmer CJ, Duman RS, Cowen PJ. How do antidepressants work? New perspectives for refining future treatment approaches. Lancet Psychiatry 2017;4:409–418. <https://pubmed.ncbi.nlm.nih.gov/28153641/>
+- **Taylor 2006.** Taylor MJ, Freemantle N, Geddes JR, Bhagwagar Z. Early onset of selective serotonin reuptake inhibitor antidepressant action: systematic review and meta-analysis. Arch Gen Psychiatry 2006;63:1217–1223. <https://pubmed.ncbi.nlm.nih.gov/17088502/>
+- **Berger 2009.** Berger M, Gray JA, Roth BL. The expanded biology of serotonin. Annu Rev Med 2009;60:355–366. <https://pubmed.ncbi.nlm.nih.gov/19630576/>
+- **Canobbio 2019.** Canobbio I. Blood platelets: circulating mirrors of neurons? Res Pract Thromb Haemost 2019;3:564–565. <https://pubmed.ncbi.nlm.nih.gov/31624775/>
+- **Hergovich 2000.** Hergovich N, Aigner M, Eichler HG, et al. Paroxetine decreases platelet serotonin storage and platelet function in human beings. Clin Pharmacol Ther 2000;68:435–442 (healthy men, 20 mg a day for two weeks). <https://pubmed.ncbi.nlm.nih.gov/11061584/>
+- **de Abajo 2011.** de Abajo FJ. Effects of selective serotonin reuptake inhibitors on platelet function: mechanisms, clinical outcomes and implications for use in elderly patients. Drugs Aging 2011;28:345–367. <https://pubmed.ncbi.nlm.nih.gov/21542658/>
+- **Klein 2006.** Klein N, Sacher J, Geiss-Granadia T, et al. In vivo imaging of serotonin transporter occupancy by means of SPECT and [123I]ADAM in healthy subjects administered different doses of escitalopram or citalopram. Psychopharmacology (Berl) 2006;188:263–272. <https://pubmed.ncbi.nlm.nih.gov/16955282/>
+- **Lundberg 2007.** Lundberg J, Christophersen JS, Petersen KB, et al. PET measurement of serotonin transporter occupancy: a comparison of escitalopram and citalopram. Int J Neuropsychopharmacol 2007;10:777–785. <https://pubmed.ncbi.nlm.nih.gov/17201996/>
+- **Dvojkovic 2021.** Dvojkovic A, Nikolac Perkovic M, Sagud M, et al. Effect of vortioxetine vs. escitalopram on plasma BDNF and platelet serotonin in depressed patients. Prog Neuropsychopharmacol Biol Psychiatry 2021;105:110016. <https://pubmed.ncbi.nlm.nih.gov/32534176/>
+
+### Ibuprofen
+
+- **Ibuprofen label.** Ibuprofen tablets USP (400, 600 and 800 mg), US prescribing information and NSAID Medication Guide (Chartwell RX, revised August 2022), DailyMed. <https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=39f2664f-6c0a-4726-85d7-4227530d4a49>
+- **Laine 2008.** Laine L, Takeuchi K, Tarnawski A. Gastric mucosal defense and cytoprotection: bench to bedside. Gastroenterology 2008;135:41–60. <https://pubmed.ncbi.nlm.nih.gov/18549814/>
+- **Wallace 2008.** Wallace JL. Prostaglandins, NSAIDs, and gastric mucosal protection: why doesn't the stomach digest itself? Physiol Rev 2008;88:1547–1565. <https://pubmed.ncbi.nlm.nih.gov/18923189/>
+- **Picot 1994.** Picot D, Loll PJ, Garavito RM. The X-ray crystal structure of the membrane protein prostaglandin H2 synthase-1. Nature 1994;367:243–249. <https://pubmed.ncbi.nlm.nih.gov/8121489/>
+- **Orlando 2015.** Orlando BJ, Lucido MJ, Malkowski MG. The structure of ibuprofen bound to cyclooxygenase-2. J Struct Biol 2015;189:62–66. <https://pubmed.ncbi.nlm.nih.gov/25463020/>
+- **Ricciotti 2011.** Ricciotti E, FitzGerald GA. Prostaglandins and inflammation. Arterioscler Thromb Vasc Biol 2011;31:986–1000. <https://pubmed.ncbi.nlm.nih.gov/21508345/>
+- **Crofford 1997.** Crofford LJ. COX-1 and COX-2 tissue expression: implications and predictions. J Rheumatol Suppl 1997;49:15–19. <https://pubmed.ncbi.nlm.nih.gov/9249646/>
+- **Warner 1999.** Warner TD, Giuliano F, Vojnovic I, et al. Nonsteroid drug selectivities for cyclo-oxygenase-1 rather than cyclo-oxygenase-2 are associated with human gastrointestinal toxicity: a full in vitro analysis. Proc Natl Acad Sci U S A 1999;96:7563–7568. <https://pubmed.ncbi.nlm.nih.gov/10377455/>
+- **Crofford 2013.** Crofford LJ. Use of NSAIDs in treating patients with arthritis. Arthritis Res Ther 2013;15 Suppl 3:S2. <https://pubmed.ncbi.nlm.nih.gov/24267197/>
+- **Wallace 2000.** Wallace JL, McKnight W, Reuter BK, Vergnolle N. NSAID-induced gastric damage in rats: requirement for inhibition of both cyclooxygenase 1 and 2. Gastroenterology 2000;119:706–714. <https://pubmed.ncbi.nlm.nih.gov/10982765/>
+
+### Adderall XR
+
+- **Heal 2013.** Heal DJ, Smith SL, Gosden J, Nutt DJ. Amphetamine, past and present – a pharmacological and clinical perspective. J Psychopharmacol 2013;27:479–496. <https://pubmed.ncbi.nlm.nih.gov/23539642/>
+- **Sulzer 2011.** Sulzer D. How addictive drugs disrupt presynaptic dopamine neurotransmission. Neuron 2011;69:628–649. <https://pubmed.ncbi.nlm.nih.gov/21338876/>
+- **Faraone 2018.** Faraone SV. The pharmacology of amphetamine and methylphenidate: relevance to the neurobiology of attention-deficit/hyperactivity disorder and other psychiatric comorbidities. Neurosci Biobehav Rev 2018;87:255–270. <https://pubmed.ncbi.nlm.nih.gov/29428394/>
+- **McGough 2003.** McGough JJ, Biederman J, Greenhill LL, et al. Pharmacokinetics of SLI381 (ADDERALL XR), an extended-release formulation of Adderall. J Am Acad Child Adolesc Psychiatry 2003;42:684–691. <https://pubmed.ncbi.nlm.nih.gov/12921476/>
+
+### Low-dose naltrexone
+
+- **Younger 2014.** Younger J, Parkitny L, McLain D. The use of low-dose naltrexone (LDN) as a novel anti-inflammatory treatment for chronic pain. Clin Rheumatol 2014;33:451–459. <https://pubmed.ncbi.nlm.nih.gov/24526250/>
+- **Hutchinson 2008.** Hutchinson MR, Zhang Y, Brown K, et al. Non-stereoselective reversal of neuropathic pain by naloxone and naltrexone: involvement of toll-like receptor 4 (TLR4). Eur J Neurosci 2008;28:20–29. <https://pubmed.ncbi.nlm.nih.gov/18662331/>
+- **Kettenmann 2011.** Kettenmann H, Hanisch UK, Noda M, Verkhratsky A. Physiology of microglia. Physiol Rev 2011;91:461–553. <https://pubmed.ncbi.nlm.nih.gov/21527731/>
+- **Inoue 2018.** Inoue K, Tsuda M. Microglia in neuropathic pain: cellular and molecular mechanisms and therapeutic potential. Nat Rev Neurosci 2018;19:138–152. <https://pubmed.ncbi.nlm.nih.gov/29416128/>
+- **Gouda 2026.** Gouda AHK, Aitcheson NEC, Steadman KJ. Low-dose naltrexone: what is the evidence? A narrative review. Adv Ther 2026;43:2852–2870. <https://pubmed.ncbi.nlm.nih.gov/42060160/>
+- **INNOVA 2026.** Rodríguez-Freire C, Navarrete J, Rozadilla-Sacanell A, et al. Efficacy of low-dose naltrexone in women with fibromyalgia syndrome: a 12-month randomised, double-blind, placebo-controlled single-centre clinical trial (INNOVA study). Eur J Pain 2026;30:e70321. <https://pubmed.ncbi.nlm.nih.gov/42385209/>
+- **Trøstheim 2023.** Trøstheim M, Eikemo M, Haaker J, et al. Opioid antagonism in humans: a primer on optimal dose and timing for central mu-opioid receptor blockade. Neuropsychopharmacology 2023;48:299–307. <https://pubmed.ncbi.nlm.nih.gov/35978096/>
+- **Rabiner 2011.** Rabiner EA, Beaver J, Makwana A, et al. Pharmacological differentiation of opioid receptor antagonists by molecular and functional imaging of target occupancy and food reward-related brain activation in humans. Mol Psychiatry 2011;16:826–835. <https://pubmed.ncbi.nlm.nih.gov/21502953/>
+- **Lee 1988.** Lee MC, Wagner HN Jr, Tanada S, et al. Duration of occupancy of opiate receptors by naltrexone. J Nucl Med 1988;29:1207–1211. <https://pubmed.ncbi.nlm.nih.gov/2839637/>
+
+### Zofran
+
+- **Gershon 2007.** Gershon MD, Tack J. The serotonin signaling system: from basic understanding to drug development for functional GI disorders. Gastroenterology 2007;132:397–414. <https://pubmed.ncbi.nlm.nih.gov/17241888/>
+- **Babic 2014.** Babic T, Browning KN. The role of vagal neurocircuits in the regulation of nausea and vomiting. Eur J Pharmacol 2014;722:38–47. <https://pubmed.ncbi.nlm.nih.gov/24184670/>
+- **Andrews 2006.** Andrews PL, Horn CC. Signals for nausea and emesis: implications for models of upper gastrointestinal diseases. Auton Neurosci 2006;125:100–115. <https://pubmed.ncbi.nlm.nih.gov/16556512/>
+- **Lummis 2012.** Lummis SC. 5-HT3 receptors. J Biol Chem 2012;287:40239–40245. <https://pubmed.ncbi.nlm.nih.gov/23038271/>
+- **Basak 2020.** Basak S, Kumar A, Ramsey S, et al. High-resolution structures of multiple 5-HT3AR-setron complexes reveal a novel mechanism of competitive inhibition. eLife 2020;9:e57870. <https://pubmed.ncbi.nlm.nih.gov/33063666/>
+
+### Levothyroxine
+
+- **Benvenga 2008.** Benvenga S, Bartolone L, Pappalardo MA, et al. Altered intestinal absorption of L-thyroxine caused by coffee. Thyroid 2008;18:293–301. <https://pubmed.ncbi.nlm.nih.gov/18341376/>
+- **Zamfirescu 2011.** Zamfirescu I, Carlson HE. Absorption of levothyroxine when coadministered with various calcium formulations. Thyroid 2011;21:483–486. <https://pubmed.ncbi.nlm.nih.gov/21595516/>
+- **Bach-Huynh 2009.** Bach-Huynh TG, Nayak B, Loh J, Soldin S, Jonklaas J. Timing of levothyroxine administration affects serum thyrotropin concentration. J Clin Endocrinol Metab 2009;94:3905–3912. <https://pubmed.ncbi.nlm.nih.gov/19584184/>
+- **Centanni 2006.** Centanni M, Gargano L, Canettieri G, et al. Thyroxine in goiter, Helicobacter pylori infection, and chronic gastritis. N Engl J Med 2006;354:1787–1795. <https://pubmed.ncbi.nlm.nih.gov/16641395/>
+- **Brent 2012.** Brent GA. Mechanisms of thyroid hormone action. J Clin Invest 2012;122:3035–3043. <https://pubmed.ncbi.nlm.nih.gov/22945636/>
+- **Virili 2020.** Virili C, Brusca N, Capriello S, Centanni M. Levothyroxine therapy in gastric malabsorptive disorders. Front Endocrinol 2020;11:621616. <https://pubmed.ncbi.nlm.nih.gov/33584549/>

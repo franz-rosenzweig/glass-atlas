@@ -124,6 +124,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .btn{font:10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--line-2);border-radius:3px}
 .btn:hover{border-color:var(--dim)}
 .btn.primary{background:var(--bone);color:var(--void);border-color:var(--bone)}
+.btns.col{flex-direction:column;align-items:stretch}.btns.col .btn{text-align:left}
+.btn small{display:block;font:12px var(--body);letter-spacing:0;text-transform:none;color:var(--dim);margin-top:3px}
 .fine{font-size:12.5px!important;color:var(--dim)!important;line-height:1.5;margin-top:12px!important}
 .readouts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0;margin-bottom:6px}
 .ro{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:6px 0;align-items:baseline}
@@ -415,34 +417,58 @@ const DIVES={
     text:'Into the duodenum, where iron gets in, and then one gut cell with a single exit door. Dose it daily or every other day for two weeks and see why hepcidin changes the math.',
     steps:[['Lining, 1 mm.','The villi that absorb iron.'],['One gut cell.','Fourteen days of doses: the door, the lock, and what orange juice or coffee do.']]},
 };
-let dive=null,diveFor=null;
-function startDive(id){
-  const D=DIVES[id];stopStation();
-  if(!dive||diveFor!==id){dive?.root.remove();const m=D.make();dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:()=>{open(id);}});dive.guideKeys=Object.keys(m.guide);diveFor=id;}
-  const p=D.target();K0.setMode({layers:{skin:.5,skeleton:.5,organs:.8,vessels:.9}});
+// each medicine's own dive, one module per medicine, loaded the first time it's opened. A module exports
+// DIVE = {color, top, target(h), view, text, steps, also, make()}: `also` links into the condition dives.
+const MDIVE={hadlima:()=>import('./dive-med-hadlima.js'),hcq:()=>import('./dive-med-hcq.js'),propranolol:()=>import('./dive-med-propranolol.js'),
+  lexapro:()=>import('./dive-med-lexapro.js'),levothyroxine:()=>import('./dive-med-levothyroxine.js'),adderall:()=>import('./dive-med-adderall.js'),
+  ldn:()=>import('./dive-med-ldn.js'),ondansetron:()=>import('./dive-med-ondansetron.js'),tizanidine:()=>import('./dive-med-tizanidine.js'),ibuprofen:()=>import('./dive-med-ibuprofen.js')};
+const diveDef=async key=>key.startsWith('med:')?{...(await MDIVE[key.slice(4)]()).DIVE,med:key.slice(4)}:DIVES[key];
+const diveName=key=>key.startsWith('med:')?MEDS.find(m=>m.id===key.slice(4))?.name:byId[key]?.name;
+let dive=null,diveFor=null,diveBack=null;
+// key: a condition id ('ra') or 'med:<id>'. o.level/o.opt open a level directly; o.back is where "Back to the body" returns.
+async function startDive(key,o={}){
+  const D=await diveDef(key);stopStation();
+  diveBack=o.back||(D.med?()=>{openMed(D.med,'Dive');home();}:()=>open(key));
+  if(!dive||diveFor!==key){dive?.root.remove();const m=D.make({jump});dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:()=>diveBack?.()});dive.guideKeys=Object.keys(m.guide);diveFor=key;}
+  const p=D.target({A,centreOf,V3:(x,y,z)=>new A.THREE.Vector3(x,y,z)});K0.setMode({layers:{skin:.5,skeleton:.5,organs:.8,vessels:.9}});
   A.flyTo({target:[p.x,p.y,p.z],...D.view});
-  setTimeout(()=>dive.open(),1150);
+  setTimeout(()=>dive.open(o.level,o.opt),1150);
 }
-function diveTab(id){const D=DIVES[id];const n=(()=>{try{return JSON.parse(localStorage.getItem('glass-atlas-guide')||'[]').length;}catch(_){return 0;}})();
+// from inside one dive straight into another (a medicine dive's last level into the condition dive where it acts)
+function jump(key,o={}){const back=diveBack;diveBack=()=>startDive(key,{...o,back});dive.close();}
+const guideCount=()=>{try{return JSON.parse(localStorage.getItem('glass-atlas-guide')||'[]').length;}catch(_){return 0;}};
+const DIVE_FINE=n=>`${n?`Your field guide has ${n} entries across all dives. `:''}Every cell and molecule you tap goes into a field guide. The biology is drawn from published reviews, guidelines and medicine labels; the games' numbers are illustrative.`;
+function diveTab(id){const D=DIVES[id];const meds=MEDS.filter(m=>m.treats===id&&MDIVE[m.id]);
   return `<p class="tldr">${D.text}</p>
   <ol class="alerts">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
   <div class="btns"><button class="btn primary" id="startDive" type="button">Start the dive</button></div>
-  <p class="fine">${n?`Your field guide has ${n} entries across all dives. `:''}Every cell and molecule you tap goes into a field guide. The biology is drawn from published reviews, guidelines and medicine labels; the games' numbers are illustrative.</p>`;}
+  ${meds.length?`<h3>Medicine dives</h3><div class="links">${meds.map(m=>`<button class="lk" data-mdive="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><i></i>${esc(m.name)}</button>`).join('')}</div>`:''}
+  <p class="fine">${DIVE_FINE(guideCount())}</p>`;}
+async function medDiveTab(body,id){const D=await diveDef('med:'+id);if(!body.isConnected||body.dataset.tab!=='Dive')return;
+  body.innerHTML=`<p class="tldr">${D.text}</p>
+  <ol class="alerts">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
+  <div class="btns"><button class="btn primary" id="startDive" type="button">Start the dive</button></div>
+  ${D.also?.length?`<h3>In the condition dives</h3><div class="btns col">${D.also.map((a,i)=>`<button class="btn" type="button" data-also="${i}">${esc(a.label)}<small>${esc(a.small||'')}</small></button>`).join('')}</div>`:''}
+  <p class="fine">${DIVE_FINE(guideCount())}</p>${srcLine(D.refs)}`;
+  body.querySelector('#startDive').onclick=()=>startDive('med:'+id);
+  body.querySelectorAll('[data-also]').forEach(b=>b.onclick=()=>{const a=D.also[+b.dataset.also];startDive(a.dive,{level:a.level,opt:a.opt,back:()=>{openMed(id,'Dive');home();}});});}
 function tabbed(body,col,st,readFn,opt){
-  const show=t=>{drawer.querySelectorAll('.dtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+  const show=t=>{drawer.querySelectorAll('.dtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));body.dataset.tab=t;
     if(t==='Instrument'){body.innerHTML='<div id="inst"></div>';body.style.setProperty('--c',cc(col));if(curStation!==st){stopStation();curStation=st;}st.enter(body.querySelector('#inst'),opt);}
-    else if(t==='Dive'){stopStation();body.innerHTML=diveTab(opt.dive);body.querySelector('#startDive').onclick=()=>startDive(opt.dive);}
+    else if(t==='Dive'&&opt.medDive){stopStation();body.innerHTML='';medDiveTab(body,opt.medDive);}
+    else if(t==='Dive'){stopStation();body.innerHTML=diveTab(opt.dive);body.querySelector('#startDive').onclick=()=>startDive(opt.dive);
+      body.querySelectorAll('[data-mdive]').forEach(b=>b.onclick=()=>startDive('med:'+b.dataset.mdive,{back:()=>open(opt.dive)}));}
     else body.innerHTML=readFn();
     body.scrollTop=0;};
   drawer.querySelectorAll('.dtab').forEach(b=>b.onclick=()=>show(b.dataset.t));
-  show('Instrument');
+  show(opt?.tab&&drawer.querySelector(`.dtab[data-t="${opt.tab}"]`)?opt.tab:'Instrument');
 }
-function open(id){
+function open(id,tab){
   const c=byId[id];stopStation();active=id;renderPanel();
   const col=SYS[c.sys].c;const st=ST[c.station];
   const hasDive=!!DIVES[c.id];
   const body=shell(SYS[c.sys].label+' · '+(c.suspected?'suspected':c.year),col,c.name,st.title+' · '+st.fig,hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
-  tabbed(body,col,st,()=>readHTML(c),hasDive?{dive:c.id}:undefined);
+  tabbed(body,col,st,()=>readHTML(c),hasDive?{dive:c.id,tab}:undefined);
   hideHint();
 }
 function medRead(m){
@@ -452,12 +478,12 @@ function medRead(m){
   if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${cc(SYS[byId[m.treats].sys].c)}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
   return h+srcLine(m.refs);
 }
-function openMed(id){
+function openMed(id,tab){
   const m=id?MEDS.find(x=>x.id===id):null;stopStation();active=null;renderPanel();
-  const col=m?SYS[m.sys].c:'#ECE6DA';
-  const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',['Instrument','Read']);
+  const col=m?SYS[m.sys].c:'#ECE6DA';const hasDive=!!(m&&MDIVE[m.id]);
+  const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
   // a medicine with a bench of its own (Hadlima) opens that instead of the 24-hour planner
-  tabbed(body,col,m?.station?ST[m.station]:ST.meds,()=>medRead(m),{focus:id||null});
+  tabbed(body,col,m?.station?ST[m.station]:ST.meds,()=>medRead(m),{focus:id||null,medDive:hasDive?id:null,tab});
   hideHint();
 }
 /* ---------- sources ---------- */
@@ -465,7 +491,7 @@ function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return
   return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
 function openSources(focusKey){stopStation();active=null;renderPanel();
   const b=shell('Checked October–November 2026','#BFE6E1','Sources and review',null,null);
-  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
+  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. So are the medicine dives, added the same month: each was researched from its label and the studies below and then checked claim by claim by an independent AI reviewer. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
   for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
     h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
   b.innerHTML=h;A.refresh();home();hideHint();
@@ -521,7 +547,7 @@ onTheme(syncTheme);syncTheme();
     addEventListener('resize',()=>{A.size();fitOffset();if(!active)home();});
     $('#loading').classList.add('done');
     // the Suggest box: only in a browser that opened a private link with a key
-    const where=()=>{if(dive&&!dive.root.hidden)return byId[diveFor].name+', in the dive';
+    const where=()=>{if(dive&&!dive.root.hidden)return diveName(diveFor)+', in the dive';
       if(drawer.classList.contains('open'))return drawer.querySelector('h2')?.textContent||'a panel';
       return listMode==='meds'?'the medicines list':'the main view';};
     makeRequests({context:()=>({screen:where(),theme:theme(),size:innerWidth+'×'+innerHeight,

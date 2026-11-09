@@ -4,6 +4,8 @@
     python3 tools/check.py              both checks; screenshots go to /tmp/glass-atlas-check/
     python3 tools/check.py --static     only the import check (no browser needed)
     CHECK_EXTRA=shots.json python3 tools/check.py    also shoot extra screens (see extra_steps)
+    CHECK_EXTRA=shots.json python3 tools/check.py --extra-only [--phone] [--light|--dark]
+                                        only the extra screens, quick, for working on one screen
 
 The browser walk serves app/ on a free local port, drives headless Chrome over DevTools through
 window.__atlas (open, openMed, openSources, startDive, dive.api.go), and fails on any page error.
@@ -40,10 +42,18 @@ def static_check():
 A = "window.__atlas"
 CONDS = ['pots', 'heds', 'mcas', 'hashi', 'enceph', 'iron', 'gastro', 'carth', 'c67', 'lspurs', 'lsil', 'ra', 'endo']
 DIVES = {'ra': ['joint', 'lining', 'molecule'], 'hashi': ['slide', 'follicle'], 'mcas': ['skin', 'mast'],
-         'pots': ['circuit', 'rhythm'], 'iron': ['villi', 'cell']}
+         'pots': ['circuit', 'rhythm'], 'iron': ['villi', 'cell'],
+         # each medicine's own dive, opened from its Dive tab
+         'med:hadlima': ['skin', 'vessel', 'molecule'], 'med:hcq': ['build', 'retina'], 'med:propranolol': ['node', 'receptor'],
+         'med:tizanidine': ['cord', 'synapse', 'liver'], 'med:lexapro': ['synapse', 'sert'], 'med:ibuprofen': ['lining', 'cox'],
+         'med:adderall': ['day', 'synapse'], 'med:ldn': ['horn', 'receptor'], 'med:ondansetron': ['wall', 'receptor'],
+         'med:levothyroxine': ['gut', 'cell']}
 
 
 def steps():
+    if "--extra-only" in sys.argv:
+        yield from extra_steps()
+        return
     yield "home", "void 0", .5
     for c in CONDS:
         yield f"cond-{c}", f"{A}.open('{c}')", 2.5
@@ -57,10 +67,13 @@ def steps():
     yield "meds-list", f"{A}.closeAll();setTimeout(()=>document.getElementById('toMeds').click(),200)", 1.5
     yield None, "document.getElementById('toChart').click()", .5
     for d, levels in DIVES.items():
-        yield f"dive-{d}-{levels[0]}", f"{A}.closeAll();{A}.startDive('{d}')", 4
+        n = d.replace("med:", "med-")
+        if d.startswith("med:"):
+            yield f"{n}-tab", f"{A}.closeAll();{A}.openMed('{d[4:]}','Dive')", 1.5
+        yield f"dive-{n}-{levels[0]}", f"{A}.closeAll();{A}.startDive('{d}')", 4
         for lv in levels[1:]:
-            yield f"dive-{d}-{lv}", f"{A}.dive.api.go('{lv}')", 2.5
-        yield f"dive-{d}-guide", f"{A}.dive.root.querySelector('.dv-guide').click()", 1
+            yield f"dive-{n}-{lv}", f"{A}.dive.api.go('{lv}')", 2.5
+        yield f"dive-{n}-guide", f"{A}.dive.root.querySelector('.dv-guide').click()", 1
         yield None, f"{A}.dive.root.querySelector('.dv-pop').hidden=true;{A}.dive.close()", 1.2
     yield "tour", f"{A}.closeAll();{A}.tour.start()", 3
     yield from extra_steps()
@@ -78,7 +91,8 @@ def extra_steps():
     except ValueError as e:
         print(f"! CHECK_EXTRA: not valid JSON ({e})")
         return
-    yield None, "location.reload()", 11
+    if "--extra-only" not in sys.argv:
+        yield None, "location.reload()", 11
     for i, it in enumerate(items[:12] if isinstance(items, list) else []):
         if not isinstance(it, dict) or not isinstance(it.get("js", ""), str):
             continue
@@ -138,7 +152,10 @@ def walk(url, mode):
             ws.settimeout(60)
 
         call("Page.enable"); call("Runtime.enable")
-        call("Emulation.setDeviceMetricsOverride", width=1440, height=900, deviceScaleFactor=1, mobile=False)
+        if "--phone" in sys.argv:
+            call("Emulation.setDeviceMetricsOverride", width=390, height=844, deviceScaleFactor=2, mobile=True)
+        else:
+            call("Emulation.setDeviceMetricsOverride", width=1440, height=900, deviceScaleFactor=1, mobile=False)
         call("Emulation.setEmulatedMedia", features=[{"name": "prefers-color-scheme", "value": mode}])
         call("Page.navigate", url=url)
         pump(10)
@@ -173,7 +190,8 @@ def main():
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     OUT.mkdir(parents=True, exist_ok=True)
-    for mode in ("light", "dark"):
+    modes = [m for m in ("light", "dark") if f"--{m}" in sys.argv] or ["light", "dark"]
+    for mode in modes:
         errs = walk(f"http://127.0.0.1:{port}/", mode)
         errs = [e for e in errs if "favicon" not in e]
         problems += errs

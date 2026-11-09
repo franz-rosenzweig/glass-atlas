@@ -70,7 +70,7 @@ export const GUIDE={
   ada:{name:'Adalimumab (Hadlima)',kind:'Medicine · antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8),
     text:['A recombinant human IgG1 antibody that grabs TNF, free or sitting on a cell, and blocks it from both of its receptors (p55 and p75).','The patient\'s is Hadlima, adalimumab-bwwd: a biosimilar of Humira, with the same amino-acid sequence and no meaningful difference in effect or safety. In the head-to-head trial in RA, 72.4% on Hadlima and 72.2% on Humira improved by at least 20% at 24 weeks.','40 mg under the skin every other week; its half-life is about two weeks, so the level never empties between doses. Tuberculosis and hepatitis B are checked before starting, live vaccines are avoided, and a fever means a call the same day.']},
   hcq:{name:'Hydroxychloroquine',kind:'Medicine · small molecule',size:'about 1 nm',draw:(x,cx,cy,s)=>G.hcq(x,cx,cy,s*2.4,0,true),
-    text:['A weak base that slips into the cell\'s acidic recycling compartments (lysosomes and endosomes), picks up a charge and gets trapped there, making them less acidic.','That blunts how immune cells chop up and display proteins and quiets the TLR7 and TLR9 alarm sensors. It builds up in the body slowly, which is why it takes months to reach full effect.']},
+    text:['A weak base that slips into the cell\'s acidic recycling compartments (lysosomes and endosomes), picks up a charge and gets trapped there, making them less acidic.','That blunts how immune cells chop up and display proteins and quiets the TLR7 and TLR9 alarm sensors. It builds up in the body slowly, which is partly why it takes months to reach full effect.']},
 };
 
 /* ------------------------------------------------------------------ level 2: the joint */
@@ -383,7 +383,7 @@ function moleculeLevel(){
     x.textAlign='left';x.fillText('TLR7/9 alarm sensors',LC.x-LC.r-170,LC.y-120);
   }
   return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='tnf'?{units:83,label:'5 nm'}:{units:0,label:'schematic, not to scale'};},zoomFocus:{x:500,y:350},
-    enter(){},exit(){drag=null;},
+    prep(o){if(o?.mode)M.mode=o.mode;},enter(){},exit(){drag=null;},
     card(){return `<p class="k">Level 4 · molecules</p><h2>How the patient's medicines work</h2>
       <div class="dv-seg" role="radiogroup" aria-label="Molecule"><button role="radio" data-mm="tnf" aria-checked="${M.mode==='tnf'}">TNF and Hadlima</button><button role="radio" data-mm="hcq" aria-checked="${M.mode==='hcq'}">Hydroxychloroquine</button></div>
       <div id="dm-body"></div>`;},

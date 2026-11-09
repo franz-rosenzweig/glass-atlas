@@ -14,9 +14,9 @@ It's all general education, not medical advice. The patient is a teaching case, 
 - [The dives](dives.md) — the microscope from the body down to the molecules, the games, and the field guide
 - [Medicines](medicines.md) — the list and its search, a page for each medicine, and the planner for the day
 - [Connections, the day and the tour](connections-day-tour.md) — the web of links, 24 hours in the patient's body, and the narrated tour
-- [The emergency card, notes and sources](emergency-notes-sources.md) — Tell any provider, notes on the body, and the 87 references
+- [The emergency card, notes and sources](emergency-notes-sources.md) — Tell any provider, notes on the body, and the 210 references
 
 ### Under the hood
 - [Developing Glass Atlas](DEVELOPING.md) — running it, the files, light and dark, walking the screens, and `tools/check.py`
-- [The references](../research/references.md) — all 87 sources, with links
+- [The references](../research/references.md) — all 210 sources, with links
 - [The notes folder](../notes/README.md) — the notes export, and where local notes live

@@ -15,7 +15,7 @@ The "Search medicines" box filters the list as you type, by the name or by the k
 
 ## One medicine
 
-Click a medicine and the drawer opens with two tabs. **Instrument** is the planner, with that medicine picked out and the body lit where it acts. **Read** says what it does in plain words, with a red **For any provider** box where something matters in an emergency, the condition it treats (click it to go there), and the sources. A medicine also shows up as a link at the bottom of the condition it treats.
+Click a medicine and the drawer opens with three tabs. **Instrument** is the planner, with that medicine picked out and the body lit where it acts. **Dive** zooms from the body down to where the medicine works, cells and molecules included (see [The dives](dives.md#the-medicine-dives)). **Read** says what it does in plain words, with a red **For any provider** box where something matters in an emergency, the condition it treats (click it to go there), and the sources. A medicine also shows up as a link at the bottom of the condition it treats.
 
 ## The planner
 
@@ -43,7 +43,7 @@ Hadlima is adalimumab-bwwd, a biosimilar of Humira for the patient's RA, injecte
 
 **Call the same day** has the signs that need a call, like a fever, signs of TB, an allergic reaction or new numbness, each with what to do. And **With the patient's other conditions** has a button for each place it meets the rest of her case, from infections and vaccines to the cervix, pregnancy and surgery, each lighting up the part of the body involved, with its sources.
 
-The **Read** tab is the long version: what a biosimilar is, how it works, the trials, how it's taken and stored, the checks before starting, vaccines, the rarer warnings, surgery, and pregnancy.
+The **Read** tab is the long version: what a biosimilar is, how it works, the trials, how it's taken and stored, the checks before starting, vaccines, the rarer warnings, surgery, and pregnancy. The **Dive** tab follows one dose from the injection to the molecule, Hadlima beside Humira.
 
 The model is illustrative, and nothing here is a dosing plan.
 

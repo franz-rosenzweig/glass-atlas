@@ -47,7 +47,7 @@ It's for anyone learning how the body works and how conditions affect each other
 
 ### Going deeper
 
-- **Five dives.** A microscope from the body down to the tissue, the cells and the molecules, for rheumatoid arthritis, Hashimoto's, mast cells, POTS and iron, each with a small game: hold the joint lining for a year, run a thyroid follicle, keep a mast cell calm.
+- **Fifteen dives.** A microscope from the body down to the tissue, the cells and the molecules, for rheumatoid arthritis, Hashimoto's, mast cells, POTS and iron, each with a small game: hold the joint lining for a year, run a thyroid follicle, keep a mast cell calm. And one for each of the ten medicines, following it to where it works: a Hadlima dose from the injection to the antibody, hydroxychloroquine in the retina, propranolol at the heart's pacemaker, Lexapro at a synapse and in platelets.
 - **The field guide.** Every cell and molecule you tap gets a card, and **Quiz me** tests you on them.
 
 ### The whole picture
@@ -58,7 +58,7 @@ It's for anyone learning how the body works and how conditions affect each other
 - **The guided tour.** Thirteen narrated stops, about eight minutes, with the camera and the highlights following along.
 - **Tell any provider.** An emergency card with five emergencies and the handful of facts that change what a stranger in scrubs should do.
 - **Notes on the body.** Tap a spot and pin a note there, kept in your browser.
-- **Sources and review.** 125 references, each one a click away from the reading that cites it.
+- **Sources and review.** 210 references, each one a click away from the reading that cites it.
 
 ### Anywhere
 
