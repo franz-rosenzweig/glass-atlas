@@ -68,7 +68,7 @@ export function makeStations2(A){
           <p class="eyebrow">What's happening today</p>
           <div class="tgs two">${TR.map(([k,l,sub])=>toggle('m-t-'+k,l,false,sub)).join('')}</div>
           <p class="eyebrow">Treatment</p>
-          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'cetirizine, loratadine, fexofenadine: itch, hives, flushing, runny nose. Not enough for throat or breathing trouble: that needs epinephrine.')}${toggle('m-h2','H2 blocker',false,'famotidine: stomach acid and gut symptoms')}${toggle('m-cro','Oral cromolyn',false,'steadies mast cells in the gut lining; barely absorbed; shown as it works after 2–3 weeks')}</div>
+          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'her daily Zyrtec (cetirizine) is one: itch, hives, flushing, runny nose. Not enough for throat or breathing trouble: that needs epinephrine.')}${toggle('m-h2','H2 blocker',false,'famotidine: stomach acid and gut symptoms')}${toggle('m-cro','Oral cromolyn',false,'steadies mast cells in the gut lining; barely absorbed; shown as it works after 2–3 weeks')}</div>
           <p class="eyebrow">The lab test that confirms a flare</p>
           <div class="readouts">
             <div class="ro"><span>Tryptase needed to count</span><b id="m-need"></b><span class="note">baseline × 1.2 + 2 ng/mL (the 20% + 2 rule)</span></div>

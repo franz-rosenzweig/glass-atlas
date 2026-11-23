@@ -1,6 +1,6 @@
 # References
 
-All 210 sources cited in Glass Atlas, grouped as in the app's Sources panel, with the November 2026 additions at the end. DOIs and PubMed IDs were checked against Crossref and PubMed in October and November 2026.
+All 260 sources cited in Glass Atlas, grouped as in the app's Sources panel, with the November 2026 additions at the end. DOIs and PubMed IDs were checked against Crossref and PubMed in October and November 2026.
 
 ## POTS and fainting
 
@@ -278,3 +278,59 @@ These came with the Hadlima material. Its citations were checked against PubMed 
 - **Centanni 2006.** Centanni M, Gargano L, Canettieri G, et al. Thyroxine in goiter, Helicobacter pylori infection, and chronic gastritis. N Engl J Med 2006;354:1787–1795. <https://pubmed.ncbi.nlm.nih.gov/16641395/>
 - **Brent 2012.** Brent GA. Mechanisms of thyroid hormone action. J Clin Invest 2012;122:3035–3043. <https://pubmed.ncbi.nlm.nih.gov/22945636/>
 - **Virili 2020.** Virili C, Brusca N, Capriello S, Centanni M. Levothyroxine therapy in gastric malabsorptive disorders. Front Endocrinol 2020;11:621616. <https://pubmed.ncbi.nlm.nih.gov/33584549/>
+
+## Added November 2026: Zyrtec (cetirizine)
+
+- **Zyrtec label.** ZYRTEC Allergy (cetirizine HCl) 10 mg tablets, Drug Facts, approved over-the-counter labeling, NDA 019835/S-055 (June 2026). <https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/019835Orig1s055lbl.pdf>
+- **Zyrtec label (2004).** ZYRTEC (cetirizine HCl) tablets and syrup, US prescribing information, March 2004: the last label with the adult trial data, before Zyrtec went over the counter. <https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/19835slr016,21150slr005,30346slr011_zyrtec_lbl.pdf>
+- **Cetirizine Rx label.** Cetirizine hydrochloride oral solution, US prescribing information (Padagis, August 2025), with the 2025 precaution on itching after stopping. <https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f47dbc5-dfb4-425c-9fe4-777fa3c4e72e>
+- **FDA 2025.** US Food and Drug Administration. FDA requires warning about rare but severe itching after stopping long-term use of oral allergy medicines cetirizine or levocetirizine. Drug Safety Communication, 16 May 2025. <https://www.fda.gov/drugs/drug-safety-communications/fda-requires-warning-about-rare-severe-itching-after-stopping-long-term-use-oral-allergy-medicines>
+- **Chung 2019.** Chung AH, La Grenade L, Harinstein LM. Pruritus after discontinuation of cetirizine. Ther Adv Drug Saf 2019;10:2042098619859996. <https://pubmed.ncbi.nlm.nih.gov/31308927/>
+- **Konkel 2026.** Konkel K, Lee JY, Jones SC, et al. New onset pruritus following discontinuation of cetirizine or levocetirizine. J Allergy Clin Immunol Pract 2026;14:725–728. <https://pubmed.ncbi.nlm.nih.gov/41380841/>
+- **Long 1985.** Long WF, Taylor RJ, Wagner CJ, Leavengood DC, Nelson HS. Skin test suppression by antihistamines and the development of subsensitivity. J Allergy Clin Immunol 1985;76:113–117. <https://pubmed.ncbi.nlm.nih.gov/4008809/>
+- **Kruszewski 2005.** Kruszewski J, Kłos K, Sułek K. Inhibition of histamine-induced wheal, flare and laser Doppler flowmetry during long-term (180 days) cetirizine 10 mg per day treatment (in Polish). Pol Merkur Lekarski 2005;19:758–760. <https://pubmed.ncbi.nlm.nih.gov/16521417/>
+- **Theunissen 2006.** Theunissen EL, Vermeeren A, Ramaekers JG. Repeated-dose effects of mequitazine, cetirizine and dexchlorpheniramine on driving and psychomotor performance. Br J Clin Pharmacol 2006;61:79–86. <https://pubmed.ncbi.nlm.nih.gov/16390354/>
+- **Ramaekers 1992.** Ramaekers JG, Uiterwijk MM, O’Hanlon JF. Effects of loratadine and cetirizine on actual driving and psychometric test performance, and EEG during driving. Eur J Clin Pharmacol 1992;42:363–369. <https://pubmed.ncbi.nlm.nih.gov/1355427/>
+- **Tashiro 2009.** Tashiro M, Kato M, Miyake M, et al. Dose dependency of brain histamine H1 receptor occupancy following oral administration of cetirizine hydrochloride measured using PET with [11C]doxepin. Hum Psychopharmacol 2009;24:540–548. <https://pubmed.ncbi.nlm.nih.gov/19697300/>
+- **Leurs 2002.** Leurs R, Church MK, Taglialatela M. H1-antihistamines: inverse agonism, anti-inflammatory actions and cardiac effects. Clin Exp Allergy 2002;32:489–498. <https://pubmed.ncbi.nlm.nih.gov/11972592/>
+- **Nielsen 2001.** Nielsen PN, Skov PS, Poulsen LK, Schmelz M, Petersen LJ. Cetirizine inhibits skin reactions but not mediator release in immediate and developing late-phase allergic cutaneous reactions. Clin Exp Allergy 2001;31:1378–1384. <https://pubmed.ncbi.nlm.nih.gov/11591187/>
+- **Weiler 2019.** Weiler CR, Austen KF, Akin C, et al. AAAAI Mast Cell Disorders Committee Work Group Report: mast cell activation syndrome (MCAS) diagnosis and management. J Allergy Clin Immunol 2019;144:883–896. <https://pubmed.ncbi.nlm.nih.gov/31476322/>
+- **Nurmatov 2015.** Nurmatov UB, Rhatigan E, Simons FE, Sheikh A. H1-antihistamines for primary mast cell activation syndromes: a systematic review. Allergy 2015;70:1052–1061. <https://pubmed.ncbi.nlm.nih.gov/26095756/>
+- **Lee 2025.** Lee E, Picard M. Diagnosis and management of mast cell activation syndrome (MCAS) in Canada: a practical approach. Allergy Asthma Clin Immunol 2025;21:49. <https://pmc.ncbi.nlm.nih.gov/articles/PMC12639879/>
+- **Zuberbier 2026.** Zuberbier T et al. The international guideline for the definition, classification, diagnosis and management of urticaria. Allergy 2026;81:2582–2632. <https://pmc.ncbi.nlm.nih.gov/articles/PMC13466004/>
+- **Shibao 2005.** Shibao C, Arzubiaga C, Roberts LJ 2nd, et al. Hyperadrenergic postural tachycardia syndrome in mast cell activation disorders. Hypertension 2005;45:385–390. <https://pubmed.ncbi.nlm.nih.gov/15710782/>
+- **WAO 2011.** Simons FE, Ardusso LR, Bilò MB, et al. World Allergy Organization guidelines for the assessment and management of anaphylaxis. World Allergy Organ J 2011;4:13–37. <https://pmc.ncbi.nlm.nih.gov/articles/PMC3500036/>
+- **Bernstein 2008.** Bernstein IL, Li JT, Bernstein DI, et al. Allergy diagnostic testing: an updated practice parameter. Ann Allergy Asthma Immunol 2008;100(3 Suppl 3):S1–148. <https://pubmed.ncbi.nlm.nih.gov/18431959/>
+- **Wise 2018.** Wise SK, Lin SY, Toskala E, et al. International consensus statement on allergy and rhinology: allergic rhinitis. Int Forum Allergy Rhinol 2018;8:108–352. <https://pmc.ncbi.nlm.nih.gov/articles/PMC7286723/>
+- **Heinzerling 2013.** Heinzerling L, Mari A, Bergmann KC, et al. The skin prick test: European standards. Clin Transl Allergy 2013;3:3. <https://pmc.ncbi.nlm.nih.gov/articles/PMC3565910/>
+- **Shah 2010.** Shah KM, Rank MA, Davé SA, Oslie CL, Butterfield JH. Predicting which medication classes interfere with allergy skin testing. Allergy Asthma Proc 2010;31:477–482. <https://pubmed.ncbi.nlm.nih.gov/21708059/>
+- **Poluzzi 2015.** Poluzzi E, Raschi E, Godman B, et al. Pro-arrhythmic potential of oral antihistamines (H1): combining adverse event reports with drug utilization data across Europe. PLoS One 2015;10:e0119551. <https://pmc.ncbi.nlm.nih.gov/articles/PMC4364720/>
+- **Masabe 2026.** Masabe Y, Inose R, Mizuno K, Muraki Y. Disproportionate reporting of seizures with histamine H1 receptor antagonists: the role of drug generation and brain H1 receptor occupancy assessed using the Japanese Adverse Drug Event Report database. Int J Clin Pharmacol Ther 2026;64:671–678. <https://pubmed.ncbi.nlm.nih.gov/42788289/>
+- **Etwel 2017.** Etwel F, Faught LH, Rieder MJ, Koren G. The risk of adverse pregnancy outcome after first trimester exposure to H1 antihistamines: a systematic review and meta-analysis. Drug Saf 2017;40:121–132. <https://pubmed.ncbi.nlm.nih.gov/27878468/>
+- **Weber-Schoendorfer 2008.** Weber-Schoendorfer C, Schaefer C. The safety of cetirizine during pregnancy: a prospective observational cohort study. Reprod Toxicol 2008;26:19–23. <https://pubmed.ncbi.nlm.nih.gov/18571373/>
+- **Simons 1999.** Simons FE; ETAC Study Group (Early Treatment of the Atopic Child). Prospective, long-term safety evaluation of the H1-receptor antagonist cetirizine in very young children with atopic dermatitis. J Allergy Clin Immunol 1999;104:433–440. <https://pubmed.ncbi.nlm.nih.gov/10452767/>
+- **LactMed.** Drugs and Lactation Database (LactMed): cetirizine. US National Library of Medicine, revised September 2025. <https://www.ncbi.nlm.nih.gov/books/NBK501509/>
+
+### The Zyrtec dive
+
+- **Thangam 2018.** Thangam EB, Jemima EA, Singh H, et al. The role of histamine and histamine receptors in mast cell-mediated allergy and inflammation: the hunt for new therapeutic targets. Front Immunol 2018;9:1873. <https://pmc.ncbi.nlm.nih.gov/articles/PMC6099187/>
+- **Schmelz 1997.** Schmelz M, Schmidt R, Bickel A, Handwerker HO, Torebjörk HE. Specific C-receptors for itch in human skin. J Neurosci 1997;17:8003–8008. <https://pubmed.ncbi.nlm.nih.gov/9315918/>
+- **Church 2013.** Church MK, Church DS. Pharmacology of antihistamines. Indian J Dermatol 2013;58:219–224. <https://pmc.ncbi.nlm.nih.gov/articles/PMC3667286/>
+- **Watson 1989.** Watson WT, Simons KJ, Chen XY, Simons FE. Cetirizine: a pharmacokinetic and pharmacodynamic evaluation in children with seasonal allergic rhinitis. J Allergy Clin Immunol 1989;84:457–464. <https://pubmed.ncbi.nlm.nih.gov/2571627/>
+- **Rihoux 1989.** Rihoux JP, Van Neste DJ. Quantitative time course study of the skin response to histamine and the effect of H1 blockers: a 3-week crossover double-blind comparative trial of cetirizine and terfenadine. Dermatologica 1989;179:129–134. <https://pubmed.ncbi.nlm.nih.gov/2574115/>
+- **Kłos 2007.** Kłos K, Kruszewski J. Does new antihistamines characterize tachyphylaxis phenomenon? (in Polish). Otolaryngol Pol 2007;61:898–901. <https://pubmed.ncbi.nlm.nih.gov/18552044/>
+- **Taylor 1985.** Taylor RJ, Long WF, Nelson HS. The development of subsensitivity to chlorpheniramine. J Allergy Clin Immunol 1985;76:103–107. <https://pubmed.ncbi.nlm.nih.gov/4008807/>
+- **Xia 2021.** Xia R, Wang N, Xu Z, et al. Cryo-EM structure of the human histamine H1 receptor/Gq complex. Nat Commun 2021;12:2086. <https://pmc.ncbi.nlm.nih.gov/articles/PMC8027608/>
+- **Bakker 2001.** Bakker RA, Schoonus SB, Smit MJ, Timmerman H, Leurs R. Histamine H1-receptor activation of nuclear factor-kappa B: roles for G beta gamma- and G alpha(q/11)-subunits in constitutive and agonist-mediated signaling. Mol Pharmacol 2001;60:1133–1142. <https://pubmed.ncbi.nlm.nih.gov/11641442/>
+- **Wang 2024.** Wang D, Guo Q, Wu Z, et al. Molecular mechanism of antihistamines recognition and regulation of the histamine H1 receptor. Nat Commun 2024;15:84. <https://pmc.ncbi.nlm.nih.gov/articles/PMC10762250/>
+- **Shimamura 2011.** Shimamura T, Shiroishi M, Weyand S, et al. Structure of the human histamine H1 receptor complex with doxepin. Nature 2011;475:65–70. <https://pmc.ncbi.nlm.nih.gov/articles/PMC3131495/>
+- **Gillard 2002.** Gillard M, Van Der Perren C, Moguilevsky N, Massingham R, Chatelain P. Binding characteristics of cetirizine and levocetirizine to human H1 histamine receptors: contribution of Lys191 and Thr194. Mol Pharmacol 2002;61:391–399. <https://pubmed.ncbi.nlm.nih.gov/11809864/>
+- **Yanai 2007.** Yanai K, Tashiro M. The physiological and pathophysiological roles of neuronal histamine: an insight from human positron emission tomography studies. Pharmacol Ther 2007;113:1–15. <https://pubmed.ncbi.nlm.nih.gov/16890992/>
+- **Abbott 2010.** Abbott NJ, Patabendige AA, Dolman DE, Yusof SR, Begley DJ. Structure and function of the blood-brain barrier. Neurobiol Dis 2010;37:13–25. <https://pubmed.ncbi.nlm.nih.gov/19664713/>
+- **Pagliara 1998.** Pagliara A, Testa B, Carrupt PA, et al. Molecular properties and pharmacokinetic behavior of cetirizine, a zwitterionic H1-receptor antagonist. J Med Chem 1998;41:853–863. <https://pubmed.ncbi.nlm.nih.gov/9526560/>
+- **Polli 2003.** Polli JW, Baughman TM, Humphreys JE, et al. P-glycoprotein influences the brain concentrations of cetirizine (Zyrtec), a second-generation non-sedating antihistamine. J Pharm Sci 2003;92:2082–2089. <https://pubmed.ncbi.nlm.nih.gov/14502547/>
+- **Chen 2003.** Chen C, Hanson E, Watson JW, Lee JS. P-glycoprotein limits the brain penetration of nonsedating but not sedating H1-antagonists. Drug Metab Dispos 2003;31:312–318. <https://pubmed.ncbi.nlm.nih.gov/12584158/>
+- **Tashiro 2004.** Tashiro M, Sakurada Y, Iwabuchi K, et al. Central effects of fexofenadine and cetirizine: measurement of psychomotor performance, subjective sleepiness, and brain histamine H1-receptor occupancy using 11C-doxepin positron emission tomography. J Clin Pharmacol 2004;44:890–900. <https://pubmed.ncbi.nlm.nih.gov/15286093/>
+- **Tashiro 2008.** Tashiro M, Duan X, Kato M, et al. Brain histamine H1 receptor occupancy of orally administered antihistamines, bepotastine and diphenhydramine, measured by PET with 11C-doxepin. Br J Clin Pharmacol 2008;65:811–821. <https://pmc.ncbi.nlm.nih.gov/articles/PMC2485223/>
+- **Hiraoka 2015.** Hiraoka K, Tashiro M, Grobosch T, et al. Brain histamine H1 receptor occupancy measured by PET after oral administration of levocetirizine, a non-sedating antihistamine. Expert Opin Drug Saf 2015;14:199–206. <https://pubmed.ncbi.nlm.nih.gov/25466429/>
+- **Kawauchi 2019.** Kawauchi H, Yanai K, Wang DY, Itahashi K, Okubo K. Antihistamines for allergic rhinitis treatment from the viewpoint of nonsedative properties. Int J Mol Sci 2019;20:213. <https://pmc.ncbi.nlm.nih.gov/articles/PMC6337346/>

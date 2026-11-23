@@ -47,7 +47,7 @@ DIVES = {'ra': ['joint', 'lining', 'molecule'], 'hashi': ['slide', 'follicle'], 
          'med:hadlima': ['skin', 'vessel', 'molecule'], 'med:hcq': ['build', 'retina'], 'med:propranolol': ['node', 'receptor'],
          'med:tizanidine': ['cord', 'synapse', 'liver'], 'med:lexapro': ['synapse', 'sert'], 'med:ibuprofen': ['lining', 'cox'],
          'med:adderall': ['day', 'synapse'], 'med:ldn': ['horn', 'receptor'], 'med:ondansetron': ['wall', 'receptor'],
-         'med:levothyroxine': ['gut', 'cell']}
+         'med:levothyroxine': ['gut', 'cell'], 'med:zyrtec': ['skin', 'receptor', 'gate']}
 
 
 def steps():

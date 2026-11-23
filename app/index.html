@@ -220,6 +220,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .rules li{position:relative;padding:6px 0 6px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--bone-2)}
 .rules li::before{content:"";position:absolute;left:2px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
 .rules li.warn::before{background:var(--alert)}.rules li.note::before{background:#F2A65A}
+.zy-helps li.no::before{background:var(--alert)}.zy-helps li.some::before{background:#F2A65A}
+.zy-helps li b{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--bone);margin-right:3px}
 
 .web-labels{position:absolute;inset:0;z-index:18;pointer-events:none}
 .web-labels[hidden]{display:none}
@@ -278,7 +280,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 <div id="app">
   <canvas id="gl" aria-label="Interactive 3D anatomy. Drag to rotate, scroll or pinch to zoom, point at any structure to name it."></canvas>
   <header class="top">
-    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · ten medicines</p></div>
+    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · eleven medicines</p></div>
     <div class="layers" role="group" aria-label="Layers">
       <button class="chip" data-layer="skin" aria-pressed="true">Skin</button>
       <button class="chip" data-layer="skeleton" aria-pressed="true">Skeleton</button>
@@ -315,6 +317,7 @@ import { makeStations2 } from './stations2.js';
 import { makeStations3 } from './stations3.js';
 import { makeStations4 } from './stations4.js';
 import { makeStations5 } from './stations5.js';
+import { makeStations6 } from './stations6.js';
 import { createDive } from './dive.js';
 import { makeWeb } from './web.js';
 import { makeDay } from './day.js';
@@ -421,7 +424,7 @@ const DIVES={
 // DIVE = {color, top, target(h), view, text, steps, also, make()}: `also` links into the condition dives.
 const MDIVE={hadlima:()=>import('./dive-med-hadlima.js'),hcq:()=>import('./dive-med-hcq.js'),propranolol:()=>import('./dive-med-propranolol.js'),
   lexapro:()=>import('./dive-med-lexapro.js'),levothyroxine:()=>import('./dive-med-levothyroxine.js'),adderall:()=>import('./dive-med-adderall.js'),
-  ldn:()=>import('./dive-med-ldn.js'),ondansetron:()=>import('./dive-med-ondansetron.js'),tizanidine:()=>import('./dive-med-tizanidine.js'),ibuprofen:()=>import('./dive-med-ibuprofen.js')};
+  ldn:()=>import('./dive-med-ldn.js'),zyrtec:()=>import('./dive-med-zyrtec.js'),ondansetron:()=>import('./dive-med-ondansetron.js'),tizanidine:()=>import('./dive-med-tizanidine.js'),ibuprofen:()=>import('./dive-med-ibuprofen.js')};
 const diveDef=async key=>key.startsWith('med:')?{...(await MDIVE[key.slice(4)]()).DIVE,med:key.slice(4)}:DIVES[key];
 const diveName=key=>key.startsWith('med:')?MEDS.find(m=>m.id===key.slice(4))?.name:byId[key]?.name;
 let dive=null,diveFor=null,diveBack=null;
@@ -482,7 +485,7 @@ function openMed(id,tab){
   const m=id?MEDS.find(x=>x.id===id):null;stopStation();active=null;renderPanel();
   const col=m?SYS[m.sys].c:'#ECE6DA';const hasDive=!!(m&&MDIVE[m.id]);
   const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
-  // a medicine with a bench of its own (Hadlima) opens that instead of the 24-hour planner
+  // a medicine with a bench of its own (Hadlima, Zyrtec) opens that instead of the 24-hour planner
   tabbed(body,col,m?.station?ST[m.station]:ST.meds,()=>medRead(m),{focus:id||null,medDive:hasDive?id:null,tab});
   hideHint();
 }
@@ -491,7 +494,7 @@ function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return
   return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
 function openSources(focusKey){stopStation();active=null;renderPanel();
   const b=shell('Checked October–November 2026','#BFE6E1','Sources and review',null,null);
-  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. So are the medicine dives, added the same month: each was researched from its label and the studies below and then checked claim by claim by an independent AI reviewer. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
+  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. So are the medicine dives, added the same month, and Zyrtec, the eleventh medicine, added at the end of it: each was researched from its labels and the studies below and then checked claim by claim by an independent AI reviewer. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
   for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
     h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
   b.innerHTML=h;A.refresh();home();hideHint();
@@ -540,7 +543,7 @@ onTheme(syncTheme);syncTheme();
     A=await createAtlas(canvas,{binUrl:'anatomy.txt',onProgress:p=>{$('#lbar').style.width=p*100+'%';}});
     K0=kit(A);A.setTheme?.(theme());
     const _fly=A.flyTo;A.flyTo=(t,o={})=>_fly({...t,dist:t.dist*(o.raw?1:zoomFactor())},o);
-    ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),...makeStations5(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
+    ST={...makeStations(A),...makeStations2(A),...makeStations3(A),...makeStations4(A),...makeStations5(A),...makeStations6(A),web:makeWeb(A),day:makeDay(A),notes:makeNotes(A)};
     renderPanel();A.size();fitOffset();
     A.camera.position.copy(A.sph([0,0.84,0],homeDist(),16,4));A.controls.target.set(0,0.84,0);A.controls.update();
     A.start();

@@ -13,6 +13,7 @@ export function makeStations4(A){
     {id:'lexapro',label:'Lexapro',t:8},
     {id:'adderall',label:'Adderall XR',t:8},
     {id:'iron',label:'Iron',t:11},
+    {id:'zyrtec',label:'Zyrtec',t:21},
     {id:'ldn',label:'Naltrexone (LDN)',t:22},
     {id:'ondansetron',label:'Zofran',t:13,prn:true},
     {id:'tizanidine',label:'Tizanidine',t:21,prn:true},
@@ -31,6 +32,8 @@ export function makeStations4(A){
       text:'Low-dose naltrexone partly blocks opioid receptors after each dose (how long, at low doses, hasn’t been measured), so opioid painkillers may work less well and need careful dosing in surgery or the ER. Pain can still be treated; the team just needs to know. For planned surgery the prescriber usually pauses it a few days beforehand, and a wallet card helps. Pair it with the hEDS note: many people with EDS report that local anaesthetics work poorly too.'},
     gut:{label:'Stomach and absorption',parts:['Stomach','Duodenum','Esophagus'],col:'#DDB741',meds:['ibuprofen','ondansetron','levothyroxine','iron','hcq'],
       text:'With gastroparesis, every tablet waits in the stomach before it can be absorbed, so timing effects stretch out. Ibuprofen irritates the stomach lining and, with Lexapro, raises the risk of stomach bleeding; it is also a mast-cell trigger for some people. Zofran eases nausea but can constipate, and iron tablets constipate too. Levothyroxine and iron need their four hours apart regardless. Any new acid reducer or antacid affects levothyroxine, hydroxychloroquine (keep 4 hours apart) and Adderall.'},
+    sleep:{label:'Drowsiness',parts:['#brain'],col:'#78A0F4',meds:['zyrtec','tizanidine','lexapro'],
+      text:'Zyrtec, tizanidine and Lexapro all list sleepiness on their labels. Zyrtec: 14% on 10 mg against 6% on placebo, and its label asks for care when driving. Tizanidine: 48% against 10% in its trials. Lexapro: 6% against 2% in its depression trials. The Zyrtec and tizanidine labels both warn that sedating medicines and alcohol add up, so on a day she takes tizanidine the two together are the ones to watch.'},
     serotonin:{label:'Serotonin',parts:['#brain'],col:'#B193E3',meds:['lexapro','adderall','ondansetron'],
       text:'Lexapro, Adderall and Zofran all raise serotonin activity, and each label warns about combining them. Problems are uncommon. Watch for a cluster that comes on within hours of a new dose or a Zofran: agitation or confusion, shivering or sweating, twitching or jerky muscles, fever, diarrhoea. That cluster needs same-day medical help. Tramadol, triptans and some cough medicines (dextromethorphan) belong to the same family.'},
   };
@@ -50,7 +53,7 @@ export function makeStations4(A){
     out.push(T.adderall<12?['ok',`Adderall XR at ${hhmm(T.adderall)}: fits the label's advice to take it on waking.`]:['warn',`Adderall XR at ${hhmm(T.adderall)}: the label advises against afternoon doses because of insomnia, and lost sleep lowers the patient's seizure threshold.`]);
     out.push(nearMeal(T.hcq)<=.5?['ok','Hydroxychloroquine with a meal: fits the label (with food or milk).']:['note','The hydroxychloroquine label says to take it with food or milk.']);
     if(prnOn.ibuprofen){out.push(nearMeal(T.ibuprofen)<=.5?['ok','Ibuprofen with food.']:['warn','Ibuprofen on an empty stomach irritates the lining; take it with food.']);out.push(['note','Ibuprofen with Lexapro raises the risk of stomach bleeding; food helps the stomach but not the bleeding risk.']);}
-    if(prnOn.tizanidine)out.push(['note','Tizanidine plus propranolol plus POTS: blood pressure and pulse can both drop. Stand up slowly. Never with ciprofloxacin.']);
+    if(prnOn.tizanidine)out.push(['note','Tizanidine plus propranolol plus POTS: blood pressure and pulse can both drop. Stand up slowly. Never with ciprofloxacin.'],['note','Tizanidine and Zyrtec: their drowsiness adds up (both labels).']);
     if(prnOn.ondansetron)out.push(['note','Zofran adds a third QT-lengthening medicine and a third serotonin-active one (with Lexapro and Adderall).']);
     return out;
   }

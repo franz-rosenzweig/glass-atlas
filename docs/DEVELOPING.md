@@ -26,7 +26,7 @@ A few things only work through a link:
 | `app/` | The complete app. `index.html` is a self-contained, fully offline copy (three.js and fonts are bundled in `vendor/`). `atlas.html` is the source exactly as published to claude.ai (dark only, before light mode), which loads three.js from a CDN. |
 | `app/tour/` | Narration audio for the 13 tour stops (MP3), and `tour-script.json` holds the text and camera positions. |
 | `app/anatomy.txt` | The anatomy meshes, gzip-compressed and base64-encoded; decoded in `core.js`. |
-| `research/references.md` | All 210 references, with links. |
+| `research/references.md` | All 260 references, with links. |
 | `research/model-checks/` | Node scripts used to check the iron, thyroid, hand and gastric-emptying models against published data. |
 | `build-pipeline/` | Python scripts and manifests that turned BodyParts3D STL files into `anatomy.txt` (decimate, adapt the skin surface, pack). The raw BodyParts3D download (~500 MB) isn't included; the scripts expect it at `bp3d/assets/BodyParts3D_data/stl/`. |
 | `tools/check.py` | Checks that imports resolve and walks every screen in light and dark in headless Chrome. Run it before pushing. |
@@ -42,7 +42,7 @@ Glass Atlas started as a published claude.ai artifact. This copy was exported on
 - `core.js`: renderer, camera, anatomy loading, picking
 - `data.js`: conditions, medicines, alerts, emergency cards
 - `refs.js`: the references
-- `stations.js` to `stations4.js`: the instruments (tilt table, Beighton, neck, hand, stomach, thyroid, MCAS, iron, seizure threshold, lumbar, cervix, endometriosis, medicines planner)
+- `stations.js` to `stations6.js`: the instruments (tilt table, Beighton, neck, hand, stomach, thyroid, MCAS, iron, seizure threshold, lumbar, cervix, endometriosis, medicines planner, the Hadlima bench, the Zyrtec bench)
 - `dive.js` and `dive-*.js`: the cell- and molecule-level dives and the field guide; `dive-med-<id>.js` is each medicine's dive, a module exporting `DIVE` (its colour, where the camera flies, the Dive tab's text, its sources, links into the condition dives, and `make()` for the levels), loaded the first time it opens
 - `web.js`, `day.js`, `notes.js`, `tour.js`, `kit.js`: connections, the day view, notes, the tour, shared helpers
 - `theme.js`: light and dark. CSS tokens for the panels, `light-dark()` pairs for inline colours, and a remap for every 2D canvas (lightness turned over in OKLCH, hue kept), so the drawing code doesn't need to know which theme is on
@@ -94,4 +94,4 @@ The meshes come from BodyParts3D, and `build-pipeline/` is how they became `app/
 
 ## The research
 
-[research/references.md](../research/references.md) lists all 210 references the app cites, grouped as in the app's Sources panel, and `research/model-checks/` has the small Node scripts that checked the iron, thyroid, hand and gastric-emptying models against published data. A new clinical claim or number needs a real source in `refs.js`, shown with `srcLine([...])`.
+[research/references.md](../research/references.md) lists all 260 references the app cites, grouped as in the app's Sources panel, and `research/model-checks/` has the small Node scripts that checked the iron, thyroid, hand and gastric-emptying models against published data. A new clinical claim or number needs a real source in `refs.js`, shown with `srcLine([...])`.

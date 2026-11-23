@@ -2,7 +2,7 @@
 
 # The dives
 
-A dive is a microscope that zooms from the body down into one part of it: first the tissue, then the cells, and often the molecules. Five conditions have one, and they're the ones with a **Dive** badge in the case: Rheumatoid Arthritis, Hashimoto's Disease, Mast Cell Activation Syndrome, POTS and Iron Deficiency. Each of the patient's ten medicines has one too, which follows the medicine to where it works (see [The medicine dives](#the-medicine-dives) below).
+A dive is a microscope that zooms from the body down into one part of it: first the tissue, then the cells, and often the molecules. Five conditions have one, and they're the ones with a **Dive** badge in the case: Rheumatoid Arthritis, Hashimoto's Disease, Mast Cell Activation Syndrome, POTS and Iron Deficiency. Each of the patient's eleven medicines has one too, which follows the medicine to where it works (see [The medicine dives](#the-medicine-dives) below).
 
 ![The rheumatoid arthritis dive, inside the knuckle](images/dive-joint.png)
 *Inside the knuckle: the middle-finger joint cut lengthwise like a pathology slide, in the "Active RA" stage.*
@@ -49,6 +49,7 @@ Each medicine's page has a **Dive** tab beside **Instrument** and **Read**. It l
 | **Ibuprofen** | The stomach, the lining, the COX enzyme (10 nm) | Take doses with and without food and watch the prostaglandin shield thin, and what Lexapro adds when a raw spot bleeds. Then ibuprofen sitting in the COX-1 and COX-2 channels, and what it doesn't touch in RA. |
 | **Adderall XR** | The brain, the capsule (2 cm), one nerve ending (1 µm) | The capsule's two waves of beads over a day, and what's left at lights-out. Then amphetamine riding in through the transporter and turning the pump around, in the brain and in the nerves to the heart, with propranolol. |
 | **Low-dose naltrexone** | The neck, the pain relay in the spinal cord, opioid receptors (10 nm) | The microglia idea (a hypothesis) and what two placebo-controlled trials found. Then a day of receptors after a dose, an opioid painkiller given at different hours, and the rebound idea (also a hypothesis). |
+| **Zyrtec** | The forearm, the skin (3 cm), the H1 receptor (10 nm), the brain's gate (20 µm) | Prick the skin with histamine at chosen hours after a dose and watch the wheal, flare and itch shrink, and whether that holds after weeks of daily use. Then histamine switching the receptor on and cetirizine holding it off, and a race to see which version of the drug lets go first. Then a capillary in the brain and its pump, with how many of the brain's H1 receptors six antihistamine doses fill on brain scans. |
 | **Zofran** | The gut, the gut wall (250 µm), the 5-HT3 receptor (10 nm) | Irritate the gut and watch the signal climb the vagus to the brainstem, and what ondansetron changes and doesn't (the slow stomach). Then serotonin and ondansetron competing for the receptor, with the QT and serotonin-syndrome warnings. |
 | **Levothyroxine** | The belly, the stomach and gut (20 cm), one cell (20 µm) | Swallow the pill with water, coffee, breakfast, calcium, iron or an antacid, together or spaced, with numbers only where a study measured them. Then T4 becoming T3 inside a cell, and why TSH is read six to eight weeks after a dose change. |
 

@@ -2,7 +2,7 @@
 
 # What is Glass Atlas?
 
-Glass Atlas is an interactive 3D atlas of real human anatomy, built around ONE teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and ten medicines. It runs in the browser, on a computer or a phone, in a dark mode and a light mode, and it needs nothing installed.
+Glass Atlas is an interactive 3D atlas of real human anatomy, built around ONE teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and eleven medicines. It runs in the browser, on a computer or a phone, in a dark mode and a light mode, and it needs nothing installed.
 
 ![The atlas: the body in the middle and the case on the left](images/hero-dark.png)
 *The home view: the body in the middle, the case on the left, the layers and the other views along the top.*
@@ -13,7 +13,7 @@ Most anatomy apps show you a body, and most case studies are a page of text. Gla
 
 On the left is the case. Every condition the patient has opens an "instrument" on the right, which is something you operate on the anatomy instead of reading about it: a tilt table that stands the body up and shows the heart rate climbing, a hand that opens and closes as the morning stiffness wears off, a neck you tip back until the nerve gets pinched. Each condition also has a short reading, with the parts it involves lit up on the body and the sources the text comes from.
 
-Five of the conditions go further, with a "dive": a microscope that zooms from the body down into the tissue, then the cells, and then the molecules, with a small game at one of the levels and a field guide that fills up as you tap things. Each of the ten medicines has a dive too, which follows it to where it works. Around all of it there's the medicines with a planner for the whole day, a web of how the conditions connect, a day in the patient's body hour by hour, a narrated tour of about eight minutes, an emergency card, and 210 sources.
+Five of the conditions go further, with a "dive": a microscope that zooms from the body down into the tissue, then the cells, and then the molecules, with a small game at one of the levels and a field guide that fills up as you tap things. Each of the eleven medicines has a dive too, which follows it to where it works. Around all of it there's the medicines with a planner for the whole day, a web of how the conditions connect, a day in the patient's body hour by hour, a narrated tour of about eight minutes, an emergency card, and 260 sources.
 
 Basically, instead of reading that propranolol takes the edge off a racing heart, you put the body on the tilt table, add the medicine, and watch what happens.
 
