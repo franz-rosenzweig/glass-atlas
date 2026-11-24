@@ -155,7 +155,7 @@ function retinaLevel(){
   const SP=[0,1].map(k=>Array.from({length:1100},(_,i)=>({c:Math.floor(hash(i,k+7)*275),dx:hash(i,k+9)*2,u:hash(i,k+11),w:1+hash(i,k+13)*2.5})));
   const CV=Array.from({length:30},(_,i)=>({x:BS.x0+hash(i,1)*(BS.x1-BS.x0),d:.25+.6*hash(i,2),rx:6+10*hash(i,3),ry:3+4*hash(i,4)}));
   // the bands at one column, Bruch's membrane upward: [name, µm, brightness, top y]
-  function col(xd,yd){const r=Math.hypot(xd,yd),pit=1-Math.exp(-((r/2.2)**2)),w=wAt(S,xd,yd),wr=wAt(S,xd,yd,true),yB=246+.04*xd*xd;
+  function col(xd,yd){const r=Math.hypot(xd,yd),pit=1-Math.exp(-((r/2.2)**2)),w=wAt(S,xd,yd),wr=wAt(S,xd,yd,true),yB=246-.025*xd*xd;
     const onl=(52+48*Math.exp(-((r/2.6)**2)))*(1-.55*w)*(S.stage===3?1-.22*Math.exp(-((r/1.6)**2)):1),inner=205*pit*(1-.018*Math.max(0,r-4)),rnfl=pit*(6+1.6*r+Math.max(0,xd)*2.2);
     const B=[['rpe',22*(1-.3*wr),lerp(240,150,wr)],['iz',28*(1-.85*w),lerp(120,40,w)],['ez',10*(1-.8*w),30+202*(1-w)**1.5],['myo',16*(1-.4*w),70],['elm',3,lerp(170,70,w)],['onl',onl,38],
       ['opl',inner*.16,165],['inl',inner*.26,62],['ipl',inner*.26,150],['gcl',inner*.32,95],['rnfl',rnfl,215]];
@@ -177,7 +177,7 @@ function retinaLevel(){
     const cols=[];for(let px=BS.x0;px<BS.x1;px+=2){const xd=(px+1-BS.cx)/PXD,C=col(xd,S.dy);cols.push(C);
       x.fillStyle=gray(80+90*C.wr);x.fillRect(px,C.yB,2.6,72);
       C.B.forEach((b,i)=>{let v=b[2];if(i===0&&C.wr>.05)v*=.55+.9*hash(px>>2,99);x.fillStyle=gray(v);x.fillRect(px,b[3],2.6,b[1]*UM+.6);});}
-    x.fillStyle=gray(24);for(const v of CV){const xd=(v.x-BS.cx)/PXD;x.beginPath();x.ellipse(v.x,246+.04*xd*xd+12+v.d*52,v.rx,v.ry,0,0,TAU);x.fill();}
+    x.fillStyle=gray(24);for(const v of CV){const xd=(v.x-BS.cx)/PXD;x.beginPath();x.ellipse(v.x,246-.025*xd*xd+12+v.d*52,v.rx,v.ry,0,0,TAU);x.fill();}
     // speckle, as on any OCT
     for(const k of [0,1]){x.fillStyle=k?'rgba(255,255,255,.16)':'rgba(0,0,0,.4)';for(const s of SP[k]){const C=cols[s.c];x.fillRect(BS.x0+s.c*2+s.dx,lerp(C.B[10][3],C.yB+72,s.u),s.w,1.4);}}
     x.fillStyle='rgba(127,211,163,.10)';x.fillRect(BS.x0+((t*90)%(BS.x1-BS.x0)),BS.y0,3,BS.y1-BS.y0);x.restore();
@@ -218,7 +218,7 @@ function retinaLevel(){
       <p class="sub">Her exams and her risk</p>
       <label class="dv-meter" for="rt-yr"><span>Years on hydroxychloroquine</span><b id="rt-y"></b></label><input id="rt-yr" type="range" min="0" max="25" step="1" value="${S.yr}" style="width:100%;accent-color:var(--c)">
       <p class="dv-fine" style="margin:10px 0 0">Daily dose per kg of actual body weight</p>
-      ${seg('ds',DOSE.map((d,i)=>[i,d.l+' mg']),S.dose,'Dose')}
+      ${seg('ds',DOSE.map((d,i)=>[i,d.l+' mg/kg']),S.dose,'Dose')}
       <div class="dv-btns"><button class="dv-btn${S.rf?' on':''}" id="rt-rf" type="button">Kidney disease or tamoxifen<small>${S.rf?'on: yearly exams from the start':'off'}</small></button></div>
       <div class="dv-meter"><span>Eye exams so far</span><b id="rt-ex"></b></div>
       <div class="dv-meter"><span>Risk so far at up to 5 mg/kg</span><b id="rt-r"></b></div>

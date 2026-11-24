@@ -1,5 +1,5 @@
 // The RA dive: knuckle → joint → synovial lining (the game) → molecules.
-// Sizes are to scale within each level: the joint is ~3 cm across, the lining view ~250 µm, the molecule view ~60 nm.
+// Sizes are to scale within each level: the joint is ~6 cm across, the lining view ~250 µm, the molecule view ~60 nm.
 import { TAU, clamp, lerp, rand, esc } from './dive.js';
 import { theme, raw } from './theme.js';
 
@@ -46,7 +46,7 @@ export const G={
 /* ------------------------------------------------------------------ field guide */
 export const GUIDE={
   fls:{name:'Fibroblast-like synoviocyte',kind:'Cell',size:'about 30 µm long',draw:(x,cx,cy,s,t)=>G.fls(x,cx,cy,s*1.6,t,-.2,.3),
-    text:['One of the two cell types that make up the joint lining, which is normally only two or three cells deep. In RA these cells multiply until the lining is up to 10–20 cells deep.','They become the main destroyers of cartilage, releasing enzymes (matrix metalloproteinases) and creeping over it as pannus.']},
+    text:['One of the two cell types that make up the joint lining, which is normally only two or three cells deep. In RA these cells multiply until the lining is many cells deep (often more than five).','They become the main destroyers of cartilage, releasing enzymes (matrix metalloproteinases) and creeping over it as pannus.']},
   mac:{name:'Macrophage-like synoviocyte',kind:'Cell',size:'about 20 µm',draw:(x,cx,cy,s,t)=>G.mac(x,cx,cy,s*1.8,t,1.3),
     text:['The other main cell type of the lining: a cleaner that swallows debris.','In RA, macrophages are a major source of TNF and IL-6, the two signals that drive much of the inflammation and that modern drugs target.']},
   t:{name:'T cell',kind:'Cell',size:'about 7–10 µm',draw:(x,cx,cy,s)=>G.tcell(x,cx,cy,s*2.2),
@@ -65,6 +65,8 @@ export const GUIDE={
     text:['Tumour necrosis factor: three identical units that dock onto receptors and switch on inflammation genes.','One of the master switches of RA. Adalimumab (the patient\'s Hadlima), etanercept and infliximab all block it.']},
   il6:{name:'IL-6',kind:'Signal protein',size:'about 4 nm',draw:(x,cx,cy,s)=>G.il6(x,cx,cy,s*1.8),
     text:['Interleukin-6 tells the liver to make CRP, the inflammation blood test, and contributes to fatigue.','It also raises hepcidin, the hormone that locks iron away, one reason inflammation causes anaemia. Tocilizumab blocks its receptor.']},
+  mhc:{name:'MHC class II',kind:'Display protein',size:'about 10 nm',draw:(x,cx,cy,s)=>{x.fillStyle='#B98CFF';x.fillRect(cx-9*s,cy-4*s,6*s,34*s);x.fillRect(cx+3*s,cy-4*s,6*s,34*s);x.fillStyle='#FFE36E';x.fillRect(cx-8*s,cy-10*s,16*s,6*s);},
+    text:['Holds chopped-up protein fragments on the cell surface for T cells to inspect.','Hydroxychloroquine makes the cell\'s recycling compartments less acidic, so fewer fragments are made and shown.']},
   acpa:{name:'ACPA (anti-CCP antibody)',kind:'Antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8,0,'#C08CFF'),
     text:['An antibody that targets proteins in which the amino acid arginine has been converted to citrulline, a change made by enzymes called PADs.','It is one of the blood tests used to diagnose RA, and can be present years before the joints hurt.']},
   ada:{name:'Adalimumab (Hadlima)',kind:'Medicine · antibody',size:'about 10–15 nm',draw:(x,cx,cy,s)=>G.ab(x,cx,cy,s*.8),
@@ -83,10 +85,10 @@ function jointLevel(){
   const HOT=[
     {x:200,y:350,k:'Metacarpal',t:'The long bone in the palm. Its rounded head forms the knuckle.'},
     {x:800,y:350,k:'Proximal phalanx',t:'The first bone of the finger. Its base cups the metacarpal head.'},
-    {x:600,y:262,k:'Cartilage',t:'Glassy, slippery and without blood vessels. RA damages it from the edges and from enzymes in the fluid.'},
+    {x:531,y:281,k:'Cartilage',t:'Glassy, slippery and without blood vessels. RA damages it from the edges and from enzymes in the fluid.'},
     {x:540,y:128,k:'Synovium (joint lining)',t:'Normally just a few cells deep. In RA this is where the disease lives.'},
     {x:560,y:236,k:'Synovial fluid',t:'Lubricates the joint and nourishes the cartilage. In active RA it fills with inflammatory cells, mostly neutrophils.'},
-    {x:300,y:232,k:'Joint capsule',t:'The fibrous sleeve that seals the joint.'},
+    {x:336,y:262,k:'Joint capsule',t:'The fibrous sleeve that seals the joint.'},
     {x:392,y:241,k:'Bare area',t:'Bone inside the capsule with no cartilage cover. RA erosions usually start here, at the joint margins.'},
     {x:500,y:96,k:'Extensor tendon',t:'Straightens the finger. It runs over the back of the knuckle.'},
     {x:500,y:612,k:'Flexor tendons',t:'Bend the finger, gliding in a lubricated sheath; inflamed sheaths are behind trigger fingers.'},
@@ -143,13 +145,13 @@ function jointLevel(){
     x.lineWidth=5;x.beginPath();x.moveTo(lens.x+27*pr,lens.y+27*pr);x.lineTo(lens.x+48*pr,lens.y+48*pr);x.stroke();
     x.fillStyle='#F29A55';x.font='12px "Martian Mono", monospace';x.fillText('zoom in',lens.x,lens.y+66*pr);
   }
-  return {id:'joint',natural:true,label:'Joint',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:167,label:'5 mm'},zoomFocus:lens,
+  return {id:'joint',natural:true,label:'Joint',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:167,label:'1 cm'},zoomFocus:lens,
     card(){return `<h2>Inside the knuckle</h2>
       <p>The middle-finger knuckle, cut lengthwise like a pathology slide.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Stage">${Object.entries(MODES).map(([k,m])=>`<button role="radio" data-m="${k}" aria-checked="${k===st.mode}">${m.l}</button>`).join('')}</div>
       <p id="dj-t">${MODES[st.mode].txt}</p><p id="dj-h" class="dv-fine"></p>
       <div class="dv-btns"><button class="dv-btn go" id="dj-go" type="button">Zoom in · Lining</button></div>
-      <p class="dv-fine">Drawn to scale at about 3 cm across. A schematic section based on standard joint anatomy; RA stages follow the textbook sequence, not the patient's imaging.</p>`;},
+      <p class="dv-fine">Drawn to scale at about 6 cm across. A schematic section based on standard joint anatomy; RA stages follow the textbook sequence, not the patient's imaging.</p>`;},
     bind(card,api){card.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{st.mode=b.dataset.m;const m=MODES[st.mode];st.tInfl=m.i;st.tDmg=m.d;card.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-checked',x===b));card.querySelector('#dj-t').textContent=m.txt;});
       card.querySelector('#dj-go').onclick=()=>api.go('lining',{from:lens});const m=MODES[st.mode];st.tInfl=m.i;st.tDmg=m.d;},
     tap(p,api){if(Math.hypot(p.x-lens.x,p.y-lens.y)<55){api.go('lining',{from:lens});return;}
@@ -241,7 +243,7 @@ function liningLevel(){
     if(!bg)buildBg();step(dt,api);
     x.drawImage(bg,0,0,2000,1400,0,0,1000,700);
     // text marks, like a labelled slide (drawn live, not into the cached ground, so they keep a readable size)
-    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('JOINT FLUID',30,30);x.fillText('LINING',30,252);x.fillText('BLOOD VESSEL',112,470);x.fillText('BONE',230,688);x.fillText('CARTILAGE',560,688);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('JOINT FLUID',140,30);x.fillText('LINING',140,252);x.fillText('BLOOD VESSEL',112,470);x.fillText('BONE',230,688);x.fillText('CARTILAGE',560,688);
     // vessel blood
     for(const r of S.rbc){const p=vessel(r.u);G.rbc(x,p.x,p.y+Math.sin(r.u*40)*4,.62);}
     // erosion pits under osteoclasts; pannus front over cartilage
@@ -286,7 +288,7 @@ function liningLevel(){
       <div class="dv-btns"><button class="dv-btn" id="dl-st" type="button">Steroid bridge<small>fast, but wears off</small></button><button class="dv-btn" id="dl-hcq" type="button">Hydroxychloroquine<small>slow: builds over months</small></button><button class="dv-btn" id="dl-hum" type="button">Hadlima<small>adalimumab: targets TNF</small></button></div>
       <div id="dl-end" hidden></div>
       <div class="dv-btns"><button class="dv-btn" id="dl-re" type="button">Restart the year</button><button class="dv-btn go" id="dl-go" type="button">Zoom in · Molecule</button></div>
-      <p class="dv-fine">One week passes every two seconds. Each glowing dot stands for a burst of signal molecules far too small to see at this scale. Cell sizes are to scale; the game's numbers are illustrative, not a forecast for the patient's joints.</p>`;},
+      <p class="dv-fine">One week passes every two seconds. Each glowing dot and antibody stands for a burst of signal molecules far too small to see at this scale. Lymphocytes and lining cells are to scale; other cells are drawn smaller to fit. The game's numbers are illustrative, not a forecast for the patient's joints.</p>`;},
     bind(card,api){
       card.querySelector('#dl-st').onclick=()=>{if(S.ster>.2||S.done)return;S.ster=1;S.sterUses++;api.toast('Steroid: inflammation drops fast');};
       card.querySelector('#dl-hcq').onclick=()=>{if(S.hcq||S.done)return;S.hcq=true;S.hcqStart=S.week;api.toast('Hydroxychloroquine started: it builds slowly');};
@@ -304,7 +306,7 @@ function liningLevel(){
       for(const c of chondros)if(hit(1,c.x,c.y,22))return api.discover('chondro');
       for(const n of S.neut)if(hit(1,n.x,n.y,22))return api.discover('neut');
       let bc=null,bdc=30;for(const c of S.cells){const d=Math.hypot(p.x-c.x,p.y-c.y);if(d<bdc){bdc=d;bc=c;}}
-      if(bc)return api.discover(bc.type);
+      if(bc){bc.taps=(bc.taps||0)+1;return api.discover(bc.type==='plasma'&&bc.taps%2===0?'acpa':bc.type);} // a plasma cell's second tap shows the antibody it makes
       for(const a of S.ab)if(hit(1,a.x,a.y,24))return api.discover('ada');
     },
     draw,
@@ -329,7 +331,7 @@ function moleculeLevel(){
         for(const r of T.rec)if(!r.busy&&Math.abs(m.x-r.x)<46&&m.y>memY-120){m.state='docked';m.r=r;r.busy=1;r.tnf=m;T.hits++;}
         if(m.y>memY-90)m.y=memY-90;}
       else if(m.state==='docked'){m.x=lerp(m.x,m.r.x,dt*6);m.y=lerp(m.y,memY-96,dt*6);m.r.busy-=dt*.4;if(m.r.busy<=0){m.r.busy=0;m.state='gone';}}
-      else if(m.state==='bound'){m.x=m.ab.x+Math.sin(m.ab.rot)*-62;m.y=m.ab.y-Math.cos(m.ab.rot)*62;}}
+      else if(m.state==='bound'){m.x=m.ab.x+Math.sin(m.ab.rot)*-118;m.y=m.ab.y-Math.cos(m.ab.rot)*118;}}
     T.tnf=T.tnf.filter(m=>m.state!=='gone'&&m.y<800);
     for(const a of T.ab){if(a===drag)continue;
       if(a.cargo){a.y-=dt*30;a.fade+=dt*.25;continue;}
@@ -338,13 +340,13 @@ function moleculeLevel(){
       tryBind(a);}
     T.ab=T.ab.filter(a=>(a.fade||0)<1);
   }
-  function tryBind(a){if(a.cargo)return;const tipX=a.x+Math.sin(a.rot)*-62,tipY=a.y-Math.cos(a.rot)*62;
+  function tryBind(a){if(a.cargo)return;const tipX=a.x+Math.sin(a.rot)*-118,tipY=a.y-Math.cos(a.rot)*118;
     for(const m of T.tnf)if(m.state==='free'&&Math.hypot(m.x-tipX,m.y-tipY)<44){m.state='bound';m.ab=a;a.cargo=m;a.fade=0;T.blocked++;T.flash.push({x:m.x,y:m.y,t:0});return;}}
   function drawT(x,dt,t){stepT(dt);
     x.fillStyle='#0A1418';x.fillRect(-300,-100,1600,memY+66);x.fillStyle='#120B12';x.fillRect(-300,memY+30,1600,500);
     drawMembrane(x,memY,-300,1300);T.rec.forEach(r=>receptor(x,r,t));
     for(const m of T.tnf)G.tnf(x,m.x,m.y,1.6,m.rot);
-    for(const a of T.ab){x.save();x.globalAlpha=1-(a.fade||0);G.ab(x,a.x,a.y,1,a.rot);x.restore();}
+    for(const a of T.ab){x.save();x.globalAlpha=1-(a.fade||0);G.ab(x,a.x,a.y,1.9,a.rot);x.restore();}
     for(const f of T.flash){f.t+=dt;x.strokeStyle=`rgba(90,168,255,${1-f.t})`;x.lineWidth=3;x.beginPath();x.arc(f.x,f.y,20+f.t*60,0,TAU);x.stroke();}T.flash=T.flash.filter(f=>f.t<1);
     x.fillStyle='rgba(236,230,218,.8)';x.font='12px "Martian Mono", monospace';x.textAlign='left';x.fillText('OUTSIDE THE CELL',24,34);x.fillText('CELL MEMBRANE',24,memY-48);x.fillText('INSIDE: INFLAMMATION GENES',24,memY+90);
     x.textAlign='center';x.fillText('TNF receptors',510,memY+130);
@@ -398,16 +400,16 @@ function moleculeLevel(){
           <div class="dv-btns"><button class="dv-btn go" id="dm-dose" type="button">Add a dose<small>it piles up slowly in the body</small></button><button class="dv-btn" id="dm-r" type="button">Reset</button></div>
           <p class="dv-fine">This view is a schematic: a real lysosome is hundreds of times larger than these molecules. The acidity meter is illustrative: the direction (less acidic, fewer fragments shown, quieter TLR alarms) is the established mechanism; the amounts are not. In a dish it works within an hour; in a person it takes months to build up.</p>`;
         body.querySelector('#dm-r').onclick=()=>{M.mode==='tnf'?resetT():resetL();};
-        if(M.mode==='tnf')body.querySelector('#dm-inj').onclick=()=>{for(let i=0;i<3;i++)T.ab.push({x:rand(150,850),y:rand(200,330),rot:rand(-.4,.4),fade:0});api.discover('ada',true);};
+        if(M.mode==='tnf')body.querySelector('#dm-inj').onclick=()=>{for(let i=0;i<3;i++)T.ab.push({x:[250,500,750][i]+rand(-40,40),y:rand(220,320),rot:rand(-.3,.3),fade:0});api.discover('ada',true);};
         else body.querySelector('#dm-dose').onclick=()=>{addHcq(api,8);};};
       card.querySelectorAll('[data-mm]').forEach(b=>b.onclick=()=>{M.mode=b.dataset.mm;card.querySelectorAll('[data-mm]').forEach(x=>x.setAttribute('aria-checked',x===b));render();});
       render();},
-    press(p){if(M.mode!=='tnf')return;for(const a of T.ab)if(!a.cargo&&Math.hypot(p.x-a.x,p.y-a.y)<70){drag=a;a.ox=a.x-p.x;a.oy=a.y-p.y;return;}},
+    press(p){if(M.mode!=='tnf')return;for(const a of T.ab)if(!a.cargo&&Math.hypot(p.x-a.x,p.y-a.y)<120){drag=a;a.ox=a.x-p.x;a.oy=a.y-p.y;return;}},
     move(p){if(drag){drag.x=p.x+drag.ox;drag.y=p.y+drag.oy;tryBind(drag);if(drag.cargo)drag=null;}},
     release(){drag=null;},
     tap(p,api){
-      if(M.mode==='tnf'){for(const m of T.tnf)if(Math.hypot(p.x-m.x,p.y-m.y)<40)return api.discover('tnf');for(const a of T.ab)if(Math.hypot(p.x-a.x,p.y-a.y)<60)return api.discover('ada');return;}
-      if(Math.hypot(p.x-LC.x,p.y-LC.y)<LC.r)addHcq(api,2,p);else if(p.y<110)api.discover('acpa');
+      if(M.mode==='tnf'){for(const m of T.tnf)if(Math.hypot(p.x-m.x,p.y-m.y)<40)return api.discover('tnf');for(const a of T.ab)if(Math.hypot(p.x-a.x,p.y-a.y)<110)return api.discover('ada');return;}
+      if(Math.hypot(p.x-LC.x,p.y-LC.y)<LC.r)addHcq(api,2,p);else if(p.y<110)api.discover('mhc');
     },
     draw(x,dt,t,api){M.mode==='tnf'?drawT(x,dt,t):drawL(x,dt,t);
       const c=api.card;const q=s=>c.querySelector(s);

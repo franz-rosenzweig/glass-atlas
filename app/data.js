@@ -16,7 +16,7 @@ const FAINT_VS_SEIZURE = `<h3>A faint can look like a seizure</h3><p>A few secon
 // station: which instrument opens; parts: real (or modelled) structures that light up; refs: keys in refs.js
 export const CONDS = [
  {id:'pots', name:'Postural Orthostatic Tachycardia Syndrome', short:'POTS', sys:'autonomic', year:'2013', station:'tilt',
-  parts:['Wall of heart','#vessels','#legveins'],
+  parts:['Wall of heart','#legveins','Inferior vena cava','Right external iliac vein','Left external iliac vein','#vessels'],
   refs:['cmaj2022','hrs2015','ccjm2019','raj2009','cooper2022','brewster2012','lempert1994','esc2018','lbl_prop'],
   tldr:'When the patient stands, blood slides down into the legs and belly and not enough comes back to the heart, whether because vessels don’t tighten enough, there’s less blood to begin with, or the stress system overreacts. The heart races to make up the difference.',
   body:`<h3>What it is</h3><p>A disorder of the <strong>autonomic nervous system</strong>, the automatic layer that runs heart rate, blood pressure and digestion. Standing sends roughly half a litre to a litre of blood down into the legs and the veins of the belly. Normally the body tightens its vessels within seconds and the leg muscles pump blood back up. In POTS that response falls short, and the heart compensates by speeding up. There are several patterns: vessels that don't tighten enough, a low blood volume (common), and an overactive stress response (high norepinephrine when upright).</p>
@@ -28,8 +28,8 @@ export const CONDS = [
   <div class="warn"><b>Not just "POTS again"</b>Fainting during exercise or while lying down, a sudden pounding or irregular heartbeat just before fainting, chest pain, or a family history of sudden death at a young age: these need same-day medical care. If the patient faints, lay her flat with her legs up; call 911 if she doesn't come round quickly or is hurt.</div>`},
 
  {id:'heds', name:'Hypermobile Ehlers-Danlos Syndrome', short:'hEDS', sys:'structural', year:'2025', station:'beighton',
-  parts:['#skeleton'],
-  refs:['malfait2017','eds2026','hedge2025','schubart2019','goode2019','miller2020'],
+  parts:['Right humerus','Right ulna','Right radius','Right femur','Right tibia','Right patella','Fifth lumbar vertebra','#righthand','#lefthand','#skeleton'],
+  refs:['malfait2017','eds2026','hedge2025','schubart2019','goode2019','miller2020','kim2013'],
   tldr:'The connective tissue that holds the whole body together is built more elastic than usual. That is why it can show up in joints, vessels, gut and skin at once.',
   body:`<h3>What it is</h3><p>Connective tissue is the scaffolding of the entire body: joint ligaments, blood vessel walls, the gut wall, the skin. Built a little differently, it can produce problems in many places at once.</p>
   <h3>How it's confirmed</h3><p>There is no blood or genetic test. The 2017 international criteria need all three of these: generalized joint hypermobility on the nine-point <strong>Beighton score</strong> (the one here); at least two of three groups of features (signs of a body-wide connective-tissue difference such as soft skin or stretch marks, an affected close relative, or long-standing pain or joint instability); and other conditions ruled out. The score threshold is 5 or more for adults up to 50 and 4 or more above 50. A short questionnaire about past flexibility can count when the score is one point short. Because the patient also has RA, her doctors will weigh which joint symptoms come from which condition.</p>
@@ -69,7 +69,7 @@ export const CONDS = [
   warn:'Seizure history goes to every prescriber, every specialty, every time.'},
 
  {id:'iron', name:'Iron Deficiency', short:'Iron', sys:'autonomic', year:'2026', station:'iron',
-  parts:['#vessels'],
+  parts:['Duodenum','Liver','Spleen','#vessels'],
   refs:['who2020','bsg2021','aga2020','moretti2015','stoffel2017','stoffel2020','vons2023','vaucher2012','wolf2020','nice88','jarjour2013','antiel2011'],
   tldr:'Not the same as anemia. The patient can be properly iron deficient while her haemoglobin is still normal, because the body drains its stores first.',
   body:`<h3>What it is</h3><p>Too little iron for the body's needs. The lab that matters most is <strong>ferritin</strong>, the storage protein, with one catch for the patient: inflammation, such as active RA, pushes ferritin up and can hide a real shortage. That's why doctors pair it with transferrin saturation and CRP. With inflammation present, the WHO counts a ferritin under 70 as deficient (under 15 without inflammation; many clinicians use 30).</p>
@@ -136,7 +136,7 @@ export const CONDS = [
 
  {id:'endo', name:'Endometriosis', short:'Endometriosis', sys:'reproductive', year:'suspected', suspected:true, station:'endo',
   parts:['#uterus','#ovaries'],
-  refs:['eshre2022','nisenblat2016','guerriero2015','fryer2025','nice88'],
+  refs:['eshre2022','nisenblat2016','guerriero2015','guerriero2016','fryer2025','nice88'],
   tldr:'Suspected, not confirmed. Tissue like the uterine lining growing outside the uterus, inflaming whatever it lands on.',
   body:`<h3>What it is</h3><p>Tissue like the uterine lining growing outside the uterus: on the ovaries, tubes, pelvic lining, bowel or bladder. It responds to the cycle's hormones and causes inflammation and scarring.</p>
   <h3>Why it's hard to confirm</h3><p>Laparoscopy is no longer required before treatment can start (ESHRE 2022); it is advised when imaging is negative or treatment doesn't help. Imaging finds some forms well and misses surface lesions. A scoping review found an average diagnostic delay of 6.8 years across studies (range 1.5 to 11.4).</p>
@@ -262,7 +262,7 @@ export const HADLIMA = {
     liver:{label:'Liver and blood',parts:['Liver','Spleen'],col:'#40C7AA',cam:{target:[0,1.1,0],dist:1.0,azim:10,elev:6},
       text:'Hepatitis B can wake up under a TNF blocker, sometimes badly, so everyone is tested first: with the virus present, an antiviral goes alongside; with only signs of an old infection, blood tests every 1–3 months watch for it (AGA 2025, ACR 2021). In the RA trials liver enzymes rose above three times normal in 3.5% versus 1.5%, often with methotrexate or NSAIDs in the mix, and the label added autoimmune hepatitis to its warnings in 2025. Blood counts rarely drop. Separately, calming TNF and IL-6 can ease the anaemia of inflammation: see the Iron lens.',
       refs:['lbl_hadlima','aga2025hbv','acr2021']},
-    thyroid:{label:'Thyroid',parts:['#thyroid'],col:'#40C7AA',cam:{target:[0,1.45,.02],dist:.55,azim:10,elev:4},
+    thyroid:{label:'Thyroid',parts:['#thyroid'],col:'#40C7AA',cam:{target:[0,1.39,.02],dist:.55,azim:10,elev:4},
       text:'No interaction with levothyroxine. Adalimumab is cleared like other antibodies, not by the liver enzymes that handle pills, and levothyroxine is broken down mainly by removing its iodine, so the label’s enzyme note doesn’t apply. On the thyroid itself the evidence is small: in a pilot study of 138 people with RA, thyroid antibodies fell a little on adalimumab, and TSH tended to improve, clearly so only in people with thyroid antibodies who weren’t taking levothyroxine. Nothing here calls for changing her thyroid monitoring.',
       refs:['raterman2011','lbl_levo','liu2018','lbl_hadlima']},
     skin:{label:'Skin and MCAS',parts:[],col:'#F29A55',
@@ -305,7 +305,7 @@ export const ZYRTEC = {
     d10:'<b>10 mg once a day</b>, the label dose. The level peaks about an hour after each tablet and falls to a low point by the next; it doesn’t build up from day to day. The skin block starts within an hour and lasts at least 24 hours, so it bridges the low point (label).',
     d20:'<b>20 mg, twice the label dose</b>, off-label. The level doubles, because absorption is linear from 5 to 60 mg. In the label’s trials 20 mg gave no extra benefit over 10 mg; for MCAS, an AAAAI work group allows 2 to 4 times the standard dose as expert opinion (Weiler 2019). Brain H1 occupancy doubles too, to about 25% (Tashiro 2009).',
     d40:'<b>40 mg, four times the label dose</b>, the most the 2026 urticaria guideline allows when lower doses haven’t been enough; above that is untested and not recommended. Its own review found no clear difference between doses in the pooled trials, and it counts MCAS as a different disease (Zuberbier 2026). This app’s research found no brain scan at this dose.',
-    kidney:'<b>With kidneys working less well</b> (moderate impairment), the half-life is three times longer, about a day, so the level builds up over several days to a higher plateau. That is why the old prescription label used 5 mg a day for kidney or liver impairment (label, 2004).',
+    kidney:'<b>With kidneys working less well</b> (the label\'s moderate group, creatinine clearance 11–31 mL/min, about a quarter of normal), the half-life is three times longer, about a day, so the level builds up over several days to a higher plateau. That is why the old prescription label used 5 mg a day for kidney or liver impairment (label, 2004).',
   },
   sleepy:'In its trials of people 12 and older, 14% felt sleepy on 10 mg against 6% on placebo, and 11% on 5 mg (label, 2004).',
   months:{

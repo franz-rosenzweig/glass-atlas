@@ -108,7 +108,8 @@ export function makeDay(A){
           panel.querySelector('#dy-hr').textContent=(c.hr<82?'resting':c.hr<100?'raised':'racing')+' · ~'+Math.round(c.hr/5)*5;panel.querySelector('#dy-st').textContent=lvl(c.stiff);panel.querySelector('#dy-sm').textContent=c.stomach<.15?'little':c.stomach<.45?'some':'a lot';
           panel.querySelector('#dy-pn').textContent=lvl(c.pain);panel.querySelector('#dy-en').textContent=c.energy>.6?'okay':c.energy>.4?'fading':'low';}
         // ice: cool blue glow on hands and knees at night
-        const icy=(hh>=22.5&&hh<22.85); // 15–20 minutes, not all nightfor(const r of A.resolve(['#righthand','#lefthand','Right patella','Left patella'])){if(icy&&cur>=0&&EV[cur].k!=='flare'){r.tgt.em=Math.max(r.tgt.em,.35);r.hi.set('#71C6FF');}}
+        const icy=(hh>=22.5&&hh<22.85); // 15–20 minutes, not all night
+        for(const r of A.resolve(['#righthand','#lefthand','Right patella','Left patella'])){if(icy&&cur>=0&&EV[cur].k!=='flare'){r.tgt.em=Math.max(r.tgt.em,.35);r.hi.set('#71C6FF');}}
         A.skinUniforms.uAlpha.value=Math.min(A.skinUniforms.uAlpha.value,1);
       });
     },

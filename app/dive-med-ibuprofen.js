@@ -120,7 +120,7 @@ function liningLevel(jump){
       <div class="dv-meter"><span>Damage</span><b id="ib-b">none</b><i><u id="ib-bB" ${bg(C.rbc)}></u></i></div>
       <p class="sub">Odds of a bleed from the stomach or upper gut</p>
       ${odds.map(([l,v,w],i)=>`<div class="dv-meter" data-odds="${i}" data-v="${v}"><span>${l}</span><b>${v}</b><i><u style="background:${cc(C.rbc)};width:${w}%"></u></i></div>`).join('')}
-      <p class="dv-fine" style="margin-top:4px">From a meta-analysis, compared with taking neither (Oka 2014). The SSRI-alone figure wasn't statistically clear; the others were.</p>
+      <p class="dv-fine" style="margin-top:4px">From a meta-analysis, compared with taking neither (Oka 2014). A larger one found the SSRI-alone rise clear too: 1.7× (Anglin 2014).</p>
       <div class="dv-btns"><button class="dv-btn" id="ib-go" type="button">Zoom in · COX enzyme</button><button class="dv-btn" id="ib-lx" type="button">Lexapro · SERT pump</button><button class="dv-btn" id="ib-re" type="button">Start over</button></div>
       <p class="dv-fine">Food: the label suggests meals or milk if ibuprofen upsets the stomach, and food slows absorption without lowering how much gets in. The injury comes mainly from losing COX-made prostaglandins (Laine 2008), so food doesn't remove the bleeding risk.</p>
       <p class="dv-fine">Time is squeezed (an hour passes in about a second, faster during round-the-clock doses) and the damage is exaggerated so you can see it; the prostaglandin and shield levels are illustrative. In real life, ulcers, bleeding or perforation from NSAIDs happen in about 1% of people treated for 3–6 months and 2–4% over a year, more with an SSRI, a steroid or a blood thinner; the label says to use the lowest dose for the shortest time. Slow, hidden bleeding can also cause anaemia (label).</p>`;},
@@ -222,6 +222,6 @@ export const DIVE={color:'#F29A55',top:{label:'Stomach',size:'10 cm'},
   text:'Into the patient\'s stomach lining, to see why food makes ibuprofen gentler on the stomach but doesn\'t remove the bleeding risk, and then into the COX enzyme it blocks, which is also how it eases pain and swelling.',
   steps:[['Stomach lining.','Take doses with and without food and watch the prostaglandin shield thin; see what Lexapro adds when a raw spot bleeds.'],['COX enzyme, 10 nm.','Switch on inflammation, then watch ibuprofen sit in the COX-1 and COX-2 channels and let go.']],
   also:[{dive:'ra',level:'lining',label:'RA · Lining'}],
-  refs:['lbl_ibu','laine2008','wallace2008','ricciotti2011','picot1994','orlando2015','crofford1997','warner1999','crofford2013','wallace2000','oka2014','hergovich2000','dvojkovic2021','lbl_lexapro','lbl_hadlima'],
+  refs:['lbl_ibu','laine2008','wallace2008','ricciotti2011','picot1994','orlando2015','crofford1997','warner1999','crofford2013','wallace2000','oka2014','anglin2014','hergovich2000','dvojkovic2021','lbl_lexapro','lbl_hadlima'],
   make:({jump})=>({levels:[liningLevel(jump),coxLevel(jump)],guide:GUIDE_IB}),
 };

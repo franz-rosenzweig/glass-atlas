@@ -20,11 +20,11 @@ export function makeStations3(A){
       const d4=K.box('Intervertebral disk of fourth lumbar vertebra'),d5=K.box('Intervertebral disk of fifth lumbar vertebra');
       const c4=d4.getCenter(V3()),c5=d5.getCenter(V3());
       // the dural sac and its roots, schematic
-      const sac=K.tube([[0,1.07,-0.038],[0,0.99,-0.04],[0,0.93,-0.046],[0,0.87,-0.06]],0.0075,'#E9D8A6');sac.mesh.material.transparent=true;sac.mesh.material.opacity=.55;G.add(sac.mesh);
+      const sac=K.tube([[0,1.07,-0.034],[0,1.02,-0.027],[0,0.98,-0.029],[0,0.94,-0.037],[0,0.905,-0.05],[0,0.875,-0.07]],0.0075,'#E9D8A6');sac.mesh.material.transparent=true;sac.mesh.material.opacity=.55;G.add(sac.mesh);
       for(const s of [-1,1]){
-        const fr4=V3(s*0.026,c4.y+0.008,d4.min.z-0.008),fr5=V3(s*0.028,c5.y+0.008,d5.min.z-0.008);
-        const L4=K.tube([[s*0.004,c4.y+0.035,-0.04],[s*0.013,c4.y+0.02,-0.038],fr4,[s*0.038,c4.y-0.006,d4.min.z+0.004],[s*0.05,0.9,0.002],[s*0.06,0.84,0.004]],0.0028,'#F2C14E');
-        const L5=K.tube([[s*0.005,c4.y+0.002,-0.043],[s*0.013,c5.y+0.022,-0.044],fr5,[s*0.04,c5.y-0.01,-0.03],[s*0.05,0.86,-0.032],[s*0.062,0.8,-0.046]],0.0028,'#F2C14E');
+        const fr4=V3(s*0.026,c4.y+0.008,d4.min.z-0.002),fr5=V3(s*0.028,c5.y+0.008,d5.min.z+0.002);
+        const L4=K.tube([[s*0.004,c4.y+0.035,-0.03],[s*0.008,c4.y+0.01,-0.027],fr4,[s*0.038,c4.y-0.006,d4.min.z+0.004],[s*0.05,0.9,0.002],[s*0.058,0.855,0.012]],0.0028,'#F2C14E');
+        const L5=K.tube([[s*0.005,c4.y+0.002,-0.032],[s*0.012,c5.y+0.012,-0.034],fr5,[s*0.038,c5.y-0.014,-0.014],[s*0.046,0.882,-0.016],[s*0.05,0.858,-0.036],[s*0.054,0.836,-0.052]],0.0028,'#F2C14E');
         G.add(L4.mesh,L5.mesh);(roots['45']??=[]).push(L4.mesh);(roots['5S']??=[]).push(L5.mesh);
         // spurs: lips at the back corners of the vertebral bodies and on the facet joint, pointing into the opening; plus front lips
         const mat=new THREE.MeshStandardMaterial({color:'#F2A65A',emissive:'#F2A65A',emissiveIntensity:.25,roughness:.6});
@@ -87,7 +87,7 @@ export function makeStations3(A){
         panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="seg" role="radiogroup" aria-label="Level">${Object.entries(ROOT).map(([k,r])=>`<button role="radio" data-l="${k}" aria-checked="${k===v.lvl}">${r.where}</button>`).join('')}</div>
           <div id="l-svg"></div>
           <div class="readouts">
-            <div class="ro"><span>Opening left for the nerve</span><b id="l-a"></b><span class="bar"><i id="l-aBar"></i></span></div>
+            <div class="ro"><span>Opening for the nerve, vs upright</span><b id="l-a"></b><span class="bar"><i id="l-aBar"></i></span></div>
             <div class="ro"><span>Pressure on the <span id="l-root"></span> root</span><b id="l-c"></b><span class="bar"><i id="l-cBar"></i></span></div>
             <div class="ro"><span>Where it would be felt</span><b id="l-se" class="sm"></b></div>
             <div class="ro"><span>Strength to check</span><b id="l-st" class="sm"></b></div>
@@ -134,7 +134,7 @@ export function makeStations3(A){
     const COURSE={clear:{label:'Clears (about 60%)'},persist:{label:'Persists (about 25%)'},progress:{label:'Progresses (about 11%)'}};
     function mkPatches(){
       const rnd=(a,b)=>a+Math.random()*(b-a);
-      patches=[];for(let i=0;i<5;i++){const a=rnd(0,Math.PI*2),r=rnd(.34,.5);const pts=[];const n=14;const rad=rnd(.07,.13);
+      patches=[];for(let i=0;i<5;i++){const a=rnd(0,Math.PI*2),r=rnd(.4,.52);const pts=[];const n=14;const rad=rnd(.06,.1);  // low-grade patches sit in the transformation zone, on the squamous side
         for(let k=0;k<n;k++){const t=k/n*Math.PI*2;pts.push([Math.cos(t)*rad*rnd(.65,1.25),Math.sin(t)*rad*rnd(.65,1.25)]);}
         patches.push({cx:Math.cos(a)*r,cy:Math.sin(a)*r*.86,pts,dots:Array.from({length:14},()=>[rnd(-1,1)*rad*.7,rnd(-1,1)*rad*.7])});}
       icons=Array.from({length:100},(_,i)=>({cat:i<60?'clear':i<85?'persist':i<96?'progress':'other',at:2+Math.random()*22}));
@@ -153,7 +153,7 @@ export function makeStations3(A){
       ctx.beginPath();ctx.ellipse(0,0,R*.3,R*.24,0,0,Math.PI*2);ctx.fillStyle=iod?'#C9877A':'#C2474F';ctx.fill();
       ctx.setLineDash([3,4]);ctx.strokeStyle='rgba(255,240,230,.55)';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,R*.62,R*.54,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
       // external os
-      ctx.beginPath();ctx.ellipse(0,0,R*.1,R*.035,0,0,Math.PI*2);ctx.fillStyle='#2A0F14';ctx.fill();
+      ctx.beginPath();ctx.ellipse(0,0,R*.06,R*.05,0,0,Math.PI*2);ctx.fillStyle='#2A0F14';ctx.fill();
       // lesions
       for(const P of patches){if(g.s<=0.01)break;ctx.save();ctx.translate(P.cx*R,P.cy*R);ctx.scale(g.s,g.s);
         ctx.beginPath();P.pts.forEach(([x,y],i)=>{const X=x*R,Y=y*R;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);});ctx.closePath();
@@ -180,7 +180,7 @@ export function makeStations3(A){
       id:'cervix',title:'Cervix',fig:'Colposcope view and what usually happens',
       enter(panel){
         K.resetRig();if(!patches)mkPatches();
-        K.setMode({layers:{skin:0,skeleton:.12,organs:.06,vessels:0},focus:A.resolve(['#cervix']),focusColor:'#62BED3',dim:1});for(const r of A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']))if(!r.tags.includes('cervix'))r.tgt.op=.55;
+        K.setMode({layers:{skin:0,skeleton:.12,organs:.06,vessels:0},focus:A.resolve(['#cervix']),focusColor:'#62BED3',dim:1});for(const r of A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']))if(!r.tags.includes('cervix'))r.tgt.op=r.name==='Urinary bladder'?.2:.55;
         panel.innerHTML=`<canvas id="c-cv" width="560" height="440" class="colpo" data-raw aria-label="Colposcope view of the cervix"></canvas>
           <div class="seg" role="radiogroup" aria-label="Stain">${[['none','No stain'],['acetic','Vinegar'],['iodine','Iodine']].map(([k,l])=>`<button role="radio" data-st="${k}" aria-checked="${k===v.stain}">${l}</button>`).join('')}</div>
           <p class="eyebrow">Course</p>
@@ -194,9 +194,9 @@ export function makeStations3(A){
           <div class="seg" role="radiogroup" aria-label="HPV result">${[['pos','HPV positive'],['neg','HPV negative'],['none','No HPV test']].map(([k,l])=>`<button role="radio" data-h="${k}" aria-checked="${k===v.hpv}">${l}</button>`).join('')}</div>
           <div class="tgs">${toggle('c-recent','A negative HPV test in the last 5 years')}${toggle('c-imm','On immunosuppressive treatment',true,'Hadlima counts; hydroxychloroquine alone usually doesn\'t')}</div>
           <div class="readouts"><div class="ro"><span>Immediate risk of CIN 3 or worse</span><b id="c-risk" class="sm"></b></div><div class="ro"><span>Recommended</span><b id="c-plan" class="sm"></b></div></div>
-          <p class="fine">During colposcopy, dilute vinegar turns abnormal cells white for a minute or so: low-grade changes are thin and fade fast; high-grade ones are dense, sharp-edged and may show dotted (punctation) or tiled (mosaic) vessel patterns. Iodine stains healthy surface cells mahogany; abnormal areas, and some normal tissue near the opening, stay mustard-yellow. LSIL whitens thinly with soft, feathery edges inside the transformation zone (dotted ring), where HPV changes begin.</p>
+          <p class="fine">During colposcopy, dilute vinegar turns abnormal cells white for a minute or so: low-grade changes are thin and fade fast; high-grade ones are dense, sharp-edged and may show dotted (punctation) or tiled (mosaic) vessel patterns. Iodine stains healthy surface cells mahogany; abnormal areas, and some normal tissue near the opening, stay mustard-yellow. LSIL whitens thinly with soft, feathery edges in the transformation zone, the band between the red rim (the squamocolumnar junction) and the dotted ring, where HPV changes begin.</p>
           <p class="fine">Pooled from 63 studies that varied a lot (regression 60%, 95% CI 55–65%); real numbers could be a few points either way.</p>
-          <p class="fine">These risk numbers come from people with typical immune systems; the patient's own plan is up to her clinician. Now that she takes Hadlima, a TNF blocker, the guidelines for people on immunosuppressive treatment send any LSIL to colposcopy regardless of the HPV result and screen more often (the 2025 update makes how often to screen, not the colposcopy rule, a decision to share with her clinician). After a colposcopy that finds CIN 1 or less following a low-grade result like the patient's, the guidelines recommend HPV-based testing again in 1 year. Under age 25 the rules are gentler. The progression numbers are pooled from 63 studies (Loopik 2021); 2% reached CIN 3 or worse. The lesion pictures are illustrations of typical findings, not the patient's images. The cervix is modelled at its true position between the real bladder and rectum.</p>`;
+          <p class="fine">These risk numbers come from people with typical immune systems; the patient's own plan is up to her clinician. Now that she takes Hadlima, a TNF blocker, the guidelines for people on immunosuppressive treatment send any LSIL to colposcopy regardless of the HPV result and screen more often (the 2025 update makes how often to screen, not the colposcopy rule, a decision to share with her clinician). After a colposcopy that finds CIN 1 or less following a low-grade result like the patient's, the guidelines recommend HPV-based testing again in 1 year. Under age 25 the rules are gentler. The progression numbers are pooled from 63 studies (Loopik 2021); 2% reached CIN 3 or worse. The lesion pictures are illustrations of typical findings, not the patient's images. The cervix is modelled between the real bladder and rectum; the body scan is male, so its position is approximate.</p>`;
         ui=panel;cv=panel.querySelector('#c-cv');ctx=cv.getContext('2d');
         const redraw=()=>{draw();panel.querySelector('#c-icons').innerHTML=iconsHTML();const [r,p]=plan();panel.querySelector('#c-risk').textContent=r;panel.querySelector('#c-plan').textContent=p;};
         const radio=(attr,key)=>panel.querySelectorAll(`[data-${attr}]`).forEach(b=>b.onclick=()=>{v[key]=b.dataset[attr];panel.querySelectorAll(`[data-${attr}]`).forEach(x=>x.setAttribute('aria-checked',x===b));redraw();});
@@ -218,10 +218,10 @@ export function makeStations3(A){
     let built=false,G,lesions={},cyst,tickOff,ui;const v={day:1,sites:{ovary:true,usl:true,pod:false,bladder:false,bowel:false,perit:true}};let playing=false;
     const SITES={
       ovary:{label:'Ovary (endometrioma)',img:'seen',sens:'ultrasound 93%, MRI 95%',sym:['period']},
-      usl:{label:'Uterosacral ligaments',img:'deep',sens:'ultrasound finds about half here (53%); deep disease overall: MRI 94%',sym:['period','sex','chronic']},
+      usl:{label:'Uterosacral ligaments',img:'half',sens:'ultrasound finds about half here (53%); deep disease overall: MRI 94%',sym:['period','sex','chronic']},
       pod:{label:'Pouch behind the uterus',img:'deep',sens:'deep disease overall: ultrasound 79%, MRI 94% (MRI also gives more false alarms: specificity 77%)',sym:['period','sex','bowel','chronic']},
       bladder:{label:'Bladder',img:'deep',sens:'ultrasound about 62% here, but very specific; deep disease overall: MRI 94%',sym:['period','urine']},
-      bowel:{label:'Bowel (rectosigmoid)',img:'deep',sens:'deep disease overall: ultrasound 79%, MRI 94% (MRI specificity 77%)',sym:['period','bowel','chronic']},
+      bowel:{label:'Bowel (rectosigmoid)',img:'deep',sens:'ultrasound about 91% here (Guerriero 2016); deep disease overall: MRI 94% (MRI specificity 77%)',sym:['period','bowel','chronic']},
       perit:{label:'Pelvic lining (superficial)',img:'miss',sens:'imaging usually can\'t see these',sym:['period']},
     };
     const SYM={period:['Period pain','#62BED3'],sex:['Deep pain with sex','#B193E3'],bowel:['Painful bowel movements','#DDB741'],urine:['Painful urination','#78A0F4'],chronic:['Pelvic pain between periods','#F2705F']};
@@ -230,11 +230,11 @@ export function makeStations3(A){
     function build(){
       built=true;G=new THREE.Group();A.root.add(G);
       const ov=K.centre('Left ovary'),bl=K.box('Urinary bladder'),re=K.box('Rectum'),ut=K.box('Uterus'),cx=K.centre('Cervix');
-      const S={usl:[V3(-0.014,cx.y+0.006,cx.z-0.022),V3(0.014,cx.y+0.006,cx.z-0.022),V3(-0.022,cx.y+0.016,cx.z-0.035),V3(0.022,cx.y+0.016,cx.z-0.035)],
-        pod:[V3(0,cx.y+0.002,re.max.z-0.004),V3(0.006,cx.y+0.01,re.max.z-0.002)],
+      const S={usl:[V3(-0.024,cx.y-0.004,cx.z-0.018),V3(0.024,cx.y-0.004,cx.z-0.018),V3(-0.03,cx.y+0.014,cx.z-0.049),V3(0.03,cx.y+0.014,cx.z-0.049)],
+        pod:[V3(0,cx.y-0.008,cx.z-0.02),V3(0.006,cx.y-0.004,cx.z-0.018)],
         bladder:[V3(0.006,bl.max.y+0.001,(bl.min.z+bl.max.z)/2-0.006),V3(-0.008,bl.max.y,(bl.min.z+bl.max.z)/2-0.012)],
-        bowel:[V3(0.004,re.max.y-0.02,re.max.z+0.001),V3(-0.003,re.max.y-0.034,re.max.z+0.001)],
-        perit:[V3(-0.07,0.855,-0.02),V3(0.072,0.85,-0.022),V3(-0.03,ut.max.y+0.006,0.02),V3(0.035,0.88,0.012),V3(-0.05,0.87,0.0)],
+        bowel:[V3(0.007,re.max.y-0.002,re.max.z-0.013),V3(-0.014,re.max.y-0.031,re.max.z-0.023)],
+        perit:[V3(-0.054,0.855,-0.02),V3(0.054,0.85,-0.022),V3(-0.03,ut.max.y+0.006,0.02),V3(0.04,0.872,0.0),V3(-0.05,0.87,0.0)],
         ovary:[ov.clone().add(V3(0.006,0.004,0.002))]};
       const dark=new THREE.MeshStandardMaterial({color:'#3A1624',roughness:.5,emissive:'#7A1F2E',emissiveIntensity:.2});
       for(const k in S){lesions[k]=[];for(const c of S[k]){const grp=new THREE.Group();grp.position.copy(c);G.add(grp);
@@ -244,7 +244,7 @@ export function makeStations3(A){
     }
     function chart(){
       const ks=active();const series=ks.map(k=>({pts:Array.from({length:28},(_,i)=>[i+1,symAt(k,i+1)*100]),stroke:SYM[k][1],width:2}));
-      return lineChart({W:300,H:140,x0:1,x1:28,y0:0,y1:100,xticks:[1,7,14,21,28],yticks:[0,50,100],xfmt:v=>'day '+v,yfmt:v=>v===0?'':v===100?'max':'',label:'Typical pain pattern across a cycle',
+      return lineChart({W:300,H:140,x0:1,x1:28,y0:0,y1:100,xticks:[1,7,14,21,28],yticks:[0,50,100],xfmt:v=>v===1?'day 1':String(v),yfmt:v=>v===0?'':v===100?'max':'',label:'Typical pain pattern across a cycle',
         extra:(px,py)=>`<rect x="${px(1)}" y="${py(100)}" width="${px(5.5)-px(1)}" height="${py(0)-py(100)}" fill="#C2474F" opacity=".12"/>`,series,
         after:(px,py)=>`<line id="e-ph" x1="${px(v.day)}" x2="${px(v.day)}" y1="${py(100)}" y2="${py(0)}" stroke="var(--bone)"/>`}).svg;
     }
@@ -263,14 +263,14 @@ export function makeStations3(A){
           <p class="legend" id="e-leg"></p>
           <p class="eyebrow">Would a scan see it?</p>
           <ul class="quotes" id="e-img"></ul>
-          <p class="fine" style="margin-top:4px!important">The 2022 ESHRE guideline says laparoscopy is no longer the diagnostic gold standard: imaging and symptoms can be enough to start treatment, and surgery is for when imaging is negative or treatment doesn't help. A 2024 scoping review found an average delay of 6.8 years across studies (range 1.5 to 11.4).</p>
+          <p class="fine" style="margin-top:4px!important">The 2022 ESHRE guideline says laparoscopy is no longer the diagnostic gold standard: imaging and symptoms can be enough to start treatment, and surgery is for when imaging is negative or treatment doesn't help. A 2025 scoping review found an average delay of 6.8 years across studies (range 1.5 to 11.4).</p>
           <div class="warn"><b>The iron link</b>Heavy periods are one of the commonest causes of iron deficiency, whatever causes them. Endometriosis is mainly a pain condition; heavy bleeding is more typical of adenomyosis or fibroids, which can occur alongside it.</div>
           <div class="links"><button class="lk" data-cond="iron" style="--c:${cc(SYS[CONDS.find(c=>c.id==='iron').sys].c)}"><i></i>Iron deficiency</button></div>
-          <p class="fine">The uterus, ovaries and tubes are modelled at their true positions between the real bladder and rectum; the lesions are drawn schematically at the sites where endometriosis is most often found. Pain patterns are typical shapes, not the patient's diary. Deep-disease figures are pooled across sites (Cochrane 2016); site by site, ultrasound finds fewer uterosacral (53%) and bladder (62%) lesions (Guerriero 2015). All depend heavily on a specialist scanner, and the Cochrane authors judged most studies to be of poor quality.</p>`;
+          <p class="fine">The uterus, ovaries and tubes are modelled between the real bladder and rectum; the body scan is male, so their positions are approximate; the lesions are drawn schematically at the sites where endometriosis is most often found. Pain patterns are typical shapes, not the patient's diary. Deep-disease figures are pooled across sites (Cochrane 2016); site by site, ultrasound finds fewer uterosacral (53%) and bladder (62%) lesions (Guerriero 2015). All depend heavily on a specialist scanner, and the Cochrane authors judged most studies to be of poor quality.</p>`;
         ui=panel;
         const redraw=()=>{panel.querySelector('#e-chart').innerHTML=chart();
           panel.querySelector('#e-leg').innerHTML=active().map(k=>`<span><i class="sw" style="background:${SYM[k][1]}"></i>${SYM[k][0]}</span>`).join('');
-          panel.querySelector('#e-img').innerHTML=Object.entries(SITES).filter(([k])=>v.sites[k]).map(([k,s])=>`<li><b>${s.label}:</b> ${s.img==='seen'?'usually seen; ':s.img==='deep'?'often seen, by a skilled scanner; ':'often invisible; '}${s.sens}</li>`).join('')||'<li>No sites chosen.</li>';};
+          panel.querySelector('#e-img').innerHTML=Object.entries(SITES).filter(([k])=>v.sites[k]).map(([k,s])=>`<li><b>${s.label}:</b> ${s.img==='seen'?'usually seen; ':s.img==='deep'?'often seen, by a skilled scanner; ':s.img==='half'?'seen about half the time, by a skilled scanner; ':'often invisible; '}${s.sens}</li>`).join('')||'<li>No sites chosen.</li>';};
         for(const k in SITES)bindToggle(panel,'e-'+k,on=>{v.sites[k]=on;if(ui)redraw();});
         const ds=bindSlider(panel,'e-day',x=>{v.day=x;playing=false;},x=>'day '+x);
         panel.querySelector('#e-play').onclick=()=>{playing=true;};

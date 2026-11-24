@@ -49,7 +49,7 @@ export function makeStations6(A){
     ui.querySelector('#zy-lo').textContent=fmt(L.low,0)+' ng/mL';
     // a one-compartment model dosed daily always rises a little (about 1.2×); the label measured no build-up at 10 mg
     const r=L.last/L.first;ui.querySelector('#zy-acc').textContent=r<1.3?'barely; the label saw none':'yes, to '+fmt(r,1)+'× day one';
-    const b=ZYRTEC.brain[v.dose];ui.querySelector('#zy-br').textContent=b?'about '+fmt(b,0)+'%':'not measured';
+    const b=v.kidney?0:ZYRTEC.brain[v.dose];ui.querySelector('#zy-br').textContent=b?'about '+fmt(b,0)+'%':'not measured';
     ui.querySelector('#zy-note').innerHTML=ZYRTEC.scenario[v.kidney?'kidney':'d'+v.dose];
     ui.querySelectorAll('[data-dose]').forEach(b=>b.setAttribute('aria-checked',+b.dataset.dose===v.dose));
   }
@@ -92,7 +92,7 @@ export function makeStations6(A){
         <p class="eyebrow">Blood level</p>
         <div class="seg" role="radiogroup" aria-label="Dose">${[[10,'10 mg'],[20,'20 mg (2×)'],[40,'40 mg (4×)']].map(([d,l])=>`<button type="button" role="radio" data-dose="${d}" aria-checked="${d===v.dose}">${l}</button>`).join('')}</div>
         <div id="zy-chart"></div>
-        <div class="tgs">${toggle('zy-kid','Kidneys working less well',false,'moderate impairment: the half-life triples')}</div>
+        <div class="tgs">${toggle('zy-kid','Kidneys working less well',false,'about a quarter of normal: the half-life triples')}</div>
         <div class="readouts">
           <div class="ro"><span>Highest level, day seven</span><b id="zy-hi">—</b></div>
           <div class="ro"><span>Low point before the next tablet</span><b id="zy-lo">—</b></div>

@@ -10,7 +10,7 @@ export const GUIDE_P={
   symp:{name:'Sympathetic nerves',kind:'Nerves',size:'run the length of the body',draw:(x,cx,cy,s)=>{x.strokeStyle='#F2A65A';x.lineWidth=4*s;x.beginPath();for(let i=0;i<9;i++)x.lineTo(cx-40*s+i*10*s,cy+Math.sin(i)*10*s);x.stroke();},
     text:['They release norepinephrine onto blood vessels (squeeze) and the heart (faster, stronger). Standing should mainly tighten the small arteries in the legs and gut, and the large veins of the gut, which hold much of the body\'s spare blood; in the legs the calf-muscle pump does much of the work.','In neuropathic POTS the nerves to the legs squeeze too weakly; in hyperadrenergic POTS the system is turned up too high.']},
   vagus:{name:'Vagus nerve',kind:'Nerve',size:'brainstem to the gut',draw:(x,cx,cy,s)=>{x.strokeStyle='#78A0F4';x.lineWidth=4*s;x.beginPath();x.moveTo(cx,cy-40*s);x.bezierCurveTo(cx+20*s,cy-10*s,cx-20*s,cy+10*s,cx,cy+40*s);x.stroke();},
-    text:['The brake on the heart. Standing eases off the brake so the heart speeds up a little; that is normal.','It also carries the pressure reports from the aortic arch, and runs much of the gut, one reason POTS and gut symptoms travel together.']},
+    text:['The brake on the heart. Standing eases off the brake so the heart speeds up a little; that is normal.','It also carries the pressure reports from the aortic arch, and runs much of the gut, possibly one reason POTS and gut symptoms travel together.']},
   propr:{name:'Propranolol',kind:'Medicine',size:'about 1 nm',draw:(x,cx,cy,s)=>{x.strokeStyle='#F07FA0';x.lineWidth=4*s;for(let i=0;i<2;i++){x.beginPath();for(let k=0;k<6;k++){const a=k/6*TAU;x.lineTo(cx-14*s+i*28*s+Math.cos(a)*12*s,cy+Math.sin(a)*12*s);}x.closePath();x.stroke();}},
     text:['Blocks the heart\'s beta receptors, so the same sympathetic push raises the rate less. In a small 2009 study of single doses, a smaller dose eased symptoms better than a larger one, though the larger one slowed the heart more.','It treats the racing, not the pooling, which is why fluids, salt and compression come first.']},
 };
@@ -24,8 +24,8 @@ function circuitLevel(){
   const st={sub:'neuro',s:0,ts:0,ph:0};
   const B={feet:[430,640]};
   function pt(px,py){ // body coordinates (upright, x across, y up from feet) → screen, rotating from lying to standing
-    const a=(1-st.s)*Math.PI/2;const c=Math.cos(a),sn=Math.sin(a);const X=px*c+py*sn,Y=-px*sn+py*c;return [B.feet[0]+X,B.feet[1]-Y];}
-  const PATH={carotid:[[22,520],[30,470],[34,420]],aorta:[[30,420],[50,440],[40,400]],brain:[[20,560]],
+    const a=(1-st.s)*Math.PI/2;const c=Math.cos(a),sn=Math.sin(a);const X=px*c+py*sn,Y=-px*sn+py*c;return [B.feet[0]+X-(1-st.s)*60,B.feet[1]-Y-(1-st.s)*50];} // lying: on the floor, head in frame
+  const PATH={carotid:[[8,512],[12,536],[20,556]],aorta:[[40,405],[32,455],[14,498],[16,530],[20,556]],brain:[[20,560]],
     sympLeg:[[10,520],[0,400],[-6,300],[-10,200],[-14,100],[-14,20]],sympHeart:[[10,520],[4,420],[30,410]],vagus:[[20,560],[34,480],[40,410]]};
   function body(x){x.save();x.fillStyle='rgba(191,230,225,.08)';x.strokeStyle='rgba(191,230,225,.5)';x.lineWidth=2;x.beginPath();
     const outline=[[-22,0],[-20,90],[-22,200],[-30,300],[-34,420],[-28,480],[-14,500],[-14,520],[-22,540],[-24,580],[0,605],[24,580],[22,540],[14,520],[14,500],[40,480],[46,420],[38,300],[24,200],[22,90],[26,0]];
@@ -60,7 +60,7 @@ function circuitLevel(){
       // squeeze rings on the leg veins
       for(let k=0;k<3;k++){const [X,Y]=pt(-6,120+k*80);x.strokeStyle=rgba('#F2A65A',.2+.6*drive*S.sq/2);x.lineWidth=2;x.beginPath();x.ellipse(X,Y,14*(1-.3*s*S.sq),6,0,0,TAU);x.stroke();}
       x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';const lab=(n,a,b)=>{const [X,Y]=pt(a,b);x.fillText(n,X+16,Y);};
-      lab('brainstem',20,566);lab('neck sensors',36,470);lab('heart',40,405);lab('leg veins',0,160);
+      lab('brainstem',20,566);lab('neck sensors',14,505);lab('heart',40,405);lab('leg veins',0,160);
       const q=s=>api.card.querySelector(s);if(q('#pc-hr')){q('#pc-hr').textContent=Math.round(hr)+' bpm'+(s>.5?` (+${Math.round(S.hr*s)})`:'');q('#pc-bp').textContent=Math.round(112+S.bp*s)+' mmHg';q('#pc-pool').textContent=Math.round(S.pool*s/10)*10+' mL';}
     },
   };

@@ -21,6 +21,10 @@ export const GUIDE_I={
 /* ---------------- level A: villi */
 function villusLevel(){
   const V=[150,290,430,570,710,850];const drops=[];let dose=0;
+  // a continuous sheet of tall columnar cells (~6 × 24 µm) round each villus: [surface x, y, outward normal]
+  const EPI=V.map(vx=>{const top=120+((vx*7)%40),L1=600-(top+50),L2=Math.PI*52,out=[];
+    for(let s=3;s<2*L1+L2;s+=6.5){let p;if(s<L1)p=[vx-52,600-s,-1,0];else if(s<L1+L2){const a=Math.PI+(s-L1)/52;p=[vx+Math.cos(a)*52,top+50+Math.sin(a)*52,Math.cos(a),Math.sin(a)];}else p=[vx+52,top+50+(s-L1-L2),1,0];out.push(p);}return out;});
+  const CRY=[V[0]-70,...V.map(v=>v+70)];
   return {id:'villi',label:'Lining',size:'1 mm',fit:'cover',bar:{units:100,label:'100 µm'},zoomFocus:{x:430,y:240},
     card(){return `<h2>The duodenum's lining</h2>
       <p>Just past the stomach, the gut wall folds into finger-like villi, each covered in absorbing cells with a blood vessel in its core. Nearly all the iron the patient absorbs gets in here, through these cells.</p>
@@ -31,14 +35,18 @@ function villusLevel(){
     draw(x,dt,t){x.fillStyle='#120F0B';x.fillRect(-400,-300,1800,1300);
       x.fillStyle='#2A1E10';x.fillRect(-400,600,1800,400);
       for(const vx of V){const top=120+((vx*7)%40);x.fillStyle='#3A2A18';x.beginPath();x.moveTo(vx-52,620);x.lineTo(vx-52,top+50);x.arc(vx,top+50,52,Math.PI,0);x.lineTo(vx+52,620);x.fill();
-        // enterocyte layer
-        for(let k=0;k<26;k++){const u=k/25;let px,py;if(u<.35){px=vx-46;py=lerp(600,top+50,u/.35);}else if(u<.65){const a=Math.PI+(u-.35)/.3*Math.PI;px=vx+Math.cos(a)*46;py=top+50+Math.sin(a)*46;}else{px=vx+46;py=lerp(top+50,600,(u-.65)/.35);}
-          x.fillStyle='rgba(217,164,65,.35)';x.beginPath();x.arc(px,py,8,0,TAU);x.fill();x.fillStyle='rgba(91,134,255,.8)';x.beginPath();x.arc(px,py,3,0,TAU);x.fill();}
+        // enterocytes side by side, nuclei toward the base, a goblet cell every few
+        const E=EPI[V.indexOf(vx)];x.beginPath();for(const [px,py,nx,ny] of E){const tx=-ny*3,ty=nx*3;x.moveTo(px+tx,py+ty);x.lineTo(px-tx,py-ty);x.lineTo(px-tx-nx*24,py-ty-ny*24);x.lineTo(px+tx-nx*24,py+ty-ny*24);x.closePath();}
+        x.fillStyle='rgba(217,164,65,.32)';x.fill();x.strokeStyle='rgba(18,15,11,.55)';x.lineWidth=.8;x.stroke();
+        x.fillStyle='rgba(91,134,255,.75)';x.beginPath();E.forEach(([px,py,nx,ny],i)=>{if(i%7===3)return;const cx=px-nx*17,cy=py-ny*17;x.moveTo(cx+nx*3.2,cy+ny*3.2);x.ellipse(cx,cy,3.2,1.6,Math.atan2(ny,nx),0,TAU);});x.fill();
+        x.fillStyle='rgba(236,230,218,.3)';x.beginPath();E.forEach(([px,py,nx,ny],i)=>{if(i%7!==3)return;const cx=px-nx*8,cy=py-ny*8;x.moveTo(cx+nx*6,cy+ny*6);x.ellipse(cx,cy,6,2.6,Math.atan2(ny,nx),0,TAU);});x.fill();
         x.strokeStyle='rgba(200,50,70,.75)';x.lineWidth=7;x.beginPath();x.moveTo(vx-10,620);x.lineTo(vx-10,top+60);x.arc(vx,top+60,10,Math.PI,0);x.lineTo(vx+10,620);x.stroke();}
+      // crypts between the villi, where new lining cells are made
+      for(const cx of CRY){x.strokeStyle='rgba(217,164,65,.4)';x.lineWidth=14;x.beginPath();x.moveTo(cx-8,602);x.lineTo(cx-8,690);x.arc(cx,690,8,Math.PI,0,true);x.lineTo(cx+8,602);x.stroke();x.strokeStyle='#120F0B';x.lineWidth=2;x.beginPath();x.moveTo(cx,604);x.lineTo(cx,692);x.stroke();}
       for(const d of drops){d.y+=d.vy*dt;const vx=V[d.v];if(!d.in&&d.y>140&&Math.abs(d.x-vx)<56&&Math.random()<.004){d.in=true;}
         if(d.in){d.x=lerp(d.x,vx,dt*2);d.vy=40;}x.fillStyle=d.in?'#FFD27A':FE;x.beginPath();x.arc(d.x,d.y,d.in?3.5:2.6,0,TAU);x.fill();}
       for(let i=drops.length-1;i>=0;i--)if(drops[i].y>720)drops.splice(i,1);
-      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT CONTENTS',20,40);x.fillText('VILLUS',V[0]+60,300);x.fillText('BLOOD',20,660);},
+      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT CONTENTS',140,40);x.fillText('VILLUS',V[0]+60,300);x.fillText('CRYPT',CRY[3]+16,660);},
   };
 }
 
@@ -48,25 +56,25 @@ function cellLevel(){
   function reset(){S={day:1,ph:0,playing:false,plan:'none',comp:'water',H:0,lumen:[],inside:[],stored:0,blood:0,lost:0,doses:0,absorbed:0,doors:DOORS.map(x=>({x,open:1})),taxis:[],shed:0,done:false,taken:false,log:[]};}
   reset();
   const COMP={water:{l:'Water',f:1},oj:{l:'Orange juice',f:1.1},coffee:{l:'Coffee or tea',f:.6},dairy:{l:'Milk or calcium',f:.6}};
-  function takeDose(api){if(S.taken||S.done)return;S.taken=true;S.doses++;const f=.22*COMP[S.comp].f*(1-.8*S.H);const n=40,inn=Math.round(n*clamp(f,0,1));
-    const mg=60*f/Math.max(1,inn),dh=.9/Math.max(1,inn);for(let i=0;i<n;i++)S.lumen.push({x:i<inn?rand(L.x0+30,L.x1-30):rand(L.x0-180,L.x1+180),y:rand(-160,0),go:i<inn,vy:rand(60,90),mg,dh});S.absorbed+=60*f;S.lastF=f;
-    S.log.unshift(`Day ${S.day}: ${(f*100).toFixed(0)}% absorbed (${(60*f).toFixed(1)} mg)${S.H>.3?' · hepcidin still high from the last dose':''}`);api.discover('hepcidin',true);}
+  function takeDose(api){if(S.taken||S.done)return;S.taken=true;S.doses++;const f=.22*COMP[S.comp].f*(1-.8*S.H);const n=40,inn=Math.round(n*clamp(f,0,1)),hold=Math.max(1,Math.round(inn*.15));
+    const mg=60*f/Math.max(1,inn),dh=.9/Math.max(1,inn);for(let i=0;i<n;i++)S.lumen.push({x:i<inn+hold?rand(L.x0+30,L.x1-30):rand(L.x0-180,L.x1+180),y:rand(-160,0),go:i<inn+hold,hold:i>=inn,vy:rand(60,90),mg,dh});S.absorbed+=60*f;S.lastF=f;
+    S.log.unshift(`Day ${S.day}: ${(f*100).toFixed(0)}% absorbed (${(60*f).toFixed(1)} mg)${S.H>.15?' · hepcidin still up from the last dose':''}`);api.discover('hepcidin',true);}
   function step(dt,api){if(S.done)return;
-    // hepcidin rises after absorbed iron, still high ~24 h later
-    S.H=Math.max(0,S.H*Math.exp(-dt/(S.playing?6*30/24:1e9)));
+    // hepcidin rises as absorbed iron reaches the blood and is still up a day later: about a quarter is left by the next morning
+    S.H=Math.max(0,S.H*Math.exp(-dt/(S.playing?6/Math.log(4):1e9)));
     if(S.playing){S.ph+=dt/6;if(S.ph>=.08&&!S.taken&&(S.plan==='daily'||(S.plan==='alt'&&S.day%2===1)))takeDose(api);
       if(S.ph>=1){S.ph=0;S.day++;S.taken=false;if(S.day%4===1&&S.stored>0){S.lost+=S.stored*.6;S.stored*=.4;S.shed=1;}
         if(S.day>14){S.day=14;S.done=true;S.playing=false;summary(api);}}}
     for(const p of S.lumen){p.y+=p.vy*dt;if(p.go&&p.y>L.y0-20){p.in=true;}}
-    for(const p of S.lumen.filter(p=>p.in)){S.inside.push({x:clamp(p.x,L.x0+20,L.x1-20),y:L.y0+10,tx:rand(L.x0+30,L.x1-30),ty:rand(L.y0+80,L.y1-60),t:0,mg:p.mg});S.H=Math.min(1,S.H+p.dh);}
+    for(const p of S.lumen.filter(p=>p.in)){S.inside.push({x:clamp(p.x,L.x0+20,L.x1-20),y:L.y0+10,tx:rand(L.x0+30,L.x1-30),ty:rand(L.y0+80,L.y1-60),t:0,mg:p.mg,dh:p.dh,hold:p.hold});}
     S.lumen=S.lumen.filter(p=>!p.in&&p.y<760);
-    for(const d of S.doors)d.open=lerp(d.open,S.H>.35?0:1,1-Math.exp(-dt*2));
+    for(const d of S.doors)d.open=lerp(d.open,1-.8*S.H,1-Math.exp(-dt*2));
     for(const p of S.inside){p.t+=dt;p.x=lerp(p.x,p.tx,dt*1.5);p.y=lerp(p.y,p.ty,dt*1.5);
-      if(p.t>1.5&&!p.done){const d=S.doors[Math.floor(Math.random()*3)];if(d.open>.5){p.tx=d.x;p.ty=L.y1+30;p.exit=true;}else{p.done=true;p.stored=true;S.stored+=p.mg;}}
-      if(p.exit&&p.y>L.y1+10){p.gone=true;S.blood+=p.mg;S.taxis.push({x:p.x,y:L.y1+70,vx:rand(60,100)});}}
+      if(p.t>1.5&&!p.done&&!p.exit){if(p.hold){p.done=true;p.stored=true;S.stored+=p.mg;}else{const d=S.doors[Math.floor(Math.random()*3)];if(d.open>.3){p.tx=d.x;p.ty=L.y1+30;p.exit=true;}else p.t=1;}}
+      if(p.exit&&p.y>L.y1+10){p.gone=true;S.blood+=p.mg;S.H=Math.min(1,S.H+p.dh);S.taxis.push({x:p.x,y:L.y1+70,vx:rand(60,100)});}}
     S.inside=S.inside.filter(p=>!p.gone);
     // stored iron slowly leaves when doors reopen
-    if(S.stored>0&&S.H<.2&&Math.random()<dt*.6){const m=Math.min(S.stored,.4);S.stored-=m;S.blood+=m;S.taxis.push({x:rand(L.x0,L.x1),y:L.y1+70,vx:rand(60,100)});}
+    if(S.stored>0&&S.H<.2&&Math.random()<dt*.3){const m=Math.min(S.stored,.2);S.stored-=m;S.blood+=m;S.taxis.push({x:rand(L.x0,L.x1),y:L.y1+70,vx:rand(60,100)});}
     for(const t of S.taxis)t.x+=t.vx*dt;S.taxis=S.taxis.filter(t=>t.x<1300);S.shed=Math.max(0,S.shed-dt*.6);
   }
   function summary(api){const el=api.card.querySelector('#ic-end');if(!el)return;const per=S.doses?S.blood/S.doses:0;el.hidden=false;
@@ -84,8 +92,8 @@ function cellLevel(){
     // ferritin cages fill as iron is stored
     const cages=[[420,260],[580,250],[460,330],[560,330]];cages.forEach(([cx,cy],i)=>{x.strokeStyle='#D9A441';x.lineWidth=3;x.beginPath();x.arc(cx,cy,22,0,TAU);x.stroke();const n=Math.min(8,Math.round(S.stored*.8)-i*2);x.fillStyle=FE;for(let k=0;k<n;k++){x.beginPath();x.arc(cx+Math.cos(k*.8)*9,cy+Math.sin(k*1.3)*9,3.5,0,TAU);x.fill();}});
     // doors
-    for(const d of S.doors){const g=d.open;x.fillStyle=g>.5?'#7FD3A3':'#5A3A40';x.beginPath();x.roundRect(d.x-20,L.y1-14,12,28,4);x.roundRect(d.x+8,L.y1-14,12,28,4);x.fill();
-      if(S.H>.35){x.strokeStyle='#F2705F';x.lineWidth=3;x.beginPath();x.arc(d.x,L.y1+26,7,0,TAU);x.moveTo(d.x+7,L.y1+26);x.lineTo(d.x+22,L.y1+26);x.stroke();}}
+    for(const d of S.doors){const g=d.open;x.fillStyle=g>.6?'#7FD3A3':'#5A3A40';x.beginPath();x.roundRect(d.x-20,L.y1-14,12,28,4);x.roundRect(d.x+8,L.y1-14,12,28,4);x.fill();
+      if(S.H>.5){x.strokeStyle='#F2705F';x.lineWidth=3;x.beginPath();x.arc(d.x,L.y1+26,7,0,TAU);x.moveTo(d.x+7,L.y1+26);x.lineTo(d.x+22,L.y1+26);x.stroke();}}
     // blood vessel
     x.fillStyle='#2A0C12';x.fillRect(-400,L.y1+48,1800,46);
     for(const tf of S.taxis){x.fillStyle='#C97B5A';x.beginPath();x.arc(tf.x,tf.y,9,.4,TAU-.4);x.lineTo(tf.x,tf.y);x.fill();x.fillStyle=FE;x.beginPath();x.arc(tf.x,tf.y,3.5,0,TAU);x.fill();}
@@ -93,13 +101,13 @@ function cellLevel(){
     for(const p of S.lumen){x.fillStyle=p.go?'#FFD27A':'rgba(232,162,58,.55)';x.beginPath();x.arc(p.x,p.y,3.6,0,TAU);x.fill();}
     for(const p of S.inside){x.fillStyle='#FFD27A';x.beginPath();x.arc(p.x,p.y,3.6,0,TAU);x.fill();}
     x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT SIDE',30,80);x.fillText('BLOOD',30,L.y1+76);x.textAlign='center';x.fillText('ferroportin doors',500,L.y1-26);
-    const q=s=>api.card.querySelector(s);if(q('#ic-day')){q('#ic-day').textContent=S.day;q('#ic-h').style.width=S.H*100+'%';q('#ic-hv').textContent=S.H>.35?'doors locked':S.H>.1?'easing':'low';
+    const q=s=>api.card.querySelector(s);if(q('#ic-day')){q('#ic-day').textContent=S.day;q('#ic-h').style.width=S.H*100+'%';q('#ic-hv').textContent=S.H>.5?'doors closing':S.H>.15?'easing':'low';
       q('#ic-b').textContent=S.blood.toFixed(1)+' mg';q('#ic-d').textContent=S.doses;q('#ic-l').textContent=S.lost.toFixed(1)+' mg';q('#ic-log').innerHTML=S.log.slice(0,4).map(l=>`<div>${l}</div>`).join('');
       q('#ic-take').disabled=S.taken||S.done;}
   }
   return {id:'cell',label:'Gut cell',size:'20 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:350},
     card(){return `<p class="k">Day <span id="ic-day">1</span> of 14</p><h2>The iron door</h2>
-      <p>Iron gets in at the top, but leaves for the blood through one kind of door, ferroportin, at the bottom. After a dose the liver sends hepcidin, which closes many of the doors for about a day, so the next day's dose gets out roughly a third less well; iron that can't leave gets stored, and is lost when the cell is shed a few days later.</p>
+      <p>Iron gets in at the top, but leaves for the blood through one kind of door, ferroportin, at the bottom. As a dose's iron reaches the blood, the liver sends hepcidin, which closes many of the doors for about a day, so the next day's dose is absorbed roughly a third less well. A little iron is always held back in the cell's ferritin, and most of that is lost when the cell is shed a few days later.</p>
       <div class="dv-meter"><span>Hepcidin</span><b id="ic-hv">low</b><i><u id="ic-h" style="background:#F2705F"></u></i></div>
       <div class="dv-meter"><span>Reached the blood</span><b id="ic-b">0 mg</b></div><div class="dv-meter"><span>Doses taken</span><b id="ic-d">0</b></div><div class="dv-meter"><span>Lost with shed cells (illustrative)</span><b id="ic-l">0 mg</b></div>
       <p class="sub" style="margin-top:10px">Take it with</p>
@@ -112,7 +120,7 @@ function cellLevel(){
       card.querySelector('#ic-take').onclick=()=>takeDose(api);
       const auto=plan=>()=>{const c=S.comp;reset();S.comp=c;S.plan=plan;S.playing=true;card.querySelector('#ic-end').hidden=true;};
       card.querySelector('#ic-daily').onclick=auto('daily');card.querySelector('#ic-alt').onclick=auto('alt');
-      card.querySelector('#ic-next').onclick=()=>{if(S.done)return;S.H*=Math.exp(-24/30);S.day++;S.taken=false;S.ph=0;if(S.day%4===1&&S.stored>0){S.lost+=S.stored*.6;S.stored*=.4;S.shed=1;}if(S.day>14){S.day=14;S.done=true;summary(api);}};
+      card.querySelector('#ic-next').onclick=()=>{if(S.done)return;S.H*=.25;S.day++;S.taken=false;S.ph=0;if(S.day%4===1&&S.stored>0){S.lost+=S.stored*.6;S.stored*=.4;S.shed=1;}if(S.day>14){S.day=14;S.done=true;summary(api);}};
       card.querySelector('#ic-re').onclick=()=>{reset();card.querySelector('#ic-end').hidden=true;};},
     tap(p,api){if(p.y<L.y0+10&&p.x>L.x0&&p.x<L.x1)return api.discover('dmt1');if(Math.abs(p.y-L.y1)<30&&p.x>L.x0&&p.x<L.x1)return api.discover('fpn');if(p.y>L.y1+40)return api.discover('tf');
       if(p.x>L.x0&&p.x<L.x1&&p.y>200&&p.y<360)return api.discover('ferritin');if(p.x>L.x0&&p.x<L.x1)return api.discover('entero');},

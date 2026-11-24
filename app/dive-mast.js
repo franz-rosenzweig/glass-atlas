@@ -49,7 +49,7 @@ function skinLevel(){
       <p class="dv-fine">Drawn to scale (50 µm bar), schematic in detail. The antihistamine blocks histamine's landing spots, so the same release does less; the mast cells still fire.</p>`;},
     bind(card,api){card.querySelector('#sk-t').onclick=trigger;const h=card.querySelector('#sk-h1');h.onclick=()=>{S.h1=!S.h1;h.classList.toggle('on',S.h1);h.querySelector('small').textContent=S.h1?'on: histamine blocked at H1':'off';if(S.h1)api.discover('h1',true);};
       card.querySelector('#sk-go').onclick=()=>api.go('mast',{from:mcs[1]});},
-    tap(p,api){for(const m of mcs)if(Math.hypot(p.x-m.x,p.y-m.y)<40)return api.discover('mast');if(p.y>200)trigger();},
+    tap(p,api){for(const m of mcs)if(Math.hypot(p.x-m.x,p.y-m.y)<26)return api.discover('mast');if(p.y>200)trigger();},
     draw(x,dt,t,api){
       const eff=S.h1?.35:1;S.ft=Math.max(0,S.ft-dt*.08);
       let landed=0;for(const h of hist){h.vx+=rand(-60,60)*dt;h.vy+=rand(-60,60)*dt;h.x+=h.vx*dt;h.y+=h.vy*dt;h.l-=dt;for(const c of caps)if(Math.abs(h.x-c.x)<c.w*.6&&h.y<380&&h.y>150)landed++;}
@@ -69,9 +69,9 @@ function skinLevel(){
       x.fillStyle='rgba(120,160,255,.55)';for(const p of plasma){x.beginPath();x.arc(p.x,p.y,3,0,TAU);x.fill();}
       // nerve: flashes with itch
       x.strokeStyle=F>.15&&Math.sin(t*14)>0?'#FFE36E':'#C9A64E';x.lineWidth=4;x.beginPath();nerve.forEach((p,i)=>i?x.lineTo(p[0],p[1]-(i>3?lift(p[0]):0)):x.moveTo(p[0],p[1]));x.stroke();
-      for(const m of mcs){const gr=Array.from({length:18},(_,i)=>({x:Math.cos(i*2.4)*.55*((i%4)/4+.3),y:Math.sin(i*2.4)*.55*((i%4)/4+.3),gone:S.ft>.5&&i%2===0}));mastCell(x,m.x,m.y,30,t,S.ft,gr);}
+      for(const m of mcs){const gr=Array.from({length:18},(_,i)=>({x:Math.cos(i*2.4)*.55*((i%4)/4+.3),y:Math.sin(i*2.4)*.55*((i%4)/4+.3),gone:S.ft>.5&&i%2===0}));mastCell(x,m.x,m.y,13,t,S.ft,gr);} // ~16 µm: skin mast cells are about 8–20 µm
       x.fillStyle=HIST();for(const h of hist){x.beginPath();x.arc(h.x,h.y,2.4,0,TAU);x.fill();}
-      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('EPIDERMIS',20,40);x.fillText('DERMIS',20,250);x.fillText('NERVE',150,610);
+      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('EPIDERMIS',140,40);x.fillText('DERMIS',140,250);x.fillText('NERVE',150,610);
       const q=s=>api.card.querySelector(s);if(q('#sk-r')){const set=(k,v)=>{q('#sk-'+k).textContent=Math.round(v*100)+'%';q('#sk-'+k+'B').style.width=v*100+'%';};set('r',F);set('w',clamp(F*1.1-.1,0,1));set('i',clamp(F*1.2-.05,0,1));}
     },
   };
@@ -131,7 +131,7 @@ function cellLevel(){
       <div class="dv-meter"><span>Stomach acid</span><b></b><i><u id="mc-ac" style="background:#DDB741"></u></i></div>
       <div class="dv-btns"><button class="dv-btn" id="mc-cro" type="button">Cromolyn<small>steadies the cell</small></button><button class="dv-btn" id="mc-h1" type="button">H1 blocker<small>guards the vessels</small></button><button class="dv-btn" id="mc-h2" type="button">H2 blocker<small>guards the stomach</small></button></div>
       <div class="dv-btns"><button class="dv-btn" id="mc-re" type="button">Start over</button></div>
-      <p class="dv-fine">Purple Y's are IgE allergy switches; blue zigzags are MRGPRX2, a switch some drugs flip directly. Heat, friction and stress act through other routes. The game's numbers are illustrative; the mechanisms are real.</p>`;},
+      <p class="dv-fine">Purple Y's are IgE allergy switches; blue zigzags are MRGPRX2, a switch some drugs flip directly. Heat, friction and stress act through other routes. The game's numbers are illustrative; the mechanisms are real. Molecules are drawn thousands of times too big; at this scale they would be invisible.</p>`;},
     bind(card,api){const tg=(id,key,g)=>{const b=card.querySelector(id);b.onclick=()=>{S[key]=!S[key];b.classList.toggle('on',S[key]);if(S[key])api.discover(g,true);};};
       tg('#mc-cro','cro','cromolyn');tg('#mc-h1','h1','h1');tg('#mc-h2','h2','h2');card.querySelector('#mc-re').onclick=()=>{reset();card.querySelectorAll('.dv-btn.on').forEach(b=>b.classList.remove('on'));};},
     tap(p,api){let best=null,bd=Math.max(34,22/p.s);for(const tr of S.trig){const d=Math.hypot(tr.x-p.x,tr.y-p.y);if(d<bd){bd=d;best=tr;}}

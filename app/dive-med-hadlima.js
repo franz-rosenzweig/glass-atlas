@@ -22,7 +22,7 @@ function igg(x,cx,cy,s,o={}){x.save();x.translate(cx,cy);x.scale(s,s);const hl=o
     const on=hl==='arms';dom(...at(70,-20),a,20,28,C.ab,on);dom(...at(70,22),a,18,26,C.lt,on);dom(...at(142,-20),a,20,30,C.ab,on);dom(...at(142,22),a,18,28,C.lt,on);
     // the six loops at the tip that fit TNF, three from each chain
     const [tx,ty]=at(178,0);x.strokeStyle=C.cdr;x.lineWidth=hl==='tips'?4:2.6;for(const off of [-20,22])for(let i=-1;i<=1;i++){const [lx,ly]=at(176+Math.abs(i)*-4,off+i*9);x.beginPath();x.arc(lx,ly,4.6,0,TAU);x.stroke();}
-    if(o.tnf?.[sg<0?0:1])G.tnf(x,tx+ux*30,ty+uy*30,1.15,o.t||0);
+    if(o.tnf?.[sg<0?0:1])G.tnf(x,tx+ux*58,ty+uy*58,2.2,o.t||0);
     if(o.aaa)miniY(x,tx+ux*20,ty+uy*20,3.2,a+Math.PI,C.aaa);
     // hinge
     x.strokeStyle=C.ab;x.lineWidth=hl==='hinge'?6:4;x.beginPath();x.moveTo(sg*8,-12);x.lineTo(...at(40,-20));x.stroke();}
@@ -54,11 +54,14 @@ export const GUIDE_H={
 function skinLevel(){
   seed=11;const SURF=58,DERM=212,FAT=600,DEP={x:500,y:395};
   const septa=[[[330,212],[345,300],[318,420],[352,520],[336,600]],[[690,212],[668,320],[702,430],[682,600]]];
-  // lymphatics: a plexus where dermis meets fat, trunks down the fibrous septa; fat lobules have none (Richter 2012)
+  // lymphatics: a plexus where dermis meets fat, trunks down the fibrous septa; fat lobules have none (Richter 2012).
+  // Blood capillaries do weave between the fat cells; antibodies are just too big to cross their walls quickly.
   const lymA=[[392,218],[520,210],[640,220],[700,250],[680,320],[714,430],[820,452],[1300,470]],lymB=[[290,218],[333,300],[306,420],[340,520],[344,586],[520,592],[690,588],[860,576],[1300,566]],lymC=[[-300,150],[120,138],[420,150],[720,140],[1300,160]];
   const capP=[[[-300,110],[60,96],[140,170],[240,100],[360,176],[470,104],[580,172],[690,98],[800,170],[910,104],[1300,120]],septa[0].map(([a,b])=>[a+12,b]),septa[1].map(([a,b])=>[a-12,b])];
-  const LA=sample(lymA),LB=sample(lymB);
-  const cells=[];for(let y=232,r=0;y<FAT;y+=26,r++)for(let x=-300+(r%2)*15;x<1300;x+=30){const c={x:x+(R()-.5)*7,y:y+(R()-.5)*6,r:12+R()*3};if(septa.some(s=>near(s,c,20)))continue;cells.push(c);}
+  const capF=[[[350,238],[410,262],[470,246],[540,272],[610,250],[676,264]],[[352,472],[420,452],[480,478],[560,456],[620,482],[684,470]],
+    [[560,238],[546,300],[574,362],[554,432],[576,502],[560,598]],[[-300,330],[0,352],[150,322],[318,342]],[[702,352],[850,330],[1000,362],[1300,340]]];
+  const LA=sample(lymA),LB=sample(lymB),CF=capF.map(P=>sample(P));
+  const cells=[];for(let y=226,r=0;y<FAT-6;y+=17,r++)for(let x=-300+(r%2)*10;x<1300;x+=20){const c={x:x+(R()-.5)*4,y:y+(R()-.5)*4,r:8+R()*2.5};if(septa.some(s=>near(s,c,16))||capF.some(s=>near(s,c,9)))continue;cells.push(c);}
   let S;const N=150;
   function reset(){S={day:0,ph:'ready',t:0,playing:false,cloud:0,ab:[],rbc:Array.from({length:14},(_,i)=>({u:i/14}))};}
   reset();
@@ -69,12 +72,12 @@ function skinLevel(){
     if(S.ph==='run'&&S.playing){S.day=Math.min(14,S.day+dt*.5);if(S.day>=14){S.playing=false;S.ph='done';}}
     const want=Math.round(N*Math.exp(-KA*S.day));let inDepot=S.ab.filter(p=>p.st==='depot');
     while(inDepot.length>want){const p=inDepot.splice(Math.floor(Math.random()*inDepot.length),1)[0];
-      if(Math.random()<F){const P=p.y>450?LB:LA;let bi=0,bd=1e9;P.forEach(([a,b],i)=>{const d=Math.hypot(a-p.x,b-p.y);if(d<bd){bd=d;bi=i;}});p.st='to';p.P=P;p.i=bi;}else{p.st='broken';}}
+      if(Math.random()<F){const P=Math.random()<.2?CF.reduce((a,b)=>Math.min(...b.map(([u,v])=>Math.hypot(u-p.x,v-p.y)))<Math.min(...a.map(([u,v])=>Math.hypot(u-p.x,v-p.y)))?b:a):p.y>450?LB:LA;let bi=0,bd=1e9;P.forEach(([a,b],i)=>{const d=Math.hypot(a-p.x,b-p.y);if(d<bd){bd=d;bi=i;}});p.st='to';p.P=P;p.i=bi;}else{p.st='broken';}}
     const cr=40+S.cloud*130*(.55+.45*Math.exp(-KA*S.day));
     for(const p of S.ab){p.rot+=dt*.6;
       if(p.st==='depot'){p.x+=rand(-18,18)*dt;p.y+=rand(-18,18)*dt;const dx=p.x-DEP.x,dy=p.y-DEP.y,d=Math.hypot(dx,dy);if(d>cr){p.x=DEP.x+dx/d*cr;p.y=DEP.y+dy/d*cr;}if(!p.r0)p.r0=Math.sqrt(Math.random());const want=p.r0*cr;p.x+=dx/(d||1)*(want-d)*dt*.8;p.y+=dy/(d||1)*(want-d)*dt*.8;}
-      else if(p.st==='to'){const [tx,ty]=p.P[p.i];p.x=lerp(p.x,tx,dt*2.5);p.y=lerp(p.y,ty,dt*2.5);if(Math.hypot(p.x-tx,p.y-ty)<4)p.st='lymph';}
-      else if(p.st==='lymph'){p.i+=dt*14;if(p.i>=p.P.length-1){p.st='gone';continue;}const k=Math.floor(p.i),f=p.i-k;p.x=lerp(p.P[k][0],p.P[k+1][0],f);p.y=lerp(p.P[k][1],p.P[k+1][1],f);}
+      else if(p.st==='to'){const [tx,ty]=p.P[p.i];p.x=lerp(p.x,tx,dt*2.5);p.y=lerp(p.y,ty,dt*2.5);if(Math.hypot(p.x-tx,p.y-ty)<4){p.st='lymph';p.v=CF.includes(p.P)?5:14;}}
+      else if(p.st==='lymph'){p.i+=dt*(p.v||14);if(p.i>=p.P.length-1){p.st='gone';continue;}const k=Math.floor(p.i),f=p.i-k;p.x=lerp(p.P[k][0],p.P[k+1][0],f);p.y=lerp(p.P[k][1],p.P[k+1][1],f);}
       else if(p.st==='broken'){p.a-=dt*.8;if(p.a<=0)p.st='gone';}}
     S.ab=S.ab.filter(p=>p.st!=='gone');
     for(const r of S.rbc)r.u=(r.u+dt*.05)%1;
@@ -87,13 +90,14 @@ function skinLevel(){
     x.strokeStyle='rgba(224,170,160,.10)';x.lineWidth=3;for(let i=0;i<26;i++){x.beginPath();const y0=SURF+30+(i*37)%(DERM-SURF-40);x.moveTo(-300+i*70,y0);x.bezierCurveTo(-260+i*70,y0-14,-200+i*70,y0+16,-150+i*70,y0);x.stroke();}
     // fat
     x.fillStyle='#17140E';x.fillRect(-300,DERM,1600,FAT-DERM);
-    for(const c of cells){x.beginPath();x.arc(c.x,c.y,c.r,0,TAU);x.fillStyle=rgba(C.fat,.10);x.fill();x.strokeStyle=rgba(C.fat,.38);x.lineWidth=1.3;x.stroke();}
+    x.beginPath();for(const c of cells){x.moveTo(c.x+c.r,c.y);x.arc(c.x,c.y,c.r,0,TAU);}x.fillStyle=rgba(C.fat,.10);x.fill();x.strokeStyle=rgba(C.fat,.38);x.lineWidth=1.1;x.stroke();
     x.strokeStyle='#3A2A30';x.lineWidth=9;x.lineCap='round';for(const s of septa){path(x,s);x.stroke();}
     // muscle below
     x.fillStyle='#2A1016';x.fillRect(-300,FAT,1600,300);x.strokeStyle='rgba(224,82,95,.18)';x.lineWidth=2;for(let y=FAT+14;y<FAT+120;y+=12){x.beginPath();x.moveTo(-300,y);x.lineTo(1300,y+4);x.stroke();}
     x.fillStyle='#5A4248';x.fillRect(-300,FAT,1600,5);
     // vessels
     for(const P of capP){x.strokeStyle=C.cap;x.lineWidth=2.4;path(x,P);x.stroke();}
+    for(const P of capF){x.strokeStyle=rgba(C.cap,.55);x.lineWidth=1.5;path(x,P);x.stroke();}
     for(const P of [lymA,lymB,lymC]){x.strokeStyle=rgba(C.lym,.16);x.lineWidth=13;path(x,P);x.stroke();x.strokeStyle=rgba(C.lym,.75);x.lineWidth=1.6;x.stroke();}
     for(const [bx,by] of [lymA[0],lymB[0]]){x.fillStyle=rgba(C.lym,.16);x.beginPath();x.arc(bx,by,10,0,TAU);x.fill();}
     const CP=sample(capP[0],12);for(const r of S.rbc){const [a,b]=CP[Math.floor(r.u*(CP.length-1))];x.fillStyle='rgba(225,70,80,.9)';x.beginPath();x.arc(a,b,2,0,TAU);x.fill();}
@@ -131,7 +135,7 @@ function skinLevel(){
     bind(card,api){card.querySelector('#hs-go').onclick=()=>inject();card.querySelector('#hs-pl').onclick=()=>{if(S.ph==='run')S.playing=!S.playing;};
       card.querySelector('#hs-re').onclick=()=>{reset();card.querySelector('#hs-end').hidden=true;};card.querySelector('#hs-next').onclick=()=>api.go('vessel',{from:{x:600,y:150}});},
     tap(p,api){for(const a of S.ab)if(Math.hypot(a.x-p.x,a.y-p.y)<14)return api.discover('ada');
-      if([lymA,lymB,lymC].some(P=>near(P,p,14)))return api.discover('hd_lymph');if(capP.some(P=>near(P,p,10)))return api.discover('hd_cap');
+      if([lymA,lymB,lymC].some(P=>near(P,p,14)))return api.discover('hd_lymph');if(capP.some(P=>near(P,p,10))||capF.some(P=>near(P,p,8)))return api.discover('hd_cap');
       if(p.y>DERM&&p.y<FAT)return api.discover('hd_fat');},
     draw,
   };
@@ -239,15 +243,15 @@ function moleculeLevel(jump){
       x.fillStyle='rgba(236,230,218,.75)';x.font='13px "Martian Mono", monospace';x.textAlign='center';x.fillText('HADLIMA',300,560);x.fillText('HUMIRA',700,560);
       label(x,'adalimumab-bwwd',300,580,'center');label(x,'adalimumab',700,580,'center');label(x,'tail lysines',500,488,'center');
       x.strokeStyle=LBL;x.lineWidth=1;x.setLineDash([3,4]);x.beginPath();x.moveTo(440,482);x.lineTo(345,482);x.moveTo(560,482);x.lineTo(650,482);x.stroke();x.setLineDash([]);return;}
-    if(M.mode==='tnf'){for(const m of M.tnf){const free=[0,1].filter(i=>!M.held[i]);if(free.length){const a=(free[0]?1:-1)*.62;m.vx+=(500+Math.sin(a)*222-m.x)*dt*.15;m.vy+=(280-Math.cos(a)*222-m.y)*dt*.15;m.vx*=1-dt*.3;m.vy*=1-dt*.3;}
+    if(M.mode==='tnf'){for(const m of M.tnf){const free=[0,1].filter(i=>!M.held[i]);if(free.length){const a=(free[0]?1:-1)*.62;m.vx+=(500+Math.sin(a)*189-m.x)*dt*.15;m.vy+=(298-Math.cos(a)*189-m.y)*dt*.15;m.vx*=1-dt*.3;m.vy*=1-dt*.3;}
         m.x+=m.vx*dt;m.y+=m.vy*dt;m.rot+=dt*.4;if(m.x<-80||m.x>1080)m.vx*=-1;if(m.y<-40||m.y>740)m.vy*=-1;
-        for(const sg of [0,1]){if(M.held[sg])continue;const a=(sg?1:-1)*.62;const tx=500+Math.sin(a)*222,ty=280-Math.cos(a)*222;if(Math.hypot(m.x-tx,m.y-ty)<70){M.held[sg]=true;m.gone=true;api.toast('Caught');break;}}}
-      M.tnf=M.tnf.filter(m=>!m.gone);for(const m of M.tnf)G.tnf(x,m.x,m.y,1.15,m.rot);}
-    igg(x,500,330,1.25,{hl:M.mode==='parts'?M.hl:null,lys:[true,true],tnf:M.mode==='tnf'?M.held:null,t:M.t});
+        for(const sg of [0,1]){if(M.held[sg])continue;const a=(sg?1:-1)*.62;const tx=500+Math.sin(a)*189,ty=298-Math.cos(a)*189;if(Math.hypot(m.x-tx,m.y-ty)<70){M.held[sg]=true;m.gone=true;api.toast('Caught');break;}}}
+      M.tnf=M.tnf.filter(m=>!m.gone);for(const m of M.tnf)G.tnf(x,m.x,m.y,1.75,m.rot);}
+    igg(x,500,330,M.mode==='tnf'?.8:1.25,{hl:M.mode==='parts'?M.hl:null,lys:[true,true],tnf:M.mode==='tnf'?M.held:null,t:M.t});
     if(M.mode==='parts'){label(x,'TIPS',629,62,'center');label(x,'ARMS',345,228,'right');label(x,'HINGE',540,316);label(x,'STEM',570,400);label(x,'SUGARS',380,372,'right');label(x,'TAIL',560,520);}
     const q=s=>api.card.querySelector(s);if(M.mode==='tnf'&&q('#hm-n'))q('#hm-n').textContent=M.held.filter(Boolean).length+' of 2';
   }
-  return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='compare'?{units:0,label:'schematic'}:{units:100,label:'5 nm'};},zoomFocus:{x:500,y:330},
+  return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='tnf'?{units:100,label:'5 nm'}:{units:0,label:'schematic'};},zoomFocus:{x:500,y:330},
     card(){return `<h2>One antibody</h2>
       <div class="dv-seg" role="radiogroup" aria-label="View"><button role="radio" data-mo="parts" aria-checked="${M.mode==='parts'}">Its parts</button><button role="radio" data-mo="compare" aria-checked="${M.mode==='compare'}">Hadlima and Humira</button><button role="radio" data-mo="tnf" aria-checked="${M.mode==='tnf'}">Catching TNF</button></div>
       <div id="hm-body"></div>`;},
@@ -264,11 +268,11 @@ function moleculeLevel(jump){
           <div class="dv-meter"><span>Catching TNF, FcRn and immune-cell tests</span><b>highly similar</b></div>
           <div class="dv-meter"><span>In people with RA on methotrexate, ACR20 at 24 weeks</span><b>72.4% vs 72.2%</b></div>
           <p class="dv-fine">Lab comparison: Lee 2019 (Samsung Bioepis, the maker). The trial: Weinblatt 2018. FDA approved Hadlima in 2019 (label) and has designated it interchangeable with Humira (Organon 2025). The tail lysines are drawn to show the direction, not the count.</p>`;
-        else{body.innerHTML=`<p>TNF is a trimer, three identical units. Each arm can catch one. <b style="color:var(--bone)">Release some TNF</b> and watch the tips grab it.</p>
+        else{body.innerHTML=`<p>TNF is a trimer of three identical units. Each arm grabs a whole trimer, so one antibody can hold two, and each trimer has room for three arms, so they can link into small rings (Santora 2001). <b style="color:var(--bone)">Release some TNF</b> and watch the tips grab it.</p>
           <div class="dv-meter"><span>TNF held</span><b id="hm-n">0 of 2</b></div>
           <div class="dv-btns"><button class="dv-btn go" id="hm-t" type="button">Release TNF</button><button class="dv-btn" id="hm-r" type="button">Let go</button></div>
           <div class="dv-btns"><button class="dv-btn" id="hm-ra" type="button">RA · Molecule</button></div>
-          <p class="dv-fine">To scale: a TNF trimer is about 5 nm across, an antibody about 10–15 nm. Label: it binds TNF and stops it reaching the p55 and p75 receptors.</p>`;
+          <p class="dv-fine">Roughly to scale: a TNF trimer is about 5 nm across, an antibody about 10–15 nm. Label: it binds TNF and stops it reaching the p55 and p75 receptors.</p>`;
           body.querySelector('#hm-t').onclick=()=>{for(let i=0;i<3;i++)M.tnf.push({x:rand(80,920),y:Math.random()<.5?rand(-30,40):rand(620,700),vx:rand(-60,60),vy:rand(-50,50),rot:rand(0,6)});};
           body.querySelector('#hm-r').onclick=()=>{M.held=[false,false];};
           body.querySelector('#hm-ra').onclick=()=>jump('ra',{level:'molecule',opt:{mode:'tnf'}});}};
@@ -286,6 +290,6 @@ export const DIVE={color:'#F29A55',top:{label:'Belly',size:'10 cm'},
   text:'Follow one dose of the patient\'s Hadlima: from the injection under the skin, through the lymph into the blood, into the cell that keeps it there for two weeks, and down to the antibody itself, beside Humira.',
   steps:[['Under the skin, 5 mm.','Inject, then watch fourteen days: the dose seeps into the lymph and peaks in the blood after five and a half days.'],['One vessel cell, 20 µm.','The receptor that rescues it from being broken down, what antibodies to the drug do, and the same receptor carrying it across the placenta.'],['The molecule, 10 nm.','Its parts, Hadlima beside Humira, and catching TNF.']],
   also:[{dive:'ra',level:'molecule',opt:{mode:'tnf'},label:'RA · Molecule'},{dive:'ra',level:'lining',label:'RA · Lining'}],
-  refs:['lbl_hadlima','supersaxo1990','richter2012','roopenian2007','pyzik2019','julsgaard2016','bartelds2011','vschouwenburg2013','krieckaert2012','lee2019','weinblatt2018','organon2025','hong2014','breslin2018'],
+  refs:['lbl_hadlima','supersaxo1990','santora2001','richter2012','roopenian2007','pyzik2019','julsgaard2016','bartelds2011','vschouwenburg2013','krieckaert2012','lee2019','weinblatt2018','organon2025','hong2014','breslin2018'],
   make:({jump})=>({levels:[skinLevel(),vesselLevel(),moleculeLevel(jump)],guide:GUIDE_H}),
 };

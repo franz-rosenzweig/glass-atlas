@@ -11,7 +11,7 @@ export const T4={
   t4(x,cx,cy,s=1){x.save();x.translate(cx,cy);x.scale(s,s);x.rotate(Math.PI/4);x.fillStyle='#40C7AA';x.fillRect(-7,-7,14,14);x.restore();x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle='#FFE36E';for(const [a,b] of [[-9,0],[9,0],[0,-9],[0,9]]){x.beginPath();x.arc(a,b,3,0,TAU);x.fill();}x.restore();},
   tsh(x,cx,cy,s=1){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle='#78A0F4';x.beginPath();x.ellipse(-5,0,7,10,.3,0,TAU);x.fill();x.fillStyle='#A9C1FF';x.beginPath();x.ellipse(5,0,7,10,-.3,0,TAU);x.fill();x.restore();},
   tpo(x,cx,cy,s=1,blocked=false){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle=blocked?'#7A6A88':'#FF9F43';x.beginPath();x.arc(0,0,9,.5,TAU-.5);x.lineTo(0,0);x.fill();x.restore();},
-  thyro(x,cx,cy,s=1,dead=false){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle=dead?'#6B6470':'#B57BB0';x.beginPath();x.roundRect(-16,-14,32,28,5);x.fill();x.strokeStyle=dead?'#4A444F':'#E3B6DE';x.lineWidth=1.4;x.stroke();nucleus(x,0,4,7,6,0,dead?'#3A3540':'#4B2C78');x.restore();},
+  thyro(x,cx,cy,s=1,dead=false){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle=dead?'#6B6470':'#B57BB0';x.beginPath();x.roundRect(-16,-14,32,28,5);x.fill();x.strokeStyle=dead?'#4A444F':'#E3B6DE';x.lineWidth=1.4;x.stroke();nucleus(x,0,-3,7,6,0,dead?'#3A3540':'#4B2C78');x.restore();},
 };
 export const GUIDE_T={
   thyro:{name:'Thyrocyte (follicular cell)',kind:'Cell',size:'about 10–15 µm',draw:(x,cx,cy,s)=>T4.thyro(x,cx,cy,s*2.4),
@@ -75,7 +75,7 @@ function slideLevel(){
 function follicleLevel(){
   const CX=500,CY=360,R=190,N=18;let S;
   function reset(){S={week:0,done:false,E:.55,dose:0,pool:0,lag:0,labs:[],inRange:0,cells:Array.from({length:N},(_,i)=>({a:i/N*TAU,dead:false,hit:0})),
-    iod:[],tg:Array.from({length:22},()=>({a:rand(0,TAU),r:rand(20,R-50),io:0})),out:[],ab:[],tc:[{a:rand(0,TAU),r:R+60},{a:rand(0,TAU),r:R+70}],acc:0,accO:0,tsh:[]};
+    iod:[],tg:Array.from({length:22},()=>({a:rand(0,TAU),r:rand(20,R-50),io:0})),out:[],ab:[],tc:[{a:rand(0,TAU),r:R+66},{a:rand(0,TAU),r:R+70}],acc:0,accO:0,tsh:[]};
     S.lag=model().ft4;}
   reset();
   // illustrative hormone model, same constants as the thyroid instrument: T4 half-life ~1 week, TSH lags ~6–8 weeks
@@ -91,39 +91,39 @@ function follicleLevel(){
     if(S.ft4>=.8&&S.ft4<=1.8&&S.tshV>=.4&&S.tshV<=4)S.inRange+=wk;
     if(S.week>=52){S.week=52;S.done=true;const pct=Math.round(S.inRange/52*100);api.toast(`Year done · in range ${pct}% of weeks`);const e=api.card.querySelector('#tf-end');if(e){e.hidden=false;e.innerHTML=`<p class="sub">Your year</p><p><b style="color:var(--bone)">In range ${pct}% of the weeks.</b> ${pct>70?'That\'s what good thyroid care looks like: small adjustments, patience between lab checks.':'Hard, isn\'t it? Every change takes weeks to show in TSH, so doses are adjusted in small steps with labs 6–8 weeks apart.'}</p>`;}}
   }
-  function cellPos(c,d=0){return {x:CX+Math.cos(c.a)*(R+18+d),y:CY+Math.sin(c.a)*(R+18+d)};}
+  function cellPos(c,d=0){return {x:CX+Math.cos(c.a)*(R+28+d),y:CY+Math.sin(c.a)*(R+28+d)};}
   function draw(x,dt,t,api){step(dt,api);
     x.fillStyle='#0B0E17';x.fillRect(-400,-300,1800,1300);
     // capillaries around the follicle
-    x.strokeStyle='rgba(217,71,94,.45)';x.lineWidth=22;x.beginPath();x.arc(CX,CY,R+78,0,TAU);x.stroke();x.strokeStyle='#14070C';x.lineWidth=14;x.stroke();
+    x.strokeStyle='rgba(217,71,94,.45)';x.lineWidth=44;x.beginPath();x.arc(CX,CY,R+100,0,TAU);x.stroke();x.strokeStyle='#14070C';x.lineWidth=32;x.stroke();
     // colloid
     const cg=x.createRadialGradient(CX-40,CY-40,20,CX,CY,R);cg.addColorStop(0,'#F4C6D8');cg.addColorStop(1,'#D98AAE');x.fillStyle=cg;x.beginPath();x.arc(CX,CY,R,0,TAU);x.fill();
     // thyroglobulin beads gaining iodine
-    for(const g of S.tg){const px=CX+Math.cos(g.a+t*.03)*g.r,py=CY+Math.sin(g.a+t*.03)*g.r;for(let k=0;k<5;k++){x.fillStyle=k<g.io?'#FFE36E':'rgba(120,60,90,.6)';x.beginPath();x.arc(px+k*7-14,py+Math.sin(k+t)*2,3.2,0,TAU);x.fill();}}
-    // cells ring with TPO at the inner surface
-    for(const c of S.cells){const p=cellPos(c);x.save();x.translate(p.x,p.y);x.rotate(c.a+Math.PI/2);T4.thyro(x,0,0,1.15,c.dead);if(!c.dead)T4.tpo(x,0,-20,1,false);x.restore();}
+    for(const g of S.tg){const px=CX+Math.cos(g.a+t*.03)*g.r,py=CY+Math.sin(g.a+t*.03)*g.r;for(let k=0;k<4;k++){x.fillStyle=k<g.io?'#FFE36E':'rgba(120,60,90,.6)';x.beginPath();x.arc(px+k*7-10.5,py+Math.sin(k+t)*2,3.2,0,TAU);x.fill();}}
+    // cells ring with TPO on the colloid side (local +y points into the colloid)
+    for(const c of S.cells){const p=cellPos(c);x.save();x.translate(p.x,p.y);x.rotate(c.a+Math.PI/2);T4.thyro(x,0,0,2,c.dead);if(!c.dead)T4.tpo(x,0,26,1,false);x.restore();}
     // iodide in, hormone out, at a rate set by living cells
     S.acc+=dt*S.E*10;while(S.acc>1){S.acc--;const live=S.cells.filter(c=>!c.dead);if(!live.length)break;const c=live[Math.floor(Math.random()*live.length)];S.iod.push({c,u:0});}
-    for(const i of S.iod){i.u+=dt*.7;const p0=cellPos(i.c,60),p1=cellPos(i.c,-30);const px=lerp(p0.x,p1.x,i.u),py=lerp(p0.y,p1.y,i.u);x.fillStyle='#FFE36E';x.beginPath();x.arc(px,py,3,0,TAU);x.fill();
-      if(i.u>=1){const g=S.tg[Math.floor(Math.random()*S.tg.length)];g.io++;if(g.io>=5){g.io=0;S.out.push({c:i.c,u:0});}}}
+    for(const i of S.iod){i.u+=dt*.7;const p0=cellPos(i.c,72),p1=cellPos(i.c,-40);const px=lerp(p0.x,p1.x,i.u),py=lerp(p0.y,p1.y,i.u);x.fillStyle='#FFE36E';x.beginPath();x.arc(px,py,3,0,TAU);x.fill();
+      if(i.u>=1){const g=S.tg[Math.floor(Math.random()*S.tg.length)];g.io++;if(g.io>=4){g.io=0;S.out.push({c:i.c,u:0});}}}
     S.iod=S.iod.filter(i=>i.u<1);
-    for(const o of S.out){o.u+=dt*.5;const p0=cellPos(o.c,-20),p1=cellPos(o.c,70);T4.t4(x,lerp(p0.x,p1.x,o.u),lerp(p0.y,p1.y,o.u),.9);}
+    for(const o of S.out){o.u+=dt*.5;const p0=cellPos(o.c,-20),p1=cellPos(o.c,72);T4.t4(x,lerp(p0.x,p1.x,o.u),lerp(p0.y,p1.y,o.u),.9);}
     S.out=S.out.filter(o=>o.u<1);
     // levothyroxine arriving from the blood
-    if(S.dose>0){const n=Math.round(S.pool*14);for(let i=0;i<n;i++){const a=t*.25+i/n*TAU;T4.t4(x,CX+Math.cos(a)*(R+78),CY+Math.sin(a)*(R+78),.8);}}
+    if(S.dose>0){const n=Math.round(S.pool*14);for(let i=0;i<n;i++){const a=t*.25+i/n*TAU;T4.t4(x,CX+Math.cos(a)*(R+100),CY+Math.sin(a)*(R+100),.8);}}
     // TSH pressure: more TSH particles when T4 is low
-    const nT=Math.round(clamp(Math.log10(S.tshV||1)+1.2,0,3)*6);for(let i=0;i<nT;i++){const a=-t*.3+i/Math.max(nT,1)*TAU;T4.tsh(x,CX+Math.cos(a)*(R+110),CY+Math.sin(a)*(R+110),.9);}
+    const nT=Math.round(clamp(Math.log10(S.tshV||1)+1.2,0,3)*6);for(let i=0;i<nT;i++){const a=-t*.3+i/Math.max(nT,1)*TAU;T4.tsh(x,CX+Math.cos(a)*(R+100),CY+Math.sin(a)*(R+100),.9);}
     // immune attack
     for(const tc of S.tc){tc.a+=dt*.15;G.tcell(x,CX+Math.cos(tc.a)*tc.r,CY+Math.sin(tc.a)*tc.r,1.2);}
     for(const c of S.cells)if(c.dead&&c.hit>0){c.hit-=dt*.5;const p=cellPos(c);x.save();x.globalCompositeOperation='lighter';glow(x,p.x,p.y,40*c.hit,'rgba(155,107,232,.8)');x.restore();}
-    for(let i=0;i<4;i++){const a=t*.12+i*1.6;G.ab(x,CX+Math.cos(a)*(R+44),CY+Math.sin(a)*(R+44),.16,a+Math.PI/2,'#9B6BE8');}
-    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='center';x.fillText('COLLOID (stored thyroglobulin)',CX,CY+6);x.fillText('CAPILLARY',CX,CY-R-98);
+    for(let i=0;i<4;i++){const a=t*.12+i*1.6;G.ab(x,CX+Math.cos(a)*(R+66),CY+Math.sin(a)*(R+66),.16,a+Math.PI/2,'#9B6BE8');}
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='center';x.fillText('COLLOID (stored thyroglobulin)',CX,CY+6);x.fillText('CAPILLARY',CX,CY-R-130);
     ui(api);
   }
   let last=0;function ui(api){const n=performance.now();if(n-last<180)return;last=n;const q=s=>api.card.querySelector(s);if(!q('#tf-w'))return;
     q('#tf-w').textContent=Math.floor(S.week);q('#tf-e').textContent=Math.round(S.E*100)+'% of normal';q('#tf-eB').style.width=S.E*100+'%';q('#tf-d').textContent=S.dose+' mcg';
     const f=S.ft4||0;q('#tf-feel').textContent=f<.8?'tired, cold, foggy, slowed down':f>1.8?'racing heart, jittery, hot, poor sleep':'steady';}
-  return {id:'follicle',natural:true,label:'Follicle',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:100,label:'20 µm'},zoomFocus:{x:500,y:360},
+  return {id:'follicle',natural:true,label:'Follicle',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:80,label:'20 µm'},zoomFocus:{x:500,y:360},
     card(){return `<p class="k">Week <span id="tf-w">0</span> of 52</p><h2>Run the T4 factory</h2>
       <p>Worker cells pull iodine (yellow) from the blood, the TPO enzyme stitches it onto stored protein, and finished T4 leaves for the body. Immune cells keep knocking workers out, and no treatment yet stops that. Here years of loss are compressed into one; in real life it usually takes many years. <b style="color:var(--bone)">You play the patient's endocrinologist: keep T4 steady with the dose.</b></p>
       <div class="dv-meter"><span>Thyroid still working</span><b id="tf-e"></b><i><u id="tf-eB"></u></i></div>
@@ -133,16 +133,16 @@ function follicleLevel(){
       <div id="tf-labs" class="dv-fine"></div>
       <div id="tf-end" hidden></div>
       <div class="dv-btns"><button class="dv-btn" id="tf-re" type="button">Restart the year</button></div>
-      <p class="dv-fine">Target: TSH about 0.4–4.0 and free T4 about 0.8–1.8. The model is illustrative, with real timing: T4's half-life is about a week and TSH takes 6–8 weeks to settle after a change, which is why labs are rechecked on that schedule. One week passes every 1.6 seconds.</p>`;},
+      <p class="dv-fine">Target: TSH about 0.4–4.0 mIU/L and free T4 about 0.8–1.8 ng/dL. The model is illustrative, with real timing: T4's half-life is about a week and TSH takes 6–8 weeks to settle after a change, which is why labs are rechecked on that schedule. One week passes every 1.6 seconds. Molecules are drawn thousands of times too big; at this scale they would be invisible.</p>`;},
     bind(card,api){
       card.querySelector('#tf-m').onclick=()=>{S.dose=Math.max(0,S.dose-12.5);};card.querySelector('#tf-p').onclick=()=>{S.dose=Math.min(200,S.dose+12.5);if(S.dose===12.5)api.discover('t4hormone',true);};
-      card.querySelector('#tf-lab').onclick=()=>{S.labs.unshift(`Week ${Math.floor(S.week)}: TSH ${S.tshV<10?S.tshV.toFixed(1):Math.round(S.tshV)}, free T4 ${S.ft4.toFixed(2)}${S.tshV>4?' (high TSH: underactive)':S.tshV<.4?' (suppressed: too much)':' (in range)'}`);
+      card.querySelector('#tf-lab').onclick=()=>{S.labs.unshift(`Week ${Math.floor(S.week)}: TSH ${S.tshV<10?S.tshV.toFixed(1):Math.round(S.tshV)} mIU/L, free T4 ${S.ft4.toFixed(2)} ng/dL${S.tshV>4?' (high TSH: underactive)':S.tshV<.4?' (suppressed: too much)':' (in range)'}`);
         card.querySelector('#tf-labs').innerHTML=S.labs.slice(0,4).map(l=>`<div>${esc(l)}</div>`).join('');api.discover('tsh',true);};
       card.querySelector('#tf-re').onclick=()=>{reset();card.querySelector('#tf-end').hidden=true;card.querySelector('#tf-labs').innerHTML='';};
     },
     tap(p,api){const d=Math.hypot(p.x-CX,p.y-CY);
-      if(d<R-20)return api.discover('colloid');if(d<R+40)return api.discover(d<R?'tpo':'thyro');
-      if(d<R+65)return api.discover('antitpo');if(d<R+95)return api.discover('t4hormone');return api.discover('tsh');},
+      if(d<R-12)return api.discover('colloid');if(d<R+56)return api.discover(d<R+10?'tpo':'thyro');
+      if(d<R+78)return api.discover('antitpo');if(d<R+100)return api.discover('t4hormone');return api.discover('tsh');},
     draw,
   };
 }

@@ -73,7 +73,7 @@ function hornLevel(){
     for(const m of MG){microglia(x,m.x,m.y,m.s,t,S.act,m.sd);for(let i=0;i<3;i++){const a=m.sd+i*2.1;tlr4(x,m.x+Math.cos(a)*(14+S.act*6)*m.s,m.y+Math.sin(a)*(14+S.act*6)*m.s,a+Math.PI/2,.8);}}
     x.fillStyle=C.cyt;for(const c of S.cyt){x.globalAlpha=clamp(c.l,0,1);x.beginPath();x.arc(c.x,c.y,3,0,TAU);x.fill();}x.globalAlpha=1;
     for(const d of S.drug){x.globalAlpha=clamp(1+d.on,0,1);molNtx(x,d.x,d.y,.8);}x.globalAlpha=1;
-    txt(x,'PAIN FIBRE FROM THE BODY',182,668,k);txt(x,'RELAY NEURON',SOMA.x+46,SOMA.y+8,k);txt(x,'TO THE BRAIN',838,70,k,'right');txt(x,'MICROGLIA',280,255+92+8*k,k,'center');
+    txt(x,'PAIN FIBRE FROM THE BODY',182,668,k);txt(x,'RELAY NEURON',SOMA.x+46,SOMA.y+8,k);txt(x,'TO THE BRAIN · CROSSES THE CORD',838,70,k,'right');txt(x,'MICROGLIA',280,255+92+8*k,k,'center');
     if(S.ldn)txt(x,'LDN AT TLR4 · HYPOTHESIS',838,560,k,'right',rgba(C.ntx,.9));
     const q=s=>api.card.querySelector(s);if(q('#lh-g')){q('#lh-g').textContent='×'+S.gain.toFixed(1);q('#lh-gB').style.width=S.gain/2.6*100+'%';
       q('#lh-m').textContent=S.act<.15?'resting':S.mode==='on'&&S.ldn?'partly calmed (hypothesis)':S.mode==='on'?'switched on':'settling';}
@@ -81,7 +81,7 @@ function hornLevel(){
   function trial(card){const T=TR[S.trial];card.querySelector('#lh-tl').textContent=T.ldn.toFixed(2).replace(/0$/,'').replace('-','−')+' points';card.querySelector('#lh-tp').textContent=T.pl.toFixed(2).replace(/0$/,'').replace('-','−')+' points';
     card.querySelector('#lh-tlB').style.width=Math.abs(T.ldn)/2*100+'%';card.querySelector('#lh-tpB').style.width=Math.abs(T.pl)/2*100+'%';card.querySelector('#lh-tt').textContent=T.t;
     card.querySelectorAll('[data-tr]').forEach(b=>b.setAttribute('aria-checked',b.dataset.tr===S.trial));}
-  return {id:'horn',label:'Spinal cord',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:572,y:352},
+  return {id:'horn',label:'Spinal cord',size:'300 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:572,y:352},
     card(){return `<h2>The pain relay</h2>
       <p>Pain signals from the body pass to a relay neuron here, in the back of the spinal cord, which carries them up to the brain. Around them sit microglia, the nervous system's own immune cells; at rest their branches keep moving, checking their patch (Kettenmann 2011).</p>
       <p>Naltrexone's sure job is blocking opioid receptors (next level). One reason it is tried in small doses for chronic pain is a hypothesis about these cells: that it calms switched-on microglia through an alarm sensor called TLR4 (Younger 2014). <b style="color:var(--bone)">Switch the microglia on, then try the idea.</b></p>

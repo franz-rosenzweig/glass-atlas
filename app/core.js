@@ -137,33 +137,39 @@ export async function createAtlas(canvas,{binUrl='anatomy.bin',onProgress}={}){
   function tube(pts,r,seg=80){const c=new THREE.CatmullRomCurve3(pts.map(p=>V3(...p)));return {geo:new THREE.TubeGeometry(c,seg,r,8,false),curve:c};}
   {
     const tc=lm('Thyroid cartilage');const tr=lm('Trachea');
-    const y=tc.min.y-0.03, zf=tr.max.z;
-    const gl=blob([-0.0195,y,zf-0.012],[0.0095,0.022,0.0105],{taper:-.18,rot:[0,0,-.12]});
-    const gr=blob([0.0195,y,zf-0.012],[0.0095,0.022,0.0105],{taper:-.18,rot:[0,0,.12]});
-    const gi=blob([0,y-0.012,zf-0.002],[0.014,0.0055,0.0045]);
+    // lobes in front of and beside the trachea with the carotids behind them, apex up and out; isthmus over rings 2–3 (Gray's)
+    const y=tc.min.y-0.019, zf=tr.max.z;
+    const gl=blob([-0.016,y,zf+0.004],[0.0095,0.022,0.008],{taper:-.18,rot:[0,0,.12]});
+    const gr=blob([0.016,y,zf+0.004],[0.0095,0.022,0.008],{taper:-.18,rot:[0,0,-.12]});
+    const gi=blob([0,tc.min.y-0.031,zf-0.003],[0.014,0.0055,0.0045]);
     for(const [g,n] of [[gl,'Right lobe of thyroid gland'],[gr,'Left lobe of thyroid gland'],[gi,'Isthmus of thyroid gland']])
       addRec(n,'model',g,{modelled:true,color:'#4FC9AE',tags:['thyroid']});
-    // female pelvic organs, placed between the real bladder and rectum
+    // female pelvic organs: the body scan is male (bladder against rectum), so these are a best fit with the least overlap
     const bl=lm('Urinary bladder'),re=lm('Rectum');
     const zMid=(bl.min.z+re.max.z)/2;
-    addRec('Uterus','model',blob([0,bl.max.y+0.012,zMid+0.012],[0.024,0.034,0.017],{taper:.22,rot:[0.65,0,0]}),{modelled:true,color:'#C98A97',tags:['uterus']});
-    addRec('Cervix','model',new THREE.CylinderGeometry(0.0105,0.012,0.026,20).rotateX(0.65+Math.PI).translate(0,bl.max.y-0.022,zMid-0.008),{modelled:true,color:'#D9A0AC',tags:['cervix','uterus']});
+    const ua=0.95,uc=V3(0,bl.max.y+0.026,zMid+0.034),cc=uc.clone().addScaledVector(V3(0,Math.cos(ua),Math.sin(ua)),-0.029);
+    addRec('Uterus','model',blob(uc.toArray(),[0.024,0.029,0.017],{taper:.22,rot:[ua,0,0]}),{modelled:true,color:'#C98A97',tags:['uterus']});
+    addRec('Cervix','model',new THREE.CylinderGeometry(0.0105,0.012,0.026,20).rotateX(ua+Math.PI).translate(cc.x,cc.y,cc.z),{modelled:true,color:'#D9A0AC',tags:['cervix','uterus']});
     for(const s of [-1,1]){
-      addRec(s<0?'Right ovary':'Left ovary','model',blob([s*0.052,bl.max.y+0.02,zMid-0.012],[0.015,0.009,0.008]),{modelled:true,color:'#D7B0A0',tags:['ovaries']});
-      const t=tube([[s*0.02,bl.max.y+0.042,zMid+0.03],[s*0.04,bl.max.y+0.045,zMid+0.012],[s*0.058,bl.max.y+0.034,zMid-0.004],[s*0.06,bl.max.y+0.024,zMid-0.014]],0.0026,40);
+      const ov=V3(s*0.043,bl.max.y+0.012,zMid-0.012);
+      addRec(s<0?'Right ovary':'Left ovary','model',blob(ov.toArray(),[0.015,0.009,0.008]),{modelled:true,color:'#D7B0A0',tags:['ovaries']});
+      // from the uterine horn, behind the external iliac vein, over the ovary to its lateral pole
+      const horn=V3(s*0.0215,0.016,0).applyAxisAngle(V3(1,0,0),ua).add(uc);
+      const t=tube([horn.toArray(),[s*0.022,bl.max.y+0.044,zMid+0.034],[s*0.032,bl.max.y+0.023,zMid+0.004],ov.clone().add(V3(s*0.008,0.006,0)).toArray()],0.0026,40);
       addRec(s<0?'Right uterine tube':'Left uterine tube','model',t.geo,{modelled:true,color:'#C98A97',tags:['ovaries','uterus']});
     }
     // C7 nerve root, right side, schematic course to the middle finger
     const d67=MESH['Intervertebral disk of sixth cervical vertebra'].geo;d67.computeBoundingBox();const dc=d67.boundingBox.getCenter(V3());
-    const mdp=lm('Distal phalanx of right middle finger');
-    const n7=tube([[dc.x-0.02,dc.y,dc.z-0.012],[dc.x-0.045,dc.y-0.017,dc.z-0.004],[-0.08,1.345,-0.012],[-0.13,1.29,-0.022],[-0.168,1.21,-0.05],[-0.205,1.11,-0.045],[-0.238,1.035,-0.01],[-0.252,0.93,-0.036],[-0.259,0.825,-0.012],[-0.265,0.77,0.02],[-0.27,0.72,0.045],[(mdp.min.x+mdp.max.x)/2,mdp.min.y+0.004,(mdp.min.z+mdp.max.z)/2-0.002]],0.0022,160);
+    // mid-foramen, over the first rib behind the clavicle, the radial nerve's groove, in front of the lateral epicondyle, back of the forearm and hand, to the C7 key point on the back of the middle finger
+    const n7=tube([[dc.x-0.02,dc.y,dc.z-0.006],[dc.x-0.045,dc.y-0.012,dc.z-0.004],[-0.07,1.372,-0.014],[-0.097,1.345,-0.028],[-0.13,1.29,-0.022],[-0.168,1.21,-0.05],[-0.215,1.125,-0.054],[-0.235,1.1,-0.036],[-0.238,1.07,-0.014],[-0.25,1.02,-0.022],[-0.247,0.93,-0.034],[-0.257,0.83,-0.012],[-0.2617,0.76,0.0151],[-0.265,0.7296,0.0218],[-0.2695,0.7093,0.0391]],0.0022,160);
     A.c7curve=n7.curve;
     addRec('C7 nerve root and its course (schematic)','nerve',n7.geo,{modelled:true,color:'#F2C14E',base:1,tags:['c7nerve']});
     // leg veins, schematic, for the tilt table
     A.legVeinCurves=[];
     for(const s of [-1,1]){
-      const thigh=tube([[s*0.035,0.83,0.03],[s*0.055,0.78,0.045],[s*0.07,0.70,0.03],[s*0.08,0.58,0.005],[s*0.085,0.47,-0.025],[s*0.08,0.41,-0.045]],0.0052,60);
-      const calf=tube([[s*0.08,0.41,-0.045],[s*0.078,0.32,-0.055],[s*0.072,0.2,-0.05],[s*0.066,0.09,-0.035],[s*0.06,0.05,-0.02]],0.0045,50);
+      // femoral triangle and adductor canal medial to the femur, the adductor hiatus, the popliteal fossa, behind the tibia, behind the medial malleolus; clear of bone
+      const thigh=tube([[s*0.037,0.829,0.048],[s*0.045,0.80,0.045],[s*0.055,0.76,0.04],[s*0.068,0.68,0.025],[s*0.075,0.60,0.008],[s*0.072,0.55,-0.012],[s*0.072,0.50,-0.035],[s*0.075,0.45,-0.06],[s*0.076,0.41,-0.066]],0.0052,60);
+      const calf=tube([[s*0.076,0.41,-0.066],[s*0.077,0.37,-0.068],[s*0.074,0.30,-0.058],[s*0.07,0.20,-0.05],[s*0.062,0.12,-0.05],[s*0.055,0.07,-0.055],[s*0.05,0.045,-0.045]],0.0045,50);
       const side=s<0?'right':'left';
       addRec(`Femoral vein, ${side} (schematic)`,'modelvessel',thigh.geo,{modelled:true,color:'#3F5DA8',tags:['legveins','vessels','thigh-'+side]});
       addRec(`Popliteal and tibial veins, ${side} (schematic)`,'modelvessel',calf.geo,{modelled:true,color:'#3F5DA8',tags:['legveins','vessels','calf-'+side]});

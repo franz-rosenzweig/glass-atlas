@@ -55,6 +55,7 @@ export const REFS = {
  cellini2017:{g:'thyroid',s:'Cellini 2017',c:'Cellini M et al. Hashimoto’s thyroiditis and autoimmune gastritis. Front Endocrinol 2017;8:92.',u:'https://www.frontiersin.org/articles/10.3389/fendo.2017.00092/full'},
  campbell1992:{g:'thyroid',s:'Campbell 1992',c:'Campbell NR et al. Ferrous sulfate reduces thyroxine efficacy in patients with hypothyroidism. Ann Intern Med 1992;117:1010–1013.',u:'https://pubmed.ncbi.nlm.nih.gov/1443969/'},
  singh2000:{g:'thyroid',s:'Singh 2000',c:'Singh N, Singh PN, Hershman JM. Effect of calcium carbonate on the absorption of levothyroxine. JAMA 2000;283:2822–2825.',u:'https://pubmed.ncbi.nlm.nih.gov/10838651/'},
+ kim2013:{g:'heds',s:'Kim 2013',c:'Kim TH, Lee HM, Moon SH et al. Joint laxity negatively correlates with lumbar disc degeneration in young adults. Spine 2013;38:E1541–E1547.',u:'https://pubmed.ncbi.nlm.nih.gov/23921324/'},
  boelaert2010:{g:'thyroid',s:'Boelaert 2010',c:'Boelaert K et al. Prevalence and relative risk of other autoimmune diseases in subjects with autoimmune thyroid disease. Am J Med 2010;123:183.e1–9.',u:'https://doi.org/10.1016/j.amjmed.2009.06.030'},
  liu2022:{g:'thyroid',s:'Liu 2022',c:'Liu YJ et al. Association between rheumatoid arthritis and thyroid dysfunction: a meta-analysis. Front Endocrinol 2022;13:1015516.',u:'https://www.frontiersin.org/journals/endocrinology/articles/10.3389/fendo.2022.1015516/full'},
  garofalo2023:{g:'thyroid',s:'Garofalo 2023',c:'Garofalo V et al. Relationship between iron deficiency and thyroid function: a systematic review and meta-analysis. Nutrients 2023;15:4790.',u:'https://www.mdpi.com/2072-6643/15/22/4790'},
@@ -121,6 +122,7 @@ export const REFS = {
  eshre2022:{g:'gyn',s:'ESHRE 2022',c:'Becker CM et al. ESHRE guideline: endometriosis. Hum Reprod Open 2022;hoac009.',u:'https://doi.org/10.1093/hropen/hoac009'},
  nisenblat2016:{g:'gyn',s:'Cochrane 2016',c:'Nisenblat V et al. Imaging modalities for the non-invasive diagnosis of endometriosis. Cochrane Database Syst Rev 2016;2:CD009591.',u:'https://doi.org/10.1002/14651858.CD009591.pub2'},
  guerriero2015:{g:'gyn',s:'Guerriero 2015',c:'Guerriero S et al. Accuracy of transvaginal ultrasound for diagnosis of deep endometriosis in uterosacral ligaments, rectovaginal septum, vagina and bladder. Ultrasound Obstet Gynecol 2015;46:534–545.',u:'https://pubmed.ncbi.nlm.nih.gov/26250349/'},
+ guerriero2016:{g:'gyn',s:'Guerriero 2016',c:'Guerriero S et al. Accuracy of transvaginal ultrasound for diagnosis of deep endometriosis in the rectosigmoid: systematic review and meta-analysis. Ultrasound Obstet Gynecol 2016;47:281–289.',u:'https://pubmed.ncbi.nlm.nih.gov/26213903/'},
  fryer2025:{g:'gyn',s:'Fryer 2025',c:'Fryer J, Mason-Jones AJ, Woodward A. Understanding diagnostic delay for endometriosis: a scoping review. Health Care Women Int 2025;46:335–351.',u:'https://eprints.whiterose.ac.uk/218778/'},
  nice88:{g:'gyn',s:'NICE NG88',c:'NICE. Heavy menstrual bleeding: assessment and management (NG88).',u:'https://www.nice.org.uk/guidance/ng88'},
 
@@ -135,6 +137,9 @@ export const REFS = {
  lbl_ntx:{g:'labels',s:'Naltrexone label',c:'Naltrexone hydrochloride tablets USP (SpecGx), US prescribing information, revised 05/2026. DailyMed.',u:'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=06ff2d5a-e62b-4fa4-bbdb-01938535bc65'},
  lbl_cromolyn:{g:'labels',s:'Gastrocrom label',c:'Gastrocrom (oral cromolyn sodium) prescribing information.',u:'https://medlibrary.org/lib/rx/meds/gastrocrom-1/page/2/'},
  crediblemeds:{g:'labels',s:'CredibleMeds',c:'CredibleMeds QTdrugs list (revised May 2025).',u:'https://www.crediblemeds.org'},
+ anglin2014:{g:'labels',s:'Anglin 2014',c:'Anglin R, Yuan Y, Moayyedi P et al. Risk of upper gastrointestinal bleeding with selective serotonin reuptake inhibitors with or without concurrent nonsteroidal anti-inflammatory use: a systematic review and meta-analysis. Am J Gastroenterol 2014;109:811–819.',u:'https://pubmed.ncbi.nlm.nih.gov/24777151/'},
+ santora2001:{g:'ra',s:'Santora 2001',c:'Santora LC, Kaymakcalan Z, Sakorafas P, Krull IS, Grant K. Characterization of noncovalent complexes of recombinant human monoclonal antibody and antigen using cation exchange, size exclusion chromatography, and BIAcore. Anal Biochem 2001;299:119–129.',u:'https://pubmed.ncbi.nlm.nih.gov/11730333/'},
+ brodde1999:{g:'labels',s:'Brodde 1999',c:'Brodde OE, Michel MC. Adrenergic and muscarinic receptors in the human heart. Pharmacol Rev 1999;51:651–690.',u:'https://pubmed.ncbi.nlm.nih.gov/10581327/'},
  oka2014:{g:'labels',s:'Oka 2014',c:'Oka Y et al. Meta-analysis of the risk of upper gastrointestinal hemorrhage with combination therapy of SSRIs and NSAIDs. Biol Pharm Bull 2014;37:947–953.',u:'https://pubmed.ncbi.nlm.nih.gov/24681541/'},
 
  wao2020:{g:'safety',s:'WAO 2020',c:'Cardona V et al. World Allergy Organization anaphylaxis guidance 2020. World Allergy Organ J 2020;13:100472.',u:'https://pmc.ncbi.nlm.nih.gov/articles/PMC7607509/'},

@@ -83,7 +83,7 @@ export function makeStations(A){
         if(!built)build();setVisible(true);resetRig();
         if(!heartScaled){heart.geo.computeBoundingBox();heartC=heart.geo.boundingBox.getCenter(V3());heart.geo.translate(-heartC.x,-heartC.y,-heartC.z);heart.mesh.position.add(heartC);heartScaled=true;}
         A.mode.layers={skin:.55,skeleton:.25,organs:.25,vessels:1};A.mode.focus=A.resolve(['Wall of heart','#legveins']);A.mode.focusColor='#F07FA0';A.mode.dim=.45;A.refresh();
-        theta=90;thetaT=0;tmin=0;running=false;
+        theta=0;thetaT=0;tmin=0;running=false;
         panel.innerHTML=`
           <div class="inst-grid">
             <div class="mon">
@@ -122,7 +122,7 @@ export function makeStations(A){
           const pool=M.pooled/620;for(const r of A.tagged('legveins')){r.col.set('#3F5DA8').lerp(new THREE.Color('#7F9BFF'),pool);r.tgt.em=.15+pool*.6;r.hi.set('#5F7FE8');}
           // particles slide toward the feet in proportion to sin(theta)
           const curves=A.legVeinCurves;const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),sc=V3(1,1,1),p=V3();
-          for(let i=0;i<PT.length;i++){const P=PT[i];const g=Math.sin(theta*D2R);P.u+=dt*.12*P.sp*(.25+g*(P.u<.85?1:.15));if(P.u>1)P.u=g>.5&&Math.random()<.75?.75+Math.random()*.22:0;
+          for(let i=0;i<PT.length;i++){const P=PT[i];const g=Math.sin(theta*D2R);P.u-=dt*.12*P.sp*(1-.75*g*(P.u>.6?1:.4));if(P.u<0)P.u=.9+Math.random()*.1; // venous blood always flows toward the heart; upright, it slows and crowds low in the legs
             const ci=P.c;curves[ci].getPointAt(Math.min(P.u,1),p);sc.setScalar(1+pool*(P.u>.6?.7:.2));m4.compose(p,q,sc);particles.setMatrixAt(i,m4);}
           particles.instanceMatrix.needsUpdate=true;
           needleG.rotation.z=theta*D2R;
@@ -136,7 +136,7 @@ export function makeStations(A){
           if(theta<5)v.textContent='Lying flat';
           else if(M.dHR>=30&&tmin>=1.5)v.innerHTML='<b>In this simulation, meets the POTS threshold:</b> sustained rise of 30+ bpm within 10 minutes, blood pressure holding.';
           else if(M.dHR>=30)v.textContent='Above 30 bpm. The rule needs it sustained.';
-          else v.textContent=tmin<10?'Rising':(st.comp||st.fluid||st.prop)?'Under 30 bpm with these treatments. That\'s the goal of treatment; the diagnosis stays the same.':'Below the 30 bpm threshold at this setting.';
+          else v.textContent=tmin<10?'Rising':(st.comp||st.fluid||st.prop)?'Under 30 bpm with these treatments. Treatment is judged by how she feels; the diagnosis stays the same.':'Below the 30 bpm threshold at this setting.';
           drawECG(dt,M.hr);
         });
       },
@@ -170,18 +170,20 @@ export function makeStations(A){
     let geomCache=null;
     function geom(){
       if(geomCache)return geomCache;const G={};
+      // signed angle (deg) from the distal bone u to the proximal bone's straight-through line p, about m; p projected into the joint's plane
+      const rest=(u,p,m)=>{const q=p.clone().sub(m.clone().multiplyScalar(m.dot(p))).normalize();return {p:q,rest:Math.atan2(m.dot(u.clone().cross(q)),u.dot(q))/D2R};};
       for(const s of ['right','left']){const H=A.hand[s];
         // little finger MCP: positive = extension (toward the back of the hand)
-        const lf=H.fingers[4][1];G['lf'+s]={node:lf.node,parent:H.fingers[4][0].node,pivot:lf.pivot,u:lf.dir,m:lf.axis.clone().negate()};
+        const lf=H.fingers[4][1];G['lf'+s]={node:lf.node,parent:H.fingers[4][0].node,pivot:lf.pivot,u:lf.dir,m:lf.axis.clone().negate()};Object.assign(G['lf'+s],rest(lf.dir,H.fingers[4][0].dir,G['lf'+s].m));
         // wrist flexion axis (toward the palm), thumb CMC
         const wristAxis=H.dir.clone().cross(H.volar).normalize();
         G['wr'+s]={node:N['wrist'+s],axis:wristAxis,pivot:H.wrist};
         G['th'+s]={node:H.fingers[0][0].node,pivot:H.fingers[0][0].pivot};
         // elbow and knee: positive = hyperextension
         const fd=H.wrist.clone().sub(H.elbow).normalize();const post=V3(0,0,-1);
-        G['el'+s]={node:N['elbow'+s],parent:N['shoulder'+s],pivot:H.elbow,u:fd,m:fd.clone().cross(post).normalize()};
+        G['el'+s]={node:N['elbow'+s],parent:N['shoulder'+s],pivot:H.elbow,u:fd,m:fd.clone().cross(post).normalize()};Object.assign(G['el'+s],rest(fd,H.elbow.clone().sub(H.shoulder).normalize(),G['el'+s].m));
         const kp=N['kneeP'+s],ap=N['ankleP'+s];const sd=ap.clone().sub(kp).normalize();
-        G['kn'+s]={node:N['knee'+s],parent:N['hip'+s],pivot:kp,u:sd,m:sd.clone().cross(V3(0,0,1)).normalize()};
+        G['kn'+s]={node:N['knee'+s],parent:N['hip'+s],pivot:kp,u:sd,m:sd.clone().cross(V3(0,0,1)).normalize()};Object.assign(G['kn'+s],rest(sd,kp.clone().sub(N['hip'+s].userData.pivot).normalize(),G['kn'+s].m));
       }
       geomCache=G;return G;
     }
@@ -190,7 +192,7 @@ export function makeStations(A){
     function apply(){
       const G=geom();
       for(const s of ['right','left']){
-        G['lf'+s].node.quaternion.setFromAxisAngle(G['lf'+s].m,vals[0]*D2R);
+        G['lf'+s].node.quaternion.setFromAxisAngle(G['lf'+s].m,(vals[0]+G['lf'+s].rest)*D2R);
         // thumb: wrist flexes up to 85°, then thumb swings toward the forearm
         const f=vals[1]/100;G['wr'+s].node.quaternion.setFromAxisAngle(G['wr'+s].axis,85*Math.min(1,f*1.4)*D2R);
         G['wr'+s].node.updateMatrixWorld(true);
@@ -206,8 +208,8 @@ export function makeStations(A){
         const reach=f<.7?f/.7*.75:.75+(f-.7)/.3*.25;ang*=reach;
         // keep the thumb clear of the forearm surface
         th.node.quaternion.setFromAxisAngle(axL,Math.min(ang,Math.acos(clamp(a.clone().normalize().dot(b.clone().normalize()),-1,1))-0.02));
-        G['el'+s].node.quaternion.setFromAxisAngle(G['el'+s].m,vals[2]*D2R);
-        G['kn'+s].node.quaternion.setFromAxisAngle(G['kn'+s].m,vals[3]*D2R);
+        G['el'+s].node.quaternion.setFromAxisAngle(G['el'+s].m,(vals[2]+G['el'+s].rest)*D2R);
+        G['kn'+s].node.quaternion.setFromAxisAngle(G['kn'+s].m,(vals[3]+G['kn'+s].rest)*D2R);
       }
       // forward bend: trunk rotates at the hips; arms hang plumb; hands lay flat once fingertips touch
       const f5=vals[4]/100;const trunkA=f5*118;N.trunk.quaternion.setFromAxisAngle(V3(1,0,0),trunkA*D2R);
@@ -215,20 +217,20 @@ export function makeStations(A){
       A.root.updateMatrixWorld(true);
       if(active===4){for(const s of ['right','left']){
         const chain=A.hand[s].fingers[2];const tip=chain[chain.length-1];
-        let lo=0,hi=95,wax=A.hand[s].dir.clone().cross(A.hand[s].volar).normalize().negate();
+        let lo=0,hi=110,wax=A.hand[s].dir.clone().cross(A.hand[s].volar).normalize().negate();
         const tipY=e=>{N['wrist'+s].quaternion.setFromAxisAngle(wax,e*D2R);N['wrist'+s].updateMatrixWorld(true);return toWorld(tip.node,tip.pivot.clone().add(tip.tipLocal)).y;};
         if(tipY(0)<0.008){for(let k=0;k<14;k++){const mid=(lo+hi)/2;if(tipY(mid)<0.008)lo=mid;else hi=mid;}tipY(lo);A.hand[s].flat=lo;}else{A.hand[s].flat=0;}
       }}
     }
     function score(){
-      const p=[vals[0]>90?2:0,vals[1]>=96?2:0,vals[2]>10?2:0,vals[3]>10?2:0,(A.hand.right.flat||0)>=70?1:0];
+      const p=[vals[0]>90?2:0,vals[1]>=96?2:0,vals[2]>10?2:0,vals[3]>10?2:0,vals[4]>=96?1:0];
       return {p,total:p.reduce((a,b)=>a+b,0)};
     }
     function setGonio(i){
       gonio?.dispose();gonio=null;const G=geom();const s='right';
-      if(i===0){const g=G['lf'+s];gonio=goniometer(g.parent,g.pivot,g.u,g.m,{max:110,normal:45,thr:90,r:0.028});}
-      if(i===2){const g=G['el'+s];gonio=goniometer(g.parent,g.pivot,g.u,g.m,{max:25,normal:5,thr:10,r:0.09});}
-      if(i===3){const g=G['kn'+s];gonio=goniometer(g.parent,g.pivot,g.u,g.m,{max:25,normal:5,thr:10,r:0.11});}
+      if(i===0){const g=G['lf'+s];gonio=goniometer(g.parent,g.pivot,g.p,g.m,{max:110,normal:45,thr:90,r:0.028});}
+      if(i===2){const g=G['el'+s];gonio=goniometer(g.parent,g.pivot,g.p,g.m,{max:25,normal:5,thr:10,r:0.09});}
+      if(i===3){const g=G['kn'+s];gonio=goniometer(g.parent,g.pivot,g.p,g.m,{max:25,normal:5,thr:10,r:0.11});}
     }
     function camFor(i){
       const G=geom();
@@ -268,15 +270,20 @@ export function makeStations(A){
 
   /* ==================================================================== NECK (C6/C7, cervical arthritis) */
   const neck=(()=>{
-    let tickOff,ui,bulge=null;const v={ext:0,lat:0,rot:0,hern:3};const cur={ext:0,lat:0,rot:0};
+    let tickOff,ui,bulge=null,spurs=null;const v={ext:0,lat:0,rot:0,hern:3,spur:0};const cur={ext:0,lat:0,rot:0};
     return {
       id:'neck',title:'Cervical spine',fig:'C6/C7 and the C7 root',
-      enter(panel){
+      enter(panel,opt){
         resetRig();
+        // neck arthritis narrows the exit with bony spurs far more often than a soft disc does (Radhakrishnan 1994: 68% vs 22%)
+        if(opt?.cond==='carth'){v.spur=2.5;v.hern=0;}else if(opt?.cond==='c67'){v.spur=0;v.hern=3;}
         if(!bulge){const d=MESH['Intervertebral disk of sixth cervical vertebra'];d.geo.computeBoundingBox();const bb=d.geo.boundingBox;const c=bb.getCenter(V3());
           const g=new THREE.SphereGeometry(1,22,16);bulge=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:'#F2A65A',emissive:'#F2A65A',emissiveIntensity:.35,roughness:.5}));
-          const pos=V3(bb.min.x+0.004,c.y,bb.min.z+0.004);N.c7.add(bulge);bulge.position.copy(pos).sub(N.c7.userData.pivot);bulge.userData.base=pos;}
-        bulge.visible=true;
+          const pos=V3(bb.min.x+0.004,c.y,bb.min.z+0.004);N.c7.add(bulge);bulge.position.copy(pos).sub(N.c7.userData.pivot);bulge.userData.base=pos;
+          // bony lips at the right C6/C7 exit: one from the uncovertebral joint (front of the opening), one from the facet joint (behind it)
+          const sm=new THREE.MeshStandardMaterial({color:'#E9DDB8',emissive:'#E9DDB8',emissiveIntensity:.25,roughness:.6});spurs=[];
+          for(const p of [V3(bb.min.x-0.002,c.y+0.002,bb.min.z+0.006),V3(bb.min.x-0.004,c.y+0.001,bb.min.z-0.003)]){const m=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),sm);N.c7.add(m);m.position.copy(p).sub(N.c7.userData.pivot);spurs.push(m);}}
+        bulge.visible=true;spurs.forEach(m=>m.visible=true);
         A.mode.layers={skin:0,skeleton:.35,organs:.05,vessels:.08};A.mode.forceShow=A.resolve(['#c7nerve']);
         A.mode.focus=A.resolve(['Third cervical vertebra','Fourth cervical vertebra','Fifth cervical vertebra','Sixth cervical vertebra','Seventh cervical vertebra','Intervertebral disk of sixth cervical vertebra','#c7nerve']);
         A.mode.focusColor='#B193E3';A.mode.dim=.3;A.refresh();
@@ -288,15 +295,16 @@ export function makeStations(A){
             <div class="ro"><span>Finger extensors (opening the hand)</span><b id="fe">5/5</b></div>
             <div class="ro"><span>Middle-finger sensation</span><b id="mf">normal</b></div>
           </div>
-          ${slider('n-hern','Disc herniation',0,6,.5,3,' mm')}
+          ${slider('n-spur','Bone spurs at the opening',0,4,.5,v.spur,' mm')}
+          ${slider('n-hern','Disc herniation',0,6,.5,v.hern,' mm')}
           ${slider('n-ext','Extension (head back)',-30,30,1,0,'°')}
           ${slider('n-lat','Tilt toward the sore side',0,30,1,0,'°')}
           ${slider('n-rot','Turn toward the sore side',0,40,1,0,'°')}
           <div class="warn" id="n-wk" hidden><b>Worth acting on</b>Weakness that is new or getting worse needs to be seen promptly. Sudden weakness, or any bladder or bowel change, means the emergency department.</div>
           <div class="btns"><button class="btn primary" id="spur" type="button">Spurling's test</button><button class="btn" id="neu" type="button">Neutral</button><button class="btn" id="follow" type="button">Follow the nerve</button></div>
-          <p class="fine">The vertebrae and the C6/C7 disc are real anatomy. The herniation (amber) and the nerve's course are drawn schematically. Spurling's test (head tipped back and toward the sore side, with gentle pressure down on the head) briefly narrows the exit hole. A positive test brings on the arm pain or tingling; it doesn't change strength or reflexes, which reflect how hard and how long the nerve has been squeezed. It's a clinician's test: please don't try it on the patient's neck, especially a hypermobile one. Strength grades use the 0–5 MRC scale (5 normal, 4 weaker than normal, 3 can just lift against gravity). The mapping from pressure to grades is illustrative.</p>`;
+          <p class="fine">The vertebrae and the C6/C7 disc are real anatomy. The herniation (amber), the bone spurs (pale) and the nerve's course are drawn schematically. In neck arthritis the opening is usually narrowed by bony spurs rather than a soft disc. Spurling's test (head tipped back and toward the sore side, with gentle pressure down on the head) briefly narrows the exit hole. A positive test brings on the arm pain or tingling; it doesn't change strength or reflexes, which reflect how hard and how long the nerve has been squeezed. It's a clinician's test: please don't try it on the patient's neck, especially a hypermobile one. Strength grades use the 0–5 MRC scale (5 normal, 4 weaker than normal, 3 can just lift against gravity). The mapping from pressure to grades is illustrative.</p>`;
         ui=panel;
-        bindSlider(panel,'n-hern',x=>v.hern=x,x=>x+' mm');bindSlider(panel,'n-ext',x=>v.ext=x,x=>x+'°');bindSlider(panel,'n-lat',x=>v.lat=x,x=>x+'°');bindSlider(panel,'n-rot',x=>v.rot=x,x=>x+'°');
+        bindSlider(panel,'n-spur',x=>v.spur=x,x=>x+' mm');bindSlider(panel,'n-hern',x=>v.hern=x,x=>x+' mm');bindSlider(panel,'n-ext',x=>v.ext=x,x=>x+'°');bindSlider(panel,'n-lat',x=>v.lat=x,x=>x+'°');bindSlider(panel,'n-rot',x=>v.rot=x,x=>x+'°');
         const set=(id,x)=>{const i=panel.querySelector('#'+id);i.value=x;i.dispatchEvent(new Event('input'));};
         panel.querySelector('#spur').onclick=()=>{set('n-ext',22);set('n-lat',25);set('n-rot',12);};
         panel.querySelector('#neu').onclick=()=>{set('n-ext',0);set('n-lat',0);set('n-rot',0);};
@@ -309,17 +317,18 @@ export function makeStations(A){
           const q=new THREE.Quaternion(),qe=new THREE.Quaternion(),ql=new THREE.Quaternion(),qr=new THREE.Quaternion();
           for(const nd of A.neckOrder){qe.setFromAxisAngle(V3(1,0,0),-cur.ext/6*D2R);ql.setFromAxisAngle(V3(0,0,1),cur.lat/6*D2R);qr.setFromAxisAngle(V3(0,-1,0),cur.rot/6*D2R);nd.quaternion.copy(q.copy(qe).multiply(ql).multiply(qr));}
           bulge.scale.set(0.002+v.hern*0.0011,0.0025+v.hern*0.0005,0.002+v.hern*0.001);
-          const comp=clamp(v.hern/6*.62+Math.max(0,cur.ext)/30*.2+cur.lat/30*.24+cur.rot/40*.1,0,1);
+          for(const m of spurs){const s=v.spur*0.0012;m.visible=v.spur>0;m.scale.set(0.0015+s,0.0012+s*.45,0.0015+s*.8);}
+          const comp=clamp(Math.max(v.hern/6*.62,v.spur/4*.6)+Math.min(v.hern/6*.62,v.spur/4*.6)*.4+Math.max(0,cur.ext)/30*.2+cur.lat/30*.24+cur.rot/40*.1,0,1);
           const nerve=A.tagged('c7nerve')[0];nerve.col.set('#F2C14E').lerp(new THREE.Color('#FF5A3C'),comp);nerve.tgt.em=.2+comp*.8;nerve.hi.set('#FF7A4C');
           ui.querySelector('#cmp').textContent=Math.round(comp*100)+'%';ui.querySelector('#cmpBar').style.width=comp*100+'%';ui.querySelector('#cmpBar').classList.toggle('over',comp>.55);
-          const sev=v.hern/6; // severity proxy: strength and reflex follow the disc, not the head angle
+          const sev=Math.max(v.hern/6,v.spur/4*.85); // severity proxy: strength and reflex follow the disc and spurs, not the head angle
           const grade=sev<.6?5:sev<.9?4:3;ui.querySelector('#tri').textContent=grade+'/5';ui.querySelector('#fe').textContent=Math.min(5,grade+(grade<5?1:0))+'/5';
           ui.querySelector('#ref').textContent=sev<.6?'normal':'reduced';ui.querySelector('#mf').textContent=comp<.35?'normal':(comp<.7||sev<.7)?'tingling':'numb';
           ui.querySelector('#pain').textContent=comp<.3?'none':comp<.5?'mild, back of the arm':comp<.75?'clear, down to the middle finger':'strong';
           ui.querySelector('#n-wk').hidden=grade>=5;
         });
       },
-      exit(){tickOff?.();resetRig();if(bulge)bulge.visible=false;A.mode.forceShow=null;const n=A.tagged('c7nerve')[0];n.col.set('#F2C14E');}
+      exit(){tickOff?.();resetRig();if(bulge)bulge.visible=false;spurs?.forEach(m=>m.visible=false);A.mode.forceShow=null;const n=A.tagged('c7nerve')[0];n.col.set('#F2C14E');}
     };
   })();all.push(neck);
 
@@ -333,22 +342,23 @@ export function makeStations(A){
       const add=(parent,p,r)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1,20,14),mat);parent.add(m);m.position.copy(p).sub(parent.userData.pivot);m.userData.r=r;m.renderOrder=9;caps.push(m);};
       add(N.elbowright,H.wrist,0.013);
       for(const f of [1,2,3]){add(H.fingers[f][0].node,H.fingers[f][1].pivot,0.0075);add(H.fingers[f][1].node,H.fingers[f][2].pivot,0.0062);}
-      add(H.fingers[4][0].node,H.fingers[4][1].pivot,0.0068);
+      add(H.fingers[4][0].node,H.fingers[4][1].pivot,0.0068);add(H.fingers[4][1].node,H.fingers[4][2].pivot,0.0056);
+      add(H.fingers[0][0].node,H.fingers[0][1].pivot,0.0068); // thumb MCP
     }
     // HCQ: little effect for the first month, mostly there by 4–6 months (sigmoid). Alone it is a partial response.
     // Steroids: short-term only, so their effect is shown for the first 3 months.
     // Hadlima (adalimumab): responses can start in the first week or two (ARMADA) and are mostly there by
-    // about 12 weeks; methotrexate alongside raises its levels and clearly improves the response (RA-V: ACR50 62% versus 41%). Illustrative curve.
+    // about 12 weeks; methotrexate alongside raises its levels and clearly improves the response (PREMIER, Breedveld 2006: ACR50 62% versus 41%). Illustrative curve.
     const sig=m=>{const e=x=>1/(1+Math.exp(-(x-2)/.6));return (e(m)-e(0))/(1-e(0));};
     const hdl=w=>1-Math.exp(-w/4);
     function model(){
       const sterOn=v.ster&&v.months<3;
-      let I=(1-0.4*sig(v.months))*(sterOn?.55:1)*(1-(v.mtx?.8:.72)*hdl(v.weeks));
-      const D=10+140*I;
+      let I=(1-0.4*sig(v.months))*(sterOn?.55:1)*(1-(v.mtx?.88:.72)*hdl(v.weeks));
+      const D=4+146*I;  // the best case (all three, six months) reaches remission's 15 minutes
       const S=I*Math.pow(clamp(1-v.awake/D,0,1),.8)*.5;
       return {I,D,S,max:1-S,sterOn};
     }
-    const band=D=>D>=120?'over 2 hours':D>=90?'about 1½–2 hours':D>=60?'about 1–1½ hours':D>=30?'half an hour to an hour':'under half an hour';
+    const band=D=>D>=120?'over 2 hours':D>=90?'about 1½–2 hours':D>=60?'about 1–1½ hours':D>=30?'half an hour to an hour':D>16?'under half an hour':'about 15 minutes or less';
     return {
       id:'hand',title:'Rheumatoid hand',fig:'Morning stiffness and treatment',
       enter(panel){
@@ -394,9 +404,9 @@ export function makeStations(A){
   const stomach=(()=>{
     let tickOff,ui,meal=null,pts=[],pyl,duoC,tH=0,playing=false,grade='moderate',med=false;
     const GR={normal:{r4:1.2,label:'Normal'},mild:{r4:16,label:'Mild (11–20%)'},moderate:{r4:28,label:'Moderate (21–35%)'},severe:{r4:43,label:'Severe (36–50%)'},vsevere:{r4:60,label:'Very severe (>50%)'}};
-    // Normal: modified power exponential (Siegel/Elashoff) fitted to Tougas 2000 medians: 73/23/1.2% at 1/2/4 h
-    const fNormal=t=>1-Math.pow(1-Math.exp(-1.518*Math.max(t,0)),5.29);
-    const fGrade=(t,r4)=>{if(r4<2)return fNormal(t);const beta=1.25,tau=4/Math.pow(-Math.log(r4/100),1/beta);return Math.exp(-Math.pow(Math.max(t-0.15,0)/tau,beta));};
+    // Normal: modified power exponential (Siegel/Elashoff) fitted to Tougas 2000 medians: 69/24/1.2% at 1/2/4 h
+    const fNormal=t=>1-Math.pow(1-Math.exp(-1.41*Math.max(t,0)),4.24);
+    const fGrade=(t,r4)=>{if(r4<2)return fNormal(t);const beta=1.25,tau=3.85/Math.pow(-Math.log(r4/100),1/beta);return Math.exp(-Math.pow(Math.max(t-0.15,0)/tau,beta));};
     const f=t=>fGrade(t,GR[grade].r4);
     function buildMeal(){
       const st=MESH['Stomach'];st.geo.computeBoundingBox();const bb=st.geo.boundingBox;
@@ -439,7 +449,7 @@ export function makeStations(A){
             ${'<div class="ro" id="medro" hidden><span>Tablet that has left the stomach</span><b id="mdv">0%</b><span class="note">about when it starts working</span></div>'}
           </div>
           <div id="chartBox"></div>
-          <p class="legend"><i class="sw sw-d"></i>This curve <i class="sw sw-n"></i>Healthy median (Tougas 2000) <i class="sw sw-c"></i>Upper limit of normal</p>
+          <p class="legend"><i class="sw sw-d"></i>This curve <i class="sw sw-n"></i>Healthy median (Tougas 2000) <i class="sw sw-c"></i>Upper limit of normal<span id="g-legm" hidden> <i class="sw" style="border-color:var(--endocrine)"></i>Tablet that has left</span></p>
           ${slider('g-t','Time since the meal',0,240,1,0,'')}
           <div class="btns"><button class="btn primary" id="gplay" type="button">Play four hours</button></div>
           <p class="eyebrow">Severity</p>
@@ -451,7 +461,7 @@ export function makeStations(A){
         const draw=()=>{panel.querySelector('#chartBox').innerHTML=chart();panel.querySelector('#r4').textContent=fmt(f(4)*100,1)+'%';};
         const ts=bindSlider(panel,'g-t',x=>{tH=x/60;playing=false;},fmtT);
         panel.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{grade=b.dataset.g;panel.querySelectorAll('[data-g]').forEach(x=>x.setAttribute('aria-checked',x===b));draw();});
-        bindToggle(panel,'g-med',on=>{med=on;panel.querySelector('#medro').hidden=!on;draw();});
+        bindToggle(panel,'g-med',on=>{med=on;panel.querySelector('#medro').hidden=!on;panel.querySelector('#g-legm').hidden=!on;draw();});
         panel.querySelector('#gplay').onclick=()=>{if(tH>=3.99)tH=0;playing=true;};
         draw();
         const st=MESH['Stomach'];st.geo.computeBoundingBox();const c=st.geo.boundingBox.getCenter(V3());
@@ -479,11 +489,12 @@ export function makeStations(A){
   const thyroid=(()=>{
     let tickOff,ui,parts=null,curve,lym=null;const v={rem:35,dose:75,iron:false,cal:false,weeks:8};
     // Iron cuts absorption more than calcium (Campbell 1992: TSH 1.6→5.4; Singh 2000: 1.6→2.7).
-    // The remaining gland throttles back when TSH is suppressed (a few damped fixed-point steps).
+    // The remaining gland works harder when TSH is high (Verloop 2012: most stay euthyroid after half is removed)
+    // and throttles back when TSH is suppressed (a few damped fixed-point steps).
     function model(){
-      const E=v.rem/100;const fabs=0.75*(v.iron?0.6:1)*(v.cal?0.85:1);const Dss=v.dose*fabs/75;
+      const E=v.rem/100;const fabs=0.75*(v.iron?0.45:1)*(v.cal?0.78:1);const Dss=v.dose*fabs/75;
       let tsh=1.8,ft4=0;
-      for(let k=0;k<10;k++){const Ee=E*Math.pow(clamp(tsh/1.8,.1,1),.3);
+      for(let k=0;k<10;k++){const Ee=E*Math.pow(clamp(tsh/1.8,.1,20),.3);
         const lvl=w=>Ee+Dss*(1-Math.pow(.5,Math.max(w,0)));
         ft4=1.25*lvl(v.weeks);const n=clamp(1.8*Math.pow(10,(1.25-1.25*lvl(v.weeks-1.2))/0.5),0.01,100);tsh=Math.sqrt(tsh*n);}
       return {ft4,tsh,E};
@@ -514,7 +525,7 @@ export function makeStations(A){
           <p class="fine">The hypothalamus and pituitary are real anatomy; the thyroid gland is modelled at its true position below the real thyroid cartilage. Blue particles are TSH travelling to the thyroid; green are T4 leaving it. The loop is real physiology; the numbers are an illustrative model: T4's half-life is about a week, so any change takes about five weeks to level out, and TSH needs six to eight weeks to settle. Reference ranges vary by lab.</p>`;
         ui=panel;
         bindSlider(panel,'y-rem',x=>v.rem=x,x=>x+'%');bindSlider(panel,'y-dose',x=>v.dose=x,x=>x+' mcg');bindSlider(panel,'y-weeks',x=>v.weeks=x,x=>x+' wk');bindToggle(panel,'y-iron',on=>v.iron=on);bindToggle(panel,'y-cal',on=>v.cal=on);
-        A.flyTo({target:[0,1.45,0.02],dist:0.62,azim:38,elev:6});
+        A.flyTo({target:[0,1.41,0.02],dist:0.62,azim:38,elev:6});
         const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),sc=V3(1,1,1),p=V3();
         tickOff=A.onTick(dt=>{
           const M=model();

@@ -138,7 +138,7 @@ function synapseLevel(){
     for(const v of S.ves){v.fuse=Math.max(0,v.fuse-dt*1.5);v.acid=lerp(v.acid,1-.8*ai,1-Math.exp(-dt*.6));
       if(v.n>0&&Math.random()<dt*1.6*(1-v.acid)){v.n--;const a=rand(0,TAU);S.cyto.push({x:v.x+Math.cos(a)*30,y:v.y+Math.sin(a)*30,vx:0,vy:0});}
       if(v.n<8&&v.acid>.6&&Math.random()<dt*2.2){const i=S.cyto.findIndex(m=>Math.hypot(m.x-v.x,m.y-v.y)<80);if(i>=0){S.cyto.splice(i,1);v.n++;}}}
-    const tot=S.ves.reduce((a,v)=>a+v.n,0)+S.cyto.length+S.cleft.length;if(tot<50&&Math.random()<dt*.8)S.cyto.push({x:rand(240,760),y:rand(70,200),vx:0,vy:0});
+    const tot=S.ves.reduce((a,v)=>a+v.n,0)+S.cyto.length+S.cleft.length;if(tot<(S.amph?90:50)&&Math.random()<dt*(S.amph?2.4:.8))S.cyto.push({x:rand(240,760),y:rand(70,200),vx:0,vy:0});
     for(const d of S.dat){d.cd-=dt;d.fl=Math.max(0,d.fl-dt*3);if(d.cd>0)continue;d.cd=.28;
       const ia=S.aout.findIndex(m=>Math.abs(m.x-d.x)<70);
       if(ia>=0&&Math.random()<.75){const m=S.aout.splice(ia,1)[0];S.ain.push({x:d.x,y:MEM-16,vx:rand(-20,20),vy:-40,l:8});d.fl=1;}

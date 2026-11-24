@@ -38,12 +38,12 @@ export function makeStations2(A){
     function model(){
       let load=24;const w={skin:0,gut:0,air:0,cv:0,brain:0};
       for(const [k,,,L,sy] of TR)if(on[k]){load+=L;for(const s in sy)w[s]+=sy[s];}
-      const thr=70+(tx.cro?8:0);
+      const thr=70;
       const s=clamp((load-thr)/45,0,1);
       const sym={};for(const [k] of SYSL)sym[k]=s*(0.5+0.5*Math.min(1,w[k]/1.5));
-      if(tx.h1){sym.skin*=.45;sym.air*=.95;sym.cv*=.95;sym.brain*=.9;} // H1 helps skin; not airway or circulation (WAO 2020)
+      if(tx.h1){sym.skin*=.45;sym.cv*=.8;sym.gut*=.85;sym.air*=.95;sym.brain*=.9;} // H1 helps skin, some fast pulse and gut (Weiler 2019); not airway swelling or low blood pressure (WAO)
       if(tx.h2){sym.gut*=.55;sym.skin*=.85;sym.cv*=.85;}
-      if(tx.cro){sym.gut*=.6;}
+      if(tx.cro){sym.gut*=.6;sym.skin*=.9;} // oral cromolyn: under 1% absorbed, mostly gut (Weiler 2019)
       return {load,thr,s,sym};
     }
     function labHTML(s){
@@ -69,7 +69,7 @@ export function makeStations2(A){
           <p class="eyebrow">Triggers</p>
           <div class="tgs two">${TR.map(([k,l,sub])=>toggle('m-t-'+k,l,false,sub)).join('')}</div>
           <p class="eyebrow">Treatment</p>
-          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'e.g. her Zyrtec')}${toggle('m-h2','H2 blocker',false,'e.g. famotidine')}${toggle('m-cro','Oral cromolyn',false,'works after 2–3 weeks')}</div>
+          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'e.g. her Zyrtec')}${toggle('m-h2','H2 blocker',false,'e.g. famotidine')}${toggle('m-cro','Oral cromolyn',false,'works after 2–6 weeks')}</div>
           <p class="eyebrow">Tryptase test</p>
           <div class="readouts">
             <div class="ro"><span>Tryptase needed to count</span><b id="m-need"></b><span class="note">baseline × 1.2 + 2 ng/mL (the 20% + 2 rule)</span></div>
@@ -82,7 +82,7 @@ export function makeStations2(A){
           ${slider('m-base','Baseline tryptase (example)',2,15,.5,5,' ng/mL')}
           <div class="warn" id="m-em"><b>Emergency signs</b><span id="m-emx" hidden><strong>This pattern needs epinephrine, not more antihistamine.</strong> </span>Throat tightness, trouble breathing or swallowing, fainting or feeling faint, or hives together with vomiting or severe cramps: <strong>give epinephrine first, then call 911.</strong> Lay the patient flat with legs raised (sitting up if breathing is hard); don't let her stand or walk, which matters even more with POTS. Give a second dose after 5–15 minutes if there's no clear improvement. The patient's propranolol can blunt epinephrine, <strong>which is a reason to give it promptly, not to skip it</strong>; the team has a backup (glucagon) and needs to know she takes it. Symptoms can come back hours later, so she should still be checked.</div>
           <p class="fine" id="m-hat" hidden>A baseline of 8 ng/mL or more is worth asking about: about 4–6% of people inherit extra copies of a tryptase gene (hereditary alpha-tryptasemia), found in a 2016 study alongside flushing, dysautonomia and hypermobility.</p>
-          <p class="fine">The orange dots are mast cells, sampled on the real skin, gut, airways and great vessels where they concentrate. The "bucket": triggers add up, and a flare starts when it overflows. The triggers, the bucket and the treatment effects are a teaching picture with illustrative sizes; the patient's own triggers and doses aren't on the chart. The tryptase rule is the consensus one (Valent 2012) and is one of three criteria, alongside multi-system symptoms and response to treatment. Tryptase peaks about 1–2 hours after a reaction and has a half-life of about 2 hours, so UK guidance (NICE) advises drawing it within 1–2 hours of onset and no later than 4. A baseline is drawn when the patient is well, at least a day or two after symptoms have fully settled (Valent 2019). Many flares raise it only modestly, which is why timing decides the result.</p>`;
+          <p class="fine">The orange dots are mast cells, sampled on the real skin, gut, airways and great vessels where they concentrate. The "bucket": triggers add up, and a flare starts when it overflows. The triggers, the bucket and the treatment effects are a teaching picture with illustrative sizes; the patient's own triggers and doses aren't on the chart. The tryptase rule is the consensus one (Valent 2012) and is one of three criteria, alongside multi-system symptoms and response to treatment. Tryptase peaks about 30–90 minutes after a reaction starts and has a half-life of about 2 hours, so UK guidance (NICE) advises drawing it within 1–2 hours of onset and no later than 4. A baseline is drawn when the patient is well, at least a day or two after symptoms have fully settled (Valent 2019). Many flares raise it only modestly, which is why timing decides the result.</p>`;
         ui=panel;
         for(const [k] of TR)bindToggle(panel,'m-t-'+k,v=>on[k]=v);
         bindToggle(panel,'m-h1',v=>tx.h1=v);bindToggle(panel,'m-h2',v=>tx.h2=v);bindToggle(panel,'m-cro',v=>tx.cro=v);
@@ -99,7 +99,7 @@ export function makeStations2(A){
           t+=dt;const M=model();
           cur.s=damp(cur.s,M.s,2.5,dt);for(const [k] of SYSL)cur[k]=damp(cur[k],M.sym[k],2.5,dt);
           // bucket and systems
-          ui.querySelector('#m-load').textContent=M.load>M.thr?'overflowing':M.load>M.thr*.75?'near the line':'low';const em=M.sym.air>=.7||M.sym.cv>=.7;ui.querySelector('#m-em').classList.toggle('hot',em);ui.querySelector('#m-emx').hidden=!em;const lb=ui.querySelector('#m-loadBar');lb.style.width=clamp(M.load/170*100,0,100)+'%';lb.classList.toggle('over',M.load>M.thr);
+          ui.querySelector('#m-load').textContent=M.load>M.thr?'overflowing':M.load>M.thr*.75?'near the line':'low';const em=M.sym.air>=.7||M.sym.cv>=.7||(M.sym.skin>=.7&&M.sym.gut>=.7);ui.querySelector('#m-em').classList.toggle('hot',em);ui.querySelector('#m-emx').hidden=!em;const lb=ui.querySelector('#m-loadBar');lb.style.width=clamp(M.load/170*100,0,100)+'%';lb.classList.toggle('over',M.load>M.thr);
           ui.querySelector('#m-thr').style.left=M.thr/170*100+'%';
           for(const [k] of SYSL){const x=M.sym[k];ui.querySelector('#m-'+k).textContent=x<.05?'quiet':x<.35?'mild':x<.7?'moderate':'strong';const b=ui.querySelector('#m-'+k+'Bar');b.style.width=x*100+'%';b.classList.toggle('over',x>=.7);}
           const key=M.s.toFixed(3);if(key!==lastKey){lastKey=key;drawLab(M.s);}
@@ -137,7 +137,7 @@ export function makeStations2(A){
         const dose=v.sup==='daily'||(v.sup==='alt'&&d%2===0);
         if(dose){let f=0.22*clamp(Math.pow(20/Math.max(ferr,5),2),0.01,1.3);if(prev)f*=0.75;gain+=60*f;if(d<14){abs+=60*f;nd++;}} // fractional absorption falls as stores fill; next-day dose ×0.75 (Stoffel 2017, Moretti 2015)
         prev=dose;stores+=gain-loss;
-        if(Hb<13&&stores>40){const use=Math.min(0.05*156,stores-40);Hb+=use/156;stores-=use;}   // ~156 mg iron per g/dL of haemoglobin
+        if(Hb<13&&stores>120){const use=Math.min(0.05*156,stores-120);Hb+=use/156;stores-=use;}   // ~156 mg iron per g/dL of haemoglobin
         if(stores<40){Hb-=(40-stores)/156;stores=40;}
         ferr=stores/8;
       }
@@ -173,10 +173,10 @@ export function makeStations2(A){
         K.resetRig();if(!rbc)build();rbc.visible=true;month=0;playing=false;
         K.setMode({layers:{skin:.25,skeleton:.08,organs:.25,vessels:.9},focus:new Set(liverRecs()),focusColor:'#D9A441',dim:.6});
         panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
-            <div class="ro"><span>Ferritin</span><b id="i-f"></b><span class="note">under 15 empty · under 30 low · under 70 with inflammation (WHO)</span><span class="bar"><i id="i-fBar"></i><em style="left:15%"></em><em style="left:30%"></em></span></div>
+            <div class="ro"><span>Ferritin</span><b id="i-f"></b><span class="note">under 15 empty (WHO) · under 30 low · under 70 with inflammation (WHO)</span><span class="bar"><i id="i-fBar"></i><em style="left:15%"></em><em style="left:30%"></em></span></div>
             <div class="ro"><span>Haemoglobin</span><b id="i-hb"></b><span class="note">anaemia below 12 g/dL in women (WHO)</span></div>
             <div class="ro"><span>Stage</span><b id="i-st" class="sm"></b></div>
-            <div class="ro"><span>Extra work for the heart at rest</span><b id="i-hr" class="sm"></b><span class="note">only once anaemic</span></div>
+            <div class="ro"><span>Extra work for the heart</span><b id="i-hr" class="sm"></b><span class="note">only once anaemic</span></div>
           </div>
           <div id="i-chart"></div>
           <p class="legend"><span><i class="sw" style="background:var(--autonomic)"></i>Ferritin, ng/mL</span><span><i class="sw sw-n" style="border-color:var(--bone-2)"></i>Haemoglobin</span></p>
@@ -210,7 +210,7 @@ export function makeStations2(A){
           const [st,cls]=stage(ferr,Hb);
           ui.querySelector('#i-f').textContent=fmt(ferr,0)+' ng/mL';const fb=ui.querySelector('#i-fBar');fb.style.width=clamp(ferr,0,100)+'%';fb.classList.toggle('over',ferr<15);
           ui.querySelector('#i-hb').textContent=fmt(Hb,1)+' g/dL';ui.querySelector('#i-st').textContent=st;
-          ui.querySelector('#i-hr').textContent=Hb>=12?'none':'about +'+fmt(Math.max(0,(12/Hb-1))*60,0)+'%';
+          ui.querySelector('#i-hr').textContent=Hb>=12?'none':Hb>=8?'little at rest, more on exertion':'higher at rest';
           const ph=ui.querySelector('#i-ph');if(ph){const x=30+month/12*(300-40);ph.setAttribute('x1',x);ph.setAttribute('x2',x);}
         });
       },
@@ -238,7 +238,7 @@ export function makeStations2(A){
     let sparks=null,SP=[],tickOff,ui,region='memory';const v={sleep:7,ill:false,stress:false,alc:false,meal:false};
     // Drives the picture only. No number is shown: nobody's seizure threshold can be measured.
     function load(){let L=30;if(v.sleep<7)L+=(7-v.sleep)*8;if(v.ill)L+=18;if(v.stress)L+=8;if(v.alc)L+=14;if(v.meal)L+=6;return L;}
-    function strains(){const s=[];if(v.sleep<6.5)s.push('short sleep');if(v.ill)s.push('fever or illness');if(v.alc)s.push('alcohol');if(v.stress)s.push('stress');if(v.meal)s.push('missed meals');return s;}
+    function strains(){const s=[];if(v.sleep<7)s.push('short sleep');if(v.ill)s.push('fever or illness');if(v.alc)s.push('alcohol');if(v.stress)s.push('stress');if(v.meal)s.push('missed meals');return s;}
     function build(){
       const gyri=A.recs.filter(r=>r.group==='brain'&&/gyrus|lobe|insula/i.test(r.name)).map(r=>r.name);
       for(const p of K.samplePts(gyri,320))SP.push({p,ph:Math.random()*10,f:2+Math.random()*5});
@@ -275,7 +275,7 @@ export function makeStations2(A){
         tickOff=A.onTick(dt=>{
           t+=dt;const L=load();Ls=damp(Ls,L,3,dt);
           const S=strains();ui.querySelector('#b-l').textContent=S.length?S.join(', '):'nothing extra';const lb=ui.querySelector('#b-lBar');lb.style.width=clamp((L-20)/90*100,4,100)+'%';
-          ui.querySelector('#b-m').textContent=S.length===0?'none':S.length===1?'one':S.length===2?'two: worth easing what can be eased':S.length+': protect sleep, treat fever, skip the drink';
+          ui.querySelector('#b-m').textContent=S.length===0?'none':S.length===1?'one':S.length===2?'two: worth easing what can be eased':S.length+(S.includes('short sleep')?': ease what you can, sleep first':': ease what you can');
           const act=clamp((Ls-20)/70,0,1);const n=Math.round(SP.length*(.15+.85*act));
           for(let i=0;i<SP.length;i++){const S=SP[i];const fl=Math.max(0,Math.sin(t*S.f*(1+act*2)+S.ph));K.put(sparks,i,S.p,i<n?Math.pow(fl,6)*(1.1+act):0);}
           sparks.instanceMatrix.needsUpdate=true;
