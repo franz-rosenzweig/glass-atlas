@@ -10,11 +10,11 @@ It's all general education, not medical advice. The patient is a teaching case, 
 
 ### Using the atlas
 - [The 3D body](the-body.md) — turning, zooming and naming, the layers, and light and dark
-- [The case and its instruments](the-case.md) — the conditions, the drawer and its tabs, and what each instrument does
+- [The case and its instruments](the-case.md) — the conditions, the drawer and its tabs, and what each Try it tab does
 - [The dives](dives.md) — the microscope from the body down to the molecules, the games, and the field guide
-- [Medicines](medicines.md) — the list and its search, a page for each medicine, and the planner for the day
+- [Medicines](medicines.md) — the list and its search, a page for each medicine, and the medicine schedule for the day
 - [Connections, the day and the tour](connections-day-tour.md) — the web of links, 24 hours in the patient's body, and the narrated tour
-- [The emergency card, notes and sources](emergency-notes-sources.md) — Tell any provider, notes on the body, and the 260 references
+- [The emergency card, notes and sources](emergency-notes-sources.md) — the Emergency card, notes on the body, and the 260 references
 
 ### Under the hood
 - [Developing Glass Atlas](DEVELOPING.md) — running it, the files, light and dark, walking the screens, and `tools/check.py`

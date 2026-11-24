@@ -459,7 +459,7 @@ function renderPanel(){
     h+=`<div class="group"><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources</span><span class="badge">${Object.keys(REFS).length}</span></button></div>`;
   }else{
     h+=`<input class="medfind" id="medFind" type="search" placeholder="Search" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">Medicine schedule</span></button>`;
-    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
+    for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls+' '+m.when).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
     h+='<p class="none" hidden>No matches</p></div>';
   }
   panel.innerHTML=h+CREDIT;

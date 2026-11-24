@@ -18,7 +18,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png">
-  <img src="docs/images/hero-light.png" alt="Glass Atlas: the 3D body in the middle, the teaching case on the left with the conditions grouped by body system, and the layers along the top">
+  <img src="docs/images/hero-light.png" alt="Glass Atlas: the 3D body in the middle, the patient's chart on the left with the conditions grouped by body system, and the Layers, Connections, Notes and Emergency buttons along the top">
 </picture>
 
 > General education, not medical advice. The patient is a teaching case, the models and games are labelled as illustrative where they are, and in real care a patient's own clinicians decide.
@@ -27,7 +27,7 @@
 
 Most anatomy apps show you a body, and most case studies are a few pages of text. I wanted to see what happens when you put the two together: ONE case, followed through real anatomy, where every condition is something you operate instead of a paragraph you read. So Glass Atlas has a tilt table that stands the body up and shows the heart racing, a hand that opens as the morning stiffness wears off, and a microscope that zooms from the knuckle all the way down to the molecule a medicine catches.
 
-The case is a teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and eleven medicines. That sounds like a lot, and it is, but the interesting part is how they touch each other: why the iron matters for the heart rate, why the thyroid pill and the iron tablet need four hours apart, which links between the conditions are proven and which aren't yet. The connections web, the day view and the medicines planner are all about that. Every clinical claim has a source you can click.
+The case is a teaching case: an adult woman, called "the patient" throughout, with twelve diagnoses and eleven medicines. That sounds like a lot, and it is, but the interesting part is how they touch each other: why the iron matters for the heart rate, why the thyroid pill and the iron tablet need four hours apart, which links between the conditions are proven and which aren't yet. The connections web, the day view and the medicine schedule are all about that. Every clinical claim has a source you can click.
 
 It's for anyone learning how the body works and how conditions affect each other, like students in nursing, medicine and the other health sciences, and for anyone who'd rather move a slider than read a paragraph. You don't need to know any medicine to start: the tour walks you through the whole case in about eight minutes.
 
@@ -36,41 +36,41 @@ It's for anyone learning how the body works and how conditions affect each other
 ### The body
 
 - **Real anatomy.** Bones, organs, vessels, nerves and skin from the BodyParts3D research database, which you turn, zoom and point at to have any part named, along with the conditions that involve it.
-- **Layers.** Skin, Skeleton, Organs, Vessels and Nerves, each on and off with one button.
+- **Layers.** One button opens five switches, for Skin, Skeleton, Organs, Vessels and Nerves.
 - **Light and dark.** It follows your system until you pick one. In light mode the microscope switches from darkfield to brightfield, and the stained slides keep their real stain colours.
 
 ### The case
 
 - **Twelve diagnoses and one suspected**, grouped by body system, from POTS and hypermobile Ehlers-Danlos to Hashimoto's, rheumatoid arthritis and gastroparesis.
-- **An instrument for each.** A tilt table, a Beighton bench on the real skeleton, a thyroid loop, a gastric-emptying scan, a cervical spine you tip back until the nerve is pinched, a colposcope view, and more, all operated with sliders and switches while the body moves beside them.
-- **A reading for each.** One plain sentence first, then the details, a red **For any provider** box where something matters in an emergency, and the sources.
+- **An instrument for each,** on its **Try it** tab. A tilt table, a Beighton bench on the real skeleton, a thyroid loop, a gastric-emptying scan, a cervical spine you tip back until the nerve is pinched, a colposcope view, and more, all operated with sliders and switches while the body moves beside them.
+- **A reading for each,** on its **Read** tab. One plain sentence first, then the details, a red **For any provider** box where something matters in an emergency, and the sources.
 
 ### Going deeper
 
-- **Sixteen dives.** A microscope from the body down to the tissue, the cells and the molecules, for rheumatoid arthritis, Hashimoto's, mast cells, POTS and iron, each with a small game: hold the joint lining for a year, run a thyroid follicle, keep a mast cell calm. And one for each of the eleven medicines, following it to where it works: a Hadlima dose from the injection to the antibody, hydroxychloroquine in the retina, propranolol at the heart's pacemaker, Lexapro at a synapse and in platelets.
+- **Sixteen dives,** on the **Zoom in** tab. A microscope from the body down to the tissue, the cells and the molecules, for rheumatoid arthritis, Hashimoto's, mast cells, POTS and iron, each with a small game: hold the joint lining for a year, run a thyroid follicle, keep a mast cell calm. And one for each of the eleven medicines, following it to where it works: a Hadlima dose from the injection to the antibody, hydroxychloroquine in the retina, propranolol at the heart's pacemaker, Lexapro at a synapse and in platelets.
 - **The field guide.** Every cell and molecule you tap gets a card, and **Quiz me** tests you on them.
 
 ### The whole picture
 
-- **Medicines.** All nine, with a search box, a page each, and a planner for the patient's day that checks the spacing as you drag the times and shows where the medicines add up (heart rhythm, blood pressure, seizure threshold, serotonin and more).
-- **How it all connects.** Eighteen threads between the conditions, drawn on the body and coloured by how strong the evidence is.
+- **Medicines.** All eleven, with a search box, a page each, and a **Medicine schedule** for the patient's day that checks the spacing as you drag the times and shows where the medicines add up (heart rhythm, blood pressure, seizure threshold, serotonin and more).
+- **Connections.** Eighteen threads between the conditions, drawn on the body and coloured by how strong the evidence is.
 - **A day in the patient's body.** Twenty-four hours you scrub through or play, from waking up stiff to protecting sleep.
-- **The guided tour.** Thirteen narrated stops, about eight minutes, with the camera and the highlights following along.
-- **Tell any provider.** An emergency card with five emergencies and the handful of facts that change what a stranger in scrubs should do.
-- **Notes on the body.** Tap a spot and pin a note there, kept in your browser.
-- **Sources and review.** 260 references, each one a click away from the reading that cites it.
+- **The tour.** Thirteen narrated stops, about eight minutes, with the camera and the highlights following along.
+- **Emergency.** An emergency card with six emergencies and the handful of facts that change what a stranger in scrubs should do.
+- **Notes.** Tap a spot on the body and pin a note there, kept in your browser.
+- **Sources.** 260 references, each one a click away from the reading that cites it.
 
 ### Anywhere
 
-- **Phone or computer.** On a phone the case moves to the bottom and the drawer slides up under the body.
+- **Phone or computer.** On a phone the patient's chart moves to the bottom, the drawer slides up under the body, and Connections, Notes and Emergency get a row of their own under the title. The phone's Back gesture (or Esc on a computer) closes whatever is on top, a phone held sideways keeps the side-by-side panels, and the buttons are bigger on a touch screen.
 - **Offline and self-contained.** Static files with three.js and the fonts bundled: no CDNs, trackers or analytics, and nothing to install.
 
 ## Screenshots
 
-<p align="center"><img src="docs/images/phones.png" alt="Glass Atlas on a phone: the body with the case below it, the tilt table instrument, and the rheumatoid arthritis dive" width="760"></p>
+<p align="center"><img src="docs/images/phones.png" alt="Glass Atlas on a phone: the body with the patient's chart below it, the tilt table, and the rheumatoid arthritis dive" width="760"></p>
 
 ![The tilt table](docs/images/instrument-tilt.png)
-*POTS on the tilt table, three minutes into the test: the heart rate on the monitor, the rise since lying down, and the blood that has shifted to the legs.*
+*POTS on the tilt table, almost two minutes into the test: the heart rate on the monitor, the rise since lying down past the 30 bpm line, and the blood that has shifted to the legs.*
 
 ![The rheumatoid arthritis dive, at the joint lining](docs/images/dive-lining.png)
 *The rheumatoid arthritis dive, in the joint lining: catch TNF and IL-6 and use the patient's medicines to protect the bone for a year.*
@@ -78,19 +78,19 @@ It's for anyone learning how the body works and how conditions affect each other
 ![The thyroid slide in light mode](docs/images/slide-light.png)
 *A stained thyroid slide in light mode, the way a pathologist sees it, with years of Hashimoto's on the slider.*
 
-![The medicines planner](docs/images/planner.png)
-*The patient's day, hour by hour: the medicines, the meals, and the spacing checks.*
+![The medicine schedule](docs/images/planner.png)
+*The medicine schedule, the patient's day hour by hour: the medicines, the meals, and the spacing checks.*
 
 <details><summary>More screenshots</summary>
 
-![How it all connects](docs/images/connections.png)
-*How it all connects: the threads between the conditions, coloured by the strength of the evidence.*
+![Connections](docs/images/connections.png)
+*Connections: the threads between the conditions, coloured by the strength of the evidence.*
 
 ![A day in the patient's body](docs/images/day.png)
 *A day in the patient's body at seven in the morning, standing up, with the heart lit and the readouts for that hour.*
 
-![The guided tour](docs/images/tour.png)
-*The guided tour at stop 5 of 13, standing up.*
+![The tour](docs/images/tour.png)
+*The tour at stop 5 of 13, standing up.*
 
 ![The cervical spine instrument](docs/images/instrument-neck.png)
 *The cervical spine: the C6/C7 disc, the head tipped back, and the C7 root under pressure.*
@@ -102,13 +102,13 @@ It's for anyone learning how the body works and how conditions affect each other
 *Inside the knuckle, in the "Active RA" stage.*
 
 ![The medicines list with a search](docs/images/medicines.png)
-*The medicines list searched for "as needed", with Zofran open.*
+*The medicines list searched for "blocker", with Propranolol XR open.*
 
-![Tell any provider](docs/images/alert.png)
-*Tell any provider, starting with what to do in an emergency.*
+![The emergency card](docs/images/alert.png)
+*Emergency, starting with what to do in an emergency.*
 
 ![The skeleton and the nerves](docs/images/body-layers.png)
-*The skin and organs off and the nerves on, seen from behind, with the first lumbar vertebra named under the pointer.*
+*The Layers switches with the skin and organs off and the nerves on, seen from behind, with the first lumbar vertebra named under the pointer.*
 
 </details>
 
@@ -116,7 +116,7 @@ It's for anyone learning how the body works and how conditions affect each other
 
 Glass Atlas is live at <https://stuffs.tiresia.xyz/body-atlas-1/>. It runs in any current browser with nothing to install, and the few things it remembers (your theme, your notes and your field guide) stay in that browser.
 
-The quickest way in is the tour: press **Take the guided tour** on the left and let it run. Then open any condition, and if it has a **Dive** badge, go down the microscope.
+The quickest way in is the tour: press **Tour** at the top of the patient's chart on the left and let it run. Then open any condition, and if it has a **Zoom in** tab, go down the microscope.
 
 ### Run it yourself
 

@@ -2,20 +2,20 @@
 
 # The dives
 
-A dive is a microscope that zooms from the body down into one part of it: first the tissue, then the cells, and often the molecules. Five conditions have one, and they're the ones with a **Dive** badge in the case: Rheumatoid Arthritis, Hashimoto's Disease, Mast Cell Activation Syndrome, POTS and Iron Deficiency. Each of the patient's eleven medicines has one too, which follows the medicine to where it works (see [The medicine dives](#the-medicine-dives) below).
+A dive is a microscope that zooms from the body down into one part of it: first the tissue, then the cells, and often the molecules. Five conditions have one, and they're the ones with a **Zoom in** tab: Rheumatoid Arthritis, Hashimoto's Disease, Mast Cell Activation Syndrome, POTS and Iron Deficiency. Each of the patient's eleven medicines has one too, which follows the medicine to where it works (see [The medicine dives](#the-medicine-dives) below).
 
 ![The rheumatoid arthritis dive, inside the knuckle](images/dive-joint.png)
 *Inside the knuckle: the middle-finger joint cut lengthwise like a pathology slide, in the "Active RA" stage.*
 
 ## Starting one
 
-Open a condition with a dive, or any medicine, go to its **Dive** tab, which lists the levels and what you'll do at each one, and press **Start the dive**. The camera flies to the spot on the body first (the knuckle, the thyroid, the forearm, the neck or the duodenum for the conditions, and the belly, the eye, the heart or the brainstem for some of the medicines), and then the microscope opens over it.
+Open a condition with a dive, or any medicine, go to its **Zoom in** tab, which lists the levels and what you'll do at each one, and press the **Zoom in** button. The camera flies to the spot on the body first (the knuckle, the thyroid, the forearm, the neck or the duodenum for the conditions, and the belly, the eye, the heart or the brainstem for some of the medicines), and then the microscope opens over it.
 
 ## Finding your way
 
-Along the top are the levels as a scale, from the body part you started on down to the smallest level, each with its size ("Joint, 1 cm", "Lining, 100 µm", "Molecule, 10 nm"). You go deeper with the button at the bottom of the card on the left ("Zoom into the lining" and so on), and each level you've reached stays open in the scale, so you can click back to it. The first one, the body part you started on, takes you back out. The card says where you are and what you're looking at, and some levels have stages to compare, like "Healthy", "Active RA", "Untreated for years" and "Treated early".
+Along the top are the levels as a scale, from the body part you started on down to the smallest level, each with its size ("Joint, 1 cm", "Lining, 100 µm", "Molecule, 10 nm"). You go deeper with the button at the bottom of the card on the left, which names the next level ("Zoom in · Lining", or "Play · Rhythm" where the next level is a game), and each level you've reached stays open in the scale, so you can click back to it. The ones you haven't reached yet have a dashed outline. The first one, the body part you started on, takes you back out. The card says where you are and what you're looking at, and some levels have stages to compare, like "Healthy", "Active RA", "Untreated for years" and "Treated early".
 
-**Back to the body**, at the top right, closes the microscope and takes you back to the condition or the medicine you started from. **Escape** does the same.
+**Back to the body**, at the top right, closes the microscope and takes you back to the **Zoom in** tab of the condition or the medicine you started from. On a phone the button just says **Back**, and the phone's Back gesture does the same. On a computer, **Escape** does too.
 
 ## The five dives
 
@@ -34,7 +34,7 @@ The biology is drawn from published reviews, guidelines and medicine labels. The
 
 ## The medicine dives
 
-Each medicine's page has a **Dive** tab beside **Instrument** and **Read**. It lists the levels, has **Start the dive**, and ends with the dive's sources. Some of them also have buttons straight into a condition dive at the level where the medicine shows up there, such as Hadlima catching TNF in the rheumatoid arthritis dive, and "Back to the body" then brings you back to the medicine. The other way round, a condition's **Dive** tab lists the medicine dives for the medicines that treat it.
+Each medicine's page has a **Zoom in** tab beside **Try it** and **Read**. It lists the levels, has the **Zoom in** button, and ends with the dive's sources. Some of them also have **Related** buttons straight into a condition dive at the level where the medicine shows up there, such as "RA · Molecule" on Hadlima, where it catches TNF in the rheumatoid arthritis dive. The exit button then says **Back to Hadlima** and brings you back to the medicine. The same kind of button sits inside some dives too, like "RA · Molecule" at the bottom of the Hadlima dive, and the dive it opens comes back to the level you left. The other way round, a condition's **Zoom in** tab lists, under **Medicines**, the dives of the medicines that treat it.
 
 ![The Hadlima dive, inside a vessel cell](images/dive-hadlima.png)
 *The Hadlima dive, one level down: the cell lining a blood vessel, where the receptor FcRn rescues the antibody and sends it back to the blood.*
@@ -53,7 +53,7 @@ Each medicine's page has a **Dive** tab beside **Instrument** and **Read**. It l
 | **Zofran** | The gut, the gut wall (250 µm), the 5-HT3 receptor (10 nm) | Irritate the gut and watch the signal climb the vagus to the brainstem, and what ondansetron changes and doesn't (the slow stomach). Then serotonin and ondansetron competing for the receptor, with the QT and serotonin-syndrome warnings. |
 | **Levothyroxine** | The belly, the stomach and gut (20 cm), one cell (20 µm) | Swallow the pill with water, coffee, breakfast, calcium, iron or an antacid, together or spaced, with numbers only where a study measured them. Then T4 becoming T3 inside a cell, and why TSH is read six to eight weeks after a dose change. |
 
-The medicine dives follow the same rules as the others: the sources are on the Dive tab and in the fine print, models are labelled illustrative, and where something is a hypothesis (as with low-dose naltrexone), the card says so.
+The medicine dives follow the same rules as the others: the sources are on the Zoom in tab and in the fine print, models are labelled illustrative, and where something is a hypothesis (as with low-dose naltrexone), the card says so.
 
 ## The field guide
 
@@ -61,7 +61,7 @@ Every cell and molecule you tap in a dive goes into the "field guide", with a li
 
 **Quiz me**, under the cards, shows you one of the drawings and four names to choose from, and keeps the score as you go. Once you've found four or more, it asks about the ones you've found, and a right answer about one you haven't found yet adds it to the guide.
 
-The field guide is kept in your browser, so it's still there the next time, and the **Dive** tab of each condition counts the entries you've collected across all the dives.
+The field guide is kept in your browser, so it's still there the next time.
 
 ![The thyroid slide in light mode](images/slide-light.png)
 *The thyroid dive's stained slide in light mode: the microscope switches to brightfield, and the stain keeps its real colours.*

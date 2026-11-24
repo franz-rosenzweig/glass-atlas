@@ -5,11 +5,11 @@
 The body in the middle of the screen is the atlas itself. It's built from real anatomical models, the bones, organs, vessels, nerves and skin of the BodyParts3D research database, so what you turn and zoom is the actual shape of a vertebra or a stomach, not a drawing of one.
 
 ![The body with the skin and organs off, showing the skeleton and the nerves](images/body-layers.png)
-*The skin and organs turned off and the nerves turned on, seen from behind, with the first lumbar vertebra named under the pointer and the two conditions that involve it.*
+*The Layers switches with the skin and organs turned off and the nerves turned on, seen from behind, with the first lumbar vertebra named under the pointer and the two conditions that involve it.*
 
 ## Moving around
 
-Drag to turn the body, and scroll (or pinch, on a phone or a trackpad) to zoom in and out. It always turns around its own middle, so you can't lose it off the side of the screen. When you open a condition, the camera flies to the part that matters by itself, and **Close** on the drawer brings you back to the whole body.
+Drag to turn the body, and scroll (or pinch, on a phone or a trackpad) to zoom in and out. It always turns around its own middle, so you can't lose it off the side of the screen. When you open a condition, the camera flies to the part that matters by itself, and **Close** on the drawer brings you back to the whole body. Esc does the same on a computer, and so does the Back gesture on a phone.
 
 ## Naming anything
 
@@ -17,7 +17,7 @@ Point at any structure and its name appears beside the pointer, with the conditi
 
 ## The layers
 
-The buttons along the top turn each layer on and off: **Skin**, **Skeleton**, **Organs** and **Vessels** start on, and **Nerves** starts off. Turning the skin and organs off is the quickest way to see the skeleton, and the nerves are easiest to follow with the skin off too. While an instrument is open it fades the layers it doesn't need and lights up the parts it's about, and the buttons still work on top of that, except that the lit parts always stay visible.
+The **Layers** button at the top opens five switches, one for each layer: **Skin**, **Skeleton**, **Organs** and **Vessels** start on, and **Nerves** starts off. Turning the skin and organs off is the quickest way to see the skeleton, and the nerves are easiest to follow with the skin off too. While a condition's **Try it** tab is open it fades the layers it doesn't need and lights up the parts it's about, and the switches still work on top of that, except that the lit parts always stay visible.
 
 ## Light and dark
 

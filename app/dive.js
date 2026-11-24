@@ -66,7 +66,7 @@ const CSS=`
   .dv-card{left:12px;right:12px;width:auto;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:44%}
   .dv-card h2{font-size:24px}
   .dv-guide{bottom:auto;top:calc(58px + env(safe-area-inset-top,0px));right:12px}
-  .dv-card .dv-btns:has(.go){position:sticky;bottom:0;z-index:1;margin:10px -18px 0;padding:10px 18px;background:var(--solid);border-top:1px solid var(--line)}
+  .dv-card .dv-btns:has(.go){position:sticky;bottom:-20px;z-index:1;margin:10px -18px 0;padding:10px 18px;background:var(--solid);border-top:1px solid var(--line)}
   .dv-stop{padding:6px 9px}.dv-stop b{display:none}
 }`;
 
