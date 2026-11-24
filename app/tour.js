@@ -2,7 +2,7 @@
 import { kit } from './kit.js';
 // re-recorded clips get a version, because audio is cached for a day (00 and 07: Hadlima, November 2026;
 // 00 and 06: Zyrtec, later that month)
-const AUDIO_V={0:3,6:2,7:2};
+const AUDIO_V={0:4,6:2,7:2};
 
 export function makeTour(A,{onStart,onEnd,showWeb}){
   const K=kit(A);let segs=null,i=0,audio=null,bar=null,playing=false,timer=null,useAudio=true;

@@ -100,7 +100,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   }
   function discover(key,quiet){const g=guide[key];if(!g)return;const isNew=!found.has(key);if(quiet&&!isNew)return;found.add(key);saveFound();guideBtn();showCard(key,isNew);}
   function showCard(key,isNew){const g=guide[key];
-    pc.innerHTML=`<canvas width="640" height="300"></canvas><div class="sz">${esc(g.kind)} · ${esc(g.size)}${isNew?' · <span class="new">new in your field guide</span>':''}</div><h3>${esc(g.name)}</h3>${g.text.map(t=>`<p>${t}</p>`).join('')}<div class="dv-btns"><button class="dv-btn go" type="button" data-close>Back to the microscope</button></div>`;
+    pc.innerHTML=`<canvas width="640" height="300"></canvas><div class="sz">${esc(g.kind)} · ${esc(g.size)}${isNew?' · <span class="new">New</span>':''}</div><h3>${esc(g.name)}</h3>${g.text.map(t=>`<p>${t}</p>`).join('')}<div class="dv-btns"><button class="dv-btn go" type="button" data-close>Back</button></div>`;
     const c=pc.querySelector('canvas');const x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,640,300);art(g,()=>g.draw(x,320,150,1.6,performance.now()/1000));
     pop.hidden=false;pc.querySelector('[data-close]').focus();}
   function quiz(score,n){
@@ -114,7 +114,7 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
       const nb=document.createElement('button');nb.className='dv-btn go';nb.type='button';nb.textContent='Next';nb.onclick=()=>quiz(score+(ok?1:0),n+1);pc.querySelector('.dv-btns').prepend(nb);});
     pop.hidden=false;}
   function guideList(){
-    pc.innerHTML=`<div class="sz">Field guide</div><h3>Everything you've met</h3><p>Tap cells and molecules in the microscope to collect them.</p><div class="dv-grid">${Object.entries(guide).map(([k,g])=>`<button type="button" data-k="${k}" ${found.has(k)?'':'disabled'}><canvas width="200" height="112"></canvas>${found.has(k)?esc(g.name):'?'}</button>`).join('')}</div><div class="dv-btns"><button class="dv-btn go" type="button" data-quiz>Quiz me</button><button class="dv-btn" type="button" data-close>Close</button></div>`;
+    pc.innerHTML=`<h3>Field guide</h3><div class="dv-grid">${Object.entries(guide).map(([k,g])=>`<button type="button" data-k="${k}" ${found.has(k)?'':'disabled'}><canvas width="200" height="112"></canvas>${found.has(k)?esc(g.name):'?'}</button>`).join('')}</div><div class="dv-btns"><button class="dv-btn go" type="button" data-quiz>Quiz me</button><button class="dv-btn" type="button" data-close>Close</button></div>`;
     pc.querySelectorAll('.dv-grid button').forEach(b=>{const k=b.dataset.k;const c=b.querySelector('canvas'),x=c.getContext('2d');x.fillStyle='#04070B';x.fillRect(0,0,200,112);if(found.has(k))art(guide[k],()=>guide[k].draw(x,100,56,.6,0));else{raw(()=>{x.fillStyle=theme()==='light'?'#B9B2A4':'#1B2A30';x.font='28px Gloock, serif';x.textAlign='center';x.fillText('?',100,66);});}
       b.onclick=()=>showCard(k,false);});
     pc.querySelector('[data-quiz]').onclick=()=>quiz(0,0);

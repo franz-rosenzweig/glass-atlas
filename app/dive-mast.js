@@ -39,13 +39,13 @@ function skinLevel(){
   const hist=[],plasma=[];
   function trigger(){S.ft=1;for(const m of mcs)for(let i=0;i<26;i++)hist.push({x:m.x+rand(-14,14),y:m.y+rand(-14,14),vx:rand(-30,30),vy:rand(-30,30),l:3});}
   return {id:'skin',label:'Skin',size:'1 mm',fit:'cover',bar:{units:80,label:'50 µm'},zoomFocus:{x:560,y:300},
-    card(){return `<p class="k">Level 1 · tissue</p><h2>Under the skin</h2>
+    card(){return `<h2>Under the skin</h2>
       <p>Mast cells (orange) wait beside the small blood vessels and nerve endings of the skin. Give them a trigger and watch what histamine does. The tiny vessels widen (a red spot) and leak fluid (the raised wheal of a hive). Nerve endings fire: that is the itch, and it also sends a reflex that widens vessels further out (the spreading red flare). Red spot, flare and wheal are what physiologists call the triple response.</p>
       <div class="dv-meter"><span>Redness</span><b id="sk-r">0%</b><i><u id="sk-rB" style="background:#E0566A"></u></i></div>
       <div class="dv-meter"><span>Swelling (wheal)</span><b id="sk-w">0%</b><i><u id="sk-wB" style="background:#78A0F4"></u></i></div>
       <div class="dv-meter"><span>Itch</span><b id="sk-i">0%</b><i><u id="sk-iB" style="background:#F2C14E"></u></i></div>
       <div class="dv-btns"><button class="dv-btn go" id="sk-t" type="button">Heat or friction</button><button class="dv-btn" id="sk-h1" type="button">H1 antihistamine<small>off</small></button></div>
-      <div class="dv-btns"><button class="dv-btn" id="sk-go" type="button">Zoom into one mast cell<small>keep it calm</small></button></div>
+      <div class="dv-btns"><button class="dv-btn" id="sk-go" type="button">Play · Mast cell</button></div>
       <p class="dv-fine">Drawn to scale (50 µm bar), schematic in detail. The antihistamine blocks histamine's landing spots, so the same release does less; the mast cells still fire.</p>`;},
     bind(card,api){card.querySelector('#sk-t').onclick=trigger;const h=card.querySelector('#sk-h1');h.onclick=()=>{S.h1=!S.h1;h.classList.toggle('on',S.h1);h.querySelector('small').textContent=S.h1?'on: histamine blocked at H1':'off';if(S.h1)api.discover('h1',true);};
       card.querySelector('#sk-go').onclick=()=>api.go('mast',{from:mcs[1]});},
@@ -123,7 +123,7 @@ function cellLevel(){
       q('#mc-fl').style.width=S.flush*100+'%';q('#mc-ac').style.width=S.acid*100+'%';}
   }
   return {id:'mast',label:'Mast cell',size:'20 µm',fit:'contain',bar:{units:200,label:'10 µm'},zoomFocus:{x:420,y:360},
-    card(){return `<p class="k">Level 2 · one cell</p><h2>Keep it calm</h2>
+    card(){return `<h2>Keep it calm</h2>
       <p>Triggers drift in and dock on the cell's switches. Each one adds to its readiness; at 100% it fires, and its granules dump histamine. <b style="color:var(--bone)">Tap triggers to bat them away.</b> Then try the patient's medicines and watch where each one works.</p>
       <div class="dv-meter"><span>Readiness to fire</span><b id="mc-a">0%</b><i><u id="mc-aB"></u></i></div>
       <div class="dv-meter"><span>Flares</span><b id="mc-f">0</b></div><div class="dv-meter"><span>Time kept calm</span><b id="mc-c">0%</b></div>
@@ -131,7 +131,7 @@ function cellLevel(){
       <div class="dv-meter"><span>Stomach acid</span><b></b><i><u id="mc-ac" style="background:#DDB741"></u></i></div>
       <div class="dv-btns"><button class="dv-btn" id="mc-cro" type="button">Cromolyn<small>steadies the cell</small></button><button class="dv-btn" id="mc-h1" type="button">H1 blocker<small>guards the vessels</small></button><button class="dv-btn" id="mc-h2" type="button">H2 blocker<small>guards the stomach</small></button></div>
       <div class="dv-btns"><button class="dv-btn" id="mc-re" type="button">Start over</button></div>
-      <p class="dv-fine">Purple Y's are IgE allergy switches; blue zigzags are MRGPRX2, a switch some drugs flip directly. Heat, friction and stress act through other routes. The game's numbers are illustrative; the mechanisms are real. Tap the cell, its switches, or the receptors to collect them.</p>`;},
+      <p class="dv-fine">Purple Y's are IgE allergy switches; blue zigzags are MRGPRX2, a switch some drugs flip directly. Heat, friction and stress act through other routes. The game's numbers are illustrative; the mechanisms are real.</p>`;},
     bind(card,api){const tg=(id,key,g)=>{const b=card.querySelector(id);b.onclick=()=>{S[key]=!S[key];b.classList.toggle('on',S[key]);if(S[key])api.discover(g,true);};};
       tg('#mc-cro','cro','cromolyn');tg('#mc-h1','h1','h1');tg('#mc-h2','h2','h2');card.querySelector('#mc-re').onclick=()=>{reset();card.querySelectorAll('.dv-btn.on').forEach(b=>b.classList.remove('on'));};},
     tap(p,api){let best=null,bd=Math.max(34,22/p.s);for(const tr of S.trig){const d=Math.hypot(tr.x-p.x,tr.y-p.y);if(d<bd){bd=d;best=tr;}}

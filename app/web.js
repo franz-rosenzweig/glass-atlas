@@ -6,7 +6,7 @@ import { cc } from './theme.js';
 
 // Two separate questions per thread: how strong is the evidence in general, and is it known to apply to the patient?
 export const STRENGTH={
-  strong:{label:'Strong evidence',c:'#ECE6DA',note:'consistent large studies, or an established mechanism'},
+  strong:{label:'Strong',c:'#ECE6DA',note:'consistent large studies, or an established mechanism'},
   moderate:{label:'Moderate',c:'#40C7AA',note:'repeated observational studies; cause not proven'},
   limited:{label:'Limited',c:'#62BED3',note:'small, single-centre or expert-opinion evidence'},
   contested:{label:'Contested',c:'#B193E3',note:'strict-criteria studies have not confirmed it'},
@@ -63,7 +63,7 @@ export function makeWeb(A){
     const show=LINKS.map((L,i)=>[L,i]).filter(([L])=>!node||L.a===node||L.b===node);
     return show.map(([L,i])=>`<button class="wlink${sel===i?' on':''}" data-i="${i}" style="--s:${cc(STRENGTH[L.s].c)}"><span class="wl-pair">${byId[L.a].short} <i>↔</i> ${byId[L.b].short}</span><span class="wl-t">${L.t}</span><span class="wl-s">${STRENGTH[L.s].label}${L.h==='unknown'?' · not yet known for the patient':''}</span>${sel===i?`<span class="wl-x">${L.x}</span>`:''}</button>`).join('');
   }
-  function render(){ui.querySelector('#w-list').innerHTML=listHTML();ui.querySelector('#w-node').innerHTML=node?`Showing links for <b>${byId[node].name}</b> <button class="btn" id="w-all" type="button">Show all</button>`:'Tap a condition label on the body to filter.';
+  function render(){ui.querySelector('#w-list').innerHTML=listHTML();ui.querySelector('#w-node').innerHTML=node?`<b>${byId[node].name}</b> · <button class="btn" id="w-all" type="button">Show all</button>`:'';
     const all=ui.querySelector('#w-all');if(all)all.onclick=()=>{node=null;sel=null;render();frame();};
     ui.querySelectorAll('.wlink').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;sel=sel===i?null:i;render();frame();ui.querySelector('.wlink.on')?.scrollIntoView({block:'nearest',behavior:'smooth'});});}
   function frame(){
@@ -74,12 +74,11 @@ export function makeWeb(A){
   }
   function pickNode(id){node=node===id?null:id;sel=null;render();frame();}
   const v=V3();const OFF={c67:'translate(-112%,-50%)',hashi:'translate(14%,-50%)',mcas:'translate(-112%,-50%)',lspurs:'translate(14%,-50%)',endo:'translate(-50%,70%)',lsil:'translate(14%,-20%)',gastro:'translate(14%,-50%)',iron:'translate(-112%,-50%)'};
-  return {id:'web',title:'Connections',fig:'How the patient\'s conditions feed each other',
+  return {id:'web',title:'Connections',fig:'',
     enter(panel){
       K.resetRig();if(!G)build();G.visible=true;labels.hidden=false;sel=null;node=null;
       K.setMode({layers:{skin:.35,skeleton:.12,organs:.18,vessels:.12}});
-      panel.innerHTML=`<p class="lede-s">Several of the patient's diagnoses are linked; a few are separate stories. Each thread is a link researchers have described, coloured by how strong the evidence is, and marked when it isn't yet known whether it applies to her.</p>
-        <div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${cc(s.c)}"></i>${s.label}</span>`).join('')}</div>
+      panel.innerHTML=`<div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${cc(s.c)}"></i>${s.label}</span>`).join('')}</div>
         <p class="fine" id="w-node" style="margin:6px 0!important"></p>
         <div id="w-list"></div>
         <p class="fine">Links are drawn from published reviews, guidelines and medicine labels. Strong: consistent large studies or an established mechanism. Moderate: repeated observational studies. Limited: small, single-centre or expert-opinion evidence. Contested: studies using strict criteria haven't confirmed it. Co-occurring doesn't prove one condition causes the other, and a well-proven link in general can still be unknown for the patient. LSIL and encephalitis have few links because their causes (HPV, the original brain inflammation) are separate stories.</p>`;

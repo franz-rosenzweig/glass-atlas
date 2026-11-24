@@ -87,19 +87,19 @@ export function makeStations(A){
         panel.innerHTML=`
           <div class="inst-grid">
             <div class="mon">
-              <div class="mon-sim">Simulated readings, not the patient's</div><div class="mon-top"><span class="mon-l">HR</span><span class="mon-hr" id="hr">72</span><span class="mon-u">bpm</span><span class="mon-bp"><span id="bp">112/72</span><small>mmHg</small></span></div>
+              <div class="mon-sim">Illustrative · not the patient's numbers</div><div class="mon-top"><span class="mon-l">HR</span><span class="mon-hr" id="hr">72</span><span class="mon-u">bpm</span><span class="mon-bp"><span id="bp">112/72</span><small>mmHg</small></span></div>
               <canvas id="ecg" width="560" height="90" aria-hidden="true"></canvas>
               <div class="mon-row"><span>Rise since lying</span><b id="dhr">+0</b><span class="bar"><i id="dhrBar"></i><em style="left:${30/60*100}%"></em></span></div>
               <div class="mon-row"><span>Typical healthy rise</span><b id="hh">+0</b><span class="note">usually 10–20 bpm</span></div>
               <div class="mon-row"><span>Blood shifted to legs and belly</span><b id="pool">0 mL</b><span class="note">about 0.5–1 L on standing</span></div>
-              <div class="mon-row"><span>Time upright</span><b id="tm">0:00</b><span class="note">test runs 10 min</span></div>
-              <div class="verdict" id="verdict">Lying flat. Raise the table.</div>
+              <div class="mon-row"><span>Time upright</span><b id="tm">0:00</b></div>
+              <div class="verdict" id="verdict">Lying flat</div>
             </div>
             ${slider('tiltA','Table angle',0,70,1,0,'°')}
             <div class="btns"><button class="btn primary" id="run" type="button">Run the 10-minute test</button><button class="btn" id="flat" type="button">Lay flat</button></div>
-            <p class="eyebrow">What changes the response</p>
-            <div class="tgs">${toggle('t-comp','Compression garments')}${toggle('t-fluid','2–3 L fluid and salt')}${toggle('t-prop','Propranolol (beta blocker)')}${toggle('t-iron','Iron deficient',false,'on the patient\'s chart; its effect on heart rate is unknown, so this uses an invented 12%')}</div>
-            <p class="fine">The diagnostic rule is real: a sustained rise of 30 bpm or more within 10 minutes, without blood pressure falling by 20/10 or more. The patient's own tilt numbers aren't on the chart, so the size of the response and of each treatment's effect are illustrative; their directions follow the literature (propranolol: Raj 2009). The number alone isn't the diagnosis: some healthy young people also pass 30 bpm on a tilt, which is why symptoms are part of the rule.</p>
+            <p class="eyebrow">What changes it</p>
+            <div class="tgs">${toggle('t-comp','Compression garments')}${toggle('t-fluid','2–3 L fluid and salt')}${toggle('t-prop','Propranolol (beta blocker)')}${toggle('t-iron','Iron deficient',false,'illustrative size')}</div>
+            <p class="fine">The diagnostic rule is real: a sustained rise of 30 bpm or more within 10 minutes, without blood pressure falling by 20/10 or more. The patient's own tilt numbers aren't on the chart, so the size of the response and of each treatment's effect are illustrative; their directions follow the literature (propranolol: Raj 2009). Iron deficiency is on the patient's chart, but its effect on heart rate is unknown, so this uses an invented 12%. The number alone isn't the diagnosis: some healthy young people also pass 30 bpm on a tilt, which is why symptoms are part of the rule.</p>
           </div>`;
         ui=panel;
         const tA=bindSlider(panel,'tiltA',v=>{thetaT=v;if(!running&&v<1)tmin=0;},v=>v+'°');
@@ -133,10 +133,10 @@ export function makeStations(A){
           ui.querySelector('#hh').textContent='+'+Math.round(M.healthy);ui.querySelector('#pool').textContent=Math.round(M.pooled/10)*10+' mL';
           const mm=Math.floor(tmin),ss=Math.floor((tmin-mm)*60);ui.querySelector('#tm').textContent=`${mm}:${String(ss).padStart(2,'0')}`;
           const v=ui.querySelector('#verdict');
-          if(theta<5)v.textContent='Lying flat. Raise the table.';
+          if(theta<5)v.textContent='Lying flat';
           else if(M.dHR>=30&&tmin>=1.5)v.innerHTML='<b>In this simulation, meets the POTS threshold:</b> sustained rise of 30+ bpm within 10 minutes, blood pressure holding.';
           else if(M.dHR>=30)v.textContent='Above 30 bpm. The rule needs it sustained.';
-          else v.textContent=tmin<10?'Rising. Watch the change since lying flat.':(st.comp||st.fluid||st.prop)?'Under 30 bpm with these treatments. That\'s the goal of treatment; the diagnosis stays the same.':'Below the 30 bpm threshold at this setting.';
+          else v.textContent=tmin<10?'Rising':(st.comp||st.fluid||st.prop)?'Under 30 bpm with these treatments. That\'s the goal of treatment; the diagnosis stays the same.':'Below the 30 bpm threshold at this setting.';
           drawECG(dt,M.hr);
         });
       },
@@ -248,7 +248,7 @@ export function makeStations(A){
           <div class="tests" role="tablist">${TESTS.map((t,i)=>`<button class="test" role="tab" data-i="${i}" aria-selected="${i===0}"><span class="tn">${i+1}</span><span class="tk">${t.k}</span><span class="tp" id="tp${i}">0/${t.pts}</span></button>`).join('')}</div>
           ${slider('bv','Bend',0,110,1,0,'°')}
           <p class="fine" id="bnote"></p>
-          <p class="fine">This shows how the test is scored on a real skeleton. It is not the patient's recorded score, which a clinician measured. Each side counts separately; here both sides move together.</p>`;
+          <p class="fine">Not the patient's recorded score. Each side counts separately; here both move together.</p>`;
         ui=panel;
         const bv=panel.querySelector('#bv');
         const notes=['Passive extension of the little finger at the knuckle. Normal is roughly up to 45°; past 90° scores.','Wrist flexed, thumb drawn down until it touches the inside of the forearm. Touching scores.','Elbow extension beyond straight. More than 10° scores.','Knee extension beyond straight (genu recurvatum). More than 10° scores.','Bending forward with knees straight until both palms rest flat on the floor. Scores 1 point.'];
@@ -280,17 +280,17 @@ export function makeStations(A){
         A.mode.layers={skin:0,skeleton:.35,organs:.05,vessels:.08};A.mode.forceShow=A.resolve(['#c7nerve']);
         A.mode.focus=A.resolve(['Third cervical vertebra','Fourth cervical vertebra','Fifth cervical vertebra','Sixth cervical vertebra','Seventh cervical vertebra','Intervertebral disk of sixth cervical vertebra','#c7nerve']);
         A.mode.focusColor='#B193E3';A.mode.dim=.3;A.refresh();
-        panel.innerHTML=`<div class="readouts">
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
             <div class="ro"><span>Pressure on the C7 root (model)</span><b id="cmp">0%</b><span class="bar"><i id="cmpBar"></i></span></div>
             <div class="ro"><span>Arm pain or tingling</span><b id="pain" class="sm">none</b><span class="note">changes with head position</span></div>
-            <div class="ro"><span>Triceps strength</span><b id="tri">5/5</b><span class="note">tracks how hard and how long the nerve has been squeezed, not head position</span></div>
+            <div class="ro"><span>Triceps strength</span><b id="tri">5/5</b><span class="note">not head position</span></div>
             <div class="ro"><span>Triceps reflex</span><b id="ref">normal</b></div>
             <div class="ro"><span>Finger extensors (opening the hand)</span><b id="fe">5/5</b></div>
             <div class="ro"><span>Middle-finger sensation</span><b id="mf">normal</b></div>
           </div>
           ${slider('n-hern','Disc herniation',0,6,.5,3,' mm')}
           ${slider('n-ext','Extension (head back)',-30,30,1,0,'°')}
-          ${slider('n-lat','Tilt toward the sore side (right here)',0,30,1,0,'°')}
+          ${slider('n-lat','Tilt toward the sore side',0,30,1,0,'°')}
           ${slider('n-rot','Turn toward the sore side',0,40,1,0,'°')}
           <div class="warn" id="n-wk" hidden><b>Worth acting on</b>Weakness that is new or getting worse needs to be seen promptly. Sudden weakness, or any bladder or bowel change, means the emergency department.</div>
           <div class="btns"><button class="btn primary" id="spur" type="button">Spurling's test</button><button class="btn" id="neu" type="button">Neutral</button><button class="btn" id="follow" type="button">Follow the nerve</button></div>
@@ -354,17 +354,17 @@ export function makeStations(A){
       enter(panel){
         resetRig();capsules();
         A.mode.layers={skin:0,skeleton:.25,organs:0,vessels:0};A.mode.focus=A.resolve(['#righthand']);A.mode.focusColor='#F29A55';A.mode.dim=.25;A.refresh();
-        panel.innerHTML=`<div class="readouts">
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
           <div class="ro"><span>Hand opens to</span><b id="op">0%</b><span class="bar"><i id="opBar"></i></span></div>
           <div class="ro"><span>Morning stiffness lasts</span><b id="dur" class="sm">—</b><span class="note">RA pattern: an hour or more. Treatment aims for remission, about 15 minutes or less.</span></div>
           <div class="ro"><span>Joint-lining inflammation</span><b id="inf">high</b></div>
           <div class="ro"><span>Typical RA pattern</span><b class="sm">wrist, knuckles, middle joints</b><span class="note">fingertip joints spared</span></div>
         </div>
-        ${slider('h-open','Try to open the hand',0,100,1,30,'%')}
+        ${slider('h-open','Open the hand',0,100,1,30,'%')}
         ${slider('h-awake','Minutes since waking',0,180,5,20,' min')}
         ${slider('h-months','Months on hydroxychloroquine',0,6,.5,0,' mo')}
         ${slider('h-weeks','Weeks on Hadlima',0,24,1,0,' wk')}
-        <div class="tgs">${toggle('h-ster','Steroid bridge (short-term)','covers the first weeks while the DMARD builds up')}${toggle('h-mtx','Methotrexate added','often paired with adalimumab')}${toggle('h-trig','Trigger finger (middle)','a tendon that catches, then snaps free')}</div>
+        <div class="tgs">${toggle('h-ster','Steroid bridge (short-term)')}${toggle('h-mtx','Methotrexate added')}${toggle('h-trig','Trigger finger (middle)')}</div>
         <p class="fine" id="h-sn" hidden style="margin-top:0!important">Steroids are kept short; by three months the DMARD should be doing the work. If the joints flare when a bridge ends, that's a reason to call the rheumatologist and review the plan.</p>
         <p class="fine">Hand bones are real anatomy; joint-lining swelling is drawn schematically. Hydroxychloroquine usually takes two to three months to start helping and up to six for its full effect; on its own it is the gentlest DMARD. Hadlima, the patient's adalimumab, works faster: in the original trials some people improved by the first week, and most of the effect comes within about three months. Treat-to-target care changes the plan if there's no clear improvement by about three months. In RA, making a full fist and gripping are often harder than opening. The stiffness curve is illustrative of the RA pattern, not the patient's measured response.</p>`;
         ui=panel;
@@ -432,19 +432,20 @@ export function makeStations(A){
         resetRig();if(!meal)buildMeal();meal.visible=true;tH=0;playing=false;
         A.mode.layers={skin:.12,skeleton:.1,organs:.12,vessels:0};A.mode.focus=A.resolve(['Stomach','Esophagus','Duodenum']);A.mode.focusColor='#DDB741';A.mode.dim=.15;A.refresh();
         A.MESH['Stomach'].base=.55;A.MESH['Stomach'].tgt.op=.55;
-        panel.innerHTML=`<div class="readouts">
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
             <div class="ro"><span>Meal still in the stomach</span><b id="ret">100%</b><span class="bar"><i id="retBar"></i></span></div>
             <div class="ro"><span>At 4 hours, this curve</span><b id="r4"></b><span class="note">over 10% is delayed</span></div>
             <div class="ro"><span>Healthy median at this time</span><b id="nm">100%</b></div>
-            ${'<div class="ro" id="medro" hidden><span>Tablet that has left the stomach</span><b id="mdv">0%</b><span class="note">and can now be absorbed: a rough proxy for when it starts working</span></div>'}
+            ${'<div class="ro" id="medro" hidden><span>Tablet that has left the stomach</span><b id="mdv">0%</b><span class="note">about when it starts working</span></div>'}
           </div>
           <div id="chartBox"></div>
           <p class="legend"><i class="sw sw-d"></i>This curve <i class="sw sw-n"></i>Healthy median (Tougas 2000) <i class="sw sw-c"></i>Upper limit of normal</p>
           ${slider('g-t','Time since the meal',0,240,1,0,'')}
           <div class="btns"><button class="btn primary" id="gplay" type="button">Play four hours</button></div>
+          <p class="eyebrow">Severity</p>
           <div class="seg" role="radiogroup" aria-label="Severity">${Object.entries(GR).map(([k,g])=>`<button role="radio" data-g="${k}" aria-checked="${k===grade}">${g.label}</button>`).join('')}</div>
-          <div class="tgs">${toggle('g-med','Swallow a pill with the meal','it is absorbed only after it leaves the stomach')}</div>
-          <p class="fine">The chart doesn't give the patient's grade, so choose one. Grades follow the consensus 4-hour cut-offs (Abell 2008); curves between the measured points are smooth fits for illustration. Here the pill is assumed to leave with the food; a dissolved tablet can leave sooner with the liquid, and a large tablet that doesn't break up can wait longer. The stomach, esophagus and duodenum are real anatomy.</p>`;
+          <div class="tgs">${toggle('g-med','Swallow a pill with the meal')}</div>
+          <p class="fine">Grades follow the consensus 4-hour cut-offs (Abell 2008); curves between the measured points are smooth fits for illustration. Here the pill is assumed to leave with the food; a dissolved tablet can leave sooner with the liquid, and a large tablet that doesn't break up can wait longer. The stomach, esophagus and duodenum are real anatomy.</p>`;
         ui=panel;
         const fmtT=m=>`${Math.floor(m/60)} h ${String(Math.round(m%60)).padStart(2,'0')} min`;
         const draw=()=>{panel.querySelector('#chartBox').innerHTML=chart();panel.querySelector('#r4').textContent=fmt(f(4)*100,1)+'%';};
@@ -501,15 +502,15 @@ export function makeStations(A){
       enter(panel){
         resetRig();if(!parts)build();[parts.tsh,parts.t4,lym].forEach(m=>m.visible=true);
         A.mode.layers={skin:.12,skeleton:.12,organs:.1,vessels:.12};A.mode.focus=A.resolve(['#thyroid','Pituitary gland','hypothalamus, nsn']);A.mode.focusColor='#40C7AA';A.mode.dim=.2;A.refresh();
-        panel.innerHTML=`<div class="readouts">
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
             <div class="ro"><span>TSH</span><b id="tsh">0</b><span class="note">reference about 0.4–4.0 mIU/L</span><span class="bar log"><i id="tshBar"></i><em style="left:${(Math.log10(0.4)+2)/4*100}%"></em><em style="left:${(Math.log10(4)+2)/4*100}%"></em></span></div>
             <div class="ro"><span>Free T4</span><b id="ft4">0</b><span class="note">reference about 0.8–1.8 ng/dL</span></div>
             <div class="ro"><span>Status</span><b id="stat">—</b></div>
           </div>
           ${slider('y-rem','Thyroid tissue still working',5,100,5,35,'%')}
-          ${slider('y-dose','Levothyroxine per day (example dose, not the patient\'s)',0,150,12.5,75,' mcg')}
-          ${slider('y-weeks','Weeks since starting this dose (from none)',0,10,.5,8,' wk')}
-          <div class="tgs">${toggle('y-iron','Taken with iron','binds it strongly in the gut')}${toggle('y-cal','Taken with calcium','binds it less, but still lowers it')}</div>
+          ${slider('y-dose','Levothyroxine per day (example)',0,150,12.5,75,' mcg')}
+          ${slider('y-weeks','Weeks on this dose',0,10,.5,8,' wk')}
+          <div class="tgs">${toggle('y-iron','Taken with iron')}${toggle('y-cal','Taken with calcium')}</div>
           <p class="fine">The hypothalamus and pituitary are real anatomy; the thyroid gland is modelled at its true position below the real thyroid cartilage. Blue particles are TSH travelling to the thyroid; green are T4 leaving it. The loop is real physiology; the numbers are an illustrative model: T4's half-life is about a week, so any change takes about five weeks to level out, and TSH needs six to eight weeks to settle. Reference ranges vary by lab.</p>`;
         ui=panel;
         bindSlider(panel,'y-rem',x=>v.rem=x,x=>x+'%');bindSlider(panel,'y-dose',x=>v.dose=x,x=>x+' mcg');bindSlider(panel,'y-weeks',x=>v.weeks=x,x=>x+' wk');bindToggle(panel,'y-iron',on=>v.iron=on);bindToggle(panel,'y-cal',on=>v.cal=on);

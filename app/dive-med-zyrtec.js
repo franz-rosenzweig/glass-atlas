@@ -149,9 +149,8 @@ function skinLevel(){
   }
   const chart=()=>`<svg viewBox="0 0 300 92" width="100%" height="92" aria-hidden="true" style="display:block;margin:2px 0 6px"><line x1="8" x2="292" y1="66" y2="66" stroke="var(--line-2)"/>${HR.map((h,i)=>`<rect x="${16+i*46}" y="${66-h[1]*54}" width="28" height="${Math.max(1,h[1]*54)}" rx="2" fill="${i===S.h?'var(--c)':'var(--line-2)'}"/><text x="${30+i*46}" y="82" font-size="8.5" text-anchor="middle" fill="var(--dim)" font-family="Martian Mono, monospace">${h[0].toUpperCase()}</text>`).join('')}<line x1="8" x2="292" y1="${66-.7*54}" y2="${66-.7*54}" stroke="var(--dim)" stroke-dasharray="3 3"/><text x="292" y="${61-.7*54}" font-size="8" text-anchor="end" fill="var(--dim)" font-family="Martian Mono, monospace">70%</text></svg>`;
   return {id:'skin',label:'Skin',size:'3 cm',fit:'cover',natural:true,bar:{units:0,label:'schematic'},zoomFocus:{x:500,y:VY},
-    card(){return `<p class="k">Level 1 · the skin</p><h2>The histamine skin test</h2>
+    card(){return `<h2>The histamine skin test</h2>
       <p>A little histamine injected into the skin makes a pale, raised wheal, where fluid leaks from tiny veins; a red flare of widened vessels around it; and an itch, the same three features as a hive (Zuberbier 2026). All three can come through H1 receptors, on the cells lining the vessels and on itch nerves (Thangam 2018). That is the receptor cetirizine blocks.</p>
-      <p><b style="color:var(--bone)">Pick a time after a 10 mg dose, and prick.</b> Tap the skin to test another spot.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Time after the dose">${HR.map((h,i)=>`<button role="radio" data-h="${i}" aria-checked="${i===S.h}">${h[0]}</button>`).join('')}</div>
       <div class="dv-btns"><button class="dv-btn go" id="zs-go" type="button">Prick with histamine</button><button class="dv-btn" id="zs-cl" type="button">Clear the skin</button></div>
       <div class="dv-meter"><span>Wheal</span><b id="zs-w">—</b><i><u id="zs-wB" ${bg('#E9CBB5')}></u></i></div>
@@ -159,12 +158,12 @@ function skinLevel(){
       <div class="dv-meter"><span>Itch</span><b id="zs-i">—</b><i><u id="zs-iB" ${bg(C.nerve)}></u></i></div>
       <p class="sub">Wheal suppressed, by time after the dose (illustrative)</p><div id="zs-ch">${chart()}</div>
       <div class="dv-meter"><span>The label's 69 adult volunteers</span><b id="zs-v">${VOL[S.h]}</b></div>
-      <div class="dv-btns"><button class="dv-btn${S.wk?' on':''}" id="zs-wk" type="button" aria-pressed="${S.wk}">After weeks of daily use<small>does the effect hold?</small></button></div>
+      <div class="dv-btns"><button class="dv-btn${S.wk?' on':''}" id="zs-wk" type="button" aria-pressed="${S.wk}">After weeks of daily use</button></div>
       <div id="zs-wkp" ${S.wk?'':'hidden'}><p>In small studies it held, with no sign of wearing off (tachyphylaxis): 19 children for 35 days (Watson 1989; label), 10 adults for 3 weeks (Rihoux 1989, whose first author worked for the maker), and two six-month trials by one Polish research group, in which 20 and 28 people with year-round rhinitis finished, split between cetirizine and placebo (and, in the second, levocetirizine), so about ten took cetirizine in each (Kruszewski 2005; Kłos 2007). Two older antihistamines partly wore off: hydroxyzine, cetirizine's parent, partly lost its effect over 3 weeks of daily use in a study of 18 people (Long 1985), and chlorpheniramine within 7 to 21 days in 10 (Taylor 1985).</p>
-        <div class="dv-btns"><button class="dv-btn" id="zs-hy" type="button">Test hydroxyzine after 3 weeks<small>the older drug, for comparison</small></button></div></div>
-      <div class="dv-btns"><button class="dv-btn" id="zs-next" type="button">Zoom into one receptor<small>the H1 receptor, 10 nm</small></button></div>
+        <div class="dv-btns"><button class="dv-btn" id="zs-hy" type="button">Test hydroxyzine after 3 weeks</button></div></div>
+      <div class="dv-btns"><button class="dv-btn" id="zs-next" type="button">Zoom in · H1 receptor</button></div>
       <p class="dv-fine">The label: in 69 adult volunteers, 5 and 10 mg strongly suppressed the wheal and flare; after a single 10 mg dose it began within 20 minutes in half of them and within an hour in 95%, and lasted at least 24 hours; it also says the clinical relevance of suppressing a skin test is unknown. The bars and drawn sizes are illustrative, set so the wheal stays at least 70% suppressed for about 19 hours, as reported for cetirizine (Church 2013). Hydroxyzine's partial fade is drawn, not measured.</p>
-      <p class="dv-fine">Cetirizine doesn't stop the mast cells: in skin, 10 mg daily for six days reduced the wheal and flare without lowering the histamine, tryptase or PGD2 they released (Nielsen 2001). H1 blockers ease itch, hives and flushing but don't prevent or relieve throat swelling, low blood pressure or shock (WAO 2011). Itch fibres: Schmelz 1997. Tap a test, the vein, the nerve or a molecule to collect it.</p>`;},
+      <p class="dv-fine">Cetirizine doesn't stop the mast cells: in skin, 10 mg daily for six days reduced the wheal and flare without lowering the histamine, tryptase or PGD2 they released (Nielsen 2001). H1 blockers ease itch, hives and flushing but don't prevent or relieve throat swelling, low blood pressure or shock (WAO 2011). Itch fibres: Schmelz 1997.</p>`;},
     bind(card,api){const q=s=>card.querySelector(s);
       card.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{S.h=+b.dataset.h;card.querySelectorAll('[data-h]').forEach(y=>y.setAttribute('aria-checked',y===b));q('#zs-ch').innerHTML=chart();q('#zs-v').textContent=VOL[S.h];});
       q('#zs-go').onclick=()=>test();q('#zs-cl').onclick=()=>{S.sites=[];S.lens=null;S.slot=0;};q('#zs-hy').onclick=()=>test(undefined,undefined,'hyd');
@@ -252,21 +251,21 @@ function receptorLevel(){
       <div class="dv-meter"><span>Held off by cetirizine</span><b id="zr-c">0 of 5</b><i><u id="zr-cB" ${bg(C.cet)}></u></i></div>
       <div class="dv-meter"><span>Signal inside: leak, itch</span><b></b><i><u id="zr-sB" ${bg('#DDB741')}></u></i></div>
       <p>It is also why guidance for MCAS prefers H1 blockers taken daily, ahead of time, to taking them as rescue: once symptoms show, the histamine has already landed (Weiler 2019, expert opinion).</p>
-      <div class="dv-btns"><button class="dv-btn" id="zr-next" type="button">Out to the brain's gate<small>why it's mostly non-drowsy, 20 µm</small></button></div>
-      <p class="dv-fine">The flicker was seen in lab cells made to carry extra receptors (Bakker 2001); whether it matters in skin isn't known. Each tablet is two mirror-image forms, half and half; the paler one is the weaker half (Gillard 2002). No experimental structure of H1 with cetirizine bound has been published: its pose in the pocket is a docking model, with its acid tail reaching two lysines at the pocket's mouth, Lys191 (orange) and Lys179 (Shimamura 2011). Timings are illustrative. Tap a receptor or a molecule to collect it.</p>`;
+      <div class="dv-btns"><button class="dv-btn" id="zr-next" type="button">Zoom in · Brain's gate</button></div>
+      <p class="dv-fine">The flicker was seen in lab cells made to carry extra receptors (Bakker 2001); whether it matters in skin isn't known. Each tablet is two mirror-image forms, half and half; the paler one is the weaker half (Gillard 2002). No experimental structure of H1 with cetirizine bound has been published: its pose in the pocket is a docking model, with its acid tail reaching two lysines at the pocket's mouth, Lys191 (orange) and Lys179 (Shimamura 2011). Timings are illustrative.</p>`;
   const GO=()=>`<p>Cetirizine's half-life in the blood is 8.3 hours, yet one dose damps the skin test for at least 24 (label). Part of the reason may be how slowly it lets go of the receptor. In the lab, wash the drug away and time how long until half the receptors are free (Gillard 2002).</p>
-      <p><b style="color:var(--bone)">Pick a rival for levocetirizine, cetirizine's active half, and wash out.</b> Histamine keeps arriving.</p>
+      <p>Levocetirizine is cetirizine's active half. Histamine keeps arriving.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Rival">${Object.entries(CMP).map(([k,v])=>`<button role="radio" data-zc="${k}" aria-checked="${M.cmp===k}">${v[0]}</button>`).join('')}</div>
       <div class="dv-btns"><button class="dv-btn go" id="zr-w" type="button">Wash the drug out</button><button class="dv-btn" id="zr-r" type="button">Load again</button></div>
       <div class="dv-meter"><span>Minutes since washing out</span><b id="zr-m">0</b></div>
       <div class="dv-meter"><span>Levocetirizine still bound</span><b id="zr-l">100%</b><i><u id="zr-lB" ${bg(C.cet)}></u></i></div>
       <div class="dv-meter"><span>${CMP[M.cmp][0]}: still bound</span><b id="zr-x">100%</b><i><u id="zr-xB" ${bg(M.cmp==='dex'?C.dex:M.cmp==='oh'?C.oh:C.cet)}></u></i></div>
       <p>${NOTE[M.cmp]}</p>
-      <div class="dv-btns"><button class="dv-btn" id="zr-next" type="button">Out to the brain's gate<small>why it's mostly non-drowsy, 20 µm</small></button></div>
-      <p class="dv-fine">Half-times from Gillard 2002, measured on human H1 receptors in the lab; the clock runs 10 minutes a second, and the three receptors on each side let go at the matching times. Church 2013 suggests levocetirizine's long effect on the flare is "presumably" due to this "trapping" on the receptor; that link is the authors' explanation, not something measured in skin. The pose in the pocket is a docking model (Shimamura 2011). Tap a receptor or a molecule to collect it.</p>`;
+      <div class="dv-btns"><button class="dv-btn" id="zr-next" type="button">Zoom in · Brain's gate</button></div>
+      <p class="dv-fine">Half-times from Gillard 2002, measured on human H1 receptors in the lab; the clock runs 10 minutes a second, and the three receptors on each side let go at the matching times. Church 2013 suggests levocetirizine's long effect on the flare is "presumably" due to this "trapping" on the receptor; that link is the authors' explanation, not something measured in skin. The pose in the pocket is a docking model (Shimamura 2011).</p>`;
   return {id:'receptor',label:'H1 receptor',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:500,y:MY},
     prep(o){if(o?.mode&&o.mode!==M.mode){M.mode=o.mode;reset();}},
-    card(){return `<p class="k">Level 2 · one receptor</p><h2>Holding the switch off</h2>
+    card(){return `<h2>Holding the switch off</h2>
       <div class="dv-seg" role="radiogroup" aria-label="View"><button role="radio" data-zm="on" aria-checked="${M.mode==='on'}">Switching it on</button><button role="radio" data-zm="go" aria-checked="${M.mode==='go'}">Letting go</button></div>
       <div id="zr-body"></div>`;},
     bind(card,api){const body=card.querySelector('#zr-body');
@@ -359,17 +358,17 @@ function gateLevel(){
     label(x,'HISTAMINE FIBRE, FROM THE HYPOTHALAMUS',140,FY-20);label(x,'A NEURON\'S H1 RECEPTORS',140,RY+76);label(x,`${S.rec.filter(r=>r.lig).length} OF 16 FILLED`,860,RY+76,'right');
   }
   return {id:'gate',label:'Brain\'s gate',size:'20 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:L1},
-    card(){return `<p class="k">Level 3 · a capillary in the brain</p><h2>The brain's gate</h2>
+    card(){return `<h2>The brain's gate</h2>
       <p>The brain has its own histamine. Nerve cells in the hypothalamus send fibres almost everywhere, and their histamine is one of the main signals that keep us awake (Yanai 2007). An antihistamine that reaches the brain's H1 receptors can make people drowsy. In the way stand the cells lining the brain's capillaries, sealed to one another by tight junctions and fitted with pumps that throw molecules back into the blood (Abbott 2010).</p>
       <p>Cetirizine carries a plus and a minus charge at once, dissolves poorly in fat, and rides mostly on blood proteins (Pagliara 1998; label). It crosses slowly, and in mice and cell lines the pump P-glycoprotein (orange) throws much of what gets in back out (Polli 2003; Chen 2003).</p>
-      <p><b style="color:var(--bone)">Pick a medicine.</b> The share of receptors filled on the neuron matches human brain scans.</p>
+      <p>The share of receptors filled on the neuron matches human brain scans.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Medicine and dose">${Object.entries(DR).map(([k,v])=>`<button role="radio" data-zd="${k}" aria-checked="${S.d===k}">${v.l}</button>`).join('')}</div>
       <div class="dv-meter"><span>Brain H1 receptors filled (PET)</span><b id="zg-o"></b><i><u id="zg-oB"></u></i></div>
       <div class="dv-meter"><span>By that measure</span><b id="zg-c"></b></div>
       <p id="zg-n"></p>
-      <div class="dv-btns"><button class="dv-btn${S.pgp?' on':''}" id="zg-p" type="button" aria-pressed="${S.pgp}">P-gp pumps working<small>switch them off to see what they do</small></button></div>
+      <div class="dv-btns"><button class="dv-btn${S.pgp?' on':''}" id="zg-p" type="button" aria-pressed="${S.pgp}">P-gp pumps working</button></div>
       <p id="zg-pn" ${S.pgp?'hidden':''}>In mice bred without P-glycoprotein, cetirizine's brain-to-blood ratio was 4 times higher in one study and 2 to 9 times in another, while hydroxyzine's and diphenhydramine's didn't change (Chen 2003; Polli 2003). The evidence for the pump comes from mice and cell lines; in people, what we have is the scans. The extra filling drawn here is illustrative.</p>
-      <p class="dv-fine">Shares are from [11C]doxepin PET after single doses in small groups of healthy volunteers, 5 to 12 people per study (Tashiro 2004, 2008, 2009; Hiraoka 2015). The three classes are a convention: at 20% or less, no impaired performance showed in tests done alongside the scans (Kawauchi 2019). The crossing and pumping are drawn for illustration, not to scale. Tap the wall, a pump, a molecule or the receptors to collect them.</p>`;},
+      <p class="dv-fine">Shares are from [11C]doxepin PET after single doses in small groups of healthy volunteers, 5 to 12 people per study (Tashiro 2004, 2008, 2009; Hiraoka 2015). The three classes are a convention: at 20% or less, no impaired performance showed in tests done alongside the scans (Kawauchi 2019). The crossing and pumping are drawn for illustration, not to scale.</p>`;},
     bind(card,api){const q=s=>card.querySelector(s);
       const sync=()=>{const D=DR[S.d],off=D.pgp&&!S.pgp;q('#zg-o').textContent=off?'not measured':D.occ<0?'−0.1%':(D.occ*100).toFixed(1)+'%';
         const u=q('#zg-oB');u.style.width=(off?0:Math.max(0,D.occ)*100)+'%';u.style.background=cc(D.g==='fexo'?C.fexo:D.g==='levo'?C.cet:C.old);
@@ -394,7 +393,7 @@ export const DIVE={color:'#F29A55',top:{label:'Forearm',size:'10 cm'},
   steps:[['Skin, 3 cm.','Prick with histamine at chosen hours after a 10 mg dose and watch the wheal, flare and itch shrink; then see whether that holds after weeks of daily use.'],
     ['H1 receptor, 10 nm.','Histamine switches it on; cetirizine holds it off. Wash the drug out and see which version lets go first.'],
     ['The brain\'s gate, 20 µm.','A capillary in the brain and its pump. Compare how much of the brain\'s H1 receptors six antihistamine doses fill in PET scans.']],
-  also:[{dive:'mcas',level:'skin',label:'MCAS dive · the skin',small:'the red spot, flare and hive, and what an antihistamine changes'},{dive:'mcas',level:'mast',label:'MCAS dive · one mast cell',small:'where H1 blockers act, and what they don\'t stop'}],
+  also:[{dive:'mcas',level:'skin',label:'MCAS · Skin'},{dive:'mcas',level:'mast',label:'MCAS · Mast cell'}],
   refs:['lbl_zyrtec2004','zuberbier2026','thangam2018','schmelz1997','church2013','watson1989','rihoux1989','kruszewski2005','klos2007','long1985','taylor1985','nielsen2001','wao2011',
     'xia2021','leurs2002','bakker2001','wang2024h1','shimamura2011','gillard2002','weiler2019',
     'yanai2007','abbott2010','pagliara1998','polli2003','chen2003','tashiro2004','tashiro2008','tashiro2009','hiraoka2015','kawauchi2019'],

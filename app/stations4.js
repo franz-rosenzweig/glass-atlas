@@ -2,7 +2,6 @@
 // and "lenses" that light up where the patient's medicines share an effect.
 import * as THREE from 'three';
 import { toggle, bindToggle, clamp, fmt, kit } from './kit.js';
-import { MEDS } from './data.js';
 
 export function makeStations4(A){
   const K=kit(A);
@@ -21,7 +20,7 @@ export function makeStations4(A){
   ];
   const MEALS=[{id:'b',label:'Breakfast',t:7.5},{id:'l',label:'Lunch',t:12.5},{id:'d',label:'Dinner',t:18.5}];
   const LENS={
-    timing:{label:'Timing',parts:[],meds:[],text:'Drag the dots to match a real schedule. The checks below update as you go.'},
+    timing:{label:'Timing',parts:[],meds:[],text:''},
     qt:{label:'Heart rhythm (QT)',parts:['Wall of heart'],col:'#EE6F82',meds:['hcq','lexapro','ondansetron'],
       text:'Three of the patient\'s medicines (hydroxychloroquine, Lexapro, Zofran) can lengthen the QT interval, the heart\'s electrical reset. The hydroxychloroquine label goes further and says it isn\'t recommended alongside other QT-lengthening drugs, so the combination is a deliberate prescriber decision, often backed by an ECG. Her own risk factors are worth knowing: vomiting can drain potassium and magnesium, and a very slow pulse adds risk. A baseline ECG is a reasonable thing to ask about, and any new antibiotic (ciprofloxacin, azithromycin), antinausea drug or antihistamine deserves a QT check.'},
     bp:{label:'Blood pressure and pulse',parts:['Wall of heart','#vessels'],col:'#EE6F82',meds:['propranolol','tizanidine','adderall'],
@@ -62,7 +61,7 @@ export function makeStations4(A){
     const rows=ROWS.filter(r=>!r.prn||prnOn[r.id]);const H=top+rh*(rows.length+1)+18;
     const inLens=id=>LENS[lens].meds.includes(id);
     let s=`<svg viewBox="0 0 ${W} ${H}" class="planner" role="img" aria-label="The patient's medicines across 24 hours">`;
-    for(const h of [0,6,12,18,24])s+=`<line x1="${px(h)}" x2="${px(h)}" y1="${top-6}" y2="${H-14}" stroke="var(--line)"/><text x="${px(h)}" y="${H-3}" text-anchor="middle">${String(h%24).padStart(2,'0')}:00</text>`;
+    for(const h of [0,6,12,18,24])s+=`<line x1="${px(h)}" x2="${px(h)}" y1="${top-6}" y2="${H-14}" stroke="var(--line)"/><text x="${px(h)}" y="${H-3}" text-anchor="${h===24?'end':'middle'}">${String(h%24).padStart(2,'0')}:00</text>`;
     s+=`<rect x="${px(22)}" y="${top-6}" width="${px(24)-px(22)}" height="${H-top-8}" fill="#78A0F4" opacity=".07"/><rect x="${px(0)}" y="${top-6}" width="${px(6.5)-px(0)}" height="${H-top-8}" fill="#78A0F4" opacity=".07"/>`;
     s+=`<text x="4" y="${top+4}" class="pl">Meals</text>`;
     for(const m of MEALS)s+=`<g class="hd" data-k="meal:${m.id}" transform="translate(${px(M[m.id])},${top})"><rect x="-6" y="-6" width="12" height="12" rx="2" fill="#DDB741"/><circle r="13" fill="transparent"/></g>`;
@@ -75,7 +74,7 @@ export function makeStations4(A){
   function render(){
     ui.querySelector('#p-svg').innerHTML=svg();
     ui.querySelector('#p-rules').innerHTML=rules().map(([k,t])=>`<li class="${k}">${t}</li>`).join('');
-    const Ls=LENS[lens];ui.querySelector('#p-lens').innerHTML=`<p class="regtext">${Ls.text}</p>${Ls.meds.length?`<p class="fine" style="margin-top:0!important">Lit on the body: ${Ls.parts.map(p=>p==='#brain'?'brain':p==='#vessels'?'great vessels':p.replace('Wall of heart','heart').toLowerCase()).join(', ')}.</p>`:''}`;
+    const Ls=LENS[lens];ui.querySelector('#p-lens').innerHTML=Ls.text?`<p class="regtext">${Ls.text}</p>`:'';
     ui.querySelectorAll('[data-lens]').forEach(b=>b.setAttribute('aria-checked',b.dataset.lens===lens));
     if(Ls.parts.length){K.setMode({layers:{skin:.3,skeleton:.08,organs:.35,vessels:.5},focus:A.resolve(Ls.parts),focusColor:Ls.col,dim:.25});}
     else K.setMode({layers:{skin:.5,skeleton:.25,organs:.6,vessels:.6}});
@@ -85,15 +84,15 @@ export function makeStations4(A){
     id:'meds',title:'Medicines bench',fig:'The patient\'s day, hour by hour',
     enter(panel,opt={}){
       K.resetRig();focus=opt.focus||null;lens=focus?lensFor(focus):'timing';if(focus&&prnOn[focus]===false)prnOn[focus]=true;
-      const m=focus&&MEDS.find(x=>x.id===focus);
-      panel.innerHTML=`${m?`<p class="lede-s"><b>${m.name}.</b> ${m.text}</p>${m.warn?`<div class="warn"><b>For any provider</b>${m.warn}</div>`:''}`:''}
+      panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p>
         <div id="p-svg"></div>
-        <div class="tgs three">${['ondansetron','tizanidine','ibuprofen'].map(k=>toggle('p-'+k,ROWS.find(r=>r.id===k).label+' today',prnOn[k],'as needed')).join('')}</div>
+        <p class="eyebrow">As needed</p>
+        <div class="tgs three">${['ondansetron','tizanidine','ibuprofen'].map(k=>toggle('p-'+k,ROWS.find(r=>r.id===k).label,prnOn[k])).join('')}</div>
         <ul class="rules" id="p-rules"></ul>
-        <p class="eyebrow">Where the patient's medicines overlap</p>
-        <div class="seg" role="radiogroup" aria-label="Lens">${Object.entries(LENS).map(([k,l])=>`<button role="radio" data-lens="${k}" aria-checked="${k===lens}">${l.label}</button>`).join('')}</div>
+        <p class="eyebrow">Overlaps</p>
+        <div class="seg" role="radiogroup" aria-label="Topic">${Object.entries(LENS).map(([k,l])=>`<button role="radio" data-lens="${k}" aria-checked="${k===lens}">${l.label}</button>`).join('')}</div>
         <div id="p-lens"></div>
-        <p class="fine">The times are a starting template, not a real schedule, and this is not a dosing plan: the patient's prescribers and pharmacist set the timing. The spacing rules come from the medicines' labels and standard guidance: levothyroxine 30–60 minutes before breakfast, or at bedtime 3–4 hours after eating; iron and levothyroxine 4 hours apart; Adderall XR on waking. The iron row is a supplement, not one of the ten listed medicines; its dose and timing are for her doctor to choose. Hadlima, an injection every other week, has its own bench.</p>`;
+        <p class="fine">The times are a starting template, not a real schedule, and this is not a dosing plan: the patient's prescribers and pharmacist set the timing. The spacing rules come from the medicines' labels and standard guidance: levothyroxine 30–60 minutes before breakfast, or at bedtime 3–4 hours after eating; iron and levothyroxine 4 hours apart; Adderall XR on waking. The iron row is a supplement; its dose and timing are for her doctor to choose.</p>`;
       ui=panel;
       for(const k of Object.keys(prnOn))bindToggle(panel,'p-'+k,on=>{prnOn[k]=on;if(ui===panel)render();});
       panel.querySelectorAll('[data-lens]').forEach(b=>b.onclick=()=>{lens=b.dataset.lens;render();});

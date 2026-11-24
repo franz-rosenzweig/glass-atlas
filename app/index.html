@@ -32,7 +32,7 @@ html,body{height:100%}
 body{margin:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,var(--bg-a) 0%,var(--bg-b) 48%,var(--void) 100%);color:var(--bone);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 :focus-visible{outline:2px solid var(--glass);outline-offset:2px}
-#app{position:relative;height:100%;overflow:hidden}
+#app{position:relative;height:100%;overflow:hidden;overflow:clip}
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 
 #loading{position:absolute;inset:0;display:grid;place-items:center;z-index:60;background:var(--void);transition:opacity .6s}
@@ -48,6 +48,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .brand h1{font:400 30px/1 var(--display);margin:0}
 .brand p{margin:6px 0 0;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .layers{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.acts{display:flex;gap:4px}
 .chip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px;color:var(--dim);background:rgb(var(--lo) / .6)}
 .chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:rgb(var(--hi) / .08)}
 .chip.alert{color:var(--alert);border-color:color-mix(in srgb,var(--alert) 60%,transparent)}
@@ -171,6 +172,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .alerts{margin:6px 0 0;padding:0;list-style:none;counter-reset:a}
 .alerts li{counter-increment:a;position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line);font-size:14px;color:var(--bone-2)}
 .alerts li::before{content:counter(a);position:absolute;left:0;top:8px;font:11px var(--mono);color:var(--alert)}
+.steps{margin:6px 0 0;padding:0;list-style:none;counter-reset:a}
+.steps li{counter-increment:a;position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line);font-size:14px;color:var(--bone-2)}
+.steps li::before{content:counter(a);position:absolute;left:0;top:8px;font:11px var(--mono);color:var(--dim)}
+.illus,.mon-sim,.dbody .illus{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.dbody .em{padding:0}
+.dr-back{font-size:13px;color:var(--bone-2);padding:6px 0}.dr-back:hover{color:var(--bone)}
 
 #tip{position:absolute;z-index:40;pointer-events:none;background:rgb(var(--lo) / .92);border:1px solid var(--line-2);border-radius:3px;padding:6px 9px;font-size:13px;max-width:260px;transform:translate(12px,12px);opacity:0;transition:opacity .15s}
 #tip.on{opacity:1}
@@ -183,7 +190,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .bar.band{background:linear-gradient(90deg,var(--line) 0 62%,color-mix(in srgb,var(--alert) 35%,var(--line)) 80%,color-mix(in srgb,var(--alert) 60%,var(--line)))}
 .bar.band i{background:var(--neuro,#78A0F4);opacity:.85}
 .mon-sim{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.edu{font-size:12px;color:var(--bone-2);border-left:2px solid var(--alert);padding:2px 0 2px 8px;margin:0 0 12px}
 .em{list-style:none;margin:8px 0 14px;padding:0;display:grid;gap:8px}
 .em li{border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:var(--warn-bg-2);border-radius:3px;padding:9px 11px;font-size:13.5px;color:var(--bone-2)}
 .em li b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert);margin-bottom:3px}
@@ -197,7 +203,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .srcline button{all:unset;cursor:pointer;color:var(--glass);border-bottom:1px dotted color-mix(in srgb,var(--glass) 60%,transparent)}
 .srcline button:focus-visible{outline:2px solid var(--glass);outline-offset:2px}
 .srcs li.flash{background:color-mix(in srgb,var(--glass) 10%,transparent)}
-.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);z-index:12;pointer-events:none;white-space:nowrap}
 
 
 .dbody .eyebrow{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:18px 0 8px}
@@ -246,13 +251,13 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 .n-comp{border:1px solid var(--line-2);border-radius:4px;padding:10px 12px;margin:0 0 12px;background:rgb(var(--hi) / .03)}
 .n-comp textarea{width:100%;background:var(--input);color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:8px;font:14px var(--body);resize:vertical;margin-top:8px}
-.note{border-top:1px solid var(--line);border-left:3px solid var(--c);padding:8px 10px;cursor:pointer}
-.note.on{background:rgb(var(--hi) / .05)}
+#n-list .note{border-top:1px solid var(--line);border-left:3px solid var(--c);padding:8px 10px;cursor:pointer}
+#n-list .note.on{background:rgb(var(--hi) / .05)}
 .note-h{display:flex;justify-content:space-between;gap:8px}.note-k{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}.note-w{font:10px var(--mono);color:var(--dim);text-align:right}
 .note-t{margin:4px 0!important;font-size:14px!important;color:var(--bone)!important;white-space:pre-wrap}
 .note-f{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.note-del{font:10px var(--mono);color:var(--dim);text-decoration:underline}
 
-#app.touring .panel,#app.touring .drawer,#app.touring .hint{display:none}
+#app.touring .panel,#app.touring .drawer{display:none}
 .tour{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(760px,calc(100% - 32px));z-index:40;background:var(--vitrine);border:1px solid var(--line);border-top:3px solid var(--bone);border-radius:3px;padding:12px 16px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .tour[hidden]{display:none}
 .tour-top{display:flex;align-items:baseline;gap:10px}.tour-n{font:10px var(--mono);color:var(--dim);letter-spacing:.1em}.tour-t{font:400 20px var(--display)}.tour-x{margin-left:auto;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
@@ -261,16 +266,16 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .tour-dots{display:flex;gap:4px;margin-left:auto}.tour-dots i{width:16px;height:3px;background:var(--line-2);border-radius:2px}.tour-dots i.done{background:var(--bone-2)}.tour-dots i.on{background:var(--bone)}
 @media (max-width:860px){
   :root{--left:auto;--right:auto}
-  .brand h1{font-size:24px}.brand p{display:none}
-  .top{flex-wrap:wrap}
+  .brand h1{font-size:24px}
+  .top{flex-wrap:wrap;gap:8px 14px}
   .layers{margin-left:0;width:100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}
   .chip{padding:7px 8px;font-size:9.5px;flex:none}
   .chip.theme{order:1;margin-left:auto;width:31px;height:29px;padding:0}.layers{order:2}
-  .panel{top:auto;right:var(--gut);height:34%;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+  .acts{order:3;width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.acts .chip{text-align:center}
+  .panel{top:auto;right:var(--gut);height:42%;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
   .drawer{left:var(--gut);right:var(--gut);top:auto;height:56%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 60px))}
   .drawer.open{transform:none}
   .drawer h2{font-size:23px}
-  .hint{display:none}
   .tour-dots i{width:8px}.tour-c{max-height:5.2em}
   .wl{font-size:8.5px;padding:3px 6px}
 }
@@ -280,16 +285,18 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 <div id="app">
   <canvas id="gl" aria-label="Interactive 3D anatomy. Drag to rotate, scroll or pinch to zoom, point at any structure to name it."></canvas>
   <header class="top">
-    <div class="brand"><h1>Glass Atlas</h1><p>Real anatomy · twelve diagnoses · eleven medicines</p></div>
+    <div class="brand"><h1>Glass Atlas</h1></div>
     <div class="layers" role="group" aria-label="Layers">
       <button class="chip" data-layer="skin" aria-pressed="true">Skin</button>
       <button class="chip" data-layer="skeleton" aria-pressed="true">Skeleton</button>
       <button class="chip" data-layer="organs" aria-pressed="true">Organs</button>
       <button class="chip" data-layer="vessels" aria-pressed="true">Vessels</button>
       <button class="chip" data-layer="nerves" aria-pressed="false">Nerves</button>
+    </div>
+    <div class="acts">
       <button class="chip" id="webBtn" type="button">Connections</button>
       <button class="chip" id="notesBtn" type="button">Notes</button>
-      <button class="chip alert" id="alertBtn" type="button">Tell any provider</button>
+      <button class="chip alert" id="alertBtn" type="button">Emergency</button>
     </div>
     <button class="chip theme" id="themeBtn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
       <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
@@ -297,10 +304,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
     </button>
   </header>
   <aside class="panel" id="panel"></aside>
-  <aside class="drawer" id="drawer" aria-label="Details and instrument"></aside>
+  <aside class="drawer" id="drawer" aria-label="Details" inert></aside>
   <div id="tip" role="status"></div>
-  <div class="hint" id="hint">Point at anything to name it · pick a condition to open its instrument</div>
-  <div id="loading"><div class="in"><b>Glass Atlas</b><p id="ltxt">Loading real anatomy</p><div class="bar"><i id="lbar"></i></div></div></div>
+  <div id="loading"><div class="in"><b>Glass Atlas</b><p id="ltxt">Loading</p><div class="bar"><i id="lbar"></i></div></div></div>
 </div>
 
 <script type="importmap">
@@ -358,18 +364,18 @@ function zoomFactor(){const b=band();return Math.min(1.9,Math.max(1,Math.sqrt(81
 /* ---------- left panel ---------- */
 function renderPanel(){
   if(listMode==='chart'){
-    let h=`<p class="eyebrow">The patient's chart</p><h2>Choose a condition</h2><p class="lede">A teaching case: one adult woman, called “the patient” throughout, with twelve diagnoses and ${WORD[MEDS.length]} medicines. Each condition opens an instrument you operate on the real anatomy.</p><p class="edu">General education, not medical advice. In an emergency, call 911; the emergency steps are under <b>Tell any provider</b>.</p><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">How it all connects<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">18 threads between the patient's conditions</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Web</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">24 hours, hour by hour</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Day</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Take the guided tour<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">narrated · about 8 minutes</small></span><span class="badge inst" style="background:var(--bone);border-color:var(--bone)">Tour</span></button>`;
+    let h=`<h2>The patient's chart</h2><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">Connections</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Tour</span><span class="badge">8 min</span></button>`;
     for(const s of SYS_ORDER){const list=CONDS.filter(c=>c.sys===s);if(!list.length)continue;
       h+=`<div class="group" style="--c:${cc(SYS[s].c)}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
-      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}${c.suspected?'<span class="sus">Suspected</span>':''}</span><span class="badge${DIVES[c.id]?' inst':''}" style="${DIVES[c.id]?'':'color:var(--c);border-color:color-mix(in srgb,var(--c) 45%,transparent)'}">${DIVES[c.id]?'Dive':esc(c.suspected?'?':c.year)}</span></button>`;
+      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}</span><span class="badge">${esc(c.suspected?'Suspected':c.year)}</span></button>`;
       h+='</div>';}
-    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines (${MEDS.length})<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">and the patient's day, hour by hour</small></span><span class="badge">open</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources and review<small style="display:block;color:var(--dim);font:10px var(--mono);margin-top:2px">${Object.keys(REFS).length} references · checked Oct–Nov 2026</small></span><span class="badge">open</span></button></div>`;
+    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines</span><span class="badge">${MEDS.length}</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources</span><span class="badge">${Object.keys(REFS).length}</span></button></div>`;
     panel.innerHTML=h+CREDIT;
     $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
   }else{
-    let h=`<p class="eyebrow">Medicines</p><h2>${CAP(WORD[MEDS.length])} medicines</h2><button class="btn" id="toChart" type="button">Back to the patient's chart</button><input class="medfind" id="medFind" type="search" placeholder="Search medicines" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">The patient's day, hour by hour<small>timing, spacing and shared effects</small></span><span class="badge inst">Planner</span></button>`;
+    let h=`<button class="dr-back" id="toChart" type="button">‹ The patient's chart</button><h2>Medicines</h2><input class="medfind" id="medFind" type="search" placeholder="Search" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">Medicine schedule</span></button>`;
     for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
-    panel.innerHTML=h+'<p class="none" hidden>No medicine matches that.</p></div>'+CREDIT;
+    panel.innerHTML=h+'<p class="none" hidden>No matches</p></div>'+CREDIT;
     $('#toChart').onclick=()=>{medQ='';listMode='chart';renderPanel();};
     const f=$('#medFind'),filt=()=>{medQ=f.value;const q=medQ.trim().toLowerCase();let n=0;
       panel.querySelectorAll('.medlist [data-find]').forEach(r=>{const ok=r.dataset.find.includes(q);r.hidden=!ok;n+=ok;});
@@ -383,16 +389,33 @@ panel.addEventListener('click',e=>{
 });
 
 /* ---------- drawer ---------- */
-function shell(c,col,title,fig,tabs){
+// tabs keep their old ids (open(id,'Instrument'|'Dive'|'Read')); only the words on them changed
+const TABN={Instrument:'Try it',Dive:'Zoom in',Read:'Read'};
+// back: {label, go} for a one-step return to the page a link came from
+function shell(c,col,title,fig,tabs,back){
   drawer.style.setProperty('--c',cc(col));
-  drawer.innerHTML=`<div class="dr-head"><div class="dr-top"><span class="tag"><i></i>${esc(c)}</span><button class="close" type="button">Close</button></div>
+  drawer.innerHTML=`<div class="dr-head"><div class="dr-top">${back?`<button class="dr-back" type="button">‹ ${esc(back.label)}</button>`:c?`<span class="tag"><i></i>${esc(c)}</span>`:'<span></span>'}<button class="close" type="button">Close</button></div>
     <h2>${esc(title)}</h2>${fig?`<div class="fig">${esc(fig)}</div>`:''}
-    ${tabs?`<div class="dtabs" role="tablist">${tabs.map((t,i)=>`<button class="dtab" role="tab" data-t="${t}" aria-selected="${i===0}">${t}</button>`).join('')}</div>`:''}</div>
+    ${tabs?`<div class="dtabs" role="tablist">${tabs.map((t,i)=>`<button class="dtab" role="tab" data-t="${t}" aria-selected="${i===0}">${TABN[t]||t}</button>`).join('')}</div>`:''}</div>
     <div class="dbody" id="dbody"></div>`;
   drawer.querySelector('.close').onclick=closeAll;
-  drawer.classList.add('open');requestAnimationFrame(fitOffset);
+  if(back)drawer.querySelector('.dr-back').onclick=back.go;
+  page=null;drawer.inert=false;drawer.classList.add('open');pushLayer(1);requestAnimationFrame(fitOffset);
   return drawer.querySelector('#dbody');
 }
+// the page now in the drawer, so a link inside it can offer a way back
+let page=null;
+const backTo=()=>{if(!page)return null;const p=page,t=drawer.querySelector('#dbody')?.dataset.tab;return {label:p.label,go:()=>p.go(t)};};
+/* ---------- the phone's Back and Esc close the top layer: drawer = history depth 1, dive = 2 ---------- */
+let popping=false,expectPop=false;
+const depth=()=>history.state?.ga||0,diveOpen=()=>!!(dive&&!dive.root.hidden);
+function pushLayer(n){if(!popping&&depth()<n)history.pushState({ga:n},'');}
+function popTo(n){const d=depth();if(d>n){expectPop=true;history.go(n-d);}}
+addEventListener('popstate',()=>{const d=depth();
+  if(expectPop){expectPop=false;if(drawer.classList.contains('open'))pushLayer(1);if(diveOpen())pushLayer(2);return;}
+  popping=true;try{if(d<2&&diveOpen())dive.close();if(d<1&&tour?.active)tour.end();if(d<1&&drawer.classList.contains('open'))closeAll();}finally{popping=false;}});
+addEventListener('keydown',e=>{if(e.key!=='Escape'||diveOpen()||tour?.active||e.target.closest?.('input,textarea,select'))return;
+  if(drawer.classList.contains('open'))closeAll();});
 function readHTML(c){
   let h=`<p class="tldr">${esc(c.tldr)}</p>`;if(c.warn)h+=`<div class="warn"><b>For any provider</b>${esc(c.warn)}</div>`;h+=c.body;
   const rs=[...A.resolve(c.parts)].filter(r=>r.layer!=='skin').slice(0,10);
@@ -403,6 +426,7 @@ function readHTML(c){
 }
 function stopStation(){if(curStation){curStation.exit();curStation=null;}A.mode={layers:null,focus:null,focusColor:'#ffffff',dim:.2,forceShow:null};A.skinUniforms.uScaffold.value=0;}
 const centreOf=names=>{const B=new A.THREE.Box3();for(const r of A.resolve(names)){r.geo.computeBoundingBox();B.union(r.geo.boundingBox);}return B.getCenter(new A.THREE.Vector3());};
+// a condition dive takes its colour from the condition's system, the same as its row in the list
 const DIVES={
   ra:{color:'#F29A55',make:()=>({levels:raLevels(),guide:GUIDE}),top:{label:'Hand',size:'10 cm'},target:()=>A.hand.right.fingers[2][1].pivot,view:{dist:.13,azim:-20,elev:30},
     text:'Zoom from the patient\'s knuckle into the joint, down to the cells of the lining where RA lives, and on to the molecules her medicines act on. Halfway down there is a game: hold the lining for a year.',
@@ -416,7 +440,7 @@ const DIVES={
   pots:{color:'#EE6F82',make:()=>potsDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['Right common carotid artery']),view:{dist:.2,azim:-40,elev:6},
     text:'Follow the reflex that keeps blood in the head when the patient stands, and see the four ways it can fall short. Then play it: every heartbeat you catch on time fires a squeeze.',
     steps:[['The circuit, 1 m.','Sensors, brainstem, nerves, heart and veins, for four POTS types.'],['The rhythm game.','Ten minutes upright in sixty seconds. Try compression, fluids and propranolol.']]},
-  iron:{color:'#D9A441',make:()=>ironDive(),top:{label:'Gut',size:'10 cm'},target:()=>centreOf(['Duodenum']),view:{dist:.2,azim:20,elev:6},
+  iron:{color:SYS.autonomic.c,make:()=>ironDive(),top:{label:'Gut',size:'10 cm'},target:()=>centreOf(['Duodenum']),view:{dist:.2,azim:20,elev:6},
     text:'Into the duodenum, where iron gets in, and then one gut cell with a single exit door. Dose it daily or every other day for two weeks and see why hepcidin changes the math.',
     steps:[['Lining, 1 mm.','The villi that absorb iron.'],['One gut cell.','Fourteen days of doses: the door, the lock, and what orange juice or coffee do.']]},
 };
@@ -427,52 +451,56 @@ const MDIVE={hadlima:()=>import('./dive-med-hadlima.js'),hcq:()=>import('./dive-
   ldn:()=>import('./dive-med-ldn.js'),zyrtec:()=>import('./dive-med-zyrtec.js'),ondansetron:()=>import('./dive-med-ondansetron.js'),tizanidine:()=>import('./dive-med-tizanidine.js'),ibuprofen:()=>import('./dive-med-ibuprofen.js')};
 const diveDef=async key=>key.startsWith('med:')?{...(await MDIVE[key.slice(4)]()).DIVE,med:key.slice(4)}:DIVES[key];
 const diveName=key=>key.startsWith('med:')?MEDS.find(m=>m.id===key.slice(4))?.name:byId[key]?.name;
-let dive=null,diveFor=null,diveBack=null;
-// key: a condition id ('ra') or 'med:<id>'. o.level/o.opt open a level directly; o.back is where "Back to the body" returns.
+const diveShort=key=>key.startsWith('med:')?MEDS.find(m=>m.id===key.slice(4))?.name:byId[key]?.short;
+let dive=null,diveFor=null,diveBack=null,diveLevels=[],diving=false;
+// key: a condition id ('ra') or 'med:<id>'. o.level/o.opt open a level directly; o.back is where the exit button
+// returns (by default the Zoom in tab it came from) and o.backLabel what it says.
 async function startDive(key,o={}){
+  diving=true;pushLayer(2);
   const D=await diveDef(key);stopStation();
-  diveBack=o.back||(D.med?()=>{openMed(D.med,'Dive');home();}:()=>open(key));
-  if(!dive||diveFor!==key){dive?.root.remove();const m=D.make({jump});dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:()=>diveBack?.()});dive.guideKeys=Object.keys(m.guide);diveFor=key;}
+  diveBack=o.back||(D.med?()=>{openMed(D.med,'Dive');home();}:()=>{open(key,'Dive');home();});
+  if(!dive||diveFor!==key){dive?.root.remove();const m=D.make({jump});dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:exitDive});dive.guideKeys=Object.keys(m.guide);diveFor=key;diveLevels=m.levels;}
+  dive.root.querySelector('.dv-exit').textContent=o.backLabel||'Back to the body';
   const p=D.target({A,centreOf,V3:(x,y,z)=>new A.THREE.Vector3(x,y,z)});K0.setMode({layers:{skin:.5,skeleton:.5,organs:.8,vessels:.9}});
   A.flyTo({target:[p.x,p.y,p.z],...D.view});
   setTimeout(()=>dive.open(o.level,o.opt),1150);
 }
-// from inside one dive straight into another (a medicine dive's last level into the condition dive where it acts)
-function jump(key,o={}){const back=diveBack;diveBack=()=>startDive(key,{...o,back});dive.close();}
-const guideCount=()=>{try{return JSON.parse(localStorage.getItem('glass-atlas-guide')||'[]').length;}catch(_){return 0;}};
-const DIVE_FINE=n=>`${n?`Your field guide has ${n} entries across all dives. `:''}Every cell and molecule you tap goes into a field guide. The biology is drawn from published reviews, guidelines and medicine labels; the games' numbers are illustrative.`;
+function exitDive(){diving=false;const f=diveBack;diveBack=null;f?.();if(!diving&&depth()>=2){expectPop=true;history.back();}}
+// from inside one dive straight into another; its exit comes back to the same level of the first
+function jump(key,o={}){const from=diveFor,back=diveBack,bl=dive.root.querySelector('.dv-exit').textContent;
+  const i=+(dive.root.querySelector('.dv-stop[aria-current="true"]')?.dataset.i||0),lv=diveLevels[i-1]?.id;
+  diveBack=()=>startDive(key,{...o,backLabel:'Back to '+diveShort(from),back:()=>startDive(from,{level:lv,back,backLabel:bl})});dive.close();}
+const DIVE_FINE='Game numbers are illustrative.';
 function diveTab(id){const D=DIVES[id];const meds=MEDS.filter(m=>m.treats===id&&MDIVE[m.id]);
-  return `<p class="tldr">${D.text}</p>
-  <ol class="alerts">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
-  <div class="btns"><button class="btn primary" id="startDive" type="button">Start the dive</button></div>
-  ${meds.length?`<h3>Medicine dives</h3><div class="links">${meds.map(m=>`<button class="lk" data-mdive="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><i></i>${esc(m.name)}</button>`).join('')}</div>`:''}
-  <p class="fine">${DIVE_FINE(guideCount())}</p>`;}
+  return `<ol class="steps">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
+  <div class="btns"><button class="btn primary" id="startDive" type="button">Zoom in</button></div>
+  ${meds.length?`<h3>Medicines</h3><div class="links">${meds.map(m=>`<button class="lk" data-mdive="${m.id}" style="--c:${cc(SYS[m.sys].c)}"><i></i>${esc(m.name)}</button>`).join('')}</div>`:''}
+  <p class="fine">${DIVE_FINE}</p>`;}
 async function medDiveTab(body,id){const D=await diveDef('med:'+id);if(!body.isConnected||body.dataset.tab!=='Dive')return;
-  body.innerHTML=`<p class="tldr">${D.text}</p>
-  <ol class="alerts">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
-  <div class="btns"><button class="btn primary" id="startDive" type="button">Start the dive</button></div>
-  ${D.also?.length?`<h3>In the condition dives</h3><div class="btns col">${D.also.map((a,i)=>`<button class="btn" type="button" data-also="${i}">${esc(a.label)}<small>${esc(a.small||'')}</small></button>`).join('')}</div>`:''}
-  <p class="fine">${DIVE_FINE(guideCount())}</p>${srcLine(D.refs)}`;
+  body.innerHTML=`<ol class="steps">${D.steps.map(([a,b])=>`<li><b>${a}</b> ${b}</li>`).join('')}</ol>
+  <div class="btns"><button class="btn primary" id="startDive" type="button">Zoom in</button></div>
+  ${D.also?.length?`<h3>Related</h3><div class="btns col">${D.also.map((a,i)=>`<button class="btn" type="button" data-also="${i}">${esc(a.label)}</button>`).join('')}</div>`:''}
+  <p class="fine">${DIVE_FINE}</p>${srcLine(D.refs)}`;
   body.querySelector('#startDive').onclick=()=>startDive('med:'+id);
-  body.querySelectorAll('[data-also]').forEach(b=>b.onclick=()=>{const a=D.also[+b.dataset.also];startDive(a.dive,{level:a.level,opt:a.opt,back:()=>{openMed(id,'Dive');home();}});});}
+  body.querySelectorAll('[data-also]').forEach(b=>b.onclick=()=>{const a=D.also[+b.dataset.also];startDive(a.dive,{level:a.level,opt:a.opt,backLabel:'Back to '+diveShort('med:'+id),back:()=>{openMed(id,'Dive');home();}});});}
 function tabbed(body,col,st,readFn,opt){
   const show=t=>{drawer.querySelectorAll('.dtab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));body.dataset.tab=t;
     if(t==='Instrument'){body.innerHTML='<div id="inst"></div>';body.style.setProperty('--c',cc(col));if(curStation!==st){stopStation();curStation=st;}st.enter(body.querySelector('#inst'),opt);}
     else if(t==='Dive'&&opt.medDive){stopStation();body.innerHTML='';medDiveTab(body,opt.medDive);}
     else if(t==='Dive'){stopStation();body.innerHTML=diveTab(opt.dive);body.querySelector('#startDive').onclick=()=>startDive(opt.dive);
-      body.querySelectorAll('[data-mdive]').forEach(b=>b.onclick=()=>startDive('med:'+b.dataset.mdive,{back:()=>open(opt.dive)}));}
+      body.querySelectorAll('[data-mdive]').forEach(b=>b.onclick=()=>startDive('med:'+b.dataset.mdive,{backLabel:'Back to '+diveShort(opt.dive),back:()=>{open(opt.dive,'Dive');home();}}));}
     else body.innerHTML=readFn();
     body.scrollTop=0;};
   drawer.querySelectorAll('.dtab').forEach(b=>b.onclick=()=>show(b.dataset.t));
   show(opt?.tab&&drawer.querySelector(`.dtab[data-t="${opt.tab}"]`)?opt.tab:'Instrument');
 }
-function open(id,tab){
+function open(id,tab,back){
   const c=byId[id];stopStation();active=id;renderPanel();
   const col=SYS[c.sys].c;const st=ST[c.station];
   const hasDive=!!DIVES[c.id];
-  const body=shell(SYS[c.sys].label+' · '+(c.suspected?'suspected':c.year),col,c.name,st.title+' · '+st.fig,hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
-  tabbed(body,col,st,()=>readHTML(c),hasDive?{dive:c.id,tab}:undefined);
-  hideHint();
+  const body=shell(SYS[c.sys].label+' · '+(c.suspected?'suspected':c.year),col,c.name,null,hasDive?['Instrument','Dive','Read']:['Instrument','Read'],back);
+  page={label:c.name,go:t=>open(id,t)};
+  tabbed(body,col,st,()=>readHTML(c),hasDive?{dive:c.id,tab}:{tab});
 }
 function medRead(m){
   if(!m)return `<p class="tldr">${CAP(WORD[MEDS.length])} medicines across ${WORD[new Set(MEDS.map(x=>x.sys)).size]} systems.</p><ul class="quotes">${MEDS.map(x=>`<li><b>${esc(x.name)}</b> (${esc(x.cls)}). ${esc(x.text)}${x.warn?' <b>For any provider:</b> '+esc(x.warn):''}</li>`).join('')}</ul>`+srcLine([...new Set(MEDS.flatMap(x=>x.refs||[]))]);
@@ -481,38 +509,39 @@ function medRead(m){
   if(m.treats&&byId[m.treats])h+=`<h3>What it treats</h3><div class="links"><button class="lk" data-cond="${m.treats}" style="--c:${cc(SYS[byId[m.treats].sys].c)}"><i></i>${esc(byId[m.treats].name)}</button></div>`;
   return h+srcLine(m.refs);
 }
-function openMed(id,tab){
+function openMed(id,tab,back){
   const m=id?MEDS.find(x=>x.id===id):null;stopStation();active=null;renderPanel();
   const col=m?SYS[m.sys].c:'#ECE6DA';const hasDive=!!(m&&MDIVE[m.id]);
-  const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'The patient\'s day, hour by hour',m?m.cls:'Timing, spacing and shared effects',hasDive?['Instrument','Dive','Read']:['Instrument','Read']);
+  const body=shell(m?'Medicine · '+m.when:'Medicines',col,m?m.name:'Medicine schedule',m?m.cls.split(' · ')[0]:null,hasDive?['Instrument','Dive','Read']:['Instrument','Read'],back);
+  page={label:m?m.name:'Medicine schedule',go:t=>openMed(id,t)};
   // a medicine with a bench of its own (Hadlima, Zyrtec) opens that instead of the 24-hour planner
   tabbed(body,col,m?.station?ST[m.station]:ST.meds,()=>medRead(m),{focus:id||null,medDive:hasDive?id:null,tab});
-  hideHint();
 }
 /* ---------- sources ---------- */
 function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return '';
   return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
-function openSources(focusKey){stopStation();active=null;renderPanel();
-  const b=shell('Checked October–November 2026','#BFE6E1','Sources and review',null,null);
-  let h=`<p class="tldr">Where the numbers come from.</p><p class="fine" style="margin-top:4px!important">In October 2026 every clinical claim, number and model in this atlas was checked by five AI reviewers (not physicians), working in the roles of rheumatology and immunology, endocrinology with haematology and gastroenterology, neurology with cardiology and spine, gynecology with clinical pharmacy, and evidence methods. They checked claims against guidelines, FDA labels and primary studies, and their corrections are built in. Models are labelled as illustrative; where a number is a single small study, the text says so. The Hadlima material, added in November 2026, was researched from its April 2026 label and the studies and guidelines below, then checked claim by claim by two more AI reviewers, and their corrections are built in too. So are the medicine dives, added the same month, and Zyrtec, the eleventh medicine, added at the end of it: each was researched from its labels and the studies below and then checked claim by claim by an independent AI reviewer. This is a teaching case and general education; in real care, a patient's own clinicians decide.</p>`;
+function openSources(focusKey,back){stopStation();active=null;renderPanel();
+  const b=shell('','#BFE6E1','Sources',null,null,back);
+  let h=`<p class="fine" style="margin-top:0!important">Checked October–November 2026 by AI reviewers (not physicians) against guidelines, FDA labels and published studies. Models are illustrative.</p>`;
   for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
     h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
-  b.innerHTML=h;A.refresh();home();hideHint();
+  b.innerHTML=h;A.refresh();home();
   if(focusKey){const el=b.querySelector('#src-'+focusKey);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'});}}}
-drawer.addEventListener('click',e=>{const s=e.target.closest('[data-src]');if(s){e.stopPropagation();openSources(s.dataset.src);}},true);
-function openWeb(){stopStation();active=null;renderPanel();const st=ST.web;
-  const body=shell('The patient\'s chart · eighteen threads','#ECE6DA','How it all connects',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
-function openDay(){stopStation();active=null;renderPanel();const st=ST.day;
-  const body=shell('The patient\'s chart · an imagined day','#ECE6DA','A day in the patient\'s body',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
-function openNotes(){stopStation();active=null;renderPanel();const st=ST.notes;
-  const body=shell('Notes','#BFE6E1','Notes on the body',st.fig,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));hideHint();}
-function closeAll(){stopStation();active=null;drawer.classList.remove('open');renderPanel();A.refresh();requestAnimationFrame(()=>{fitOffset();home();});}
-drawer.addEventListener('click',e=>{const m=e.target.closest('.lk[data-med]');if(m)return openMed(m.dataset.med);const c=e.target.closest('.lk[data-cond]');if(c)open(c.dataset.cond);});
-$('#webBtn').onclick=openWeb;
-$('#notesBtn').onclick=openNotes;
-$('#alertBtn').onclick=()=>{stopStation();active=null;renderPanel();const b=shell('Carry to any new clinic','#F2705F','Tell any provider',null,null);
-  b.innerHTML=`<p class="tldr">In an emergency</p><ul class="em">${EMERGENCY.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
-    <p class="tldr">The handful of facts that change what a stranger in scrubs should do.</p><ol class="alerts">${ALERTS.map(a=>`<li><b>${esc(a[0])}</b> ${esc(a[1])}</li>`).join('')}</ol>`+srcLine(['wao2020','cdcseizure','esc2018','girft','lbl_hcq','lbl_ntx','lbl_tiz','oka2014','audit2025','crediblemeds']);A.refresh();home();};
+drawer.addEventListener('click',e=>{const s=e.target.closest('[data-src]');if(s){e.stopPropagation();openSources(s.dataset.src,backTo());}},true);
+function overlay(id,col,title){stopStation();active=null;renderPanel();const st=ST[id];
+  const body=shell('',col,title,null,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));}
+const openWeb=()=>overlay('web','#ECE6DA','Connections'),openDay=()=>overlay('day','#ECE6DA','A day in the patient\'s body'),openNotes=()=>overlay('notes','#BFE6E1','Notes');
+function closeAll(){stopStation();active=null;page=null;drawer.classList.remove('open');drawer.inert=true;renderPanel();A.refresh();
+  if(!popping&&!diveOpen())popTo(0);
+  requestAnimationFrame(()=>{fitOffset();if(!drawer.classList.contains('open'))home();});}
+drawer.addEventListener('click',e=>{const m=e.target.closest('.lk[data-med]');if(m)return openMed(m.dataset.med,undefined,backTo());const c=e.target.closest('.lk[data-cond]');if(c)open(c.dataset.cond,undefined,backTo());});
+// the top bar's buttons end the tour first: the tour hides the drawer
+const act=f=>()=>{if(tour?.active)tour.end();f();};
+$('#webBtn').onclick=act(openWeb);
+$('#notesBtn').onclick=act(openNotes);
+$('#alertBtn').onclick=act(()=>{stopStation();active=null;renderPanel();const b=shell('','#F2705F','Emergency',null,null);
+  b.innerHTML=`<h3 style="margin-top:0">In an emergency</h3><ul class="em">${EMERGENCY.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
+    <h3>Tell any provider</h3><ol class="alerts">${ALERTS.map(a=>`<li><b>${esc(a[0])}</b> ${esc(a[1])}</li>`).join('')}</ol>`+srcLine(['wao2020','cdcseizure','esc2018','girft','lbl_hcq','lbl_ntx','lbl_tiz','oka2014','audit2025','crediblemeds']);A.refresh();home();});
 
 /* ---------- layers ---------- */
 document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.layer;A.layerOn[k]=!A.layerOn[k];b.setAttribute('aria-pressed',A.layerOn[k]);A.refresh();}));
@@ -526,10 +555,9 @@ function showTip(x,y,rec){const inv=rec.group==='skin'?[]:involved(rec);
 canvas.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||e.buttons)return;const now=performance.now();if(now-lastPick<70)return;lastPick=now;
   const h=A.pick(e.clientX,e.clientY);if(h)showTip(e.clientX,e.clientY,h.rec);else tip.classList.remove('on');});
 canvas.addEventListener('pointerleave',()=>tip.classList.remove('on'));
-canvas.addEventListener('pointerdown',e=>{downAt=[e.clientX,e.clientY];A.stopTween();hideHint();});
+canvas.addEventListener('pointerdown',e=>{downAt=[e.clientX,e.clientY];A.stopTween();});
 canvas.addEventListener('pointerup',e=>{if(!downAt)return;if(Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1])>6)return;
   const h=A.pick(e.clientX,e.clientY);if(h&&A.onBodyTap){A.onBodyTap(h);return;}if(h){showTip(e.clientX,e.clientY,h.rec);if(e.pointerType!=='mouse')setTimeout(()=>tip.classList.remove('on'),2600);}});
-let hintGone=false;function hideHint(){if(!hintGone){hintGone=true;$('#hint').style.opacity=0;}}
 
 /* ---------- light / dark ---------- */
 const themeBtn=$('#themeBtn');
@@ -556,8 +584,8 @@ onTheme(syncTheme);syncTheme();
     makeRequests({context:()=>({screen:where(),theme:theme(),size:innerWidth+'×'+innerHeight,
         device:matchMedia('(pointer:coarse)').matches?(innerWidth<=860?'phone':'tablet'):'computer'}),
       onOpen:render=>{if(dive&&!dive.root.hidden)dive.close();stopStation();active=null;renderPanel();
-        render(shell('Ideas and fixes','#BFE6E1','Suggest a change',null,null));A.refresh();hideHint();}});
-    tour=makeTour(A,{onStart:()=>{stopStation();active=null;drawer.classList.remove('open');$('#app').classList.add('touring');hideHint();requestAnimationFrame(fitOffset);},onEnd:()=>{$('#app').classList.remove('touring');closeAll();},showWeb:v=>ST.web.show(v)});
+        render(shell('','#BFE6E1','Suggest',null,null));A.refresh();}});
+    tour=makeTour(A,{onStart:()=>{stopStation();active=null;drawer.classList.remove('open');drawer.inert=true;popTo(0);$('#app').classList.add('touring');requestAnimationFrame(fitOffset);},onEnd:()=>{$('#app').classList.remove('touring');closeAll();},showWeb:v=>ST.web.show(v)});
     window.__atlas={tour,A,ST,open,closeAll,openMed,openSources,startDive,get dive(){return dive;}};window.__ready=true;
     const hash=location.hash.slice(1);if(byId[hash])open(hash);else if(hash==='sources')openSources();
   }catch(err){$('#ltxt').textContent='Could not load the anatomy: '+err.message;console.error(err);}

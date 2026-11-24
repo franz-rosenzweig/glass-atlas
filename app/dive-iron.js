@@ -22,10 +22,10 @@ export const GUIDE_I={
 function villusLevel(){
   const V=[150,290,430,570,710,850];const drops=[];let dose=0;
   return {id:'villi',label:'Lining',size:'1 mm',fit:'cover',bar:{units:100,label:'100 µm'},zoomFocus:{x:430,y:240},
-    card(){return `<p class="k">Level 1 · tissue</p><h2>The duodenum's lining</h2>
+    card(){return `<h2>The duodenum's lining</h2>
       <p>Just past the stomach, the gut wall folds into finger-like villi, each covered in absorbing cells with a blood vessel in its core. Nearly all the iron the patient absorbs gets in here, through these cells.</p>
-      <div class="dv-btns"><button class="dv-btn go" id="iv-d" type="button">Swallow a 60 mg tablet</button><button class="dv-btn" id="iv-go" type="button">Zoom into one cell<small>the iron door, 14 days</small></button></div>
-      <p class="dv-fine">Drawn to scale (100 µm bar), simplified. Most of a tablet's iron passes straight through, which is part of why oral iron upsets the gut. Tap the lining to collect its cells.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="iv-d" type="button">Swallow a 60 mg tablet</button><button class="dv-btn" id="iv-go" type="button">Zoom in · Gut cell</button></div>
+      <p class="dv-fine">Drawn to scale (100 µm bar), simplified. Most of a tablet's iron passes straight through, which is part of why oral iron upsets the gut.</p>`;},
     bind(card,api){card.querySelector('#iv-d').onclick=()=>{for(let i=0;i<120;i++)drops.push({x:rand(80,920),y:rand(-200,0),vy:rand(60,110),in:false,v:Math.floor(rand(0,6))});dose++;};card.querySelector('#iv-go').onclick=()=>api.go('cell',{from:{x:430,y:240}});},
     tap(p,api){if(p.y>140)api.discover('entero');},
     draw(x,dt,t){x.fillStyle='#120F0B';x.fillRect(-400,-300,1800,1300);
@@ -98,7 +98,7 @@ function cellLevel(){
       q('#ic-take').disabled=S.taken||S.done;}
   }
   return {id:'cell',label:'Gut cell',size:'20 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:350},
-    card(){return `<p class="k">Level 2 · one cell · day <span id="ic-day">1</span> of 14</p><h2>The iron door</h2>
+    card(){return `<p class="k">Day <span id="ic-day">1</span> of 14</p><h2>The iron door</h2>
       <p>Iron gets in at the top, but leaves for the blood through one kind of door, ferroportin, at the bottom. After a dose the liver sends hepcidin, which closes many of the doors for about a day, so the next day's dose gets out roughly a third less well; iron that can't leave gets stored, and is lost when the cell is shed a few days later.</p>
       <div class="dv-meter"><span>Hepcidin</span><b id="ic-hv">low</b><i><u id="ic-h" style="background:#F2705F"></u></i></div>
       <div class="dv-meter"><span>Reached the blood</span><b id="ic-b">0 mg</b></div><div class="dv-meter"><span>Doses taken</span><b id="ic-d">0</b></div><div class="dv-meter"><span>Lost with shed cells (illustrative)</span><b id="ic-l">0 mg</b></div>

@@ -13,9 +13,9 @@ export function makeStations2(A){
       ['heat','Heat','hot shower, hot weather',22,{skin:1.3,cv:1.2}],
       ['exercise','Exercise','',20,{cv:1.4,skin:1}],
       ['scent','Fragrance or smoke','',18,{air:1.6}],
-      ['food','One of the patient\'s trigger foods','trigger foods differ from person to person',20,{gut:1.6}],
+      ['food','One of the patient\'s trigger foods','',20,{gut:1.6}],
       ['alcohol','Alcohol','',18,{skin:1.2,gut:1.1}],
-      ['nsaid','Ibuprofen','an NSAID, a trigger for some people',18,{gut:1.1,skin:1.1,air:1}],
+      ['nsaid','Ibuprofen','',18,{gut:1.1,skin:1.1,air:1}],
       ['stress','Stress or short sleep','',16,{brain:1.5}],
       ['friction','Pressure or friction on the skin','',14,{skin:1.5}],
     ];
@@ -61,15 +61,15 @@ export function makeStations2(A){
       enter(panel){
         K.resetRig();if(!cells)build();cells.visible=med.visible=true;
         K.setMode({layers:{skin:.8,skeleton:.08,organs:.45,vessels:.6}});
-        panel.innerHTML=`<div class="readouts">
-            <div class="ro"><span>Trigger load</span><b id="m-load" class="sm">low</b><span class="note">the "bucket": triggers add up, and a flare starts when it overflows</span><span class="bar"><i id="m-loadBar"></i><em id="m-thr"></em></span></div>
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
+            <div class="ro"><span>Trigger load</span><b id="m-load" class="sm">low</b><span class="bar"><i id="m-loadBar"></i><em id="m-thr"></em></span></div>
             ${SYSL.map(([k,l,n])=>`<div class="ro"><span>${l}</span><b id="m-${k}">quiet</b><span class="note">${n}</span><span class="bar"><i id="m-${k}Bar"></i></span></div>`).join('')}
           </div>
-          <p class="eyebrow">What's happening today</p>
+          <p class="eyebrow">Triggers</p>
           <div class="tgs two">${TR.map(([k,l,sub])=>toggle('m-t-'+k,l,false,sub)).join('')}</div>
           <p class="eyebrow">Treatment</p>
-          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'her daily Zyrtec (cetirizine) is one: itch, hives, flushing, runny nose. Not enough for throat or breathing trouble: that needs epinephrine.')}${toggle('m-h2','H2 blocker',false,'famotidine: stomach acid and gut symptoms')}${toggle('m-cro','Oral cromolyn',false,'steadies mast cells in the gut lining; barely absorbed; shown as it works after 2–3 weeks')}</div>
-          <p class="eyebrow">The lab test that confirms a flare</p>
+          <div class="tgs">${toggle('m-h1','H1 antihistamine',false,'e.g. her Zyrtec')}${toggle('m-h2','H2 blocker',false,'e.g. famotidine')}${toggle('m-cro','Oral cromolyn',false,'works after 2–3 weeks')}</div>
+          <p class="eyebrow">Tryptase test</p>
           <div class="readouts">
             <div class="ro"><span>Tryptase needed to count</span><b id="m-need"></b><span class="note">baseline × 1.2 + 2 ng/mL (the 20% + 2 rule)</span></div>
             <div class="ro"><span>Tryptase in this sample</span><b id="m-got"></b></div>
@@ -77,11 +77,11 @@ export function makeStations2(A){
           </div>
           <div id="m-chart"></div>
           <p class="legend"><span><i class="sw" style="background:var(--immune)"></i>Tryptase</span> <span><i class="sw" style="background:var(--ok);height:8px;opacity:.5"></i>Ideal draw 1–2 h; no later than 4 h</span></p>
-          ${slider('m-draw','Blood drawn, hours after the flare starts',0,8,.25,1.5,' h')}
-          ${slider('m-base','Baseline tryptase (example; not on the patient\'s chart)',2,15,.5,5,' ng/mL')}
-          <p class="fine" id="m-hat" hidden style="margin-top:0!important">A baseline of 8 ng/mL or more is worth asking about: about 4–6% of people inherit extra copies of a tryptase gene (hereditary alpha-tryptasemia), found in a 2016 study alongside flushing, dysautonomia and hypermobility.</p>
+          ${slider('m-draw','Hours after the flare',0,8,.25,1.5,' h')}
+          ${slider('m-base','Baseline tryptase (example)',2,15,.5,5,' ng/mL')}
           <div class="warn" id="m-em"><b>Emergency signs</b><span id="m-emx" hidden><strong>This pattern needs epinephrine, not more antihistamine.</strong> </span>Throat tightness, trouble breathing or swallowing, fainting or feeling faint, or hives together with vomiting or severe cramps: <strong>give epinephrine first, then call 911.</strong> Lay the patient flat with legs raised (sitting up if breathing is hard); don't let her stand or walk, which matters even more with POTS. Give a second dose after 5–15 minutes if there's no clear improvement. The patient's propranolol can blunt epinephrine, <strong>which is a reason to give it promptly, not to skip it</strong>; the team has a backup (glucagon) and needs to know she takes it. Symptoms can come back hours later, so she should still be checked.</div>
-          <p class="fine">The orange dots are mast cells, sampled on the real skin, gut, airways and great vessels where they concentrate. The triggers, the bucket and the treatment effects are a teaching picture with illustrative sizes; the patient's own triggers and doses aren't on the chart. The tryptase rule is the consensus one (Valent 2012) and is one of three criteria, alongside multi-system symptoms and response to treatment. Tryptase peaks about 1–2 hours after a reaction and has a half-life of about 2 hours, so UK guidance (NICE) advises drawing it within 1–2 hours of onset and no later than 4. A baseline is drawn when the patient is well, at least a day or two after symptoms have fully settled (Valent 2019). Many flares raise it only modestly, which is why timing decides the result.</p>`;
+          <p class="fine" id="m-hat" hidden>A baseline of 8 ng/mL or more is worth asking about: about 4–6% of people inherit extra copies of a tryptase gene (hereditary alpha-tryptasemia), found in a 2016 study alongside flushing, dysautonomia and hypermobility.</p>
+          <p class="fine">The orange dots are mast cells, sampled on the real skin, gut, airways and great vessels where they concentrate. The "bucket": triggers add up, and a flare starts when it overflows. The triggers, the bucket and the treatment effects are a teaching picture with illustrative sizes; the patient's own triggers and doses aren't on the chart. The tryptase rule is the consensus one (Valent 2012) and is one of three criteria, alongside multi-system symptoms and response to treatment. Tryptase peaks about 1–2 hours after a reaction and has a half-life of about 2 hours, so UK guidance (NICE) advises drawing it within 1–2 hours of onset and no later than 4. A baseline is drawn when the patient is well, at least a day or two after symptoms have fully settled (Valent 2019). Many flares raise it only modestly, which is why timing decides the result.</p>`;
         ui=panel;
         for(const [k] of TR)bindToggle(panel,'m-t-'+k,v=>on[k]=v);
         bindToggle(panel,'m-h1',v=>tx.h1=v);bindToggle(panel,'m-h2',v=>tx.h2=v);bindToggle(panel,'m-cro',v=>tx.cro=v);
@@ -171,11 +171,11 @@ export function makeStations2(A){
       enter(panel){
         K.resetRig();if(!rbc)build();rbc.visible=true;month=0;playing=false;
         K.setMode({layers:{skin:.25,skeleton:.08,organs:.25,vessels:.9},focus:new Set(liverRecs()),focusColor:'#D9A441',dim:.6});
-        panel.innerHTML=`<div class="readouts">
-            <div class="ro"><span>Ferritin in this example</span><b id="i-f"></b><span class="note">under 15: stores empty (WHO); under 30: a common clinical cut-off. With inflammation such as active RA, ferritin reads falsely high: WHO uses under 70</span><span class="bar"><i id="i-fBar"></i><em style="left:15%"></em><em style="left:30%"></em></span></div>
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
+            <div class="ro"><span>Ferritin</span><b id="i-f"></b><span class="note">under 15 empty · under 30 low · under 70 with inflammation (WHO)</span><span class="bar"><i id="i-fBar"></i><em style="left:15%"></em><em style="left:30%"></em></span></div>
             <div class="ro"><span>Haemoglobin</span><b id="i-hb"></b><span class="note">anaemia below 12 g/dL in women (WHO)</span></div>
-            <div class="ro"><span>Stage in this example</span><b id="i-st" class="sm"></b></div>
-            <div class="ro"><span>Extra work for the heart at rest</span><b id="i-hr" class="sm"></b><span class="note">only once haemoglobin falls into anaemia; simplified</span></div>
+            <div class="ro"><span>Stage</span><b id="i-st" class="sm"></b></div>
+            <div class="ro"><span>Extra work for the heart at rest</span><b id="i-hr" class="sm"></b><span class="note">only once anaemic</span></div>
           </div>
           <div id="i-chart"></div>
           <p class="legend"><span><i class="sw" style="background:#D9A441"></i>Ferritin, ng/mL</span><span><i class="sw sw-n" style="border-color:#E0566A"></i>Haemoglobin</span></p>
@@ -183,11 +183,11 @@ export function makeStations2(A){
           <div class="btns"><button class="btn primary" id="i-play" type="button">Play a year</button></div>
           ${slider('i-f0','Ferritin at the start (example)',5,80,1,25,' ng/mL')}
           ${slider('i-mbl','Blood lost per period',20,150,5,60,' mL')}
-          <p class="fine" style="margin-top:0!important">About 30–40 mL is typical; 80 mL or more is the research definition of heavy. In practice doctors go by impact: flooding, changing protection every hour or two, clots, or bleeding that disrupts daily life (NICE).</p>
           <div class="seg" role="radiogroup" aria-label="Iron supplement">${[['none','No supplement'],['daily','60 mg daily'],['alt','60 mg every other day']].map(([k,l])=>`<button role="radio" data-s="${k}" aria-checked="${k===v.sup}">${l}</button>`).join('')}</div>
-          <div class="ro" id="i-dose" hidden><span>Absorbed per 60 mg tablet, first two weeks</span><b id="i-pd"></b><span class="note">a dose raises hepcidin for about a day, so the next day's tablet is absorbed less well; absorption falls further as stores fill</span></div>
-          <p class="fine" style="margin-top:0!important">60 mg of elemental iron (a 325 mg ferrous sulfate tablet has about 65 mg). The dose and schedule are for the patient's doctor to choose.</p>
+          <div class="ro" id="i-dose" hidden><span>Absorbed per 60 mg tablet, first two weeks</span><b id="i-pd"></b><span class="note">less absorbed the day after a dose</span></div>
           <div class="warn"><b>For any provider</b>Iron and levothyroxine at least four hours apart.</div>
+          <p class="fine">About 30–40 mL is typical; 80 mL or more is the research definition of heavy. In practice doctors go by impact: flooding, changing protection every hour or two, clots, or bleeding that disrupts daily life (NICE).</p>
+          <p class="fine">60 mg of elemental iron (a 325 mg ferrous sulfate tablet has about 65 mg). The dose and schedule are for the patient's doctor to choose.</p>
           <p class="fine">The golden glow in the liver and spleen is stored iron; red cells shrink and pale as iron runs out, the small, pale (microcytic, hypochromic) cells of iron-deficiency anaemia. The ledger is an illustrative model built on real constants: about 8 mg of stored iron per ng/mL of ferritin, about 156 mg of iron per g/dL of haemoglobin, about 1 mg lost daily plus each period. In 40 iron-depleted women, fractional absorption from 60 mg was 16.3% on consecutive days and 21.8% on alternate days (Stoffel 2017): more <em>per tablet</em> on alternate days, though daily dosing still delivers more iron per week. In a 2023 trial at the same total dose, both schedules gave the same ferritin at six months, with fewer stomach side effects on alternate days (von Siebenthal 2023); the model's rise is calibrated to that trial. Ferritin is only a guide to stores when there's no inflammation. The patient's own labs and period history aren't on the chart.</p>`;
         ui=panel;
         const run=()=>{series=simulate();panel.querySelector('#i-chart').innerHTML=chart();const pd=panel.querySelector('#i-dose');pd.hidden=v.sup==='none';panel.querySelector('#i-pd').textContent=fmt(series.perDose,1)+' mg';};
@@ -250,20 +250,20 @@ export function makeStations2(A){
       id:'brain',title:'Seizure threshold',fig:'The brain after encephalitis',
       enter(panel){
         K.resetRig();if(!sparks)build();sparks.visible=true;setRegion();
-        panel.innerHTML=`<div class="readouts">
-            <div class="ro"><span>Things pushing the threshold down today</span><b id="b-l" class="sm"></b><span class="bar band"><i id="b-lBar"></i></span><span class="note">the shaded end is where risk rises (a picture only)</span></div>
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
+            <div class="ro"><span>Strain on the threshold</span><b id="b-l" class="sm"></b><span class="bar band"><i id="b-lBar"></i></span><span class="note">illustrative</span></div>
             <div class="ro"><span>Strains stacking up</span><b id="b-m" class="sm"></b></div>
           </div>
-          <p class="fine" style="margin-top:2px!important">Nobody's seizure threshold can be measured, including the patient's. Stacking strains doesn't mean a seizure will happen, and avoiding them doesn't guarantee one won't. The point is which everyday things are worth protecting: sleep above all.</p>
           ${slider('b-sleep','Sleep last night',3,9,.5,7,' h')}
           <div class="tgs two">${toggle('b-ill','Fever or illness')}${toggle('b-stress','High stress')}${toggle('b-alc','Heavy drinking or withdrawal')}${toggle('b-meal','Skipped meals (low blood sugar)')}</div>
-          <p class="eyebrow">The patient's medicines: label cautions</p>
+          <p class="eyebrow">Label cautions</p>
           <ul class="quotes">${MEDQ.map(([n,q])=>`<li><b>${n}</b> ${q}</li>`).join('')}</ul>
           <p class="fine" style="margin-top:4px!important">None of this means the patient shouldn't take them. It means the seizure history belongs in every prescribing decision. Bupropion is not used with a seizure disorder, and tramadol is a double concern with her Lexapro: it raises seizure risk and, with an SSRI, the risk of serotonin syndrome.</p>
           <div class="warn"><b>If the patient has a seizure</b>Stay with her and time it. Move hard things away, cushion the head, and once the jerking stops roll her onto her side. Nothing in the mouth; don't hold her down. <strong>Call 911</strong> if it lasts more than 5 minutes, another starts before she comes round, she's hurt, has trouble breathing, doesn't wake up afterwards, or it happens in water. A faint can include a few seconds of jerking too: note what came before and how fast she came round, and tell her doctors.</div>
-          <p class="eyebrow">What can linger: choose a network</p>
+          <p class="eyebrow">What can linger</p>
           <div class="seg" role="radiogroup" aria-label="Brain network">${Object.entries(REG).map(([k,r])=>`<button role="radio" data-r="${k}" aria-checked="${k===region}">${r.label}</button>`).join('')}</div>
           <p class="regtext" id="b-rt"></p>
+          <p class="fine">Nobody's seizure threshold can be measured, including the patient's. Stacking strains doesn't mean a seizure will happen, and avoiding them doesn't guarantee one won't. The point is which everyday things are worth protecting: sleep above all.</p>
           <p class="fine">Every brain structure here is real anatomy. The blue sparks are a picture of excitability, not a recording. The direction of each factor is well established: sleep loss, fever and illness, alcohol and its withdrawal all lower the threshold; significant low blood sugar does too, though a missed meal rarely gets that low. For scale: in a long-term population study, people who had seizures during encephalitis had about a 1 in 10 chance of a later unprovoked seizure within five years and about 1 in 5 over twenty (Annegers 1988); many never have another. The chart doesn't say which type of encephalitis the patient had, so the networks shown are the ones most often affected.</p>`;
         ui=panel;
         bindSlider(panel,'b-sleep',x=>v.sleep=x,x=>x+' h');for(const k of ['ill','stress','alc','meal'])bindToggle(panel,'b-'+k,on=>v[k]=on);

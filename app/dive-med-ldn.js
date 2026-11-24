@@ -82,7 +82,7 @@ function hornLevel(){
     card.querySelector('#lh-tlB').style.width=Math.abs(T.ldn)/2*100+'%';card.querySelector('#lh-tpB').style.width=Math.abs(T.pl)/2*100+'%';card.querySelector('#lh-tt').textContent=T.t;
     card.querySelectorAll('[data-tr]').forEach(b=>b.setAttribute('aria-checked',b.dataset.tr===S.trial));}
   return {id:'horn',label:'Spinal cord',size:'100 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:572,y:352},
-    card(){return `<p class="k">Level 1 · the spinal cord</p><h2>The pain relay</h2>
+    card(){return `<h2>The pain relay</h2>
       <p>Pain signals from the body pass to a relay neuron here, in the back of the spinal cord, which carries them up to the brain. Around them sit microglia, the nervous system's own immune cells; at rest their branches keep moving, checking their patch (Kettenmann 2011).</p>
       <p>Naltrexone's sure job is blocking opioid receptors (next level). One reason it is tried in small doses for chronic pain is a hypothesis about these cells: that it calms switched-on microglia through an alarm sensor called TLR4 (Younger 2014). <b style="color:var(--bone)">Switch the microglia on, then try the idea.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Microglia"><button role="radio" data-mg="rest" aria-checked="true">Resting</button><button role="radio" data-mg="on" aria-checked="false">Switched on</button></div>
@@ -94,8 +94,8 @@ function hornLevel(){
       <div class="dv-meter"><span>Pain change on LDN</span><b id="lh-tl"></b><i><u id="lh-tlB" style="background:${cc(C.ntx)}"></u></i></div>
       <div class="dv-meter"><span>Pain change on placebo</span><b id="lh-tp"></b><i><u id="lh-tpB" style="background:${cc('#8FA3A6')}"></u></i></div>
       <p id="lh-tt" class="dv-fine" style="color:var(--bone-2)!important"></p>
-      <div class="dv-btns"><button class="dv-btn" id="lh-go" type="button">Zoom into the receptors<small>what it surely does</small></button></div>
-      <p class="dv-fine">Schematic; the amplification is illustrative, drawn to show the hypothesis, not measured. In rats with a nerve injury, single injections of TLR4 blockers into the spinal fluid, including mirror-image naloxone and naltrexone, eased established pain, and a four-day naloxone infusion reversed it and calmed the microglia (Hutchinson 2008); in animal models switched-on microglia help keep nerve-injury pain going (Inoue 2018). Whether a 4.5 mg tablet does anything like this in people is unproven; a 2026 review calls the proposed mechanisms largely theoretical (Gouda 2026). Tap the cells to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="lh-go" type="button">Zoom in · Receptors</button></div>
+      <p class="dv-fine">Schematic; the amplification is illustrative, drawn to show the hypothesis, not measured. In rats with a nerve injury, single injections of TLR4 blockers into the spinal fluid, including mirror-image naloxone and naltrexone, eased established pain, and a four-day naloxone infusion reversed it and calmed the microglia (Hutchinson 2008); in animal models switched-on microglia help keep nerve-injury pain going (Inoue 2018). Whether a 4.5 mg tablet does anything like this in people is unproven; a 2026 review calls the proposed mechanisms largely theoretical (Gouda 2026).</p>`;},
     bind(card,api){trial(card);
       card.querySelectorAll('[data-mg]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.mg;card.querySelectorAll('[data-mg]').forEach(y=>y.setAttribute('aria-checked',y===b));});
       const l=card.querySelector('#lh-ldn');l.onclick=()=>{S.ldn=!S.ldn;l.classList.toggle('on',S.ldn);if(S.ldn)api.discover('ldn_tlr4',true);};
@@ -176,7 +176,7 @@ function receptorLevel(){
       const sl=q('#lr-h');if(S.play&&document.activeElement!==sl)sl.value=S.h;q('#lr-play').textContent=S.play?'Pause':'Play';}
   }
   return {id:'receptor',label:'Receptors',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:MEM},
-    card(){return `<p class="k">Level 2 · molecules</p><h2>Blocked for part of each day</h2>
+    card(){return `<h2>Blocked for part of each day</h2>
       <p>Opioid receptors on a nerve cell in the same relay. Naltrexone fits their pocket without switching them on, so while it sits there nothing else can use them: not the body's own endorphins (green), not an opioid painkiller (orange). It competes for the spot, and it leaves as its level falls (label).</p>
       <p><b style="color:var(--bone)">Let the day run, and give a painkiller at different hours.</b></p>
       <label class="dv-meter"><span>Time since the dose</span><b id="lr-clk">22:00 · 0 h</b></label><input id="lr-h" type="range" min="0" max="24" step=".1" value="0" style="width:100%;accent-color:${cc(C.ntx)}" aria-label="Hours after the dose">
@@ -188,7 +188,7 @@ function receptorLevel(){
       <div class="dv-seg" role="radiogroup" aria-label="Taken at"><button role="radio" data-at="bed" aria-checked="true">At bedtime</button><button role="radio" data-at="am" aria-checked="false">In the morning</button></div>
       <div class="dv-btns"><button class="dv-btn" id="lr-reb" type="button">The rebound idea<small>a hypothesis</small></button></div>
       <p id="lr-note"></p>
-      <p class="dv-fine">The curve's heights come from brain scans: about 45% for 4.5 mg within 8 hours, over 90% for 50 mg for two days (Rabiner 2011; Lee 1988, via Trøstheim 2023). How the low dose's block fades over the day hasn't been measured, so its shape is a sketch; the 4-hour blood half-life is no guide, since 50 mg holds the receptors for days. Molecules and timings are schematic. Tap the receptors and molecules to collect them.</p>`;},
+      <p class="dv-fine">The curve's heights come from brain scans: about 45% for 4.5 mg within 8 hours, over 90% for 50 mg for two days (Rabiner 2011; Lee 1988, via Trøstheim 2023). How the low dose's block fades over the day hasn't been measured, so its shape is a sketch; the 4-hour blood half-life is no guide, since 50 mg holds the receptors for days. Molecules and timings are schematic.</p>`;},
     bind(card,api){const nt=()=>{card.querySelector('#lr-note').textContent=note();};nt();
       const sl=card.querySelector('#lr-h');sl.oninput=()=>{S.h=+sl.value;S.play=false;};
       card.querySelector('#lr-play').onclick=()=>{S.play=!S.play;};

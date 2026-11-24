@@ -34,13 +34,13 @@ function circuitLevel(){
     if(flow>0){const n=pts.length-1;for(let k=0;k<3;k++){let u=((t*speed+k/3)%1)*n;const i=Math.min(n-1,Math.floor(u)),f=u-i;const [a0,b0]=pts[i],[a1,b1]=pts[i+1];const [X,Y]=pt(lerp(a0,a1,f),lerp(b0,b1,f));
       x.save();x.globalCompositeOperation='lighter';glow(x,X,Y,12*flow,col);x.restore();}}}
   return {id:'circuit',label:'Reflex',size:'1 m',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:176,label:'50 cm'},zoomFocus:{x:470,y:300},
-    card(){return `<p class="k">Level 1 · the whole body</p><h2>The standing reflex</h2>
-      <p>Press stand and follow the loop: pressure sensors in the neck and chest (gold) report to the brainstem, which answers through the sympathetic nerves (orange: squeeze, speed up) and eases off the vagus (blue: the heart's brake).</p>
+    card(){return `<h2>The standing reflex</h2>
+      <p>The loop: pressure sensors in the neck and chest (gold) report to the brainstem, which answers through the sympathetic nerves (orange: squeeze, speed up) and eases off the vagus (blue: the heart's brake).</p>
       <div class="dv-seg" role="radiogroup" aria-label="Type">${Object.entries(SUB).map(([k,v])=>`<button role="radio" data-s="${k}" aria-checked="${k===st.sub}">${v.l}</button>`).join('')}</div>
       <p id="pc-t"></p>
       <div class="dv-meter"><span>Heart rate</span><b id="pc-hr"></b></div><div class="dv-meter"><span>Blood pressure (systolic)</span><b id="pc-bp"></b></div><div class="dv-meter"><span>Blood shifted to the legs</span><b id="pc-pool"></b></div>
-      <div class="dv-btns"><button class="dv-btn go" id="pc-st" type="button">Stand up</button><button class="dv-btn" id="pc-go" type="button">Play the reflex<small>a rhythm game</small></button></div>
-      <p class="dv-fine">The circuit is real anatomy, simplified. The subtypes come from the research literature and often overlap; which one fits the patient isn't on the chart. Numbers are typical shapes, not her readings. Tap the sensors, nerves or brainstem to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="pc-st" type="button">Stand up</button><button class="dv-btn" id="pc-go" type="button">Play · Rhythm</button></div>
+      <p class="dv-fine">The circuit is real anatomy, simplified. The subtypes come from the research literature and often overlap; which one fits the patient isn't on the chart. Numbers are typical shapes, not her readings.</p>`;},
     bind(card,api){const txt=()=>card.querySelector('#pc-t').textContent=SUB[st.sub].t;txt();
       card.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{st.sub=b.dataset.s;card.querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-checked',x===b));txt();});
       const sb=card.querySelector('#pc-st');sb.onclick=()=>{st.ts=st.ts>.5?0:1;sb.textContent=st.ts?'Lie down':'Stand up';};
@@ -86,7 +86,7 @@ function rhythmLevel(){
   function hit(api){if(!S.on){S.on=true;return;}let best=null,bd=46;for(const b of S.beats){if(b.hit||b.missed)continue;const d=Math.abs(b.x-HIT);if(d<bd){bd=d;best=b;}}
     if(best){best.hit=true;S.hits++;S.P=Math.min(104,S.P+4*(S.pots?.7:1));S.fx.push({t:0,good:bd<20});}else S.fx.push({t:0,bad:true});}
   return {id:'rhythm',label:'Rhythm',size:'1 s',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'a game version of the reflex'},zoomFocus:{x:500,y:350},
-    card(){return `<p class="k">Level 2 · the reflex, as a game</p><h2>Stand up and keep up</h2>
+    card(){return `<h2>Stand up and keep up</h2>
       <p>The patient has just stood up and blood is draining to her legs. Each heartbeat (dot) carries the pressure report; <b style="color:var(--bone)">tap or press space as it crosses the line</b> to fire a squeeze. Miss, or squeeze too weakly, and the heart speeds up to compensate. Faster heart, more beats: that's the trade POTS makes. Turn off "The patient (POTS)" to watch a typical body run the reflex by itself. In POTS mode even perfect taps fall short, because the squeeze itself is weaker: it isn't about effort.</p>
       <div class="dv-meter"><span>Heart rate</span><b id="pr-hr">70</b></div>
       <div class="dv-meter"><span>Rise since lying</span><b id="pr-rise">+0</b><i><u id="pr-riseB"></u></i></div>

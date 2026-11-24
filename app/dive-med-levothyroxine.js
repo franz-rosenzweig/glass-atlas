@@ -115,7 +115,7 @@ function gutLevel(){
   function evidence(card){const c=COMP[S.comp];const e=EV[S.comp];let txt=typeof e==='string'?e:S.spaced?(e[1]||SPACED4):e[0];if(S.ppi)txt+=PPI;card.querySelector('#lg-ev').textContent=txt;
     const sp=card.querySelector('[data-s="1"]');sp.textContent=c.gap?`${c.gap} apart`:'apart';card.querySelector('#lg-tm').hidden=S.comp==='water';card.querySelectorAll('[data-s]').forEach(b=>b.setAttribute('aria-checked',(b.dataset.s==='1')===S.spaced));}
   return {id:'gut',label:'Gut',size:'20 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:65,label:'5 cm'},zoomFocus:{x:700,y:452},
-    card(){return `<p class="k">Level 1 · the gut</p><h2>The pill's way in</h2>
+    card(){return `<h2>The pill's way in</h2>
       <p>Levothyroxine is T4, the thyroid's own hormone, made in a factory. The tablet has to dissolve in stomach acid, and the T4 is then absorbed mostly in the jejunum and upper ileum. Anything that sticks to it on the way, or weakens the acid, means less of it reaches the blood. How fast the stomach empties matters too: gastroparesis is one of the stomach conditions linked to needing more levothyroxine (Virili 2020), so the patient's slow stomach may be one more reason her TSH is watched.</p>
       <p class="sub">Take it with</p>
       <div class="dv-seg" role="radiogroup" aria-label="Taken with">${Object.entries(COMP).map(([k,c])=>`<button role="radio" data-c="${k}" aria-checked="${k==='water'}">${c.l}</button>`).join('')}</div>
@@ -125,8 +125,8 @@ function gutLevel(){
       <div class="dv-meter"><span>T4 molecules stuck to something</span><b id="lg-l">—</b></div>
       <div class="dv-meter"><span>Left undissolved</span><b id="lg-u">—</b></div>
       <p class="dv-fine" id="lg-ev"></p>
-      <div class="dv-btns"><button class="dv-btn" id="lg-go" type="button">Zoom into one cell<small>where T4 becomes T3</small></button></div>
-      <p class="dv-fine">Schematic: the stomach roughly to scale (5 cm bar), the intestine shortened and widened. A number appears only where a study measured absorption. Iron, antacids and acid reducers were measured by their effect on TSH, so their bars are striped and their size is illustrative. Sources: Synthroid label; ATA 2014; Benvenga 2008; Zamfirescu 2011; Bach-Huynh 2009; Campbell 1992; Centanni 2006; Virili 2020. Tap the pill and what it meets to collect them.</p>
+      <div class="dv-btns"><button class="dv-btn" id="lg-go" type="button">Zoom in · One cell</button></div>
+      <p class="dv-fine">Schematic: the stomach roughly to scale (5 cm bar), the intestine shortened and widened. A number appears only where a study measured absorption. Iron, antacids and acid reducers were measured by their effect on TSH, so their bars are striped and their size is illustrative. Sources: Synthroid label; ATA 2014; Benvenga 2008; Zamfirescu 2011; Bach-Huynh 2009; Campbell 1992; Centanni 2006; Virili 2020.</p>
       <style>.dv-meter u.hatch{background:repeating-linear-gradient(135deg,var(--c) 0 5px,transparent 5px 9px)!important}</style>`;},
     bind(card,api){card.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{if(S.run?.done)S.run=null;S.comp=b.dataset.c;if(S.comp==='water')S.spaced=false;card.querySelectorAll('[data-c]').forEach(x=>x.setAttribute('aria-checked',x===b));evidence(card);});
       card.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{if(S.run?.done)S.run=null;S.spaced=b.dataset.s==='1';evidence(card);});
@@ -208,7 +208,7 @@ function cellLevel(jump){
     q('#lc-p').textContent=changed?Math.round(p*100)+'% of the way':'—';q('#lc-pB').style.width=(changed?p:0)*100+'%';
     q('#lc-t').textContent=!changed?'—':S.wk<6?'too early: still moving':'settled enough to check';}
   return {id:'cell',label:'One cell',size:'20 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:NX,y:NY},
-    card(){return `<p class="k">Level 2 · one cell</p><h2>Where T4 becomes T3</h2>
+    card(){return `<h2>Where T4 becomes T3</h2>
       <p>In the blood nearly all T4 rides on carrier proteins, and only the free sliver can act. It enters cells through transporter proteins. Inside, an enzyme called D2 snips off one iodine, turning T4 into T3, about four times as active. T3 goes into the nucleus and sits in the thyroid hormone receptor, which waits on the DNA with a brake on; T3 lifts the brake and the genes are read. About 80% of the body's T3 is made outside the thyroid, mostly by D2 and some by its cousin D1 in the liver and kidney (ATA 2014; Synthroid label); in someone whose thyroid makes little, nearly all of it is. <b style="color:var(--bone)">Tap a T4 (four yellow iodines) inside the cell to snip one off yourself.</b></p>
       <div class="dv-meter"><span>T3 made</span><b id="lc-m">0</b></div>
       <div class="dv-meter"><span>Genes switched on</span><b id="lc-g">0%</b><i><u id="lc-gB"></u></i></div>
@@ -218,8 +218,8 @@ function cellLevel(jump){
       <div class="dv-meter"><span>Since the change</span><b id="lc-w">no change yet</b></div>
       <div class="dv-meter"><span>Blood T4</span><b id="lc-p">—</b><i><u id="lc-pB"></u></i></div>
       <div class="dv-meter"><span>TSH</span><b id="lc-t">—</b></div>
-      <div class="dv-btns"><button class="dv-btn" id="lc-hashi" type="button">Adjust the dose for a year<small>Hashimoto dive · the follicle</small></button></div>
-      <p class="dv-fine">The cell is schematic, and the dose step is exaggerated so it shows. The timing is real: a half-life of about 7 days and steady state in about 6 weeks (ATA 2014), with TSH checked 6 to 8 weeks after any change (Synthroid label). In an underactive thyroid the half-life is longer, 9 to 10 days (Synthroid label). One week passes every 2 seconds. Sources: Synthroid label; ATA 2014; Brent 2012. Tap the blood, the doors, the enzymes and the receptors to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="lc-hashi" type="button">Hashimoto's · Follicle</button></div>
+      <p class="dv-fine">The cell is schematic, and the dose step is exaggerated so it shows. The timing is real: a half-life of about 7 days and steady state in about 6 weeks (ATA 2014), with TSH checked 6 to 8 weeks after any change (Synthroid label). In an underactive thyroid the half-life is longer, 9 to 10 days (Synthroid label). One week passes every 2 seconds. Sources: Synthroid label; ATA 2014; Brent 2012.</p>`;},
     bind(card,api){const ch=d=>()=>{S.old=lvl();S.tgt=clamp(S.tgt+d,.4,2.2);if(Math.abs(S.old-S.tgt)<1e-3)S.tgt=S.old+d;S.wk=0;S.play=true;};
       card.querySelector('#lc-up').onclick=ch(.35);card.querySelector('#lc-dn').onclick=ch(-.35);card.querySelector('#lc-hashi').onclick=()=>jump('hashi',{level:'follicle'});},
     tap(p,api){let best=null,bd=Math.max(30,22/p.s);for(const m of S.t4){if(m.st!=='free')continue;const d=Math.hypot(m.x-p.x,m.y-p.y);if(d<bd){bd=d;best=m;}}
@@ -236,7 +236,7 @@ export const DIVE={color:'#40C7AA',top:{label:'Belly',size:'30 cm'},
   target:({centreOf})=>centreOf(['Stomach']),view:{dist:.24,azim:20,elev:6},
   text:'Follow the patient\'s levothyroxine tablet through the stomach and gut, and see what coffee, breakfast, iron, calcium and acid reducers do to it. Then into one body cell, where T4 becomes T3, and why a dose change takes six weeks to show in TSH.',
   steps:[['Gut, 20 cm.','Swallow the pill with water, coffee, breakfast, calcium, iron or an antacid, together or spaced apart, with or without an acid reducer. Numbers only where a study measured them.'],['One cell, 20 µm.','Snip iodines to make T3 and watch genes switch on; change the dose and watch six weeks go by before TSH can be read.']],
-  also:[{dive:'hashi',level:'follicle',label:'Hashimoto dive · the follicle',small:'adjust the dose for a year while the thyroid fails'}],
+  also:[{dive:'hashi',level:'follicle',label:'Hashimoto\'s · Follicle'}],
   refs:['lbl_levo','ata2014','campbell1992','singh2000','benvenga2008','zamfirescu2011','bachhuynh2009','centanni2006','virili2020','brent2012'],
   make:({jump})=>({levels:[gutLevel(),cellLevel(jump)],guide:GUIDE_L}),
 };

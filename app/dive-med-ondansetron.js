@@ -112,7 +112,7 @@ function wallLevel(){
     set('r',clamp(S.rel,0,1));set('v',clamp(S.rate/6,0,1),S.spk.length?'firing':'quiet');set('n',S.N);
     q('#zw-c').textContent=S.drug?'slower with regular use':'usual';}
   return {id:'wall',label:'Gut wall',size:'250 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:100,label:'25 µm (gut wall)'},zoomFocus:{x:EC[1].x,y:300},
-    card(){return `<p class="k">Level 1 · tissue</p><h2>Where nausea starts</h2>
+    card(){return `<h2>Where nausea starts</h2>
       <p>Among the ordinary cells lining the gut sit enterochromaffin cells (ochre), sensors packed with serotonin (pink). When something irritates the gut, they release it onto the endings of the vagus nerve, which fire. The signal runs up the vagus to the brainstem, where the NTS and the area postrema, a patch that also samples the blood, set off nausea and vomiting. Ondansetron blocks serotonin's 5-HT3 receptor at both ends of that line.</p>
       <div class="dv-meter"><span>Serotonin released</span><b id="zw-r">0%</b><i><u id="zw-rB" style="background:${cc('#FF8FB1')}"></u></i></div>
       <div class="dv-meter"><span>Signals up the vagus</span><b id="zw-v">quiet</b><i><u id="zw-vB" style="background:${cc('#FFE36E')}"></u></i></div>
@@ -120,9 +120,9 @@ function wallLevel(){
       <div class="dv-meter"><span>Stomach emptying (ACG 2022)</span><b>slow · unchanged</b><i><u style="width:28%;background:${cc('#7E8E90')}"></u></i></div>
       <div class="dv-meter"><span>Colon</span><b id="zw-c">usual</b></div>
       <div class="dv-btns"><button class="dv-btn go" id="zw-t" type="button">Irritate the gut</button><button class="dv-btn" id="zw-d" type="button">Ondansetron<small>off</small></button></div>
-      <div class="dv-btns"><button class="dv-btn" id="zw-go" type="button">Zoom into one receptor<small>the pocket it plugs</small></button></div>
+      <div class="dv-btns"><button class="dv-btn" id="zw-go" type="button">Zoom in · Receptor</button></div>
       <p>What it doesn't do is make the stomach empty faster: a single dose into a vein had no effect on stomach movement in healthy volunteers, and the label says it does not stimulate the stomach or gut (Zofran label). In gastroparesis, nausea is linked to the stomach's own slowed, disordered movement (Babic 2014), and the gastroparesis guideline suggests antinausea drugs for relief while noting they don't improve emptying (ACG 2022). In the label's chemotherapy trials, headache (24% against 13% on placebo) and tiredness (13% against 2%) were the commonest side effects; constipation (9% against under 1%) matters most on top of a slow gut, because with days of use it slows the colon. The label also warns it can hide a worsening blockage or a swollen, stalled stomach.</p>
-      <p class="dv-fine">The gut wall is drawn to scale (25 µm bar), schematic in detail; the brainstem is an inset, not to scale. Whether ondansetron works mostly in the gut or in the brainstem isn't certain (Zofran label). Chemotherapy is the trigger the label describes. Sources: Zofran label; Gershon 2007; Babic 2014; Lummis 2012; ACG 2022. Tap cells, nerves and the brainstem to collect them; tap the gut contents to irritate one spot.</p>`;},
+      <p class="dv-fine">The gut wall is drawn to scale (25 µm bar), schematic in detail; the brainstem is an inset, not to scale. Whether ondansetron works mostly in the gut or in the brainstem isn't certain (Zofran label). Chemotherapy is the trigger the label describes. Sources: Zofran label; Gershon 2007; Babic 2014; Lummis 2012; ACG 2022. Tap the gut contents to irritate one spot.</p>`;},
     bind(card,api){card.querySelector('#zw-t').onclick=()=>burst();
       const d=card.querySelector('#zw-d');d.onclick=()=>{S.drug=!S.drug;d.classList.toggle('on',S.drug);d.querySelector('small').textContent=S.drug?'on: 5-HT3 blocked':'off';if(S.drug)api.discover('ond_drug',true);};
       card.querySelector('#zw-go').onclick=()=>api.go('receptor',{from:{x:EC[1].x,y:300}});},
@@ -187,7 +187,7 @@ function receptorLevel(){
     q('#zr-s').textContent=S.pk.filter(v=>v===1).length+' of 5';q('#zr-d').textContent=S.pk.filter(v=>v===2).length+' of 5';
     q('#zr-o').textContent=S.open>.3?'open':'shut';q('#zr-oB').style.width=S.open*100+'%';q('#zr-g').textContent=S.sig.toFixed(1)+' a second';q('#zr-gB').style.width=clamp(S.sig/5,0,1)*100+'%';}
   return {id:'receptor',label:'Receptor',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:CX,y:CY},
-    card(){return `<p class="k">Level 2 · molecules</p><h2>The pocket it plugs</h2>
+    card(){return `<h2>The pocket it plugs</h2>
       <p>Seen from above, five protein subunits ring a pore through the nerve's membrane. Serotonin binds in pockets between neighbouring subunits; with enough of them filled the pore opens, positive ions (mostly sodium) rush in, and the nerve fires. Ondansetron (gold) fits the same pockets but doesn't open the pore, and it holds on, so serotonin finds them taken. <b style="color:var(--bone)">Set the drug level, then send a serotonin surge.</b></p>
       <label class="dv-meter"><span>Ondansetron around the receptor</span><b id="zr-cv">none</b></label><input id="zr-c" type="range" min="0" max="1" step=".01" value="0" style="width:100%;accent-color:${cc('#DDB741')}">
       <div class="dv-btns"><button class="dv-btn go" id="zr-surge" type="button">Serotonin surge</button></div>
@@ -198,7 +198,7 @@ function receptorLevel(){
       <p class="sub">Two warnings on the label</p>
       <p><b style="color:var(--bone)">QT.</b> Ondansetron can lengthen the heart's QT interval. In the label's study, 32 mg into a vein lengthened it (QTcF) by about 20 ms at peak, and 8 mg by about 6 ms, which the label calls not clinically relevant. The patient's Lexapro and hydroxychloroquine lengthen QT too, and the label advises ECG monitoring alongside other QT drugs or low potassium or magnesium.</p>
       <p><b style="color:var(--bone)">Serotonin syndrome.</b> Odd for a serotonin blocker, but it has been reported, mostly alongside other serotonergic drugs such as SSRIs. The patient takes Lexapro, an SSRI, and Adderall, whose own label counts amphetamine among them. New agitation, fever, sweating, shaking or twitching after a dose would need a call.</p>
-      <p class="dv-fine">The receptor's shape and the competition are real (Lummis 2012; Basak 2020); the binding rates and "two or more pockets opens it" are illustrative. Sources: Zofran label; Adderall XR label; Lummis 2012; Basak 2020. Tap the pockets, the pore and the trace to collect them.</p>`;},
+      <p class="dv-fine">The receptor's shape and the competition are real (Lummis 2012; Basak 2020); the binding rates and "two or more pockets opens it" are illustrative. Sources: Zofran label; Adderall XR label; Lummis 2012; Basak 2020.</p>`;},
     bind(card,api){const r=card.querySelector('#zr-c'),v=card.querySelector('#zr-cv');r.oninput=()=>{S.cD=+r.value;v.textContent=S.cD<.02?'none':S.cD<.4?'a little':S.cD<.8?'some':'a full dose';};
       card.querySelector('#zr-surge').onclick=()=>{S.surge=1.2;};},
     tap(p,api){for(let i=0;i<5;i++){const q=pkPos(i);if(Math.hypot(p.x-q.x,p.y-q.y)<34)return api.discover(S.pk[i]===2?'ond_drug':S.pk[i]===1?'ond_5ht':'ond_5ht3');}

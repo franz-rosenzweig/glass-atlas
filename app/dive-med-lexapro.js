@@ -105,7 +105,7 @@ function synapseLevel(){
       const sig=S.fire/(1-.6*T.b);q('#lx-s').textContent=sig<.95?'a little lower':sig<1.1?'about the same':sig<1.45?'higher':'much higher';q('#lx-sB').style.width=clamp(sig/2,0,1)*100+'%';}
   }
   return {id:'synapse',label:'Synapse',size:'1 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:339,y:Y0},
-    card(){return `<p class="k">Level 1 · a synapse in the brain</p><h2>Six weeks at one synapse</h2>
+    card(){return `<h2>Six weeks at one synapse</h2>
       <p>The patient's serotonin cells begin in the brainstem and send fibres all over the brain. At each ending an impulse releases serotonin (yellow) into a narrow gap, where it lands on the next cell's receptors. Then SERT pumps (teal) pull it back inside and the message ends. Lexapro plugs those pumps, so serotonin lingers.</p>
       <p><b style="color:var(--bone)">Step through the weeks.</b> Watch the classic model: the cell's own brake (red, on the cell body) presses hard at first, then eases.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Time on Lexapro">${WK.map((w,i)=>`<button role="radio" data-w="${i}" aria-checked="${i===S.w}">${w[0]}</button>`).join('')}</div>
@@ -115,9 +115,9 @@ function synapseLevel(){
       <div class="dv-meter"><span>Firing of the serotonin cell</span><b id="lx-f">100% of usual</b><i><u id="lx-fB"></u></i></div>
       <div class="dv-meter"><span>Signal on the next cell</span><b id="lx-s">about the same</b><i><u id="lx-sB" ${bg('#B193E3')}></u></i></div>
       <div class="dv-btns"><button class="dv-btn" id="lx-pause" type="button">Pause the firing</button><button class="dv-btn" id="lx-one" type="button">Send one impulse</button></div>
-      <div class="dv-btns"><button class="dv-btn go" id="lx-go" type="button">Zoom into one pump<small>SERT, 10 nm</small></button></div>
+      <div class="dv-btns"><button class="dv-btn go" id="lx-go" type="button">Zoom in · SERT pump</button></div>
       <p class="dv-fine">In trials, people on an SSRI are already a little better than on placebo by the end of week 1 and keep improving for at least six weeks (Taylor 2006). The fading brake is the classic explanation for that slow build (Blier 1994; Kim 2017), not a settled one: newer ideas involve early shifts in how emotions are processed and slower rewiring of the brain (Harmer 2017).</p>
-      <p class="dv-fine">Schematic, and the gap is drawn far wider than life. The lowest effective doses of five antidepressants block about 80% of SERT pumps in PET scans (Meyer 2004); one study found approved escitalopram doses fall a little short of that (Kim 2017). A single dose blocks about 60–75% (Klein 2006; Lundberg 2007), as Day 1 shows, and the level steadies within about a week (label). The brake, firing and signal values are illustrative. Raphe: Charnay 2010. Tap the cell body, pumps or serotonin to collect them.</p>`;},
+      <p class="dv-fine">Schematic, and the gap is drawn far wider than life. The lowest effective doses of five antidepressants block about 80% of SERT pumps in PET scans (Meyer 2004); one study found approved escitalopram doses fall a little short of that (Kim 2017). A single dose blocks about 60–75% (Klein 2006; Lundberg 2007), as Day 1 shows, and the level steadies within about a week (label). The brake, firing and signal values are illustrative. Raphe: Charnay 2010.</p>`;},
     bind(card,api){card.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{setWeek(+b.dataset.w);card.querySelectorAll('[data-w]').forEach(y=>y.setAttribute('aria-checked',y===b));if(S.w>=3)api.discover('lex_auto',true);});
       const pb=card.querySelector('#lx-pause');pb.onclick=()=>{S.paused=!S.paused;pb.classList.toggle('on',S.paused);pb.textContent=S.paused?'Resume the firing':'Pause the firing';};
       card.querySelector('#lx-one').onclick=impulse;card.querySelector('#lx-go').onclick=()=>api.go('sert',{from:{x:339,y:Y0}});},
@@ -198,7 +198,7 @@ function sertLevel(jump){
   }
   return {id:'sert',label:'SERT pump',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:100,label:'5 nm'},zoomFocus:{x:410,y:MY},
     prep(o){if(o?.mode){M.mode=o.mode;reset();}if(o?.drug)setDrug(1);},exit(){drag=null;},
-    card(){return `<p class="k">Level 2 · one transporter</p><h2>The pump Lexapro locks</h2>
+    card(){return `<h2>The pump Lexapro locks</h2>
       <div class="dv-seg" role="radiogroup" aria-label="Where"><button role="radio" data-mm="neuron" aria-checked="${M.mode==='neuron'}">Nerve ending</button><button role="radio" data-mm="plt" aria-checked="${M.mode==='plt'}">Platelet</button></div>
       <div id="ls-body"></div>`;},
     bind(card,api){const body=card.querySelector('#ls-body');
@@ -211,9 +211,9 @@ function sertLevel(jump){
             :`<div class="dv-meter"><span>Serotonin left in the gap</span><b id="ls-o">0</b><i><u id="ls-oB" ${bg('#DDB741')}></u></i></div>`}
           <div class="dv-btns"><button class="dv-btn" id="ls-add" type="button">Add Lexapro<small>a steady daily level</small></button><button class="dv-btn" id="ls-wash" type="button">Wash it out</button></div>
           ${plt?`<p class="sub">Why it matters</p><p>In healthy men, two weeks of another SSRI cut platelet serotonin by 83% and plugs formed more slowly (Hergovich 2000). Four weeks of escitalopram in people with depression clearly lowered it too (Dvojkovic 2021). That is the likely reason the Lexapro label warns about bleeding (de Abajo 2011), and the label says NSAIDs like the patient's ibuprofen may add to it. In a meta-analysis, the odds of bleeding from the stomach or upper gut were 1.7 times higher with an SSRI alone, 2.6 with an NSAID alone and 4.0 with both (Oka 2014); the SSRI-alone figure on its own wasn't statistically clear.</p>
-            <div class="dv-btns"><button class="dv-btn go" id="ls-ibu" type="button">See it in the stomach lining<small>the ibuprofen dive</small></button></div>
-            <p class="dv-fine">The store's fall and the day count are illustrative; the 83% is from paroxetine; the escitalopram study reports a clear fall without that figure in its summary. Tap a platelet granule, a pump or a molecule to collect it.</p>`
-            :`<p class="dv-fine">Roughly to scale (5 nm bar); the pump's shape is simplified from the crystal structures of the human pump with escitalopram (Coleman 2016). The label: escitalopram is the S-form of citalopram, at least 100 times more potent than the R-form, and has little or no pull on other receptors. Rates, and how often the lid appears, are illustrative. Tap a molecule or a pump to collect it.</p>`}`;
+            <div class="dv-btns"><button class="dv-btn go" id="ls-ibu" type="button">Ibuprofen · Stomach lining</button></div>
+            <p class="dv-fine">The store's fall and the day count are illustrative; the 83% is from paroxetine; the escitalopram study reports a clear fall without that figure in its summary.</p>`
+            :`<p class="dv-fine">Roughly to scale (5 nm bar); the pump's shape is simplified from the crystal structures of the human pump with escitalopram (Coleman 2016). The label: escitalopram is the S-form of citalopram, at least 100 times more potent than the R-form, and has little or no pull on other receptors. Rates, and how often the lid appears, are illustrative.</p>`}`;
         body.querySelector('#ls-add').onclick=()=>setDrug(1);body.querySelector('#ls-wash').onclick=()=>setDrug(0);
         body.querySelector('#ls-ibu')?.addEventListener('click',()=>jump('med:ibuprofen',{level:'lining',opt:{lex:true}}));};
       card.querySelectorAll('[data-mm]').forEach(b=>b.onclick=()=>{if(M.mode===b.dataset.mm)return;M.mode=b.dataset.mm;const d=M.drug;reset();M.drug=d;card.querySelectorAll('[data-mm]').forEach(y=>y.setAttribute('aria-checked',y===b));render();if(M.mode==='plt')api.discover('lex_plt',true);});

@@ -84,7 +84,7 @@ function jointLevel(){
     {x:200,y:350,k:'Metacarpal',t:'The long bone in the palm. Its rounded head forms the knuckle.'},
     {x:800,y:350,k:'Proximal phalanx',t:'The first bone of the finger. Its base cups the metacarpal head.'},
     {x:600,y:262,k:'Cartilage',t:'Glassy, slippery and without blood vessels. RA damages it from the edges and from enzymes in the fluid.'},
-    {x:540,y:128,k:'Synovium (joint lining)',t:'Normally just a few cells deep. In RA this is where the disease lives. Tap the lens to zoom into it.'},
+    {x:540,y:128,k:'Synovium (joint lining)',t:'Normally just a few cells deep. In RA this is where the disease lives.'},
     {x:560,y:236,k:'Synovial fluid',t:'Lubricates the joint and nourishes the cartilage. In active RA it fills with inflammatory cells, mostly neutrophils.'},
     {x:300,y:232,k:'Joint capsule',t:'The fibrous sleeve that seals the joint.'},
     {x:392,y:241,k:'Bare area',t:'Bone inside the capsule with no cartilage cover. RA erosions usually start here, at the joint margins.'},
@@ -144,11 +144,11 @@ function jointLevel(){
     x.fillStyle='#F29A55';x.font='12px "Martian Mono", monospace';x.fillText('zoom in',lens.x,lens.y+66*pr);
   }
   return {id:'joint',natural:true,label:'Joint',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:167,label:'5 mm'},zoomFocus:lens,
-    card(){return `<p class="k">Level 2 · tissue</p><h2>Inside the knuckle</h2>
-      <p>The middle-finger knuckle, cut lengthwise like a pathology slide. Choose a stage; tap any label to learn what it is.</p>
+    card(){return `<h2>Inside the knuckle</h2>
+      <p>The middle-finger knuckle, cut lengthwise like a pathology slide.</p>
       <div class="dv-seg" role="radiogroup" aria-label="Stage">${Object.entries(MODES).map(([k,m])=>`<button role="radio" data-m="${k}" aria-checked="${k===st.mode}">${m.l}</button>`).join('')}</div>
       <p id="dj-t">${MODES[st.mode].txt}</p><p id="dj-h" class="dv-fine"></p>
-      <div class="dv-btns"><button class="dv-btn go" id="dj-go" type="button">Zoom into the lining<small>where RA lives: cells, signals and a game</small></button></div>
+      <div class="dv-btns"><button class="dv-btn go" id="dj-go" type="button">Zoom in · Lining</button></div>
       <p class="dv-fine">Drawn to scale at about 3 cm across. A schematic section based on standard joint anatomy; RA stages follow the textbook sequence, not the patient's imaging.</p>`;},
     bind(card,api){card.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{st.mode=b.dataset.m;const m=MODES[st.mode];st.tInfl=m.i;st.tDmg=m.d;card.querySelectorAll('[data-m]').forEach(x=>x.setAttribute('aria-checked',x===b));card.querySelector('#dj-t').textContent=m.txt;});
       card.querySelector('#dj-go').onclick=()=>api.go('lining',{from:lens});const m=MODES[st.mode];st.tInfl=m.i;st.tDmg=m.d;},
@@ -278,15 +278,15 @@ function liningLevel(){
     api.toast(`Week 52 · ${prot}% protected`);}
   return {id:'lining',label:'Lining',size:'100 µm',fit:'cover',bar:{units:80,label:'20 µm'},zoomFocus:{x:600,y:330},
     enter(){if(!S.cells)reset();},exit(){},
-    card(){return `<p class="k">Level 3 · cells · week <span id="dl-w">0</span> of 52</p><h2>Hold the lining</h2>
+    card(){return `<p class="k">Week <span id="dl-w">0</span> of 52</p><h2>Hold the lining</h2>
       <p>Macrophages and T cells release <b style="color:${C.tnf}">TNF</b> and <b style="color:${C.il6}">IL-6</b>. Signals that reach the osteoclasts dissolve bone; signals that reach the creeping lining cells eat cartilage; signals that reach the vessel call in more immune cells. <b style="color:var(--bone)">Tap signals to catch them</b>, and use the patient's medicines.</p>
       <div class="dv-meter"><span>Bone eroded</span><b id="dl-bone">0%</b><i><u id="dl-boneB"></u></i></div>
       <div class="dv-meter"><span>Cartilage lost</span><b id="dl-cart">0%</b><i><u id="dl-cartB"></u></i></div>
       <div class="dv-meter"><span>Signals caught</span><b id="dl-c">0</b></div>
       <div class="dv-btns"><button class="dv-btn" id="dl-st" type="button">Steroid bridge<small>fast, but wears off</small></button><button class="dv-btn" id="dl-hcq" type="button">Hydroxychloroquine<small>slow: builds over months</small></button><button class="dv-btn" id="dl-hum" type="button">Hadlima<small>adalimumab: targets TNF</small></button></div>
       <div id="dl-end" hidden></div>
-      <div class="dv-btns"><button class="dv-btn" id="dl-re" type="button">Restart the year</button><button class="dv-btn go" id="dl-go" type="button">Zoom to the molecules<small>see TNF meet Hadlima</small></button></div>
-      <p class="dv-fine">Tap any cell to add it to your field guide. One week passes every two seconds. Each glowing dot stands for a burst of signal molecules far too small to see at this scale. Cell sizes are to scale; the game's numbers are illustrative, not a forecast for the patient's joints.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="dl-re" type="button">Restart the year</button><button class="dv-btn go" id="dl-go" type="button">Zoom in · Molecule</button></div>
+      <p class="dv-fine">One week passes every two seconds. Each glowing dot stands for a burst of signal molecules far too small to see at this scale. Cell sizes are to scale; the game's numbers are illustrative, not a forecast for the patient's joints.</p>`;},
     bind(card,api){
       card.querySelector('#dl-st').onclick=()=>{if(S.ster>.2||S.done)return;S.ster=1;S.sterUses++;api.toast('Steroid: inflammation drops fast');};
       card.querySelector('#dl-hcq').onclick=()=>{if(S.hcq||S.done)return;S.hcq=true;S.hcqStart=S.week;api.toast('Hydroxychloroquine started: it builds slowly');};
@@ -384,14 +384,14 @@ function moleculeLevel(){
   }
   return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='tnf'?{units:83,label:'5 nm'}:{units:0,label:'schematic, not to scale'};},zoomFocus:{x:500,y:350},
     prep(o){if(o?.mode)M.mode=o.mode;},enter(){},exit(){drag=null;},
-    card(){return `<p class="k">Level 4 · molecules</p><h2>How the patient's medicines work</h2>
+    card(){return `<h2>How the patient's medicines work</h2>
       <div class="dv-seg" role="radiogroup" aria-label="Molecule"><button role="radio" data-mm="tnf" aria-checked="${M.mode==='tnf'}">TNF and Hadlima</button><button role="radio" data-mm="hcq" aria-checked="${M.mode==='hcq'}">Hydroxychloroquine</button></div>
       <div id="dm-body"></div>`;},
     bind(card,api){const body=card.querySelector('#dm-body');
       const render=()=>{body.innerHTML=M.mode==='tnf'?`<p>TNF trimers drift down and dock onto receptors, switching on inflammation inside the cell. Adalimumab is an antibody: one of its two arms grabs TNF before it can dock. <b style="color:var(--bone)">Drag an antibody onto a TNF</b>, or let them hunt.</p>
           <div class="dv-meter"><span>TNF that reached a receptor</span><b id="dm-h">0</b></div><div class="dv-meter"><span>TNF caught by adalimumab</span><b id="dm-b">0</b></div>
           <div class="dv-btns"><button class="dv-btn go" id="dm-inj" type="button">Inject adalimumab<small>40 mg every other week in real life</small></button><button class="dv-btn" id="dm-r" type="button">Reset</button></div>
-          <p class="dv-fine">To scale: a TNF trimer is about 5 nm across and an antibody about 10–15 nm. Tap a molecule to add it to your field guide.</p>`:
+          <p class="dv-fine">To scale: a TNF trimer is about 5 nm across and an antibody about 10–15 nm.</p>`:
           `<p>Inside immune cells, lysosomes are acidic compartments (about pH 4.5–5) where enzymes chop proteins into fragments to show T cells, and where TLR7 and TLR9 sensors raise alarms. <b style="color:var(--bone)">Tap inside the lysosome</b> to add hydroxychloroquine: it gets charged and trapped there, and the compartment becomes less acidic.</p>
           <div class="dv-meter"><span>Acidity</span><b id="dm-a"></b><i><u id="dm-aB"></u></i></div>
           <div class="dv-meter"><span>Fragments displayed</span><b id="dm-f">0</b></div><div class="dv-meter"><span>Alarms raised</span><b id="dm-al">0</b></div>

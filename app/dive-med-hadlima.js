@@ -117,7 +117,7 @@ function skinLevel(){
   }
   const spark=()=>{let d='';for(let i=0;i<=56;i++){const day=i/4;d+=(i?'L':'M')+(10+day/14*280).toFixed(1)+' '+(62-level(day)/5*52).toFixed(1);}return d;};
   return {id:'skin',label:'Under the skin',size:'5 mm',fit:'cover',bar:{units:200,label:'1 mm'},zoomFocus:{x:500,y:330},
-    card(){return `<p class="k">Level 1 · under the skin · day <span id="hs-day">0</span> of 14</p><h2>One dose, fourteen days</h2>
+    card(){return `<p class="k">Day <span id="hs-day">0</span> of 14</p><h2>One dose, fourteen days</h2>
       <p>The autoinjector puts 40 mg into the fat under the skin of the belly or thigh. Antibodies get into the blood capillaries there only slowly, so most of the dose is thought to seep between the fat cells into the lymph, passes through lymph nodes and reaches the blood over days. Some of it is broken down on the way.</p>
       <div class="dv-btns"><button class="dv-btn go" id="hs-go" type="button">Inject 40 mg</button><button class="dv-btn" id="hs-pl" type="button" disabled>Play</button><button class="dv-btn" id="hs-re" type="button">Start over</button></div>
       <div class="dv-meter"><span>Still under the skin</span><b id="hs-dep">—</b><i><u id="hs-depB"></u></i></div>
@@ -126,8 +126,8 @@ function skinLevel(){
       <div class="dv-meter"><span>Level in the blood</span><b id="hs-lv">—</b></div>
       <svg viewBox="0 0 300 80" width="100%" height="80" aria-hidden="true" style="display:block;margin:4px 0 2px"><line x1="10" y1="62" x2="290" y2="62" stroke="var(--line-2)"/><path d="${spark()}" fill="none" stroke="var(--c)" stroke-width="2"/><circle id="hs-dot" cx="10" cy="62" r="4.5" fill="var(--bone)"/><text x="10" y="77" font-size="8.5" fill="var(--dim)" font-family="Martian Mono, monospace">DAY 0</text><text x="290" y="77" font-size="8.5" fill="var(--dim)" text-anchor="end" font-family="Martian Mono, monospace">DAY 14</text></svg>
       <div id="hs-end" hidden><p>Day 14, and the next dose is due. In this model about three quarters of the peak is still in the blood, so each dose tops up the last; the bench shows the weeks after.</p></div>
-      <div class="dv-btns"><button class="dv-btn" id="hs-next" type="button">Zoom into a vessel cell<small>why it lasts two weeks</small></button></div>
-      <p class="dv-fine">The label's numbers for one 40 mg dose: 64% reaches the blood, peaking after about 5.5 days at 4.7 µg/mL in healthy volunteers, with a half-life of about two weeks. The route through the lymph is from Supersaxo 1990 and Richter 2012. Cells and vessels roughly to scale; the dermis and the fat are drawn far thinner than they are (belly fat is several millimetres to a few centimetres deep), and the needle and the molecules are not to scale. Tap the fat, the vessels or a molecule to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="hs-next" type="button">Zoom in · Vessel cell</button></div>
+      <p class="dv-fine">The label's numbers for one 40 mg dose: 64% reaches the blood, peaking after about 5.5 days at 4.7 µg/mL in healthy volunteers, with a half-life of about two weeks. The route through the lymph is from Supersaxo 1990 and Richter 2012. Cells and vessels roughly to scale; the dermis and the fat are drawn far thinner than they are (belly fat is several millimetres to a few centimetres deep), and the needle and the molecules are not to scale.</p>`;},
     bind(card,api){card.querySelector('#hs-go').onclick=()=>inject();card.querySelector('#hs-pl').onclick=()=>{if(S.ph==='run')S.playing=!S.playing;};
       card.querySelector('#hs-re').onclick=()=>{reset();card.querySelector('#hs-end').hidden=true;};card.querySelector('#hs-next').onclick=()=>api.go('vessel',{from:{x:600,y:150}});},
     tap(p,api){for(const a of S.ab)if(Math.hypot(a.x-p.x,a.y-p.y)<14)return api.discover('ada');
@@ -194,18 +194,18 @@ function vesselLevel(){
       if(q('#hv-hl'))q('#hv-hl').textContent=!S.fcrn?'about 3 days (like IgG without FcRn)':plac?'—':S.aaa?'about 5 days (illustrative)':'about 2 weeks';}
   }
   return {id:'vessel',label:'Vessel cell',size:'20 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:330},
-    card(){const plac=S.mode==='placenta';return `<p class="k">Level 2 · one cell</p><h2>Why it lasts two weeks</h2>
+    card(){const plac=S.mode==='placenta';return `<h2>Why it lasts two weeks</h2>
       <div class="dv-seg" role="radiogroup" aria-label="Where"><button role="radio" data-hm="vessel" aria-checked="${!plac}">In a blood vessel</button><button role="radio" data-hm="placenta" aria-checked="${plac}">In the placenta</button></div>
       <div id="hv-body"></div>`;},
     bind(card,api){const body=card.querySelector('#hv-body');
       const render=()=>{const plac=S.mode==='placenta';
         body.innerHTML=(plac?`<p>The same receptor that rescues it in blood vessels carries it across the placenta. In the third trimester the cells there pick up the mother's IgG antibodies, and adalimumab with them, and FcRn ferries them across to the baby's side. That is why a baby exposed late in pregnancy is usually born with a level about as high as the mother's, or higher (label; Julsgaard 2016).</p>`:
           `<p>The cells lining every blood vessel keep sipping the plasma. Inside, the sip turns slightly acidic, and there <b style="color:var(--bone)">FcRn</b> grips antibodies like adalimumab (blue) and albumin (amber) and carries them back out, where the neutral blood makes it let go. Other proteins (grey) go on to the lysosome and are broken down.</p>`)+
-          `<div class="dv-btns"><button class="dv-btn${S.fcrn?' on':''}" id="hv-f" type="button" aria-pressed="${S.fcrn}">FcRn working<small>switch it off to see what it does</small></button>${plac?'':`<button class="dv-btn${S.aaa?' on':''}" id="hv-a" type="button" aria-pressed="${S.aaa}">Antibodies to the drug<small>made by some people's immune systems</small></button>`}</div>
+          `<div class="dv-btns"><button class="dv-btn${S.fcrn?' on':''}" id="hv-f" type="button" aria-pressed="${S.fcrn}">FcRn working</button>${plac?'':`<button class="dv-btn${S.aaa?' on':''}" id="hv-a" type="button" aria-pressed="${S.aaa}">Antibodies to the drug</button>`}</div>
           <div class="dv-meter"><span>${plac?'Carried to the baby':'Rescued and sent back'}</span><b id="hv-s">0</b></div><div class="dv-meter"><span>Broken down</span><b id="hv-b">0</b></div>
           ${plac?'':'<div class="dv-meter"><span>Half-life of the drug</span><b id="hv-hl">about 2 weeks</b></div>'}
           ${S.aaa&&!plac?'<p>They latch onto the tips of its arms, the part that grabs TNF, and the drug is cleared faster. Methotrexate makes them less likely.</p>':''}
-          <div class="dv-btns"><button class="dv-btn" id="hv-next" type="button">Zoom into the molecule<small>Hadlima beside Humira</small></button></div>
+          <div class="dv-btns"><button class="dv-btn" id="hv-next" type="button">Zoom in · Molecule</button></div>
           <p class="dv-fine">${plac?'The label: adalimumab is actively transferred across the placenta in the third trimester; in a study of ten women, cord blood had more adalimumab than the mother\'s blood in nine. FcRn: Roopenian 2007, Pyzik 2019. Albumin crosses far less, so it isn\'t drawn crossing. ':'FcRn grips at pH 5–6.5 and lets go at the blood\'s pH 7.4; IgG and albumin last about three weeks while most blood proteins last days, and in two people born without working FcRn their IgG lasted about three days (Pyzik 2019; Roopenian 2007). Adalimumab\'s half-life is about two weeks (label). Antibodies to the drug: van Schouwenburg 2013, Bartelds 2011, Krieckaert 2012; the 5-day figure is this app\'s illustrative model, the same as on the bench. '}A schematic, not to scale.</p>`;
         body.querySelector('#hv-f').onclick=()=>{S.fcrn=!S.fcrn;api.discover('hd_fcrn',true);render();};
         body.querySelector('#hv-a')?.addEventListener('click',()=>{S.aaa=!S.aaa;if(S.aaa)api.discover('hd_aaa',true);render();});
@@ -248,7 +248,7 @@ function moleculeLevel(jump){
     const q=s=>api.card.querySelector(s);if(M.mode==='tnf'&&q('#hm-n'))q('#hm-n').textContent=M.held.filter(Boolean).length+' of 2';
   }
   return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='compare'?{units:0,label:'schematic'}:{units:100,label:'5 nm'};},zoomFocus:{x:500,y:330},
-    card(){return `<p class="k">Level 3 · the molecule</p><h2>One antibody</h2>
+    card(){return `<h2>One antibody</h2>
       <div class="dv-seg" role="radiogroup" aria-label="View"><button role="radio" data-mo="parts" aria-checked="${M.mode==='parts'}">Its parts</button><button role="radio" data-mo="compare" aria-checked="${M.mode==='compare'}">Hadlima and Humira</button><button role="radio" data-mo="tnf" aria-checked="${M.mode==='tnf'}">Catching TNF</button></div>
       <div id="hm-body"></div>`;},
     bind(card,api){const body=card.querySelector('#hm-body');
@@ -267,7 +267,7 @@ function moleculeLevel(jump){
         else{body.innerHTML=`<p>TNF is a trimer, three identical units. Each arm can catch one. <b style="color:var(--bone)">Release some TNF</b> and watch the tips grab it.</p>
           <div class="dv-meter"><span>TNF held</span><b id="hm-n">0 of 2</b></div>
           <div class="dv-btns"><button class="dv-btn go" id="hm-t" type="button">Release TNF</button><button class="dv-btn" id="hm-r" type="button">Let go</button></div>
-          <div class="dv-btns"><button class="dv-btn" id="hm-ra" type="button">Into the knuckle<small>the RA dive's molecules: Hadlima against TNF at the joint lining</small></button></div>
+          <div class="dv-btns"><button class="dv-btn" id="hm-ra" type="button">RA · Molecule</button></div>
           <p class="dv-fine">To scale: a TNF trimer is about 5 nm across, an antibody about 10–15 nm. Label: it binds TNF and stops it reaching the p55 and p75 receptors.</p>`;
           body.querySelector('#hm-t').onclick=()=>{for(let i=0;i<3;i++)M.tnf.push({x:rand(80,920),y:Math.random()<.5?rand(-30,40):rand(620,700),vx:rand(-60,60),vy:rand(-50,50),rot:rand(0,6)});};
           body.querySelector('#hm-r').onclick=()=>{M.held=[false,false];};
@@ -285,7 +285,7 @@ export const DIVE={color:'#F29A55',top:{label:'Belly',size:'10 cm'},
   target:({V3})=>V3(.06,.95,.11),view:{dist:.22,azim:12,elev:2},
   text:'Follow one dose of the patient\'s Hadlima: from the injection under the skin, through the lymph into the blood, into the cell that keeps it there for two weeks, and down to the antibody itself, beside Humira.',
   steps:[['Under the skin, 5 mm.','Inject, then watch fourteen days: the dose seeps into the lymph and peaks in the blood after five and a half days.'],['One vessel cell, 20 µm.','The receptor that rescues it from being broken down, what antibodies to the drug do, and the same receptor carrying it across the placenta.'],['The molecule, 10 nm.','Its parts, Hadlima beside Humira, and catching TNF.']],
-  also:[{dive:'ra',level:'molecule',opt:{mode:'tnf'},label:'RA dive · molecules',small:'Hadlima catching TNF at the joint lining'},{dive:'ra',level:'lining',label:'RA dive · the lining game',small:'protect the bone and cartilage for a year with the patient\'s medicines'}],
+  also:[{dive:'ra',level:'molecule',opt:{mode:'tnf'},label:'RA · Molecule'},{dive:'ra',level:'lining',label:'RA · Lining'}],
   refs:['lbl_hadlima','supersaxo1990','richter2012','roopenian2007','pyzik2019','julsgaard2016','bartelds2011','vschouwenburg2013','krieckaert2012','lee2019','weinblatt2018','organon2025','hong2014','breslin2018'],
   make:({jump})=>({levels:[skinLevel(),vesselLevel(),moleculeLevel(jump)],guide:GUIDE_H}),
 };

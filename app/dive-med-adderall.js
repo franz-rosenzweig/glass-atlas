@@ -94,16 +94,16 @@ function dayLevel(){
   }
   return {id:'day',label:'Capsule',size:'2 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'capsule drawn to scale'},zoomFocus:{x:300,y:230},
     enter(){S.clock=S.dose-.4;S.play=true;},
-    card(){return `<p class="k">Level 1 · the capsule · <span id="ad-clk">08:00</span></p><h2>Two waves in one capsule</h2>
+    card(){return `<p class="k"><span id="ad-clk">08:00</span></p><h2>Two waves in one capsule</h2>
       <p>Adderall XR holds two kinds of beads. The light, immediate-release ones free their amphetamine as soon as the capsule dissolves; the darker, delayed-release ones about four hours later (Heal 2013). The label compares one 20 mg capsule with two 10 mg immediate-release tablets taken four hours apart: the blood levels are comparable. After the peak, the level halves about every 10 hours.</p>
-      <p><b style="color:var(--bone)">Drag the dose time and watch what is left at lights-out.</b></p>
+      <p><b style="color:var(--bone)">Drag the dose time.</b></p>
       <label class="dv-meter"><span>Dose time</span><b id="ad-dt">08:00</b></label><input id="ad-dose" type="range" min="6" max="16" step=".5" value="${S.dose}" style="width:100%;accent-color:${cc(C.dr)}" aria-label="Dose time">
       <div class="dv-seg" role="radiogroup" aria-label="Taken"><button role="radio" data-f="0" aria-checked="${!S.fed}">Empty stomach</button><button role="radio" data-f="1" aria-checked="${S.fed}">After a high-fat meal</button></div>
       <div class="dv-meter"><span>Blood level now</span><b id="ad-now">0%</b><i><u id="ad-nowB" style="background:${cc(C.dr)}"></u></i></div>
       <div class="dv-meter"><span>At lights-out, 23:00</span><b id="ad-bed">…</b><i><u id="ad-bedB" style="background:${cc(C.sleep)}"></u></i></div>
       <p id="ad-note">${note()}</p>
-      <div class="dv-btns"><button class="dv-btn go" id="ad-play" type="button">Play the day</button><button class="dv-btn" id="ad-go" type="button">Into a nerve ending<small>where amphetamine works</small></button></div>
-      <p class="dv-fine">The curve is a model built from the label's numbers for d-amphetamine: two equal waves four hours apart, a peak about 5 hours after a dose on an empty stomach and nearer 8 after a high-fat meal (label: 5.2 and 7.7 hours with 30 mg), and a 10-hour half-life in adults. The l-form, a quarter of the dose, lasts longer (half-life about 13 hours in adults). It is illustrative, shown as a share of its own peak, and real levels vary a lot between people (McGough 2003). The capsule is to scale (the label lists 16–21 mm by strength); the beads are schematic. Tap the capsule to collect it.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="ad-play" type="button">Play the day</button><button class="dv-btn" id="ad-go" type="button">Zoom in · Nerve ending</button></div>
+      <p class="dv-fine">The curve is a model built from the label's numbers for d-amphetamine: two equal waves four hours apart, a peak about 5 hours after a dose on an empty stomach and nearer 8 after a high-fat meal (label: 5.2 and 7.7 hours with 30 mg), and a 10-hour half-life in adults. The l-form, a quarter of the dose, lasts longer (half-life about 13 hours in adults). It is illustrative, shown as a share of its own peak, and real levels vary a lot between people (McGough 2003). The capsule is to scale (the label lists 16–21 mm by strength); the beads are schematic.</p>`;},
     bind(card,api){const sl=card.querySelector('#ad-dose'),upd=()=>{card.querySelector('#ad-dt').textContent=hhmm(S.dose);card.querySelector('#ad-note').textContent=note();};
       sl.oninput=()=>{S.dose=+sl.value;S.play=false;S.clock=30;S.parts=[];upd();};
       card.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.fed=b.dataset.f==='1';card.querySelectorAll('[data-f]').forEach(y=>y.setAttribute('aria-checked',y===b));S.play=false;S.clock=30;upd();});
@@ -183,7 +183,7 @@ function synapseLevel(){
     card.querySelector('#as-xl').textContent=heart?'Push on the heart (β1 receptors)':'Signal to the next neuron';card.querySelector('#as-prop').hidden=!heart;
     card.querySelectorAll('[data-m]').forEach(b=>b.setAttribute('aria-checked',b.dataset.m===S.mode));}
   return {id:'synapse',label:'Nerve ending',size:'1 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:400},
-    card(){return `<p class="k">Level 2 · one nerve ending</p><h2>The pump that runs backwards</h2>
+    card(){return `<h2>The pump that runs backwards</h2>
       <div class="dv-seg" role="radiogroup" aria-label="Where"><button role="radio" data-m="brain" aria-checked="true">In the brain</button><button role="radio" data-m="heart" aria-checked="false">Nerve to the heart</button></div>
       <p id="as-t"></p>
       <div class="dv-btns"><button class="dv-btn go" id="as-fire" type="button">Fire the nerve</button><button class="dv-btn" id="as-amph" type="button">Amphetamine<small>off</small></button><button class="dv-btn" id="as-prop" type="button" hidden>Propranolol<small>off</small></button></div>
@@ -193,7 +193,7 @@ function synapseLevel(){
       <div class="dv-meter"><span>Transporter</span><b id="as-p">pulling in</b></div>
       <div class="dv-meter"><span>Released by firing</span><b id="as-f">0</b></div><div class="dv-meter"><span>Released with no firing</span><b id="as-r">0</b></div>
       <div class="dv-btns"><button class="dv-btn" id="as-re" type="button">Start over</button></div>
-      <p class="dv-fine">Schematic, not to scale; the speeds and amounts are illustrative. The label itself says only that amphetamines block the reuptake of norepinephrine and dopamine and increase their release, and that how this helps ADHD is not known; the steps drawn here come from laboratory studies (Heal 2013; Sulzer 2011). The vesicles' fading pink shows one of two lab explanations for the leak, the acid being soaked up; amphetamine also competes with dopamine at VMAT2. In brain-slice recordings, each firing released less as amphetamine worked while the steady leak grew (Sulzer 2011), as it does here. Tap the vesicles, transporters and molecules to collect them.</p>`;},
+      <p class="dv-fine">Schematic, not to scale; the speeds and amounts are illustrative. The label itself says only that amphetamines block the reuptake of norepinephrine and dopamine and increase their release, and that how this helps ADHD is not known; the steps drawn here come from laboratory studies (Heal 2013; Sulzer 2011). The vesicles' fading pink shows one of two lab explanations for the leak, the acid being soaked up; amphetamine also competes with dopamine at VMAT2. In brain-slice recordings, each firing released less as amphetamine worked while the steady leak grew (Sulzer 2011), as it does here.</p>`;},
     bind(card,api){body(card);
       card.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;body(card);});
       card.querySelector('#as-fire').onclick=fire;
@@ -214,7 +214,7 @@ export const DIVE={color:'#78A0F4',top:{label:'Brain',size:'15 cm'},
   target:({centreOf})=>centreOf(['Right caudate nucleus','Left caudate nucleus','Right putamen','Left putamen']),view:{dist:.42,azim:25,elev:8},
   text:'Follow one morning capsule of the patient\'s Adderall XR through her day, then shrink into a single nerve ending to watch amphetamine run the dopamine pump backwards, in the brain and on the nerves that speed up the heart.',
   steps:[['The capsule\'s day, 2 cm.','Two kinds of beads, two waves of amphetamine. Move the dose time and see what is left at lights-out.'],['One nerve ending, 1 µm.','Fire the nerve, then add amphetamine: it rides in through the transporter, empties the vesicles and turns the pump around. Switch to the heart and add propranolol.']],
-  also:[{dive:'pots',level:'rhythm',label:'POTS dive · the rhythm game',small:'the heart rate Adderall nudges up and propranolol holds down'}],
+  also:[{dive:'pots',level:'rhythm',label:'POTS · Rhythm'}],
   refs:['lbl_adderall','heal2013','sulzer2011','faraone2018','mcgough2003','lbl_prop','lbl_lexapro','lbl_zofran'],
   make:()=>({levels:[dayLevel(),synapseLevel()],guide:GUIDE_AD}),
 };

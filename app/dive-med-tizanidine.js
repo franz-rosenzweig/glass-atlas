@@ -75,7 +75,7 @@ function cordLevel(){
     for(const f of S.puffs)f.t+=dt;S.puffs=S.puffs.filter(f=>f.t<.6);
     if(S.h!=null&&S.h<8)S.h=Math.min(8,S.h+dt/5);}
   return {id:'cord',label:'Spinal cord',size:'1 cm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:200,label:'5 mm'},zoomFocus:{x:428,y:400},
-    card(){return `<p class="k">Level 1 · the spinal cord in the neck</p><h2>Where tizanidine works</h2>
+    card(){return `<h2>Where tizanidine works</h2>
       <p>A muscle only tightens when its motor neurons (green), in the front of the spinal cord, fire. They are pushed by signals from the neck: stretch sensors in the muscle (yellow) reach them directly, and signals from a sore joint (orange) arrive through relay cells called interneurons (blue). Tizanidine works here, in the cord, not in the muscle. Its label says it presumably works by braking the nerve endings that pass those signals on, and that the effect is greatest on the pathways that run through interneurons.</p>
       <p><b style="color:var(--bone)">Set off a flare, then take a dose and watch the next eight hours.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Signals from the neck"><button role="radio" data-m="calm" aria-checked="true">Calm</button><button role="radio" data-m="flare" aria-checked="false">Flare</button></div>
@@ -84,8 +84,8 @@ function cordLevel(){
       <div class="dv-meter"><span>Motor neuron firing</span><b id="tc-f">0/s</b><i><u id="tc-fB" style="background:${cc(T.mn)}"></u></i></div>
       <div class="dv-meter"><span>Muscle tension</span><b id="tc-m">0%</b><i><u id="tc-mB" style="background:${cc(T.mus)}"></u></i></div>
       <div class="dv-meter"><span>Systolic pressure</span><b id="tc-bp">—</b></div>
-      <div class="dv-btns"><button class="dv-btn go" id="tc-d" type="button">Take a dose</button><button class="dv-btn" id="tc-go" type="button">Zoom into one synapse<small>the alpha-2 brake</small></button></div>
-      <p class="dv-fine">Its approved use is spasticity; the patient takes it as needed for neck spasms. Timing from the Zanaflex label: the blood level peaks about an hour after a dose on an empty stomach, half-life about 2.5 hours, and in a single-dose spasticity study muscle tone dropped most 1 to 2 hours after the dose and was back to placebo levels by 6 hours. Pressure change shaped on 4 mg in healthy volunteers: on tizanidine alone, in the placebo phase of the ciprofloxacin study, systolic pressure fell about 15 mmHg at the peak (Granfors 2004). Eight hours run in forty seconds; firing is illustrative. The cord's outline is to scale (Ko 2004); nerve cells are drawn hundreds of times larger and the ganglion, joint and muscle are brought closer. Tap the cells to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="tc-d" type="button">Take a dose</button><button class="dv-btn" id="tc-go" type="button">Zoom in · Synapse</button></div>
+      <p class="dv-fine">Its approved use is spasticity; the patient takes it as needed for neck spasms. Timing from the Zanaflex label: the blood level peaks about an hour after a dose on an empty stomach, half-life about 2.5 hours, and in a single-dose spasticity study muscle tone dropped most 1 to 2 hours after the dose and was back to placebo levels by 6 hours. Pressure change shaped on 4 mg in healthy volunteers: on tizanidine alone, in the placebo phase of the ciprofloxacin study, systolic pressure fell about 15 mmHg at the peak (Granfors 2004). Eight hours run in forty seconds; firing is illustrative. The cord's outline is to scale (Ko 2004); nerve cells are drawn hundreds of times larger and the ganglion, joint and muscle are brought closer.</p>`;},
     bind(card,api){card.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;card.querySelectorAll('[data-m]').forEach(y=>y.setAttribute('aria-checked',y===b));});
       card.querySelector('[data-m="'+S.mode+'"]').click();
       const d=card.querySelector('#tc-d');d.onclick=()=>{S.h=0;d.textContent='Take another dose';};if(S.h!=null)d.textContent='Take another dose';
@@ -163,7 +163,7 @@ function synapseLevel(){
       if(f.x<160){f.x=160;f.vx=Math.abs(f.vx);}if(f.x>840){f.x=840;f.vx=-Math.abs(f.vx);}if(f.y<30){f.y=30;f.vy=Math.abs(f.vy);}if(f.y>425){f.y=425;f.vy=-Math.abs(f.vy);}f.a=clamp(f.a+(f.out?-2:2)*dt,0,1);}
     S.free=S.free.filter(f=>!(f.out&&f.a<=0));}
   return {id:'synapse',label:'Synapse',size:'1 µm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:500,y:430},
-    card(){return `<p class="k">Level 2 · one synapse</p><h2>The alpha-2 brake</h2>
+    card(){return `<h2>The alpha-2 brake</h2>
       <p>A relay cell's nerve ending (top) passes signals to a motor neuron (below). Each signal opens calcium channels at the bottom of the ending (yellow), and the calcium makes packets of transmitter spill across the gap and push the motor neuron. Alpha-2 receptors on the ending are a built-in brake: switched on, they cut the calcium and the release. Tizanidine (purple) switches them on. Its label says it presumably eases spasticity this way, by increasing "presynaptic inhibition".</p>
       <p><b style="color:var(--bone)">Tap to send extra signals, then change the tizanidine level.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Tizanidine">${Object.entries(CONC).map(([k,v])=>`<button role="radio" data-c="${k}" aria-checked="${k===S.mode}">${v.l}</button>`).join('')}</div>
@@ -174,8 +174,8 @@ function synapseLevel(){
       <p class="sub">The same brake in the brainstem</p>
       <p>Alpha-2 receptors in the brainstem turn down the sympathetic nerves; that is how clonidine, tizanidine's close relative, lowers blood pressure, and the pulse can slow too. For the patient this lands on top of POTS and propranolol, and tizanidine's label warns about moving from lying down to standing and about adding it to other blood-pressure-lowering medicines.</p>
       <div class="dv-meter"><span>Brainstem's push on vessels and heart</span><b id="sy-b">100%</b><i><u id="sy-bB" style="background:${cc('#F2A65A')}"></u></i></div>
-      <div class="dv-btns"><button class="dv-btn" id="sy-go" type="button">Into the liver<small>why some medicines can't be combined with it</small></button></div>
-      <p class="dv-fine">Schematic: the gap and the molecules are drawn large, and amounts are illustrative. Mechanism: Zanaflex label (presumably presynaptic inhibition, greatest on polysynaptic pathways); Giovannitti 2015 (alpha-2 receptors on nerve endings cut calcium entry and transmitter release; clonidine lowers blood pressure through the brainstem; tizanidine has less effect on heart rate and blood pressure than clonidine); Gilsbach 2012 (heteroreceptors). Tap the receptors, the molecules and the motor neuron to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="sy-go" type="button">Zoom in · Liver enzyme</button></div>
+      <p class="dv-fine">Schematic: the gap and the molecules are drawn large, and amounts are illustrative. Mechanism: Zanaflex label (presumably presynaptic inhibition, greatest on polysynaptic pathways); Giovannitti 2015 (alpha-2 receptors on nerve endings cut calcium entry and transmitter release; clonidine lowers blood pressure through the brainstem; tizanidine has less effect on heart rate and blood pressure than clonidine); Gilsbach 2012 (heteroreceptors).</p>`;},
     bind(card,api){card.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.c;card.querySelectorAll('[data-c]').forEach(y=>y.setAttribute('aria-checked',y===b));});
       card.querySelector('#sy-go').onclick=()=>api.go('liver',{from:{x:500,y:300}});},
     tap(p,api){for(const r of A2)if(Math.hypot(p.x-r.x,p.y-r.y)<30)return api.discover('tiz_a2');
@@ -240,17 +240,16 @@ function liverLevel(jump){
   function note(api){const d=INH[S.sel],q=s=>api.card.querySelector(s);q('#lv-n').textContent=d.n;q('#lv-j').textContent=d.cmax==null?'not known':`${d.jam} of 6`;
     q('#lv-p').textContent=d.cmax==null?'not measured':'×'+d.cmax;q('#lv-a').textContent=d.cmax==null?'not measured':'×'+d.auc;q('#lv-t').textContent=d.cmax==null?'not measured':d.th+' h';}
   return {id:'liver',label:'Liver enzyme',size:'nanometres',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:500,y:212},
-    card(){return `<p class="k">Level 3 · the liver</p><h2>One enzyme sets the level</h2>
+    card(){return `<h2>One enzyme sets the level</h2>
       <p>Tizanidine is broken down mostly by one liver enzyme, CYP1A2 (rust), and most of a dose is caught on its first pass through the liver, before it ever reaches the body. Some medicines jam that enzyme. Then far more tizanidine gets through (with fluvoxamine it also lingers), and its effects on blood pressure and alertness grow with it.</p>
-      <p><b style="color:var(--bone)">Pick what's taken alongside, then take one dose.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Taken alongside">${Object.entries(INH).map(([k,v])=>`<button role="radio" data-i="${k}" aria-checked="${k===S.sel}">${v.l}</button>`).join('')}</div>
       <div class="dv-meter"><span>Enzymes jammed (illustrative)</span><b id="lv-j">0 of 6</b></div>
       <div class="dv-meter"><span>Peak level, measured</span><b id="lv-p">×1</b></div>
       <div class="dv-meter"><span>Total exposure, measured</span><b id="lv-a">×1</b></div>
       <div class="dv-meter"><span>Half-life, measured</span><b id="lv-t">1.5 h</b></div>
       <p id="lv-n"></p>
-      <div class="dv-btns"><button class="dv-btn go" id="lv-d" type="button">Take one dose</button><button class="dv-btn" id="lv-pots" type="button">POTS dive · the standing reflex<small>what a blood-pressure drop lands on</small></button></div>
-      <p class="dv-fine">The rises are measured: single 4 mg doses in healthy volunteers (Granfors 2004, fluvoxamine and ciprofloxacin, 10 people each; Granfors 2005, 15 women on the pill and 15 not). The label gives the same fluvoxamine and ciprofloxacin numbers. Each curve is drawn from its measured peak and half-life. The 1.5-hour half-life is what the volunteer studies measured; the label gives about 2.5 hours. The jammed enzymes and the molecule counts are illustrative. Twelve hours run in eighteen seconds. Tap an enzyme or a molecule to collect it.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="lv-d" type="button">Take one dose</button><button class="dv-btn" id="lv-pots" type="button">POTS · Reflex</button></div>
+      <p class="dv-fine">The rises are measured: single 4 mg doses in healthy volunteers (Granfors 2004, fluvoxamine and ciprofloxacin, 10 people each; Granfors 2005, 15 women on the pill and 15 not). The label gives the same fluvoxamine and ciprofloxacin numbers. Each curve is drawn from its measured peak and half-life. The 1.5-hour half-life is what the volunteer studies measured; the label gives about 2.5 hours. The jammed enzymes and the molecule counts are illustrative. Twelve hours run in eighteen seconds.</p>`;},
     bind(card,api){card.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{S.sel=b.dataset.i;card.querySelectorAll('[data-i]').forEach(y=>y.setAttribute('aria-checked',y===b));setJam();S.h=null;S.mol=[];S.inn=S.out=0;note(api);
         if(S.sel==='cipro'||S.sel==='fluvox')api.discover('tiz_inh',true);});
       card.querySelector('#lv-d').onclick=()=>{S.h=0;S.vt=0;S.emit=0;S.mol=[];S.inn=S.out=0;};card.querySelector('#lv-pots').onclick=()=>jump('pots',{level:'circuit'});note(api);},
@@ -283,7 +282,7 @@ export const DIVE={color:'#B193E3',top:{label:'Neck',size:'10 cm'},
   target:({centreOf,V3})=>centreOf(['Fifth cervical vertebra']).add(V3(0,0,-.01)),view:{dist:.18,azim:150,elev:8},
   text:'Into the patient\'s neck, to the spinal cord where tizanidine works, then onto one nerve ending and its alpha-2 brake, and finally into the liver, where one enzyme decides how much of each dose reaches her body.',
   steps:[['Spinal cord, 1 cm.','The circuit behind a muscle spasm. Set off a flare, take a dose and watch eight hours of it.'],['Synapse, 1 µm.','The alpha-2 brake on a nerve ending, and the blood-pressure side of the same receptor.'],['Liver enzyme.','CYP1A2 gets jammed: the pill, ciprofloxacin and fluvoxamine with their measured rises, and famotidine, which hasn\'t been measured.']],
-  also:[{dive:'pots',level:'circuit',label:'POTS dive · the standing reflex',small:'what tizanidine\'s blood-pressure drop lands on'}],
+  also:[{dive:'pots',level:'circuit',label:'POTS · Reflex'}],
   refs:['lbl_tiz','giovannitti2015','gilsbach2012','granfors2004f','granfors2004c','granfors2005','ko2004','tjia1996','lin1987','bachmann1995','dalnegro1993'],
   make:({jump})=>({levels:[cordLevel(),synapseLevel(),liverLevel(jump)],guide:GUIDE}),
 };

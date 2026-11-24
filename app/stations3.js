@@ -2,6 +2,8 @@
 import * as THREE from 'three';
 import { damp } from './core.js';
 import { slider, toggle, bindSlider, bindToggle, clamp, fmt, lerp, kit, lineChart } from './kit.js';
+import { SYS, CONDS } from './data.js';
+import { cc } from './theme.js';
 
 export function makeStations3(A){
   const {MESH,V3}=A;const K=kit(A);const all=[];
@@ -82,7 +84,7 @@ export function makeStations3(A){
       enter(panel){
         K.resetRig();if(!built)build();G.visible=true;
         K.setMode({layers:{skin:0,skeleton:.3,organs:0,vessels:0},focus:A.resolve(['Third lumbar vertebra','Fourth lumbar vertebra','Fifth lumbar vertebra','Sacrum','Intervertebral disk of fourth lumbar vertebra','Intervertebral disk of fifth lumbar vertebra']),focusColor:'#B193E3',dim:.35});
-        panel.innerHTML=`<div class="seg" role="radiogroup" aria-label="Level">${Object.entries(ROOT).map(([k,r])=>`<button role="radio" data-l="${k}" aria-checked="${k===v.lvl}">${r.where}</button>`).join('')}</div>
+        panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="seg" role="radiogroup" aria-label="Level">${Object.entries(ROOT).map(([k,r])=>`<button role="radio" data-l="${k}" aria-checked="${k===v.lvl}">${r.where}</button>`).join('')}</div>
           <div id="l-svg"></div>
           <div class="readouts">
             <div class="ro"><span>Opening left for the nerve</span><b id="l-a"></b><span class="bar"><i id="l-aBar"></i></span></div>
@@ -97,7 +99,7 @@ export function makeStations3(A){
           ${slider('l-post','Bend forward ↔ lean back',-1,1,.05,0,'')}
           <div class="btns"><button class="btn" id="l-cart" type="button">Lean on a shopping cart</button><button class="btn" id="l-back" type="button">Lean back</button><button class="btn" id="l-neu" type="button">Upright</button></div>
           <div class="warn"><b>Emergency department, same day</b>Not an urgent-care clinic. New trouble starting to pee or not feeling a full bladder, leaking urine or stool, numbness around the bottom, genitals or inner thighs (the "saddle"), new change in sexual sensation, or pain, numbness or weakness in <strong>both</strong> legs. Hours matter. Leg weakness that is quickly getting worse needs prompt care too.</div>
-          <p class="fine">The vertebrae and discs are real anatomy. The spurs (amber), the nerve roots and the side-view diagram are drawn schematically. Most spurs, like the ones on the front of the vertebrae here, never touch a nerve. Spurs can narrow the side openings where each root leaves (at L4/L5, the L4 root; at L5/S1, the L5 root), which is what this instrument shows, or the channel just inside them, where the next root down passes (at L4/L5 that is L5, at L5/S1 it is S1, which affects the sole and outer edge of the foot, pushing off on tiptoe and the ankle jerk). That's why the same level can give different patterns. In donated cadaver spines, bending forward widened the opening by about 12% and leaning back narrowed it by about 15% (Inufusa 1996), which is why some people walk easier leaning on a shopping cart. The patient's imaging report isn't on the chart, so the sizes are illustrative.</p>`;
+          <p class="fine">The vertebrae and discs are real anatomy. The spurs (amber), the nerve roots and the side-view diagram are drawn schematically. Most spurs, like the ones on the front of the vertebrae here, never touch a nerve. Spurs can narrow the side openings where each root leaves (at L4/L5, the L4 root; at L5/S1, the L5 root), which is what this shows, or the channel just inside them, where the next root down passes (at L4/L5 that is L5, at L5/S1 it is S1, which affects the sole and outer edge of the foot, pushing off on tiptoe and the ankle jerk). That's why the same level can give different patterns. In donated cadaver spines, bending forward widened the opening by about 12% and leaning back narrowed it by about 15% (Inufusa 1996), which is why some people walk easier leaning on a shopping cart. The patient's imaging report isn't on the chart, so the sizes are illustrative.</p>`;
         ui=panel;
         bindSlider(panel,'l-spur',x=>v.spur=x,x=>x+' mm');bindSlider(panel,'l-disc',x=>v.disc=x,x=>x+'%');
         const ps=bindSlider(panel,'l-post',x=>v.post=x,x=>x<-.05?'forward':x>.05?'back':'upright');
@@ -181,19 +183,19 @@ export function makeStations3(A){
         K.setMode({layers:{skin:0,skeleton:.12,organs:.06,vessels:0},focus:A.resolve(['#cervix']),focusColor:'#62BED3',dim:1});for(const r of A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']))if(!r.tags.includes('cervix'))r.tgt.op=.55;
         panel.innerHTML=`<canvas id="c-cv" width="560" height="440" class="colpo" data-raw aria-label="Colposcope view of the cervix"></canvas>
           <div class="seg" role="radiogroup" aria-label="Stain">${[['none','No stain'],['acetic','Vinegar'],['iodine','Iodine']].map(([k,l])=>`<button role="radio" data-st="${k}" aria-checked="${k===v.stain}">${l}</button>`).join('')}</div>
-          <p class="fine" style="margin-top:0!important">During colposcopy, dilute vinegar turns abnormal cells white for a minute or so: low-grade changes are thin and fade fast; high-grade ones are dense, sharp-edged and may show dotted (punctation) or tiled (mosaic) vessel patterns. Iodine stains healthy surface cells mahogany; abnormal areas, and some normal tissue near the opening, stay mustard-yellow. LSIL whitens thinly with soft, feathery edges inside the transformation zone (dotted ring), where HPV changes begin.</p>
-          <p class="eyebrow">Follow one possible course</p>
+          <p class="eyebrow">Course</p>
           <div class="seg" role="radiogroup" aria-label="Course">${Object.entries(COURSE).map(([k,c])=>`<button role="radio" data-co="${k}" aria-checked="${k===v.course}">${c.label}</button>`).join('')}</div>
           ${slider('c-mo','Months of follow-up',0,24,.5,0,'')}
           <div class="btns"><button class="btn primary" id="c-play" type="button">Play two years</button></div>
-          <p class="eyebrow">100 people with biopsy-confirmed CIN 1, watched without treatment</p>
+          <p class="eyebrow">100 people with CIN 1, untreated</p>
           <div id="c-icons"></div>
-          <p class="legend"><span><i class="sw dot" style="background:#B9A8C8"></i>not yet resolved</span><span><i class="sw dot" style="background:var(--ok)"></i>cleared 60</span><span><i class="sw dot" style="background:#F2A65A"></i>still there 25</span><span><i class="sw dot" style="background:var(--alert)"></i>CIN 2 or worse 11</span><span><i class="sw dot" style="background:var(--line-2)"></i>4 left over: each figure was pooled separately</span></p>
-          <p class="fine" style="margin-top:0!important">Pooled from 63 studies that varied a lot (regression 60%, 95% CI 55–65%); real numbers could be a few points either way.</p>
-          <p class="eyebrow">What the 2019 guidelines say for the general population</p>
+          <p class="legend"><span><i class="sw dot" style="background:#B9A8C8"></i>not yet resolved</span><span><i class="sw dot" style="background:var(--ok)"></i>cleared 60</span><span><i class="sw dot" style="background:#F2A65A"></i>still there 25</span><span><i class="sw dot" style="background:var(--alert)"></i>CIN 2 or worse 11</span><span><i class="sw dot" style="background:var(--line-2)"></i>4 not counted</span></p>
+          <p class="eyebrow">2019 guidelines</p>
           <div class="seg" role="radiogroup" aria-label="HPV result">${[['pos','HPV positive'],['neg','HPV negative'],['none','No HPV test']].map(([k,l])=>`<button role="radio" data-h="${k}" aria-checked="${k===v.hpv}">${l}</button>`).join('')}</div>
           <div class="tgs">${toggle('c-recent','A negative HPV test in the last 5 years')}${toggle('c-imm','On immunosuppressive treatment',true,'Hadlima counts; hydroxychloroquine alone usually doesn\'t')}</div>
           <div class="readouts"><div class="ro"><span>Immediate risk of CIN 3 or worse</span><b id="c-risk" class="sm"></b></div><div class="ro"><span>Recommended</span><b id="c-plan" class="sm"></b></div></div>
+          <p class="fine">During colposcopy, dilute vinegar turns abnormal cells white for a minute or so: low-grade changes are thin and fade fast; high-grade ones are dense, sharp-edged and may show dotted (punctation) or tiled (mosaic) vessel patterns. Iodine stains healthy surface cells mahogany; abnormal areas, and some normal tissue near the opening, stay mustard-yellow. LSIL whitens thinly with soft, feathery edges inside the transformation zone (dotted ring), where HPV changes begin.</p>
+          <p class="fine">Pooled from 63 studies that varied a lot (regression 60%, 95% CI 55–65%); real numbers could be a few points either way.</p>
           <p class="fine">These risk numbers come from people with typical immune systems; the patient's own plan is up to her clinician. Now that she takes Hadlima, a TNF blocker, the guidelines for people on immunosuppressive treatment send any LSIL to colposcopy regardless of the HPV result and screen more often (the 2025 update makes how often to screen, not the colposcopy rule, a decision to share with her clinician). After a colposcopy that finds CIN 1 or less following a low-grade result like the patient's, the guidelines recommend HPV-based testing again in 1 year. Under age 25 the rules are gentler. The progression numbers are pooled from 63 studies (Loopik 2021); 2% reached CIN 3 or worse. The lesion pictures are illustrations of typical findings, not the patient's images. The cervix is modelled at its true position between the real bladder and rectum.</p>`;
         ui=panel;cv=panel.querySelector('#c-cv');ctx=cv.getContext('2d');
         const redraw=()=>{draw();panel.querySelector('#c-icons').innerHTML=iconsHTML();const [r,p]=plan();panel.querySelector('#c-risk').textContent=r;panel.querySelector('#c-plan').textContent=p;};
@@ -253,8 +255,7 @@ export function makeStations3(A){
         K.resetRig();if(!built)build();G.visible=true;
         K.setMode({layers:{skin:0,skeleton:.16,organs:.3,vessels:0},focus:A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']),focusColor:'#62BED3',dim:.2});
         for(const r of A.resolve(['#uterus','#ovaries','Urinary bladder','Rectum']))r.tgt.em=.08;
-        panel.innerHTML=`<p class="lede-s">Suspected, not confirmed. Choose where lesions might be; each site explains a different symptom.</p>
-          <div class="tgs two">${Object.entries(SITES).map(([k,s])=>toggle('e-'+k,s.label,v.sites[k])).join('')}</div>
+        panel.innerHTML=`<div class="tgs two">${Object.entries(SITES).map(([k,s])=>toggle('e-'+k,s.label,v.sites[k])).join('')}</div>
           ${slider('e-day','Cycle day',1,28,1,1,'')}
           <div class="btns"><button class="btn primary" id="e-play" type="button">Play a cycle</button></div>
           <div class="readouts" id="e-ro"></div>
@@ -263,7 +264,8 @@ export function makeStations3(A){
           <p class="eyebrow">Would a scan see it?</p>
           <ul class="quotes" id="e-img"></ul>
           <p class="fine" style="margin-top:4px!important">The 2022 ESHRE guideline says laparoscopy is no longer the diagnostic gold standard: imaging and symptoms can be enough to start treatment, and surgery is for when imaging is negative or treatment doesn't help. A 2024 scoping review found an average delay of 6.8 years across studies (range 1.5 to 11.4).</p>
-          <div class="warn"><b>The iron link</b>Heavy periods are one of the commonest causes of iron deficiency, whatever causes them. Endometriosis is mainly a pain condition; heavy bleeding is more typical of adenomyosis or fibroids, which can occur alongside it. Try a heavier period in the iron instrument.</div>
+          <div class="warn"><b>The iron link</b>Heavy periods are one of the commonest causes of iron deficiency, whatever causes them. Endometriosis is mainly a pain condition; heavy bleeding is more typical of adenomyosis or fibroids, which can occur alongside it.</div>
+          <div class="links"><button class="lk" data-cond="iron" style="--c:${cc(SYS[CONDS.find(c=>c.id==='iron').sys].c)}"><i></i>Iron deficiency</button></div>
           <p class="fine">The uterus, ovaries and tubes are modelled at their true positions between the real bladder and rectum; the lesions are drawn schematically at the sites where endometriosis is most often found. Pain patterns are typical shapes, not the patient's diary. Deep-disease figures are pooled across sites (Cochrane 2016); site by site, ultrasound finds fewer uterosacral (53%) and bladder (62%) lesions (Guerriero 2015). All depend heavily on a specialist scanner, and the Cochrane authors judged most studies to be of poor quality.</p>`;
         ui=panel;
         const redraw=()=>{panel.querySelector('#e-chart').innerHTML=chart();

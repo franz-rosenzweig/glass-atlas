@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { toggle, bindToggle, clamp, fmt, kit } from './kit.js';
 import { lineChart } from './kit.js';
-import { MEDS, HADLIMA } from './data.js';
+import { HADLIMA } from './data.js';
 import { cc } from './theme.js';
 import { REFS } from './refs.js';
 
@@ -135,12 +135,11 @@ export function makeStations5(A){
     id:'hadlima',title:'Injection bench',fig:'Two weeks, one injection',
     enter(panel){
       K.resetRig();build();cur=0;view='belly';lens=null;Object.assign(v,{schedule:'eow',mtx:false,ada:false});
-      const m=MEDS.find(x=>x.id==='hadlima');
-      panel.innerHTML=`<p class="lede-s"><b>${m.name}.</b> ${m.text}</p>${m.warn?`<div class="warn"><b>For any provider</b>${m.warn}</div>`:''}
-        <p class="eyebrow">The level in the blood</p>
+      panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p>
+        <p class="eyebrow">Blood level</p>
         <div class="seg" role="radiogroup" aria-label="Schedule">${[['eow','Every other week'],['weekly','Weekly'],['late','One dose late']].map(([k,l])=>`<button type="button" role="radio" data-sch="${k}" aria-checked="${k===v.schedule}">${l}</button>`).join('')}</div>
         <div id="hd-chart"></div>
-        <div class="tgs two">${toggle('hd-mtx','With methotrexate',false,'clears it more slowly')}${toggle('hd-ada','Antibodies to the drug',false,'clear it faster')}</div>
+        <div class="tgs two">${toggle('hd-mtx','With methotrexate')}${toggle('hd-ada','Antibodies to the drug')}</div>
         <div class="readouts">
           <div class="ro"><span>Lowest level, steady state</span><b id="hd-lo">—</b></div>
           <div class="ro"><span>Highest level, steady state</span><b id="hd-hi">—</b></div>
@@ -148,7 +147,7 @@ export function makeStations5(A){
         </div>
         <p class="regtext" id="hd-note"></p>
         <p class="fine">${HADLIMA.modelNote}</p>
-        <p class="eyebrow">Where it goes</p>
+        <p class="eyebrow">Injection sites</p>
         <div class="seg" role="radiogroup" aria-label="Area">${[['belly','Belly'],['right','Right thigh'],['left','Left thigh']].map(([k,l])=>`<button type="button" role="radio" data-area="${k}" aria-checked="${k===view}">${l}</button>`).join('')}</div>
         <div class="readouts">
           <div class="ro"><span>This dose</span><b id="hd-site" class="sm">—</b></div>
@@ -156,10 +155,10 @@ export function makeStations5(A){
         </div>
         <div class="btns"><button class="btn" id="hd-next" type="button">Next dose</button></div>
         <ul class="rules">${HADLIMA.siteRules.map(t=>`<li>${t}</li>`).join('')}</ul>
-        <p class="eyebrow">Call the same day</p>
+        <p class="eyebrow">When to call</p>
         <ul class="em">${HADLIMA.call.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
-        <p class="eyebrow">With the patient's other conditions</p>
-        <div class="seg" role="radiogroup" aria-label="Lens">${Object.entries(HADLIMA.lenses).map(([k,l])=>`<button type="button" role="radio" data-lens="${k}" aria-checked="false">${l.label}</button>`).join('')}</div>
+        <p class="eyebrow">Other conditions</p>
+        <div class="seg" role="radiogroup" aria-label="Topic">${Object.entries(HADLIMA.lenses).map(([k,l])=>`<button type="button" role="radio" data-lens="${k}" aria-checked="false">${l.label}</button>`).join('')}</div>
         <div id="hd-lens"></div>`;
       ui=panel;
       panel.querySelectorAll('[data-sch]').forEach(b=>b.onclick=()=>{v.schedule=b.dataset.sch;render();});

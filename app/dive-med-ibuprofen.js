@@ -108,7 +108,7 @@ function liningLevel(jump){
   return {id:'lining',label:'Stomach lining',size:'100 µm',fit:'cover',bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:500,y:SY+60},
     prep(o){if(o?.lex!==undefined)M.lex=!!o.lex;},
     card(){const odds=[['Neither','1.0×',25],['An SSRI like Lexapro','1.7×',43],['An NSAID like ibuprofen','2.6×',64],['Both','4.0×',100]];
-      return `<p class="k">Level 1 · the stomach lining · hour <span id="ib-h">0</span></p><h2>Why food doesn't remove the risk</h2>
+      return `<p class="k">Hour <span id="ib-h">0</span></p><h2>Why food doesn't remove the risk</h2>
       <p>The lining survives its own acid behind a shield of mucus and bicarbonate from the surface cells, kept renewed by a steady blood supply (Laine 2008). Prostaglandins made by COX enzymes right here keep nearly every part of that shield going (Wallace 2008). Ibuprofen reaches them from the blood, however it was swallowed.</p>
       <p><b style="color:var(--bone)">Take doses with and without food, then try round-the-clock doses.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Taken"><button role="radio" data-f="1" aria-checked="${S.food}">With food</button><button role="radio" data-f="0" aria-checked="${!S.food}">Empty stomach</button></div>
@@ -121,9 +121,9 @@ function liningLevel(jump){
       <p class="sub">Odds of a bleed from the stomach or upper gut</p>
       ${odds.map(([l,v,w],i)=>`<div class="dv-meter" data-odds="${i}" data-v="${v}"><span>${l}</span><b>${v}</b><i><u style="background:${cc(C.rbc)};width:${w}%"></u></i></div>`).join('')}
       <p class="dv-fine" style="margin-top:4px">From a meta-analysis, compared with taking neither (Oka 2014). The SSRI-alone figure wasn't statistically clear; the others were.</p>
-      <div class="dv-btns"><button class="dv-btn" id="ib-go" type="button">Zoom into the COX enzyme<small>where ibuprofen works, 10 nm</small></button><button class="dv-btn" id="ib-lx" type="button">Lexapro and platelets<small>the Lexapro dive</small></button><button class="dv-btn" id="ib-re" type="button">Start over</button></div>
+      <div class="dv-btns"><button class="dv-btn" id="ib-go" type="button">Zoom in · COX enzyme</button><button class="dv-btn" id="ib-lx" type="button">Lexapro · SERT pump</button><button class="dv-btn" id="ib-re" type="button">Start over</button></div>
       <p class="dv-fine">Food: the label suggests meals or milk if ibuprofen upsets the stomach, and food slows absorption without lowering how much gets in. The injury comes mainly from losing COX-made prostaglandins (Laine 2008), so food doesn't remove the bleeding risk.</p>
-      <p class="dv-fine">Time is squeezed (an hour passes in about a second, faster during round-the-clock doses) and the damage is exaggerated so you can see it; the prostaglandin and shield levels are illustrative. In real life, ulcers, bleeding or perforation from NSAIDs happen in about 1% of people treated for 3–6 months and 2–4% over a year, more with an SSRI, a steroid or a blood thinner; the label says to use the lowest dose for the shortest time. Slow, hidden bleeding can also cause anaemia (label). Tap the mucus, the cells or the vessel to collect them.</p>`;},
+      <p class="dv-fine">Time is squeezed (an hour passes in about a second, faster during round-the-clock doses) and the damage is exaggerated so you can see it; the prostaglandin and shield levels are illustrative. In real life, ulcers, bleeding or perforation from NSAIDs happen in about 1% of people treated for 3–6 months and 2–4% over a year, more with an SSRI, a steroid or a blood thinner; the label says to use the lowest dose for the shortest time. Slow, hidden bleeding can also cause anaemia (label).</p>`;},
     bind(card,api){card.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.food=b.dataset.f==='1';card.querySelectorAll('[data-f]').forEach(y=>y.setAttribute('aria-checked',y===b));});
       card.querySelector('#ib-dose').onclick=takeDose;card.querySelector('#ib-reg').onclick=()=>{S.reg=12;S.regNext=S.h;};
       const lx=card.querySelector('#ib-lex');lx.onclick=()=>{M.lex=!M.lex;lx.classList.toggle('on',M.lex);lx.querySelector('small').textContent=M.lex?'on: platelets low on serotonin':'off';};
@@ -192,7 +192,7 @@ function coxLevel(jump){
       const o1=1-S.ch[0].occ,o2=S.a2*(1-S.ch[1].occ);q('#ic-1').textContent=Math.round(o1*100)+'%';q('#ic-1B').style.width=o1*100+'%';q('#ic-2').textContent=Math.round(o2*100)+'%';q('#ic-2B').style.width=o2*100+'%';}
   }
   return {id:'cox',label:'COX enzyme',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic, not to scale'},zoomFocus:{x:300,y:MY-150},
-    card(){return `<p class="k">Level 2 · one enzyme · hour <span id="ic-h">0</span></p><h2>Inside the COX channel</h2>
+    card(){return `<p class="k">Hour <span id="ic-h">0</span></p><h2>Inside the COX channel</h2>
       <p>Cells cut a fat called arachidonic acid (gold) from their membranes. A COX enzyme, anchored in one layer of the membrane, draws it up a long channel and makes PGH2, the parent of the prostaglandins and thromboxane (Picot 1994; Ricciotti 2011).</p>
       <p>COX-1 is on almost everywhere and keeps the stomach lining and platelets working. COX-2 is barely there until inflammation switches it on (IL-1 and TNF do this in an RA joint lining), and its prostaglandins drive pain and swelling (Crofford 1997).</p>
       <p><b style="color:var(--bone)">Switch on the inflammation, then take a dose</b> and watch ibuprofen (violet) sit in both channels and let go as the level falls.</p>
@@ -202,8 +202,8 @@ function coxLevel(jump){
       <div class="dv-meter"><span>Stomach shield, thromboxane (COX-1)</span><b id="ic-1">100%</b><i><u id="ic-1B" ${bg(C.cox1)}></u></i></div>
       <p class="sub">What it doesn't touch</p>
       <p>Ibuprofen works downstream. The immune signals that switched COX-2 on carry on, and so does the joint damage they drive in RA: NSAIDs ease pain and stiffness but don't slow the damage seen on X-rays (Crofford 2013). Its label covers "relief of the signs and symptoms" of RA; Hadlima's label adds "inhibiting the progression of structural damage".</p>
-      <div class="dv-btns"><button class="dv-btn" id="ic-ra" type="button">The RA joint lining<small>where COX-2 is switched on, and what the DMARDs protect</small></button></div>
-      <p class="dv-fine">Schematic, one enzyme of each kind. Ibuprofen blocks both; it fills the channel just above its entrance, anchored by arginine 120 and tyrosine 355 (Orlando 2015, mouse COX-2). Blocking COX-1 is thought to drive most of the stomach harm (Warner 1999), though in rats both had to be blocked (Wallace 2000). Its half-life is about 2 hours (label), so channels reopen within hours; time here runs an hour every two seconds, and the levels are illustrative. Tap an enzyme or a molecule to collect it.</p>`;},
+      <div class="dv-btns"><button class="dv-btn" id="ic-ra" type="button">RA · Lining</button></div>
+      <p class="dv-fine">Schematic, one enzyme of each kind. Ibuprofen blocks both; it fills the channel just above its entrance, anchored by arginine 120 and tyrosine 355 (Orlando 2015, mouse COX-2). Blocking COX-1 is thought to drive most of the stomach harm (Warner 1999), though in rats both had to be blocked (Wallace 2000). Its half-life is about 2 hours (label), so channels reopen within hours; time here runs an hour every two seconds, and the levels are illustrative.</p>`;},
     bind(card,api){const inf=card.querySelector('#ic-inf');inf.onclick=()=>{S.inflam=!S.inflam;inf.classList.toggle('on',S.inflam);inf.querySelector('small').textContent=S.inflam?'on: COX-2 switched on':'off';if(S.inflam)api.discover('ibu_cox2',true);};
       card.querySelector('#ic-dose').onclick=()=>S.doses.push({h:S.h,food:false});
       card.querySelector('#ic-re').onclick=()=>{reset();inf.classList.remove('on');inf.querySelector('small').textContent='off';};
@@ -221,7 +221,7 @@ export const DIVE={color:'#F29A55',top:{label:'Stomach',size:'10 cm'},
   target:({centreOf})=>centreOf(['Stomach']),view:{dist:.4,azim:20,elev:10},
   text:'Into the patient\'s stomach lining, to see why food makes ibuprofen gentler on the stomach but doesn\'t remove the bleeding risk, and then into the COX enzyme it blocks, which is also how it eases pain and swelling.',
   steps:[['Stomach lining.','Take doses with and without food and watch the prostaglandin shield thin; see what Lexapro adds when a raw spot bleeds.'],['COX enzyme, 10 nm.','Switch on inflammation, then watch ibuprofen sit in the COX-1 and COX-2 channels and let go.']],
-  also:[{dive:'ra',level:'lining',label:'RA dive · the lining game',small:'where COX-2 is switched on; ibuprofen eases the pain, the DMARDs protect the joint'}],
+  also:[{dive:'ra',level:'lining',label:'RA · Lining'}],
   refs:['lbl_ibu','laine2008','wallace2008','ricciotti2011','picot1994','orlando2015','crofford1997','warner1999','crofford2013','wallace2000','oka2014','hergovich2000','dvojkovic2021','lbl_lexapro','lbl_hadlima'],
   make:({jump})=>({levels:[liningLevel(jump),coxLevel(jump)],guide:GUIDE_IB}),
 };

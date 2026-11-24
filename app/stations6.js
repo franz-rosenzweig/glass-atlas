@@ -3,7 +3,7 @@
 // what it doesn't; when to call; and how it meets the patient's other conditions. Content and sources
 // live in data.js (ZYRTEC).
 import { toggle, bindToggle, fmt, kit, lineChart } from './kit.js';
-import { MEDS, ZYRTEC } from './data.js';
+import { ZYRTEC } from './data.js';
 import { cc } from './theme.js';
 import { REFS } from './refs.js';
 
@@ -88,9 +88,8 @@ export function makeStations6(A){
     id:'zyrtec',title:'Daily bench',fig:'One tablet a day, for months',
     enter(panel){
       K.resetRig();lens=null;Object.assign(v,{dose:10,kidney:false,month:'keep'});
-      const m=MEDS.find(x=>x.id==='zyrtec');
-      panel.innerHTML=`<p class="lede-s"><b>${m.name}.</b> ${m.text}</p>${m.warn?`<div class="warn"><b>For any provider</b>${m.warn}</div>`:''}
-        <p class="eyebrow">A week of daily doses</p>
+      panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p>
+        <p class="eyebrow">Blood level</p>
         <div class="seg" role="radiogroup" aria-label="Dose">${[[10,'10 mg'],[20,'20 mg (2×)'],[40,'40 mg (4×)']].map(([d,l])=>`<button type="button" role="radio" data-dose="${d}" aria-checked="${d===v.dose}">${l}</button>`).join('')}</div>
         <div id="zy-chart"></div>
         <div class="tgs">${toggle('zy-kid','Kidneys working less well',false,'moderate impairment: the half-life triples')}</div>
@@ -106,12 +105,12 @@ export function makeStations6(A){
         <div class="seg" role="radiogroup" aria-label="How long">${[['keep','Taking it daily'],['stop2w','Stopping after weeks'],['stop3y','Stopping after years'],['skin','Before skin tests']].map(([k,l])=>`<button type="button" role="radio" data-mo="${k}" aria-checked="${k===v.month}">${l}</button>`).join('')}</div>
         <div id="zy-tl"></div>
         <p class="regtext" id="zy-mo"></p>
-        <p class="eyebrow">What it helps, and what it doesn’t</p>
+        <p class="eyebrow">Helps, and doesn’t</p>
         <ul class="rules zy-helps">${ZYRTEC.helps.map(([k,t])=>`<li class="${k}"><b>${k==='yes'?'Helps':k==='no'?'Doesn’t':'Some'}</b> ${t}</li>`).join('')}</ul>
         <p class="eyebrow">When to call</p>
         <ul class="em">${ZYRTEC.call.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
-        <p class="eyebrow">With the patient’s other conditions</p>
-        <div class="seg" role="radiogroup" aria-label="Lens">${Object.entries(ZYRTEC.lenses).map(([k,l])=>`<button type="button" role="radio" data-lens="${k}" aria-checked="false">${l.label}</button>`).join('')}</div>
+        <p class="eyebrow">Other conditions</p>
+        <div class="seg" role="radiogroup" aria-label="Topic">${Object.entries(ZYRTEC.lenses).map(([k,l])=>`<button type="button" role="radio" data-lens="${k}" aria-checked="false">${l.label}</button>`).join('')}</div>
         <div id="zy-lens"></div>`;
       ui=panel;
       panel.querySelectorAll('[data-dose]').forEach(b=>b.onclick=()=>{v.dose=+b.dataset.dose;render();});

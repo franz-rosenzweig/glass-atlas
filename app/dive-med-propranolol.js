@@ -62,15 +62,15 @@ function nodeLevel(jump){
   const volt=(tc,T)=>{const A=.24;if(tc<.05)return -40+50*Math.sin(tc/.05*Math.PI/2);if(tc<A)return 10-35*(1-Math.cos((tc-.05)/(A-.05)*Math.PI));return -60+20*Math.pow((tc-A)/(T-A),1.25);};
   const flash=d=>{let f=0;for(const w of st.waves)f=Math.max(f,Math.exp(-(((w.r-d)/55)**2)));return f;};
   return {id:'node',label:'Pacemaker',size:'0.5 mm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:200,label:'100 µm'},zoomFocus:{x:350,y:385},
-    card(){return `<p class="k">Level 1 · tissue</p><h2>The heart's pacemaker</h2>
+    card(){return `<h2>The heart's pacemaker</h2>
       <p>Every heartbeat starts in the sinus node, a patch of slender cells (pink) in the wall of the right atrium, and spreads from there into the muscle around it. These cells never rest: after each beat their voltage creeps back up until it reaches a threshold and fires again (the trace). The steeper the creep, the faster the heart. Noradrenaline from the sympathetic nerve (orange) steepens it, through beta receptors and a messenger inside the cell called cAMP. Together with the vagus easing off, that is how standing up speeds the heart, and the noradrenaline push is the part propranolol blunts.</p>
       <p><b style="color:var(--bone)">Stand the patient up, then compare the doses from the study.</b></p>
       <div class="dv-seg" role="radiogroup" aria-label="Propranolol">${Object.entries(DOSE).map(([k,v])=>`<button role="radio" data-d="${k}" aria-checked="${k===st.dose}">${v}</button>`).join('')}</div>
       <div class="dv-meter"><span>Heart rate</span><b id="pn-hr">—</b></div>
       <div class="dv-meter"><span>Rise from sitting</span><b id="pn-r">+0</b><i><u id="pn-rB"></u></i></div>
       <p id="pn-t"></p>
-      <div class="dv-btns"><button class="dv-btn go" id="pn-st" type="button">Stand up</button><button class="dv-btn" id="pn-go" type="button">Zoom into a receptor<small>heart and airway</small></button><button class="dv-btn" id="pn-j" type="button">POTS rhythm game<small>propranolol as one of the tools</small></button></div>
-      <p class="dv-fine">Rates are illustrative, set to the group averages two hours after single doses of quick-release tablets in Raj 2009 (placebo against 20 mg in 54 patients, 20 against 80 mg in 18), standing from sitting. That is a gentler test than standing from lying down, where the diagnostic line is a rise of 30 (HRS 2015). The patient's slow-release capsule peaks about 6 hours after a dose and stays fairly level for about 12 (Inderal LA label), so its milligrams can't be compared with the study's. Pacemaker: Boyett 2000, DiFrancesco 2010. The cells are roughly to scale (100 µm bar), but the real node is a crescent about 13.5 mm long (Sánchez-Quintana 2005), shown here shrunk to a few dozen cells. Tap the node and the nerve to collect them.</p>`;},
+      <div class="dv-btns"><button class="dv-btn go" id="pn-st" type="button">Stand up</button><button class="dv-btn" id="pn-go" type="button">Zoom in · Receptor</button><button class="dv-btn" id="pn-j" type="button">POTS · Rhythm</button></div>
+      <p class="dv-fine">Rates are illustrative, set to the group averages two hours after single doses of quick-release tablets in Raj 2009 (placebo against 20 mg in 54 patients, 20 against 80 mg in 18), standing from sitting. That is a gentler test than standing from lying down, where the diagnostic line is a rise of 30 (HRS 2015). The patient's slow-release capsule peaks about 6 hours after a dose and stays fairly level for about 12 (Inderal LA label), so its milligrams can't be compared with the study's. Pacemaker: Boyett 2000, DiFrancesco 2010. The cells are roughly to scale (100 µm bar), but the real node is a crescent about 13.5 mm long (Sánchez-Quintana 2005), shown here shrunk to a few dozen cells.</p>`;},
     bind(card,api){const txt=()=>card.querySelector('#pn-t').textContent=NOTE[st.dose];txt();
       card.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{st.dose=b.dataset.d;card.querySelectorAll('[data-d]').forEach(y=>y.setAttribute('aria-checked',y===b));txt();});
       const sb=card.querySelector('#pn-st');sb.textContent=st.ts?'Sit down':'Stand up';sb.onclick=()=>{st.ts=st.ts?0:1;sb.textContent=st.ts?'Sit down':'Stand up';};
@@ -144,7 +144,7 @@ function receptorLevel(){
   function ev(api,k){const n=api.card.querySelector('#rp-n');n.hidden=false;n.textContent=EV[k];
     if(k==='stand')S.boost[0]=Math.max(S.boost[0],1.4);if(k==='sugar')S.boost=S.boost.map(b=>Math.max(b,1.6));if(k==='epi')S.boost=[5,5];if(k==='glu')S.G=1.2;}
   return {id:'receptor',label:'Receptor',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},bar:{units:0,label:'schematic'},zoomFocus:{x:300,y:360},
-    card(){return `<p class="k">Level 2 · molecules</p><h2>Two receptors, one blocker</h2>
+    card(){return `<h2>Two receptors, one blocker</h2>
       <p>Noradrenaline and adrenaline (orange) work through beta receptors. On heart cells these are mostly beta-1: the cell makes more cAMP (yellow) and the heart beats faster and harder. On the muscle around the airways they are beta-2: switched on, they relax that muscle and the airway opens. Propranolol (pink) is non-selective. It sits in both kinds and competes with whatever arrives.</p>
       <p><b style="color:var(--bone)">Switch propranolol on, then try each event.</b></p>
       <div class="dv-meter"><span>Beta receptors blocked</span><b id="rp-b">0%</b><i><u id="rp-bB" style="background:${cc(P.prop)}"></u></i></div>
@@ -153,7 +153,7 @@ function receptorLevel(){
       <div class="dv-btns"><button class="dv-btn" id="rp-p" type="button" aria-pressed="false">Propranolol<small>off</small></button></div>
       <div class="dv-btns"><button class="dv-btn" id="rp-st" type="button">Stand up</button><button class="dv-btn" id="rp-su" type="button">Low blood sugar</button><button class="dv-btn" id="rp-ep" type="button">Severe allergic reaction<small>epinephrine</small></button><button class="dv-btn" id="rp-gl" type="button">Glucagon<small>the emergency backup</small></button></div>
       <p id="rp-n" hidden></p>
-      <p class="dv-fine">Schematic, with the molecules drawn large; amounts and timings are illustrative. Propranolol competes with beta agonists for the receptor sites, and its label lists bronchial asthma as a contraindication because it blocks the airways' beta response (Inderal LA label). Heart mainly beta-1, airways beta-2 (Baker 2005). Glucagon raises cAMP in heart muscle without beta-1 (White 1999); in anaphylaxis it is a backup with very limited evidence (WAO 2020). Tap receptors and molecules to collect them.</p>`;},
+      <p class="dv-fine">Schematic, with the molecules drawn large; amounts and timings are illustrative. Propranolol competes with beta agonists for the receptor sites, and its label lists bronchial asthma as a contraindication because it blocks the airways' beta response (Inderal LA label). Heart mainly beta-1, airways beta-2 (Baker 2005). Glucagon raises cAMP in heart muscle without beta-1 (White 1999); in anaphylaxis it is a backup with very limited evidence (WAO 2020).</p>`;},
     bind(card,api){const pb=card.querySelector('#rp-p');const sync=()=>{pb.classList.toggle('on',S.on);pb.setAttribute('aria-pressed',S.on);pb.querySelector('small').textContent=S.on?'on: in both kinds of receptor':'off';};sync();
       pb.onclick=()=>{S.on=!S.on;sync();if(S.on)api.discover('prop_mol',true);};
       card.querySelector('#rp-st').onclick=()=>ev(api,'stand');card.querySelector('#rp-su').onclick=()=>ev(api,'sugar');card.querySelector('#rp-ep').onclick=()=>ev(api,'epi');card.querySelector('#rp-gl').onclick=()=>ev(api,'glu');},
@@ -185,7 +185,7 @@ export const DIVE={color:'#EE6F82',top:{label:'Heart',size:'10 cm'},
   target:({centreOf,V3})=>centreOf(['Wall of heart']).add(V3(-.025,.03,0)),view:{dist:.2,azim:-30,elev:8},
   text:'Into the patient\'s heart, to the sinus node where every beat starts: see how standing speeds it and how propranolol takes the edge off. Then down to the beta receptors themselves, in the heart and the airways, and what that means in a severe allergic reaction.',
   steps:[['Pacemaker, 0.5 mm.','The cells that set the pace. Stand the patient up and compare no propranolol with the low and high doses of a 2009 study.'],['Receptor, 10 nm.','Beta-1 and beta-2 receptors with propranolol in them. Try standing, low blood sugar, epinephrine and glucagon.']],
-  also:[{dive:'pots',level:'rhythm',label:'POTS dive · the rhythm game',small:'propranolol is one of the tools'},{dive:'pots',level:'circuit',label:'POTS dive · the standing reflex',small:'where the racing comes from'}],
+  also:[{dive:'pots',level:'rhythm',label:'POTS · Rhythm'},{dive:'pots',level:'circuit',label:'POTS · Reflex'}],
   refs:['lbl_prop','raj2009','hrs2015','wao2020','difrancesco2010','boyett2000','sanchez2005','baker2005','white1999'],
   make:({jump})=>({levels:[nodeLevel(jump),receptorLevel()],guide:GUIDE}),
 };

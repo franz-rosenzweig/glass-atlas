@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { kit } from './kit.js';
 import { cc } from './theme.js';
 
-const KINDS={pain:{l:'Pain',c:'#F2705F'},note:{l:'Note',c:'#BFE6E1'},question:{l:'Question for a doctor',c:'#B193E3'},good:{l:'Better today',c:'#7FD3A3'}};
+const KINDS={pain:{l:'Pain',c:'#F2705F'},note:{l:'Note',c:'#BFE6E1'},question:{l:'Question',c:'#B193E3'},good:{l:'Better today',c:'#7FD3A3'}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export function makeNotes(A){
@@ -29,13 +29,13 @@ export function makeNotes(A){
     else if(pins.has('__pending')){const m=pins.get('__pending');G.remove(m);pins.delete('__pending');}}
   function ago(iso){const d=(Date.now()-Date.parse(iso))/1000;if(!isFinite(d))return '';if(d<60)return 'just now';if(d<3600)return Math.round(d/60)+' min ago';if(d<86400)return Math.round(d/3600)+' h ago';return new Date(iso).toLocaleDateString(undefined,{month:'short',day:'numeric'});}
   function render(){pinsSync();if(!ui)return;
-    const status=mode==='shared'?'Shared: everyone this page is shared with can read these notes; people with Contributor access or above can add their own.':mode==='local'?'Saved on this device only. (Shared notes need the page opened inside Claude while signed in.)':'Connecting…';
+    const status=mode==='shared'?'Shared with everyone who can open this page. Anyone with access can read these.':mode==='local'?'On this device only':'Connecting…';
     ui.querySelector('#n-status').textContent=status;
     const comp=ui.querySelector('#n-comp');
     if(pending){comp.hidden=false;comp.querySelector('#n-where').textContent=pending.where;}else comp.hidden=true;
     ui.querySelector('#n-list').innerHTML=notes.length?notes.map(n=>`<div class="note${sel===n.id?' on':''}" data-id="${esc(n.id)}" style="--c:${cc(KINDS[n.kind]?.c||'#BFE6E1')}">
         <div class="note-h"><span class="note-k">${esc(KINDS[n.kind]?.l||'Note')}${n.kind==='pain'&&n.level!=null?' · '+esc(n.level)+'/10':''}</span><span class="note-w">${esc(n.where||'')}</span></div>
-        <p class="note-t"></p><div class="note-f"><span>${esc(who(n))} · ${esc(ago(n.at))}</span>${(n.author===me||mode==='local')?`<button class="note-del" data-del="${esc(n.id)}" type="button">Delete</button>`:''}</div></div>`).join(''):'<p class="fine">No notes yet. Tap any spot on the body to leave the first one.</p>';
+        <p class="note-t"></p><div class="note-f"><span>${esc(who(n))} · ${esc(ago(n.at))}</span>${(n.author===me||mode==='local')?`<button class="note-del" data-del="${esc(n.id)}" type="button">Delete</button>`:''}</div></div>`).join(''):'<p class="fine">No notes yet. Tap the body to add one.</p>';
     ui.querySelectorAll('.note').forEach(el=>{const n=notes.find(x=>x.id===el.dataset.id);el.querySelector('.note-t').textContent=n.text||'';
       el.onclick=e=>{if(e.target.closest('[data-del]'))return;sel=n.id;render();if(Array.isArray(n.p)){const v=V3(...n.p);A.flyTo({target:[v.x,v.y,v.z],dist:.9,azim:v.x<0?-25:25,elev:6});}};});
     ui.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>del(b.dataset.del));}
@@ -50,18 +50,16 @@ export function makeNotes(A){
   async function del(id){try{if(mode==='shared')await db.doc('notes/'+id).delete();else{notes=notes.filter(n=>n.id!==id);local.write(notes);render();}}catch(_){}}
   function place(hit){if(!hit)return;const p=A.root.worldToLocal(hit.point.clone());const name=hit.rec.group==='skin'?'Skin surface':hit.rec.name.replace(/, nsn$/,'');
     pending={p,mesh:hit.rec.name,where:name};render();ui?.querySelector('#n-text')?.focus();}
-  return {id:'notes',title:'Notes on the body',fig:'Tap a spot, leave a note',
+  return {id:'notes',title:'Notes',fig:'',
     enter(panel){K.resetRig();K.setMode({layers:{skin:.7,skeleton:.6,organs:.6,vessels:.6}});if(G)G.visible=true;
-      panel.innerHTML=`<p class="lede-s">Tap anywhere on the body to pin a note there: where it hurts today, something to ask a doctor, a good day. Drag still turns the body.</p>
-        <p class="fine" id="n-status" style="margin:0 0 8px!important"></p>
+      panel.innerHTML=`<p class="fine" id="n-status" style="margin:0 0 8px!important"></p>
         <div id="n-comp" class="n-comp" hidden><p class="eyebrow">New note · <span id="n-where"></span></p>
           <div class="seg" role="radiogroup" aria-label="Kind">${Object.entries(KINDS).map(([k,v],i)=>`<button role="radio" data-kind="${k}" aria-checked="${i===0}">${v.l}</button>`).join('')}</div>
           <label class="ctl" id="n-lvlw"><span class="ctl-l">Pain level</span><span class="ctl-v" id="n-lvlv">5/10</span><input type="range" id="n-lvl" min="0" max="10" step="1" value="5"></label>
           <textarea id="n-text" rows="3" maxlength="600" placeholder="What's going on here?"></textarea>
           <p class="fine" id="n-err" style="color:var(--alert)!important;margin:4px 0!important"></p>
-          <div class="btns"><button class="btn primary" id="n-save" type="button">Pin the note</button><button class="btn" id="n-cancel" type="button">Cancel</button></div></div>
-        <div id="n-list"></div>
-        <p class="fine">Health notes are personal. Share this page only with people you'd show them to; anyone with access can read them.</p>`;
+          <div class="btns"><button class="btn primary" id="n-save" type="button">Pin</button><button class="btn" id="n-cancel" type="button">Cancel</button></div></div>
+        <div id="n-list"></div>`;
       ui=panel;
       panel.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{panel.querySelectorAll('[data-kind]').forEach(x=>x.setAttribute('aria-checked',x===b));panel.querySelector('#n-lvlw').hidden=b.dataset.kind!=='pain';});
       const lv=panel.querySelector('#n-lvl');lv.oninput=()=>panel.querySelector('#n-lvlv').textContent=lv.value+'/10';

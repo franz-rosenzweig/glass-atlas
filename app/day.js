@@ -70,36 +70,35 @@ export function makeDay(A){
     let s=`<svg viewBox="0 0 200 200" class="dy-dial" role="img" aria-label="24-hour clock"><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--line-2)" stroke-width="10"/>`;
     // night arc
     const arc=(a0,a1,col)=>{const [x0,y0]=pt(a0,R),[x1,y1]=pt(a1,R);const large=((a1-a0+24)%24)>12?1:0;return `<path d="M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1}" stroke="${col}" stroke-width="10" fill="none"/>`;};
-    s+=arc(23,6.5,'rgba(120,160,244,.35)');
-    for(const e of EV){const [x,y]=pt(e.t%24,R);s+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${e.col}"/>`;}
+    s+=arc(23,6.5,'color-mix(in srgb,var(--neuro) 35%,transparent)');
+    for(const e of EV){const [x,y]=pt(e.t%24,R);s+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${cc(e.col)}"/>`;}
     for(const hh of [0,6,12,18]){const [x,y]=pt(hh,R-22);s+=`<text x="${x}" y="${y+3}" text-anchor="middle">${String(hh).padStart(2,'0')}</text>`;}
     const [hx,hy]=pt(h%24,R-4);s+=`<line id="dy-hand" x1="100" y1="100" x2="${hx}" y2="${hy}" stroke="var(--bone)" stroke-width="2.5" stroke-linecap="round"/><circle cx="100" cy="100" r="4" fill="var(--bone)"/>`;
     s+=`<text id="dy-clock" x="100" y="128" text-anchor="middle" class="big">${hhmm(h)}</text></svg>`;return s;}
   function chart(){const W=300,Hh=120,x0=6,x1=30;const px=t=>10+(t-x0)/(x1-x0)*(W-20),py=v=>Hh-14-v*(Hh-28);
     const ser=(fn,col,dash)=>{let d='';for(let t=x0;t<=x1;t+=.1){const v=fn(curves(t%24));d+=(t===x0?'M':'L')+px(t).toFixed(1)+' '+py(v).toFixed(1);}return `<path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" ${dash?'stroke-dasharray="4 3"':''}/>`;};
     return `<svg viewBox="0 0 ${W} ${Hh}" class="chart" role="img" aria-label="How the day's measures move">${[6,12,18,24,30].map(t=>`<text x="${px(t)}" y="${Hh-2}" text-anchor="middle">${String(t%24).padStart(2,'0')}</text>`).join('')}
-      ${ser(c=>c.stiff,'#F29A55')}${ser(c=>(c.hr-60)/50,'#EE6F82')}${ser(c=>c.stomach,'#DDB741')}${ser(c=>c.pain,'#F2705F',true)}${ser(c=>c.energy,'#7FD3A3',true)}
+      ${ser(c=>c.stiff,'var(--immune)')}${ser(c=>(c.hr-60)/50,'var(--autonomic)')}${ser(c=>c.stomach,'var(--digestive)')}${ser(c=>c.pain,'var(--bone)',true)}${ser(c=>c.energy,'var(--ok)',true)}
       <line id="dy-ph" x1="${px(h<6?h+24:h)}" x2="${px(h<6?h+24:h)}" y1="6" y2="${Hh-12}" stroke="var(--bone)"/></svg>`;}
-  return {id:'day',title:'A day in the patient\'s body',fig:'Twenty-four hours, hour by hour',
+  return {id:'day',title:'A day in the patient\'s body',fig:'',
     enter(panel){K.resetRig();cur=-1;h=6.4;playing=false;
-      panel.innerHTML=`<p class="lede-s">An imagined but typical day, built from the patient's chart. Drag the clock or press play and watch the body through it.</p>
-        <div class="dy-top"><div id="dy-dial"></div><div class="dy-meters">
+      panel.innerHTML=`<div class="dy-top"><div id="dy-dial"></div><div class="dy-meters">
           <div class="ro"><span>Heart rate (model)</span><b id="dy-hr"></b></div><div class="ro"><span>Hand stiffness</span><b id="dy-st"></b></div>
           <div class="ro"><span>Food still in the stomach</span><b id="dy-sm"></b></div><div class="ro"><span>Pain</span><b id="dy-pn"></b></div><div class="ro"><span>Energy</span><b id="dy-en"></b></div></div></div>
         <input id="dy-r" type="range" min="6" max="30" step=".05" value="${h}" aria-label="Time of day" style="width:100%;accent-color:var(--bone)">
-        <div class="btns"><button class="btn primary" id="dy-play" type="button">Play the day</button></div>
+        <div class="btns"><button class="btn primary" id="dy-play" type="button">Play</button></div>
         <p class="dy-now" id="dy-now"></p>
         <div id="dy-chart"></div>
-        <p class="legend"><span><i class="sw" style="background:#F29A55"></i>Stiffness</span><span><i class="sw" style="background:#EE6F82"></i>Heart rate</span><span><i class="sw" style="background:#DDB741"></i>Stomach</span><span><i class="sw sw-n" style="border-color:#F2705F"></i>Pain</span><span><i class="sw sw-n" style="border-color:#7FD3A3"></i>Energy</span></p>
+        <p class="legend"><span><i class="sw" style="background:var(--immune)"></i>Stiffness</span><span><i class="sw" style="background:var(--autonomic)"></i>Heart rate</span><span><i class="sw" style="background:var(--digestive)"></i>Stomach</span><span><i class="sw sw-n" style="border-color:var(--bone)"></i>Pain</span><span><i class="sw sw-n" style="border-color:var(--ok)"></i>Energy</span></p>
         <div class="dy-list">${EV.map((e,i)=>`<button class="dy-ev" data-i="${i}" style="--c:${cc(e.col)}"><span>${hhmm(e.t)}</span>${e.title}</button>`).join('')}</div>
         <p class="fine">A model, not a diary: the times, meals and medicine schedule are a plausible template, and the curves are illustrative shapes drawn from the patterns in the patient's diagnoses (RA morning stiffness, POTS on standing, a moderately slow stomach). Real days vary, and in real care medicine timing is set by the prescriber.</p>`;
       ui=panel;panel.querySelector('#dy-dial').innerHTML=dial();panel.querySelector('#dy-chart').innerHTML=chart();
-      const r=panel.querySelector('#dy-r');r.oninput=()=>{h=+r.value;playing=false;panel.querySelector('#dy-play').textContent='Play the day';};
-      panel.querySelector('#dy-play').onclick=e=>{playing=!playing;if(playing&&h>=29.9)h=6;e.target.textContent=playing?'Pause':'Play the day';};
-      panel.querySelectorAll('.dy-ev').forEach(b=>b.onclick=()=>{h=EV[+b.dataset.i].t;r.value=h;playing=false;panel.querySelector('#dy-play').textContent='Play the day';});
+      const r=panel.querySelector('#dy-r');r.oninput=()=>{h=+r.value;playing=false;panel.querySelector('#dy-play').textContent='Play';};
+      panel.querySelector('#dy-play').onclick=e=>{playing=!playing;if(playing&&h>=29.9)h=6;e.target.textContent=playing?'Pause':'Play';};
+      panel.querySelectorAll('.dy-ev').forEach(b=>b.onclick=()=>{h=EV[+b.dataset.i].t;r.value=h;playing=false;panel.querySelector('#dy-play').textContent='Play';});
       let lastDraw=0;
       tickOff=A.onTick(dt=>{
-        if(playing){h+=dt*24/96;if(h>=30){h=30;playing=false;panel.querySelector('#dy-play').textContent='Play the day';}r.value=h;}
+        if(playing){h+=dt*24/96;if(h>=30){h=30;playing=false;panel.querySelector('#dy-play').textContent='Play';}r.value=h;}
         const hh=h%24;const c=curves(hh);setEvent(eventAt(hh));curl(c.stiff);
         const now=performance.now();if(now-lastDraw>120){lastDraw=now;
           const R=86,a=(hh/24)*Math.PI*2-Math.PI/2;const hd=panel.querySelector('#dy-hand');if(hd){hd.setAttribute('x2',100+Math.cos(a)*(R-4));hd.setAttribute('y2',100+Math.sin(a)*(R-4));}

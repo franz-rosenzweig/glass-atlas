@@ -107,7 +107,7 @@ export function makeRequests({context,onOpen}){
   function when(iso){const d=new Date(iso);return isNaN(d)?'':d.toLocaleDateString(undefined,{month:'short',day:'numeric'});}
   function renderList(){
     const box=body.querySelector('#rq-list');if(!box)return;
-    if(!data.items.length){box.innerHTML='<p class="fine">Nothing sent yet. Your requests and their answers will show up here.</p>';return;}
+    if(!data.items.length){box.innerHTML='<p class="fine">Nothing sent yet.</p>';return;}
     box.innerHTML=`<ul class="rq-list">${data.items.map(i=>{const [label,c]=STATUS[i.status]||STATUS.new;
       return `<li style="--c:${c}"><div class="rq-top"><span class="st">${label}</span><span>#${i.number} · ${{bug:'fix',topic:'to learn'}[i.kind]||'idea'} · ${when(i.created)}</span><a href="${esc(i.url)}" target="_blank" rel="noopener">GitHub</a></div>
         <p class="rq-t">${esc(i.title)}</p>${i.reply?`<p class="rq-r${i.reply_mine?'':' theirs'}">${i.reply_mine?'You: ':''}${esc(i.reply)}</p>`:''}
@@ -127,8 +127,7 @@ export function makeRequests({context,onOpen}){
         catch(err){out.textContent=err.message;e.target.disabled=false;}};});
   }
 
-  const HINT={idea:'For example: let me compare two medicines side by side',bug:'What happened, and what did you expect?',
-    topic:'For example: explain how heart failure leads to swollen ankles, with a picture of the fluid shifts'};
+  const HINT={idea:'Your idea',bug:'What happened?',topic:'What would you like to learn?'};
   function addFiles(list){const msg=body.querySelector('#rq-msg');let bad='';
     for(const f of list){if(!OK.test(f.name)&&!/^image\//.test(f.type)){bad='Images, PDFs, notes and Office files work.';continue;}
       if(f.size>MAX){bad='Files can be up to 15 MB.';continue;}if(files.length>=10){bad='Up to 10 files at a time.';break;}
@@ -139,12 +138,10 @@ export function makeRequests({context,onOpen}){
     box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{files.splice(+b.dataset.rm,1);showFiles();});}
   function render(b){
     body=b;const c=ctxAtOpen||{};
-    b.innerHTML=`<p class="tldr">What would you like added, changed, fixed or explained?</p>
-      <div class="seg" role="radiogroup" aria-label="Kind"><button type="button" role="radio" data-k="idea" aria-checked="${kind==='idea'}">An idea</button><button type="button" role="radio" data-k="topic" aria-checked="${kind==='topic'}">Help me learn this</button><button type="button" role="radio" data-k="bug" aria-checked="${kind==='bug'}">Something's broken</button></div>
+    b.innerHTML=`<div class="seg" role="radiogroup" aria-label="Kind"><button type="button" role="radio" data-k="idea" aria-checked="${kind==='idea'}">An idea</button><button type="button" role="radio" data-k="topic" aria-checked="${kind==='topic'}">Help me learn this</button><button type="button" role="radio" data-k="bug" aria-checked="${kind==='bug'}">Something's broken</button></div>
       <div class="rq-form"><textarea id="rq-text" aria-label="Your request" placeholder="${HINT[kind]}"></textarea></div>
-      <div class="rq-drop" id="rq-drop"><span>Add screenshots, notes or documents: drop them here, paste a screenshot, or <label>choose files<input type="file" id="rq-pick" multiple accept="image/*,.pdf,.txt,.md,.csv,.docx,.pptx,.xlsx"></label>.</span><span id="rq-files"></span></div>
-      <p class="rq-ctx">Files stay private on Nathan's server and don't go on GitHub. Please leave out anything with a patient's name or details.</p>
-      <p class="rq-ctx">Sent along with it: you were on ${esc(c.screen||'the main view')}, ${esc(c.theme)} mode, on a ${esc(c.device)}.</p>
+      <div class="rq-drop" id="rq-drop"><span><label>Attach files<input type="file" id="rq-pick" multiple accept="image/*,.pdf,.txt,.md,.csv,.docx,.pptx,.xlsx"></label>.</span><span id="rq-files"></span></div>
+      <p class="rq-ctx">Files stay private. Leave out patients' names and details.</p>
       <div class="btns"><button class="btn primary" id="rq-send" type="button">Send</button></div><p class="rq-msg" id="rq-msg" role="status"></p>
       <h3>Your requests</h3><div id="rq-list"><p class="fine">Loading…</p></div>`;
     b.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>{kind=x.dataset.k;const t=b.querySelector('#rq-text').value;render(b);b.querySelector('#rq-text').value=t;});
@@ -163,7 +160,7 @@ export function makeRequests({context,onOpen}){
           const up=await fetch(`/api/upload?app=${APP}&number=${r.number}&name=${encodeURIComponent(f.name)}`,{method:'POST',headers:{'X-Stuffs-Key':key},body:f}).catch(()=>null);
           if(!up?.ok)failed++;}
         ta.value='';files=[];showFiles();
-        msg.textContent=`Sent. It's #${r.number} in the list below.`+(failed?` ${failed} file${failed>1?'s':''} didn't go through; try adding ${failed>1?'them':'it'} again with "Add a note".`:'');
+        msg.textContent='Sent.'+(failed?` ${failed} file${failed>1?'s':''} didn't go through; try adding ${failed>1?'them':'it'} again with "Add a note".`:'');
         // GitHub's list can lag a moment behind, so show it right away
         if(!data.items.some(i=>i.number===r.number)){data.items.unshift({number:r.number,title:text.split('\n')[0],kind,status:'new',created:new Date().toISOString(),url:r.url,reply:''});renderList();}
         seen[r.number]='new';saveSeen();setTimeout(refresh,4000);}
