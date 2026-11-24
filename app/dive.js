@@ -84,17 +84,23 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   const cv=root.querySelector('canvas'),ctx=cv.getContext('2d');
   // Lettering inside a level never drops below about 10.5 screen px, however far the stage scales the
   // 1000×700 design down (a phone shows it at about half size), and small labels use the reading face.
-  const FONT=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'font');let minPx=0;
+  const FONT=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'font');let minPx=0,grown=0,boxes=[],floor=0;
   Object.defineProperty(ctx,'font',{configurable:true,get(){return FONT.get.call(ctx);},
-    set(v){v=String(v);const m=minPx&&v.match(/(\d+(?:\.\d+)?)px/);
-      if(m){const n=+m[1];v=v.replace(m[0],Math.max(n,minPx).toFixed(1)+'px');if(n<=14)v=v.replace(/"Martian Mono",\s*monospace/,'"Atkinson Hyperlegible", sans-serif');}
+    set(v){v=String(v);const m=minPx&&v.match(/(\d+(?:\.\d+)?)px/);grown=0;
+      if(m){const n=+m[1];if(n<minPx*.95)grown=minPx;v=v.replace(m[0],Math.max(n,minPx).toFixed(1)+'px');if(n<=minPx*1.34)v=v.replace(/"Martian Mono",\s*monospace/,'"Atkinson Hyperlegible", sans-serif');}
       FONT.set.call(ctx,v);}});
-  // and a label that would run off the side of the screen (a phone crops the design) slides back onto it
+  // A label that would run off the side of the screen (a phone crops the design) slides back onto it, and a
+  // label the floor has grown that would land on one already drawn this frame moves down below it.
   const FT=CanvasRenderingContext2D.prototype.fillText;
   ctx.fillText=function(t,px,py,mw){
     if(minPx){const m=this.getTransform();if(!m.b&&!m.c){const k=m.a/dpr,w=this.measureText(t).width,al=this.textAlign;
-      const L=(m.a*(al==='center'?px-w/2:al==='right'||al==='end'?px-w:px)+m.e)/dpr,R=L+w*k,pad=8;
-      if(w*k<W-2*pad){if(L<pad)px+=(pad-L)/k;else if(R>W-pad)px-=(R-W+pad)/k;}}}
+      let L=(m.a*(al==='center'?px-w/2:al==='right'||al==='end'?px-w:px)+m.e)/dpr;const pad=8;
+      if(w*k<W-2*pad){if(L<pad){px+=(pad-L)/k;L=pad;}else if(L+w*k>W-pad){px-=(L+w*k-W+pad)/k;L=W-pad-w*k;}}
+      if(grown){const h=grown*k,bl=this.textBaseline,y0=(m.d*py+m.f)/dpr;
+        let top=y0-(bl==='top'||bl==='hanging'?0:bl==='middle'?h/2:bl==='bottom'||bl==='ideographic'?h:h*.8);const top0=top;
+        for(let n=0;n<8;n++){const o=boxes.find(b=>L<b.r&&L+w*k>b.l&&top<b.b&&top+h>b.t);if(!o)break;top=o.b+1;}
+        if(top+h>floor)top=top0;  // never pushed off the bottom of the scene
+        boxes.push({l:L,r:L+w*k,t:top,b:top+h*1.1});if(top!==top0)py+=(top-top0)*dpr/m.d;}}}
     return FT.call(this,t,px,py,mw);};
   const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;const card=root.querySelector('.dv-card');const pop=root.querySelector('.dv-pop'),pc=root.querySelector('.dv-pc');
   const scaleNav=root.querySelector('.dv-scale');const toastEl=root.querySelector('.dv-toast');
@@ -160,16 +166,16 @@ export function createDive(A,{levels,guide,color='#F29A55',onExit,top={label:'Ha
   function frame(now){
     const dt=clamp((now-last)/1000,0,.05);last=now;  // the first frame can start before `last`
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#04070B';ctx.fillRect(0,0,W,H);
-    const drawLv=(lv,alpha,zoom,focus)=>{const f=fit(lv);ctx.save();ctx.globalAlpha=alpha;minPx=10.5/f.s;
+    const drawLv=(lv,alpha,zoom,focus)=>{const f=fit(lv);ctx.save();ctx.globalAlpha=alpha;minPx=10.5/f.s;boxes=[];floor=f.st.y+f.st.h-(phone()?16:0);
       ctx.translate(f.ox,f.oy);ctx.scale(f.s,f.s);if(zoom!==1){ctx.translate(focus.x,focus.y);ctx.scale(zoom,zoom);ctx.translate(-focus.x,-focus.y);}
-      const run=()=>lv.draw(ctx,api.paused?0:dt,now/1000,api);try{lv.natural?natural(run):run();}finally{minPx=0;ctx.restore();}};
+      const run=()=>lv.draw(ctx,api.paused?0:dt,now/1000,api);try{lv.natural?natural(run):run();}finally{minPx=grown=0;ctx.restore();}};
     if(trans){trans.t+=dt/1.1;const k=clamp(trans.t,0,1),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
       if(k<.6)drawLv(trans.from,1-k/.6,1+e*7,trans.focus);
       drawLv(trans.to,clamp((k-.35)/.65,0,1),.55+.45*e,{x:500,y:350});
       if(k>=1)trans=null;}
     else if(cur)drawLv(cur,1,1,{x:500,y:350});
     // scale bar, as on a micrograph
-    if(cur&&!trans){const f=fit(cur);const px=Math.max(0,cur.bar.units*f.s);const x0=(phone()?W-16:W-24)-px,y0=phone()?f.st.y+f.st.h-10:H-60;
+    if(cur&&!trans){const f=fit(cur);const px=Math.max(0,cur.bar.units*f.s);const x0=(phone()?W-16:W-24)-px,y0=phone()?f.st.y+f.st.h+4:H-60;  // on a phone, at the very foot of the scene, just above the card
       ctx.fillStyle='rgba(236,230,218,.9)';ctx.fillRect(x0,y0,px,3);ctx.font='12px "Atkinson Hyperlegible", sans-serif';ctx.textAlign='right';ctx.fillText(cur.bar.label,x0+px,y0-6);}
     raf=requestAnimationFrame(frame);
   }
