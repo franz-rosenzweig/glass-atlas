@@ -63,7 +63,7 @@ export function makeWeb(A){
     const show=LINKS.map((L,i)=>[L,i]).filter(([L])=>!node||L.a===node||L.b===node);
     return show.map(([L,i])=>`<button class="wlink${sel===i?' on':''}" data-i="${i}" style="--s:${cc(STRENGTH[L.s].c)}"><span class="wl-pair">${byId[L.a].short} <i>↔</i> ${byId[L.b].short}</span><span class="wl-t">${L.t}</span><span class="wl-s">${STRENGTH[L.s].label}${L.h==='unknown'?' · not yet known for the patient':''}</span>${sel===i?`<span class="wl-x">${L.x}</span>`:''}</button>`).join('');
   }
-  function render(){ui.querySelector('#w-list').innerHTML=listHTML();ui.querySelector('#w-node').innerHTML=node?`<b>${byId[node].name}</b> · <button class="btn" id="w-all" type="button">Show all</button>`:'';
+  function render(){ui.querySelector('#w-list').innerHTML=listHTML();ui.querySelectorAll('#w-pills [data-n]').forEach(b=>b.setAttribute('aria-checked',b.dataset.n===node));ui.querySelector('#w-node').innerHTML=node?`<b>${byId[node].name}</b> · <button class="btn" id="w-all" type="button">Show all</button>`:'';
     const all=ui.querySelector('#w-all');if(all)all.onclick=()=>{node=null;sel=null;render();frame();};
     ui.querySelectorAll('.wlink').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;sel=sel===i?null:i;render();frame();ui.querySelector('.wlink.on')?.scrollIntoView({block:'nearest',behavior:'smooth'});});}
   function frame(){
@@ -78,11 +78,13 @@ export function makeWeb(A){
     enter(panel){
       K.resetRig();if(!G)build();G.visible=true;labels.hidden=false;sel=null;node=null;
       K.setMode({layers:{skin:.35,skeleton:.12,organs:.18,vessels:.12}});
-      panel.innerHTML=`<div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${cc(s.c)}"></i>${s.label}</span>`).join('')}</div>
+      // on a phone the floating labels crowd each other, so the conditions are pills here instead
+      panel.innerHTML=`<div class="seg w-pills" id="w-pills" role="radiogroup" aria-label="Condition">${Object.keys(pos).map(id=>`<button type="button" role="radio" data-n="${id}" aria-checked="false" style="--c:${cc(SYS[byId[id].sys].c)}">${byId[id].short}</button>`).join('')}</div>
+        <div class="w-legend">${Object.values(STRENGTH).map(s=>`<span title="${s.note}"><i style="background:${cc(s.c)}"></i>${s.label}</span>`).join('')}</div>
         <p class="fine" id="w-node" style="margin:6px 0!important"></p>
         <div id="w-list"></div>
         <p class="fine">Links are drawn from published reviews, guidelines and medicine labels. Strong: consistent large studies or an established mechanism. Moderate: repeated observational studies. Limited: small, single-centre or expert-opinion evidence. Contested: studies using strict criteria haven't confirmed it. Co-occurring doesn't prove one condition causes the other, and a well-proven link in general can still be unknown for the patient. LSIL and encephalitis have few links because their causes (HPV, the original brain inflammation) are separate stories.</p>`;
-      ui=panel;render();frame();
+      ui=panel;panel.querySelector('#w-pills').addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)pickNode(b.dataset.n);});render();frame();
       tickOff=A.onTick(dt=>{
         arcs.forEach((a,i)=>{const on=(sel==null||sel===i)&&(!node||a.L.a===node||a.L.b===node);const dim=sel!=null&&sel!==i||(node&&!on);
           a.mesh.material.opacity=dim?.06:sel===i?.95:.5;for(const p of a.pulses){p.u=(p.u+dt*(a.L.s==='contested'?.1:a.L.s==='limited'?.15:.22))%1;a.curve.getPointAt(p.u,p.m.position);p.m.visible=!dim;p.m.scale.setScalar(sel===i?1.5:1);}});

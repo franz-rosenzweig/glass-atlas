@@ -4,7 +4,7 @@ import { G, glow, rgba, nucleus } from './dive-ra.js';
 import { cc } from './theme.js';
 
 const C={acid:'#F2705F',mucus:'#78A0F4',bic:'#9FE0F0',cell:'#E8B9B0',pg:'#F29A55',ibu:'#B193E3',rbc:'#E0525F',plt:'#E8B9D0',ht:'#FFD27A',cox1:'#62BED3',cox2:'#7FD3A3',aa:'#E8C77A',food:'#C9A26B'};
-const LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace';
+const LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace';
 const bg=h=>`style="background:${cc(h)}"`;
 function label(x,t,px,py,al='left'){x.fillStyle=LBL;x.font=FONT;x.textAlign=al;x.fillText(t,px,py);}
 function poly(x,cx,cy,r,n,rot){x.beginPath();for(let i=0;i<n;i++){const a=rot+i/n*TAU;x.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}x.closePath();}

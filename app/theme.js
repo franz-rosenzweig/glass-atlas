@@ -19,8 +19,8 @@ const subs=new Set();
 // Hand-tuned partners for the named colours (chrome, the seven systems, alert, ok). Everything else is computed.
 const PAIR={
   '#0a0f11':'#f4f1ea','#04070b':'#f7f4ee','#111a1c':'#fffdf8','#0d1517':'#fffdf8','#25353a':'#ddd6c8','#33474c':'#cbc3b3',
-  '#ece6da':'#1e2426','#b9b6ad':'#4a5254','#7e8e90':'#687275','#bfe6e1':'#2c7d74','#f2705f':'#c63f2c','#7fd3a3':'#23875a',
-  '#b193e3':'#7652c2','#ee6f82':'#c8364f','#f29a55':'#c4651c','#40c7aa':'#13896f','#78a0f4':'#3a64c8','#ddb741':'#a87400','#62bed3':'#1f7f96',
+  '#ece6da':'#1e2426','#b9b6ad':'#4a5254','#7e8e90':'#626c6f','#bfe6e1':'#25776e','#f2705f':'#c63f2c','#7fd3a3':'#0a794d',
+  '#b193e3':'#7652c2','#f07fa0':'#b8325e','#ee6f82':'#b8325e','#f29a55':'#ad5000','#40c7aa':'#007a61','#78a0f4':'#3a64c8','#ddb741':'#925f00','#62bed3':'#0b758b',
   '#ffffff':'#1a1f21','#fff':'#1a1f21','#000000':'#f7f4ee','#000':'#f7f4ee',
 };
 

@@ -195,8 +195,6 @@ function liningLevel(){
     // the capillary wall
     x.lineCap='round';x.strokeStyle='rgba(220,70,90,.35)';x.lineWidth=36;x.beginPath();for(let u=0;u<=1;u+=.02){const p=vessel(u);u?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y);}x.stroke();
     x.strokeStyle='#14070C';x.lineWidth=28;x.stroke();
-    // text marks, like a labelled slide
-    x.fillStyle='rgba(236,230,218,.45)';x.font='11px "Martian Mono", monospace';x.fillText('JOINT FLUID',30,30);x.fillText('LINING',30,252);x.fillText('BLOOD VESSEL',112,470);x.fillText('BONE',230,688);x.fillText('CARTILAGE',820,688);
   }
   const chondros=[];for(let i=0;i<9;i++)chondros.push({x:560+i*52+rand(-8,8),y:rand(600,670),pair:i%3===0});
   const emitRate=()=>{const w=S.week;let r=1.9*(1+Math.min(.6,S.recruits*.03));if(S.ster>0)r*=1-.65*S.ster;if(S.hcq)r*=1-.32/(1+Math.exp(-((w-S.hcqStart)-8)/2.5)); /* HCQ: little for a month, most of its (modest) effect by 3–4 months */ if(S.hum)r*=.7;return S.running?r:.5;};
@@ -242,6 +240,8 @@ function liningLevel(){
   function draw(x,dt,t,api){
     if(!bg)buildBg();step(dt,api);
     x.drawImage(bg,0,0,2000,1400,0,0,1000,700);
+    // text marks, like a labelled slide (drawn live, not into the cached ground, so they keep a readable size)
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('JOINT FLUID',30,30);x.fillText('LINING',30,252);x.fillText('BLOOD VESSEL',112,470);x.fillText('BONE',230,688);x.fillText('CARTILAGE',560,688);
     // vessel blood
     for(const r of S.rbc){const p=vessel(r.u);G.rbc(x,p.x,p.y+Math.sin(r.u*40)*4,.62);}
     // erosion pits under osteoclasts; pannus front over cartilage
@@ -346,7 +346,7 @@ function moleculeLevel(){
     for(const m of T.tnf)G.tnf(x,m.x,m.y,1.6,m.rot);
     for(const a of T.ab){x.save();x.globalAlpha=1-(a.fade||0);G.ab(x,a.x,a.y,1,a.rot);x.restore();}
     for(const f of T.flash){f.t+=dt;x.strokeStyle=`rgba(90,168,255,${1-f.t})`;x.lineWidth=3;x.beginPath();x.arc(f.x,f.y,20+f.t*60,0,TAU);x.stroke();}T.flash=T.flash.filter(f=>f.t<1);
-    x.fillStyle='rgba(236,230,218,.5)';x.font='12px "Martian Mono", monospace';x.textAlign='left';x.fillText('OUTSIDE THE CELL',24,34);x.fillText('CELL MEMBRANE',24,memY-48);x.fillText('INSIDE: INFLAMMATION GENES',24,memY+90);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='12px "Martian Mono", monospace';x.textAlign='left';x.fillText('OUTSIDE THE CELL',24,34);x.fillText('CELL MEMBRANE',24,memY-48);x.fillText('INSIDE: INFLAMMATION GENES',24,memY+90);
     x.textAlign='center';x.fillText('TNF receptors',510,memY+130);
   }
   // hydroxychloroquine and the lysosome
@@ -379,7 +379,7 @@ function moleculeLevel(){
       const mo=.5+.5*Math.sin(p.t*8);x.fillStyle='#FF6FA8';x.beginPath();x.moveTo(cx-p.len*4.5-12,cy);x.arc(cx-p.len*4.5-12,cy,11,mo*.6,TAU-mo*.6);x.closePath();x.fill();}
     for(const s of L.strands){const cx=LC.x+Math.cos(s.a)*s.r,cy=LC.y+Math.sin(s.a)*s.r;x.strokeStyle='rgba(113,198,255,.8)';x.lineWidth=2;x.beginPath();for(let k=0;k<12;k++)x.lineTo(cx+k*4,cy+Math.sin(k*.9+t*3)*6);x.stroke();}
     for(const h of L.hcq)G.hcq(x,h.x,h.y,.7,h.rot,h.in);
-    x.fillStyle='rgba(236,230,218,.55)';x.font='12px "Martian Mono", monospace';x.textAlign='center';x.fillText('LYSOSOME',LC.x,LC.y+LC.r+30);x.fillText('cell surface: protein fragments shown to T cells',500,118);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='12px "Martian Mono", monospace';x.textAlign='center';x.fillText('LYSOSOME',LC.x,LC.y+LC.r+30);x.fillText('cell surface: protein fragments shown to T cells',500,118);
     x.textAlign='left';x.fillText('TLR7/9 alarm sensors',LC.x-LC.r-170,LC.y-120);
   }
   return {id:'molecule',label:'Molecule',size:'10 nm',get fit(){return innerWidth<=860?'cover':'contain';},get bar(){return M.mode==='tnf'?{units:83,label:'5 nm'}:{units:0,label:'schematic, not to scale'};},zoomFocus:{x:500,y:350},

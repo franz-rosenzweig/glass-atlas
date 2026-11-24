@@ -166,8 +166,8 @@ export function makeStations3(A){
       ctx.fillStyle='rgba(236,230,218,.75)';ctx.font='11px "Martian Mono", monospace';ctx.fillText(v.stain==='none'?'no stain':ace?'after vinegar (acetic acid)':'after iodine (Lugol\'s)',10,H-12);
     }
     function iconsHTML(){
-      const col={clear:'var(--ok)',persist:'#F2A65A',progress:'var(--alert)',other:'var(--line-2)'};
-      return `<div class="icons" aria-label="100 people with biopsy-confirmed CIN 1, followed without treatment">${icons.map(I=>`<i style="background:${v.mo>=I.at||I.cat==='other'?col[I.cat]:'#B9A8C8'}"></i>`).join('')}</div>`;
+      const col={clear:'var(--ok)',persist:cc('#F2A65A'),progress:'var(--alert)',other:'var(--line-2)'};
+      return `<div class="icons" aria-label="100 people with biopsy-confirmed CIN 1, followed without treatment">${icons.map(I=>`<i style="background:${v.mo>=I.at||I.cat==='other'?col[I.cat]:cc('#B9A8C8')}"></i>`).join('')}</div>`;
     }
     function plan(){
       if(v.imm)return ['not estimated for immunosuppressed patients','Colposcopy for any LSIL, whatever the HPV result.'];
@@ -189,7 +189,7 @@ export function makeStations3(A){
           <div class="btns"><button class="btn primary" id="c-play" type="button">Play two years</button></div>
           <p class="eyebrow">100 people with CIN 1, untreated</p>
           <div id="c-icons"></div>
-          <p class="legend"><span><i class="sw dot" style="background:#B9A8C8"></i>not yet resolved</span><span><i class="sw dot" style="background:var(--ok)"></i>cleared 60</span><span><i class="sw dot" style="background:#F2A65A"></i>still there 25</span><span><i class="sw dot" style="background:var(--alert)"></i>CIN 2 or worse 11</span><span><i class="sw dot" style="background:var(--line-2)"></i>4 not counted</span></p>
+          <p class="legend"><span><i class="sw dot" style="background:${cc('#B9A8C8')}"></i>not yet resolved</span><span><i class="sw dot" style="background:var(--ok)"></i>cleared 60</span><span><i class="sw dot" style="background:${cc('#F2A65A')}"></i>still there 25</span><span><i class="sw dot" style="background:var(--alert)"></i>CIN 2 or worse 11</span><span><i class="sw dot" style="background:var(--line-2)"></i>4 not counted</span></p>
           <p class="eyebrow">2019 guidelines</p>
           <div class="seg" role="radiogroup" aria-label="HPV result">${[['pos','HPV positive'],['neg','HPV negative'],['none','No HPV test']].map(([k,l])=>`<button role="radio" data-h="${k}" aria-checked="${k===v.hpv}">${l}</button>`).join('')}</div>
           <div class="tgs">${toggle('c-recent','A negative HPV test in the last 5 years')}${toggle('c-imm','On immunosuppressive treatment',true,'Hadlima counts; hydroxychloroquine alone usually doesn\'t')}</div>

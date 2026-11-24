@@ -4,8 +4,8 @@ import { TAU, clamp, lerp, rand } from './dive.js';
 import { glow, rgba } from './dive-ra.js';
 import { cc } from './theme.js';
 
-const C={ir:'#9FC0FF',dr:'#4F78E0',coat:'#E6DEFF',amph:'#9FC0FF',da:'#F2C14E',na:'#7FD3A3',vmat:'#C08CFF',dat:'#40C7AA',rec:'#EE6F82',prop:'#E6DEFF',acid:'#F2705F',sleep:'#4A4AA0',line:'#ECE6DA'};
-const LBL='rgba(236,230,218,.55)';
+const C={ir:'#9FC0FF',dr:'#4F78E0',coat:'#E6DEFF',amph:'#9FC0FF',da:'#F2C14E',na:'#7FD3A3',vmat:'#C08CFF',dat:'#40C7AA',rec:'#F07FA0',prop:'#E6DEFF',acid:'#F2705F',sleep:'#4A4AA0',line:'#ECE6DA'};
+const LBL='rgba(236,230,218,.8)';
 function txt(x,t,px,py,k=1,al='left',col=LBL){x.fillStyle=col;x.font=`${Math.round(11*k)}px "Martian Mono", monospace`;x.textAlign=al;x.fillText(t,px,py);}
 const tk=api=>Math.max(1,9/(11*api.fit().s));  // canvas lettering stays ≥ 9 screen px on a phone
 const hhmm=h=>{const m=Math.round(((h%24)+24)%24*60);return `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;};

@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { damp } from './core.js';
 import { slider, toggle, bindSlider, bindToggle, clamp, fmt, lerp, kit, lineChart } from './kit.js';
+import { cc } from './theme.js';
 
 export function makeStations2(A){
   const {MESH,V3}=A;const K=kit(A);const all=[];
@@ -63,7 +64,7 @@ export function makeStations2(A){
         K.setMode({layers:{skin:.8,skeleton:.08,organs:.45,vessels:.6}});
         panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
             <div class="ro"><span>Trigger load</span><b id="m-load" class="sm">low</b><span class="bar"><i id="m-loadBar"></i><em id="m-thr"></em></span></div>
-            ${SYSL.map(([k,l,n])=>`<div class="ro"><span>${l}</span><b id="m-${k}">quiet</b><span class="note">${n}</span><span class="bar"><i id="m-${k}Bar"></i></span></div>`).join('')}
+            ${SYSL.map(([k,l,n])=>`<div class="ro"><span>${l}</span><b id="m-${k}" class="sm">quiet</b><span class="note">${n}</span><span class="bar"><i id="m-${k}Bar"></i></span></div>`).join('')}
           </div>
           <p class="eyebrow">Triggers</p>
           <div class="tgs two">${TR.map(([k,l,sub])=>toggle('m-t-'+k,l,false,sub)).join('')}</div>
@@ -163,8 +164,8 @@ export function makeStations2(A){
       const P=series.pts;
       return lineChart({W:300,H:160,x0:0,x1:12,y0:0,y1:100,xticks:[0,3,6,9,12],yticks:[0,15,30,60,100],xfmt:v=>v+' mo',label:'Ferritin and haemoglobin over twelve months',
         extra:(px,py)=>`<rect x="${px(0)}" y="${py(15)}" width="${px(12)-px(0)}" height="${py(0)-py(15)}" fill="var(--alert)" opacity=".07"/>`,
-        series:[{pts:P.map(p=>[p[0],Math.min(p[1],100)]),stroke:'#D9A441',width:2.2},{pts:P.map(p=>[p[0],(p[2]-8)/6*100]),stroke:'#E0566A',width:1.8,dash:'5 3'}],
-        after:(px,py)=>`<text x="${px(12)}" y="${py(100)+10}" text-anchor="end" fill="#E0566A">Hb 14</text><text x="${px(12)}" y="${py(66.7)-3}" text-anchor="end" fill="#E0566A">Hb 12</text><line x1="${px(0)}" x2="${px(12)}" y1="${py(66.7)}" y2="${py(66.7)}" stroke="#E0566A" opacity=".35"/><line id="i-ph" x1="${px(month)}" x2="${px(month)}" y1="${py(100)}" y2="${py(0)}" stroke="var(--bone)"/>`}).svg;
+        series:[{pts:P.map(p=>[p[0],Math.min(p[1],100)]),stroke:'var(--autonomic)',width:2.2},{pts:P.map(p=>[p[0],(p[2]-8)/6*100]),stroke:'var(--bone-2)',width:1.8,dash:'5 3'}],
+        after:(px,py)=>`<text x="${px(12)}" y="${py(100)+10}" text-anchor="end" fill="var(--bone-2)">Hb 14</text><text x="${px(12)}" y="${py(66.7)-3}" text-anchor="end" fill="var(--bone-2)">Hb 12</text><line x1="${px(0)}" x2="${px(12)}" y1="${py(66.7)}" y2="${py(66.7)}" stroke="var(--bone-2)" opacity=".35"/><line id="i-ph" x1="${px(month)}" x2="${px(month)}" y1="${py(100)}" y2="${py(0)}" stroke="var(--bone)"/>`}).svg;
     }
     return {
       id:'iron',title:'Iron ledger',fig:'Stores, red cells and the heart',
@@ -178,7 +179,7 @@ export function makeStations2(A){
             <div class="ro"><span>Extra work for the heart at rest</span><b id="i-hr" class="sm"></b><span class="note">only once anaemic</span></div>
           </div>
           <div id="i-chart"></div>
-          <p class="legend"><span><i class="sw" style="background:#D9A441"></i>Ferritin, ng/mL</span><span><i class="sw sw-n" style="border-color:#E0566A"></i>Haemoglobin</span></p>
+          <p class="legend"><span><i class="sw" style="background:var(--autonomic)"></i>Ferritin, ng/mL</span><span><i class="sw sw-n" style="border-color:var(--bone-2)"></i>Haemoglobin</span></p>
           ${slider('i-m','Months from now',0,12,.1,0,'')}
           <div class="btns"><button class="btn primary" id="i-play" type="button">Play a year</button></div>
           ${slider('i-f0','Ferritin at the start (example)',5,80,1,25,' ng/mL')}
@@ -251,7 +252,7 @@ export function makeStations2(A){
       enter(panel){
         K.resetRig();if(!sparks)build();sparks.visible=true;setRegion();
         panel.innerHTML=`<p class="illus">Illustrative · not the patient's numbers</p><div class="readouts">
-            <div class="ro"><span>Strain on the threshold</span><b id="b-l" class="sm"></b><span class="bar band"><i id="b-lBar"></i></span><span class="note">illustrative</span></div>
+            <div class="ro"><span>Strain on the threshold</span><b id="b-l" class="sm"></b><span class="bar band"><i id="b-lBar"></i></span></div>
             <div class="ro"><span>Strains stacking up</span><b id="b-m" class="sm"></b></div>
           </div>
           ${slider('b-sleep','Sleep last night',3,9,.5,7,' h')}

@@ -4,7 +4,7 @@ import { TAU, clamp, lerp, rand } from './dive.js';
 import { GUIDE, rgba, nucleus } from './dive-ra.js';
 import { natural, raw, cc } from './theme.js';
 
-const HC='#7CFFB2',LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace',RED='#F2705F',ORG='#F29A55';
+const HC='#7CFFB2',LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace',RED='#F2705F',ORG='#F29A55';
 const label=(x,t,px,py,al='left',col=LBL)=>{x.fillStyle=col;x.font=FONT;x.textAlign=al;x.fillText(t,px,py);};
 const hash=(a,b)=>{const s=Math.sin(a*127.1+b*311.7)*43758.5453;return s-Math.floor(s);};
 

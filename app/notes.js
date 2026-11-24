@@ -33,11 +33,12 @@ export function makeNotes(A){
     ui.querySelector('#n-status').textContent=status;
     const comp=ui.querySelector('#n-comp');
     if(pending){comp.hidden=false;comp.querySelector('#n-where').textContent=pending.where;}else comp.hidden=true;
-    ui.querySelector('#n-list').innerHTML=notes.length?notes.map(n=>`<div class="note${sel===n.id?' on':''}" data-id="${esc(n.id)}" style="--c:${cc(KINDS[n.kind]?.c||'#BFE6E1')}">
+    ui.querySelector('#n-list').innerHTML=notes.length?notes.map(n=>`<div class="note${sel===n.id?' on':''}" data-id="${esc(n.id)}" role="button" tabindex="0" aria-pressed="${sel===n.id}" style="--c:${cc(KINDS[n.kind]?.c||'#BFE6E1')}">
         <div class="note-h"><span class="note-k">${esc(KINDS[n.kind]?.l||'Note')}${n.kind==='pain'&&n.level!=null?' · '+esc(n.level)+'/10':''}</span><span class="note-w">${esc(n.where||'')}</span></div>
         <p class="note-t"></p><div class="note-f"><span>${esc(who(n))} · ${esc(ago(n.at))}</span>${(n.author===me||mode==='local')?`<button class="note-del" data-del="${esc(n.id)}" type="button">Delete</button>`:''}</div></div>`).join(''):'<p class="fine">No notes yet. Tap the body to add one.</p>';
     ui.querySelectorAll('.note').forEach(el=>{const n=notes.find(x=>x.id===el.dataset.id);el.querySelector('.note-t').textContent=n.text||'';
-      el.onclick=e=>{if(e.target.closest('[data-del]'))return;sel=n.id;render();if(Array.isArray(n.p)){const v=V3(...n.p);A.flyTo({target:[v.x,v.y,v.z],dist:.9,azim:v.x<0?-25:25,elev:6});}};});
+      el.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target===el){e.preventDefault();el.click();}};
+      el.onclick=e=>{if(e.target.closest('[data-del]'))return;sel=n.id;render();ui?.querySelector(`#n-list .note[data-id="${CSS.escape(n.id)}"]`)?.focus({preventScroll:true});if(Array.isArray(n.p)){const v=V3(...n.p);A.flyTo({target:[v.x,v.y,v.z],dist:.9,azim:v.x<0?-25:25,elev:6});}};});
     ui.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>del(b.dataset.del));}
   async function save(){if(!pending)return;const text=ui.querySelector('#n-text').value.trim().slice(0,600);if(!text){ui.querySelector('#n-text').focus();return;}
     const kind=ui.querySelector('[data-kind][aria-checked="true"]')?.dataset.kind||'note';const level=kind==='pain'?+ui.querySelector('#n-lvl').value:null;

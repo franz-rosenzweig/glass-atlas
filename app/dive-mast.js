@@ -71,7 +71,7 @@ function skinLevel(){
       x.strokeStyle=F>.15&&Math.sin(t*14)>0?'#FFE36E':'#C9A64E';x.lineWidth=4;x.beginPath();nerve.forEach((p,i)=>i?x.lineTo(p[0],p[1]-(i>3?lift(p[0]):0)):x.moveTo(p[0],p[1]));x.stroke();
       for(const m of mcs){const gr=Array.from({length:18},(_,i)=>({x:Math.cos(i*2.4)*.55*((i%4)/4+.3),y:Math.sin(i*2.4)*.55*((i%4)/4+.3),gone:S.ft>.5&&i%2===0}));mastCell(x,m.x,m.y,30,t,S.ft,gr);}
       x.fillStyle=HIST();for(const h of hist){x.beginPath();x.arc(h.x,h.y,2.4,0,TAU);x.fill();}
-      x.fillStyle='rgba(236,230,218,.55)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('EPIDERMIS',20,40);x.fillText('DERMIS',20,250);x.fillText('NERVE',150,610);
+      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('EPIDERMIS',20,40);x.fillText('DERMIS',20,250);x.fillText('NERVE',150,610);
       const q=s=>api.card.querySelector(s);if(q('#sk-r')){const set=(k,v)=>{q('#sk-'+k).textContent=Math.round(v*100)+'%';q('#sk-'+k+'B').style.width=v*100+'%';};set('r',F);set('w',clamp(F*1.1-.1,0,1));set('i',clamp(F*1.2-.05,0,1));}
     },
   };
@@ -118,7 +118,7 @@ function cellLevel(){
     x.fillStyle=`rgba(${120+120*S.flush},40,60,.55)`;x.fillRect(840,110,200,330);x.fillStyle=`rgba(200,170,60,${.25+S.acid*.5})`;x.fillRect(840,490,200,170);
     for(const r of S.h1r){x.fillStyle=r.busy>0?HIST():MC.h1;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h1){x.fillStyle=MC.block;x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
     for(const r of S.h2r){x.fillStyle=r.busy>0?HIST():MC.h2;x.beginPath();x.arc(840,r.y,12,Math.PI/2,Math.PI*1.5,false);x.fill();if(S.h2){x.fillStyle='#E6C34A';x.beginPath();x.roundRect(822,r.y-9,16,18,5);x.fill();}}
-    x.fillStyle='rgba(236,230,218,.65)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('BLOOD VESSEL · H1',860,135);x.fillText('STOMACH · H2',860,515);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='right';x.fillText('BLOOD VESSEL · H1',1000,98);x.fillText('STOMACH · H2',1000,478);  // above the boxes: lettering grows on a phone
     const q=s=>api.card.querySelector(s);if(q('#mc-a')){q('#mc-a').textContent=Math.round(S.act)+'%';q('#mc-aB').style.width=Math.min(100,S.act)+'%';q('#mc-f').textContent=S.flares;q('#mc-c').textContent=Math.round(S.calm/Math.max(1,S.time)*100)+'%';
       q('#mc-fl').style.width=S.flush*100+'%';q('#mc-ac').style.width=S.acid*100+'%';}
   }

@@ -82,7 +82,7 @@ export function makeStations(A){
       enter(panel){
         if(!built)build();setVisible(true);resetRig();
         if(!heartScaled){heart.geo.computeBoundingBox();heartC=heart.geo.boundingBox.getCenter(V3());heart.geo.translate(-heartC.x,-heartC.y,-heartC.z);heart.mesh.position.add(heartC);heartScaled=true;}
-        A.mode.layers={skin:.55,skeleton:.25,organs:.25,vessels:1};A.mode.focus=A.resolve(['Wall of heart','#legveins']);A.mode.focusColor='#EE6F82';A.mode.dim=.45;A.refresh();
+        A.mode.layers={skin:.55,skeleton:.25,organs:.25,vessels:1};A.mode.focus=A.resolve(['Wall of heart','#legveins']);A.mode.focusColor='#F07FA0';A.mode.dim=.45;A.refresh();
         theta=90;thetaT=0;tmin=0;running=false;
         panel.innerHTML=`
           <div class="inst-grid">

@@ -5,7 +5,7 @@ import { glow, rgba, nucleus } from './dive-ra.js';
 import { cc } from './theme.js';
 
 const C={mg:'#C08CFF',tlr:'#FF9F43',ntx:'#B193E3',end:'#7FD3A3',opi:'#F29A55',mor:'#8FA3C8',on:'#FFE36E',nerve:'#D9B45A',relay:'#71C6FF',cyt:'#FF6FA8',sleep:'#4A4AA0'};
-const LBL='rgba(236,230,218,.55)';
+const LBL='rgba(236,230,218,.8)';
 function txt(x,t,px,py,k=1,al='left',col=LBL){x.fillStyle=col;x.font=`${Math.round(11*k)}px "Martian Mono", monospace`;x.textAlign=al;x.fillText(t,px,py);}
 const tk=api=>Math.max(1,9/(11*api.fit().s));  // canvas lettering stays ≥ 9 screen px on a phone
 const hhmm=h=>{const m=Math.round(((h%24)+24)%24*60);return `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;};

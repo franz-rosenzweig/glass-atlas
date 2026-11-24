@@ -5,7 +5,7 @@ import { rgba, nucleus } from './dive-ra.js';
 import { cc } from './theme.js';
 
 const Z={drug:'#DDB741',ht:'#FF8FB1',rec:'#62BED3',nerve:'#8FB0FF',fire:'#FFE36E',ec:'#E39A5B',ent:'#C9A27A',ion:'#7FD3A3',irr:'#B6E35A',ap:'#C08CFF',cap:'#D9475E'};
-const LBL='rgba(236,230,218,.55)';
+const LBL='rgba(236,230,218,.8)';
 const font=api=>`${api?.phone?.()?14:11}px "Martian Mono", monospace`;
 function label(x,t,px,py,al='left',api){x.fillStyle=LBL;x.font=font(api);x.textAlign=al;x.fillText(t,px,py);}
 const poly=(x,cx,cy,r,n,rot=0)=>{x.beginPath();for(let i=0;i<n;i++){const a=rot+i/n*TAU;x.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}x.closePath();};

@@ -4,7 +4,7 @@ import { TAU, clamp, lerp, rand } from './dive.js';
 import { rgba } from './dive-ra.js';
 
 const L={t4:'#40C7AA',t3:'#7FD3A3',io:'#FFE36E',acid:'#B9E35A',wall:'#C9737F',blood:'#D9475E',tbg:'#E0A070',mct:'#62BED3',d2:'#F2C14E',nuc:'#5B86FF',tr:'#B193E3',rxr:'#7E8E90',co:'#7FD3A3',rna:'#FF8FB1'};
-const LBL='rgba(236,230,218,.55)';
+const LBL='rgba(236,230,218,.8)';
 const font=(api,small)=>`${api?.phone?.()?(small?12:14):(small?10:11)}px "Martian Mono", monospace`;
 function label(x,t,px,py,al='left',api,small){x.fillStyle=LBL;x.font=font(api,small);x.textAlign=al;x.fillText(t,px,py);}
 // T4 and T3 as in the thyroid dive: a diamond with its iodines (yellow); T3 has lost one

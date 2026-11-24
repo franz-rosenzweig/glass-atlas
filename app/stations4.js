@@ -21,9 +21,9 @@ export function makeStations4(A){
   const MEALS=[{id:'b',label:'Breakfast',t:7.5},{id:'l',label:'Lunch',t:12.5},{id:'d',label:'Dinner',t:18.5}];
   const LENS={
     timing:{label:'Timing',parts:[],meds:[],text:''},
-    qt:{label:'Heart rhythm (QT)',parts:['Wall of heart'],col:'#EE6F82',meds:['hcq','lexapro','ondansetron'],
+    qt:{label:'Heart rhythm (QT)',parts:['Wall of heart'],col:'#F07FA0',meds:['hcq','lexapro','ondansetron'],
       text:'Three of the patient\'s medicines (hydroxychloroquine, Lexapro, Zofran) can lengthen the QT interval, the heart\'s electrical reset. The hydroxychloroquine label goes further and says it isn\'t recommended alongside other QT-lengthening drugs, so the combination is a deliberate prescriber decision, often backed by an ECG. Her own risk factors are worth knowing: vomiting can drain potassium and magnesium, and a very slow pulse adds risk. A baseline ECG is a reasonable thing to ask about, and any new antibiotic (ciprofloxacin, azithromycin), antinausea drug or antihistamine deserves a QT check.'},
-    bp:{label:'Blood pressure and pulse',parts:['Wall of heart','#vessels'],col:'#EE6F82',meds:['propranolol','tizanidine','adderall'],
+    bp:{label:'Blood pressure and pulse',parts:['Wall of heart','#vessels'],col:'#F07FA0',meds:['propranolol','tizanidine','adderall'],
       text:'Propranolol slows the pulse and lowers pressure. Tizanidine lowers pressure and can slow the pulse too, on top of POTS: stand up slowly after a dose, especially from lying down. Adderall pushes pulse and pressure up; the two pull in opposite directions, and the patient\'s prescribers balance them.'},
     seizure:{label:'Seizure threshold',parts:['#brain'],col:'#78A0F4',meds:['hcq','adderall','lexapro'],
       text:'With a seizure history after encephalitis, three of the patient\'s medicines carry seizure cautions on their labels: hydroxychloroquine "can lower the seizure threshold", stimulants "may lower the convulsive threshold" with a seizure history, and escitalopram "should be introduced with care". None is forbidden; all belong in the conversation. If a seizure ever happens, the Adderall label says to stop it, so the prescriber needs to know right away. Serotonin syndrome and, rarely, very low sodium from an SSRI can also cause seizures.'},
@@ -62,12 +62,12 @@ export function makeStations4(A){
     const inLens=id=>LENS[lens].meds.includes(id);
     let s=`<svg viewBox="0 0 ${W} ${H}" class="planner" role="img" aria-label="The patient's medicines across 24 hours">`;
     for(const h of [0,6,12,18,24])s+=`<line x1="${px(h)}" x2="${px(h)}" y1="${top-6}" y2="${H-14}" stroke="var(--line)"/><text x="${px(h)}" y="${H-3}" text-anchor="${h===24?'end':'middle'}">${String(h%24).padStart(2,'0')}:00</text>`;
-    s+=`<rect x="${px(22)}" y="${top-6}" width="${px(24)-px(22)}" height="${H-top-8}" fill="#78A0F4" opacity=".07"/><rect x="${px(0)}" y="${top-6}" width="${px(6.5)-px(0)}" height="${H-top-8}" fill="#78A0F4" opacity=".07"/>`;
+    s+=`<rect x="${px(22)}" y="${top-6}" width="${px(24)-px(22)}" height="${H-top-8}" fill="var(--neuro)" opacity=".07"/><rect x="${px(0)}" y="${top-6}" width="${px(6.5)-px(0)}" height="${H-top-8}" fill="var(--neuro)" opacity=".07"/>`;
     s+=`<text x="4" y="${top+4}" class="pl">Meals</text>`;
-    for(const m of MEALS)s+=`<g class="hd" data-k="meal:${m.id}" transform="translate(${px(M[m.id])},${top})"><rect x="-6" y="-6" width="12" height="12" rx="2" fill="#DDB741"/><circle r="13" fill="transparent"/></g>`;
+    for(const m of MEALS)s+=`<g class="hd" data-k="meal:${m.id}" tabindex="0" role="slider" aria-label="Meal" aria-valuemin="0" aria-valuemax="23.75" aria-valuenow="${M[m.id]}" aria-valuetext="${hhmm(M[m.id])}" transform="translate(${px(M[m.id])},${top})"><rect x="-6" y="-6" width="12" height="12" rx="2" fill="var(--digestive)"/><circle r="13" fill="transparent"/></g>`;
     rows.forEach((r,i)=>{const y=top+rh*(i+1);const hi=inLens(r.id),f=focus===r.id;
       s+=`<text x="4" y="${y+4}" class="pl${hi||f?' hi':''}">${r.label}</text><line x1="${L0}" x2="${L1}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-dasharray="2 3"/>`;
-      s+=`<g class="hd" data-k="med:${r.id}" transform="translate(${px(T[r.id])},${y})"><circle r="${f?7:6}" fill="${hi?LENS[lens].col:f?'var(--bone)':'var(--bone-2)'}" stroke="var(--void)" stroke-width="1.5"/><circle r="13" fill="transparent"/></g>`;
+      s+=`<g class="hd" data-k="med:${r.id}" tabindex="0" role="slider" aria-label="${r.label}" aria-valuemin="0" aria-valuemax="23.75" aria-valuenow="${T[r.id]}" aria-valuetext="${hhmm(T[r.id])}" transform="translate(${px(T[r.id])},${y})"><circle r="${f?7:6}" fill="${hi?LENS[lens].col:f?'var(--bone)':'var(--bone-2)'}" stroke="var(--void)" stroke-width="1.5"/><circle r="13" fill="transparent"/></g>`;
       s+=`<text x="${clamp(px(T[r.id])+10,L0,L1-30)}" y="${y-7}" class="tm">${hhmm(T[r.id])}</text>`;});
     return s+'</svg>';
   }
@@ -103,6 +103,9 @@ export function makeStations4(A){
       host.addEventListener('pointerdown',e=>{const g=e.target.closest('.hd');if(!g)return;drag=g.dataset.k;try{host.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();});
       host.addEventListener('pointermove',e=>{if(!drag)return;const t=toT(e);const [kind,id]=drag.split(':');if(kind==='meal')M[id]=t;else T[id]=t;render();});
       const end=()=>{drag=null;};host.addEventListener('pointerup',end);host.addEventListener('pointercancel',end);
+      // the keyboard moves a dot 15 minutes at a time (an hour with Page Up/Down)
+      host.addEventListener('keydown',e=>{const g=e.target.closest('.hd');if(!g)return;const d={ArrowRight:.25,ArrowUp:.25,ArrowLeft:-.25,ArrowDown:-.25,PageUp:1,PageDown:-1}[e.key];if(d==null)return;e.preventDefault();
+        const k=g.dataset.k,[kind,id]=k.split(':'),O=kind==='meal'?M:T;O[id]=clamp(O[id]+d,0,23.75);render();host.querySelector(`.hd[data-k="${k}"]`)?.focus();});
       A.flyTo({target:[0,1.0,0],dist:3.0,azim:18,elev:4});
     },
     exit(){ui=null;}

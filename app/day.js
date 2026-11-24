@@ -8,11 +8,11 @@ const EV=[
     x:'RA stiffness is worst after rest. Lasting an hour or more is the inflammatory pattern; stiffness from hypermobility or wear usually eases within half an hour.'},
   {t:6.6,k:'levo',title:'Levothyroxine, empty stomach',parts:['#thyroid','Stomach'],col:'#40C7AA',cam:'neck',
     x:'Taken first, with water only, 30–60 minutes before food or coffee, so nothing in the stomach binds it.'},
-  {t:7.0,k:'stand',title:'Standing up',parts:['Wall of heart','#legveins'],col:'#EE6F82',cam:'body',
+  {t:7.0,k:'stand',title:'Standing up',parts:['Wall of heart','#legveins'],col:'#F07FA0',cam:'body',
     x:'Half a litre to a litre of blood heads for the patient\'s legs and belly. The heart races to compensate: the POTS rise, often 30 bpm or more, and usually at its worst in the first hours of the morning.'},
   {t:7.5,k:'breakfast',title:'Breakfast and hydroxychloroquine',parts:['Stomach','Duodenum'],col:'#DDB741',cam:'gut',
     x:'Hydroxychloroquine with food is gentler on the stomach. With gastroparesis, breakfast is still partly there at lunch.'},
-  {t:8.0,k:'meds',title:'Propranolol, Lexapro, Adderall',parts:['Wall of heart','#brain'],col:'#EE6F82',cam:'body',
+  {t:8.0,k:'meds',title:'Propranolol, Lexapro, Adderall',parts:['Wall of heart','#brain'],col:'#F07FA0',cam:'body',
     x:'Propranolol XR works steadily across the day (each slow-release capsule peaks around six hours later, and yesterday\'s is still working). Adderall nudges heart rate the other way; Lexapro works quietly in the brain. Taking the stimulant on waking keeps it from stealing sleep.'},
   {t:10.0,k:'desk',title:'Head down at a desk',parts:['Sixth cervical vertebra','Seventh cervical vertebra','Intervertebral disk of sixth cervical vertebra','#c7nerve'],col:'#B193E3',cam:'neck',force:['#c7nerve'],
     x:'Long periods looking down tire the neck muscles and load the lower discs: a deep ache in the neck or between the shoulder blades. Arm tingling from the C6/C7 disc is more often set off by tipping the head back or turning toward the sore side, like checking a blind spot. Resting a hand on top of the head often eases it.'},
@@ -20,7 +20,7 @@ const EV=[
     x:'Spaced four hours from levothyroxine. Taken every other day, each tablet is absorbed a little better; the patient\'s doctor chooses the schedule.'},
   {t:12.5,k:'lunch',title:'Lunch, and nausea',parts:['Stomach','Esophagus'],col:'#DDB741',cam:'gut',
     x:'Small, low-fat meals of soft, well-chewed or blended food empty fastest, and liquids often empty normally even when solids don\'t. Zofran can take the edge off nausea; it doesn\'t speed the stomach.'},
-  {t:15.0,k:'slump',title:'The afternoon slump',parts:['Wall of heart','#vessels','#brain'],col:'#EE6F82',cam:'body',
+  {t:15.0,k:'slump',title:'The afternoon slump',parts:['Wall of heart','#vessels','#brain'],col:'#F07FA0',cam:'body',
     x:'POTS fatigue, low iron, and thyroid levels that drift off target all point the same way. Fluids, salt, compression and sitting before the patient has to are not laziness; they are treatment.'},
   {t:17.0,k:'mcas',title:'A hot day, a warm shower',parts:['Skin'],col:'#F29A55',cam:'body',
     x:'Heat is a common mast-cell trigger. Flushing, itch or a racing heart after a hot shower can be MCAS, POTS, or both.'},
@@ -83,8 +83,8 @@ export function makeDay(A){
   return {id:'day',title:'A day in the patient\'s body',fig:'',
     enter(panel){K.resetRig();cur=-1;h=6.4;playing=false;
       panel.innerHTML=`<div class="dy-top"><div id="dy-dial"></div><div class="dy-meters">
-          <div class="ro"><span>Heart rate (model)</span><b id="dy-hr"></b></div><div class="ro"><span>Hand stiffness</span><b id="dy-st"></b></div>
-          <div class="ro"><span>Food still in the stomach</span><b id="dy-sm"></b></div><div class="ro"><span>Pain</span><b id="dy-pn"></b></div><div class="ro"><span>Energy</span><b id="dy-en"></b></div></div></div>
+          <div class="ro"><span>Heart rate (model)</span><b id="dy-hr" class="sm"></b></div><div class="ro"><span>Hand stiffness</span><b id="dy-st" class="sm"></b></div>
+          <div class="ro"><span>Food still in the stomach</span><b id="dy-sm" class="sm"></b></div><div class="ro"><span>Pain</span><b id="dy-pn" class="sm"></b></div><div class="ro"><span>Energy</span><b id="dy-en" class="sm"></b></div></div></div>
         <input id="dy-r" type="range" min="6" max="30" step=".05" value="${h}" aria-label="Time of day" style="width:100%;accent-color:var(--bone)">
         <div class="btns"><button class="btn primary" id="dy-play" type="button">Play</button></div>
         <p class="dy-now" id="dy-now"></p>

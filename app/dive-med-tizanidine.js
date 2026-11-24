@@ -5,7 +5,7 @@ import { glow, rgba, nucleus } from './dive-ra.js';
 import { cc } from './theme.js';
 
 const T={tiz:'#B193E3',mn:'#7FD3A3',int:'#78A0F4',str:'#FFE36E',pain:'#F2A65A',cyp:'#D9785A',mus:'#D9606E',ca:'#FFE36E',glu:'#E6DEFF'};
-const LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace';
+const LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace';
 function label(x,t,px,py,al='left',back=false){x.font=FONT;x.textAlign=al;if(back){const w=x.measureText(t).width;x.fillStyle='rgba(4,7,11,.7)';x.fillRect(al==='left'?px-4:al==='center'?px-w/2-4:px-w-4,py-11,w+8,15);}x.fillStyle=LBL;x.fillText(t,px,py);}
 const near=(pts,p,d)=>{for(let i=1;i<pts.length;i++){const [ax,ay]=pts[i-1],[bx,by]=pts[i];const L=(bx-ax)**2+(by-ay)**2,u=clamp(((p.x-ax)*(bx-ax)+(p.y-ay)*(by-ay))/L,0,1);if(Math.hypot(p.x-ax-u*(bx-ax),p.y-ay-u*(by-ay))<d)return true;}return false;};
 const path=(x,pts)=>{x.beginPath();pts.forEach(([a,b],i)=>i?x.lineTo(a,b):x.moveTo(a,b));};

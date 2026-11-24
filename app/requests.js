@@ -20,7 +20,7 @@ const CSS=`
 .rq-banner>span{white-space:nowrap}
 .rq-banner b{color:var(--bone);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .rq-banner .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--c);animation:rq-pulse 1.4s ease-in-out infinite}
-.rq-banner button{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--line-2);border-radius:999px;white-space:nowrap}
+.rq-banner button{font:14px var(--body);padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;white-space:nowrap}
 .rq-banner button.go{background:var(--bone);color:var(--void);border-color:var(--bone)}
 .rq-form textarea{width:100%;min-height:110px;background:var(--input);color:var(--bone);border:1px solid var(--line-2);border-radius:3px;padding:9px 10px;font:14.5px/1.5 var(--body);resize:vertical}
 .rq-form textarea:focus{outline:2px solid var(--glass);outline-offset:1px}
@@ -28,7 +28,7 @@ const CSS=`
 .rq-msg{font-size:13px!important;margin:8px 0 0!important}
 .rq-list{list-style:none;margin:6px 0 0;padding:0}
 .rq-list>li{border-top:1px solid var(--line);padding:10px 0}
-.rq-top{display:flex;align-items:center;gap:8px;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.rq-top{display:flex;align-items:center;gap:8px;font:12px var(--body);color:var(--dim)}
 .rq-top .st{color:var(--c)}.rq-top .st::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
 .rq-top a{margin-left:auto;color:var(--dim)}
 .rq-t{font-size:14.5px;color:var(--bone);margin:4px 0 0}
@@ -39,10 +39,10 @@ const CSS=`
 .rq-drop.over{border-color:var(--glass);background:color-mix(in srgb,var(--glass) 8%,transparent)}
 .rq-drop label{cursor:pointer;color:var(--glass);text-decoration:underline;text-underline-offset:2px}
 .rq-drop input{position:absolute;width:1px;height:1px;opacity:0}
-.rq-file{display:inline-flex;align-items:center;gap:6px;font:11px var(--mono);padding:4px 6px 4px 9px;border:1px solid var(--line-2);border-radius:999px;color:var(--bone-2);max-width:100%}
+.rq-file{display:inline-flex;align-items:center;gap:6px;font:12px var(--body);padding:4px 6px 4px 9px;border:1px solid var(--line-2);border-radius:999px;color:var(--bone-2);max-width:100%}
 .rq-file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
 .rq-file button{font:12px var(--mono);color:var(--dim);padding:0 3px}
-@media (max-width:860px){.rq-banner{top:calc(96px + env(safe-area-inset-top,0px))}.chip.suggest{order:1;margin-left:auto}.chip.suggest+.chip.theme{margin-left:0}}
+@media (max-width:860px) and (min-height:521px){.rq-banner{top:calc(118px + env(safe-area-inset-top,0px))}.chip.suggest{order:1;margin-left:auto}.chip.suggest+.chip.theme{margin-left:0}}
 `;
 
 export function makeRequests({context,onOpen}){

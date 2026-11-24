@@ -6,10 +6,10 @@ import { glow, rgba, nucleus } from './dive-ra.js';
 import { GUIDE_M } from './dive-mast.js';
 import { cc, theme } from './theme.js';
 
-const C={cet:'#5AA8FF',dex:'#A9D4FF',oh:'#C08CFF',h1:'#62BED3',gq:'#B193E3',sig:'#FFE36E',nerve:'#E8C547',lys:'#F2A65A',pgp:'#F29A55',endo:'#C98A9A',old:'#EE6F82',fexo:'#7FD3A3',alb:'#E8B04A',rbc:'#C23447',neu:'#40C7AA'};
+const C={cet:'#5AA8FF',dex:'#A9D4FF',oh:'#C08CFF',h1:'#62BED3',gq:'#B193E3',sig:'#FFE36E',nerve:'#E8C547',lys:'#F2A65A',pgp:'#F29A55',endo:'#C98A9A',old:'#F07FA0',fexo:'#7FD3A3',alb:'#E8B04A',rbc:'#C23447',neu:'#40C7AA'};
 // histamine is white light on the dark slide; on paper it is drawn purple, as in the MCAS dive
 const HIST=()=>theme()==='light'?'#7A4FB0':'#FFFFFF';
-const LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace';
+const LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace';
 const bg=h=>`style="background:${cc(h)}"`;
 function label(x,t,px,py,al='left',back=false){x.font=FONT;x.textAlign=al;if(back){const w=x.measureText(t).width;x.fillStyle='rgba(10,8,12,.66)';x.fillRect(al==='left'?px-5:al==='center'?px-w/2-5:px-w-5,py-12,w+10,17);}x.fillStyle=LBL;x.fillText(t,px,py);}
 function poly(x,cx,cy,r,n,rot){x.beginPath();for(let i=0;i<n;i++){const a=rot+i/n*TAU;x.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}x.closePath();}

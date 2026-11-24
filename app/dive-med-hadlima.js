@@ -7,7 +7,7 @@ import { HADLIMA } from './data.js';
 const KA=HADLIMA.pk.ka,KE=Math.LN2/HADLIMA.pk.halfLifeDays,F=.64,PEAK=4.7;  // the same absorption model as the bench
 const curve=d=>d<=0?0:Math.exp(-KE*d)-Math.exp(-KA*d);const TMAX=Math.log(KA/KE)/(KA-KE);const level=d=>PEAK*curve(d)/curve(TMAX);
 const C={ab:'#5AA8FF',lt:'#A9D4FF',cdr:'#FFE08A',fat:'#E8C77A',lym:'#7FD3C8',cap:'#E0525F',aaa:'#C08CFF',fcrn:'#7FD3A3',alb:'#E8B04A',oth:'#8FA3A6',lys:'#FF9F43',gly:'#7FD3A3'};
-const LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace';
+const LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace';
 function miniY(x,cx,cy,s,rot,col=C.ab,a=1){x.save();x.globalAlpha*=a;x.translate(cx,cy);x.rotate(rot);x.strokeStyle=col;x.lineWidth=2.4*s;x.lineCap='round';x.beginPath();x.moveTo(0,6*s);x.lineTo(0,0);x.lineTo(-4.5*s,-5.5*s);x.moveTo(0,0);x.lineTo(4.5*s,-5.5*s);x.stroke();x.restore();}
 function label(x,t,px,py,al='left'){x.fillStyle=LBL;x.font=FONT;x.textAlign=al;x.fillText(t,px,py);}
 let seed=11;const R=()=>(seed=seed*16807%2147483647)/2147483647;

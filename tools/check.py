@@ -4,7 +4,7 @@
     python3 tools/check.py              both checks; screenshots go to /tmp/glass-atlas-check/
     python3 tools/check.py --static     only the import check (no browser needed)
     CHECK_EXTRA=shots.json python3 tools/check.py    also shoot extra screens (see extra_steps)
-    CHECK_EXTRA=shots.json python3 tools/check.py --extra-only [--phone] [--light|--dark]
+    CHECK_EXTRA=shots.json python3 tools/check.py --extra-only [--phone|--sideways] [--light|--dark]
                                         only the extra screens, quick, for working on one screen
 
 The browser walk serves app/ on a free local port, drives headless Chrome over DevTools through
@@ -154,6 +154,8 @@ def walk(url, mode):
         call("Page.enable"); call("Runtime.enable")
         if "--phone" in sys.argv:
             call("Emulation.setDeviceMetricsOverride", width=390, height=844, deviceScaleFactor=2, mobile=True)
+        elif "--sideways" in sys.argv:  # a phone held sideways
+            call("Emulation.setDeviceMetricsOverride", width=844, height=390, deviceScaleFactor=2, mobile=True)
         else:
             call("Emulation.setDeviceMetricsOverride", width=1440, height=900, deviceScaleFactor=1, mobile=False)
         call("Emulation.setEmulatedMedia", features=[{"name": "prefers-color-scheme", "value": mode}])

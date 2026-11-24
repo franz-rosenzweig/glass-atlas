@@ -38,7 +38,7 @@ function villusLevel(){
       for(const d of drops){d.y+=d.vy*dt;const vx=V[d.v];if(!d.in&&d.y>140&&Math.abs(d.x-vx)<56&&Math.random()<.004){d.in=true;}
         if(d.in){d.x=lerp(d.x,vx,dt*2);d.vy=40;}x.fillStyle=d.in?'#FFD27A':FE;x.beginPath();x.arc(d.x,d.y,d.in?3.5:2.6,0,TAU);x.fill();}
       for(let i=drops.length-1;i>=0;i--)if(drops[i].y>720)drops.splice(i,1);
-      x.fillStyle='rgba(236,230,218,.55)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT CONTENTS',20,40);x.fillText('VILLUS',V[0]+60,300);x.fillText('BLOOD',20,660);},
+      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT CONTENTS',20,40);x.fillText('VILLUS',V[0]+60,300);x.fillText('BLOOD',20,660);},
   };
 }
 
@@ -92,7 +92,7 @@ function cellLevel(){
     // iron
     for(const p of S.lumen){x.fillStyle=p.go?'#FFD27A':'rgba(232,162,58,.55)';x.beginPath();x.arc(p.x,p.y,3.6,0,TAU);x.fill();}
     for(const p of S.inside){x.fillStyle='#FFD27A';x.beginPath();x.arc(p.x,p.y,3.6,0,TAU);x.fill();}
-    x.fillStyle='rgba(236,230,218,.6)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT SIDE',30,80);x.fillText('BLOOD',30,L.y1+76);x.textAlign='center';x.fillText('ferroportin doors',500,L.y1-26);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';x.fillText('GUT SIDE',30,80);x.fillText('BLOOD',30,L.y1+76);x.textAlign='center';x.fillText('ferroportin doors',500,L.y1-26);
     const q=s=>api.card.querySelector(s);if(q('#ic-day')){q('#ic-day').textContent=S.day;q('#ic-h').style.width=S.H*100+'%';q('#ic-hv').textContent=S.H>.35?'doors locked':S.H>.1?'easing':'low';
       q('#ic-b').textContent=S.blood.toFixed(1)+' mg';q('#ic-d').textContent=S.doses;q('#ic-l').textContent=S.lost.toFixed(1)+' mg';q('#ic-log').innerHTML=S.log.slice(0,4).map(l=>`<div>${l}</div>`).join('');
       q('#ic-take').disabled=S.taken||S.done;}

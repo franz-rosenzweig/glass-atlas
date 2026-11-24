@@ -117,7 +117,7 @@ function follicleLevel(){
     for(const tc of S.tc){tc.a+=dt*.15;G.tcell(x,CX+Math.cos(tc.a)*tc.r,CY+Math.sin(tc.a)*tc.r,1.2);}
     for(const c of S.cells)if(c.dead&&c.hit>0){c.hit-=dt*.5;const p=cellPos(c);x.save();x.globalCompositeOperation='lighter';glow(x,p.x,p.y,40*c.hit,'rgba(155,107,232,.8)');x.restore();}
     for(let i=0;i<4;i++){const a=t*.12+i*1.6;G.ab(x,CX+Math.cos(a)*(R+44),CY+Math.sin(a)*(R+44),.16,a+Math.PI/2,'#9B6BE8');}
-    x.fillStyle='rgba(236,230,218,.55)';x.font='11px "Martian Mono", monospace';x.textAlign='center';x.fillText('COLLOID (stored thyroglobulin)',CX,CY+6);x.fillText('CAPILLARY',CX,CY-R-98);
+    x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='center';x.fillText('COLLOID (stored thyroglobulin)',CX,CY+6);x.fillText('CAPILLARY',CX,CY-R-98);
     ui(api);
   }
   let last=0;function ui(api){const n=performance.now();if(n-last<180)return;last=n;const q=s=>api.card.querySelector(s);if(!q('#tf-w'))return;

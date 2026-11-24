@@ -4,8 +4,8 @@ import { TAU, clamp, lerp, rand } from './dive.js';
 import { glow, rgba } from './dive-ra.js';
 import { cc } from './theme.js';
 
-const P={prop:'#EE6F82',ne:'#F2A65A',camp:'#FFE36E',glu:'#7FD3A3',b1:'#78A0F4',b2:'#62BED3',node:'#D58FB4',atr:'#C0606E',cap:'#C23447'};
-const LBL='rgba(236,230,218,.55)',FONT='11px "Martian Mono", monospace';
+const P={prop:'#F07FA0',ne:'#F2A65A',camp:'#FFE36E',glu:'#7FD3A3',b1:'#78A0F4',b2:'#62BED3',node:'#D58FB4',atr:'#C0606E',cap:'#C23447'};
+const LBL='rgba(236,230,218,.8)',FONT='11px "Martian Mono", monospace';
 function label(x,t,px,py,al='left',back=false){x.font=FONT;x.textAlign=al;if(back){const w=x.measureText(t).width;x.fillStyle='rgba(4,7,11,.7)';x.fillRect(al==='left'?px-4:al==='center'?px-w/2-4:px-w-4,py-11,w+8,15);}x.fillStyle=LBL;x.fillText(t,px,py);}
 let seed=7;const R=()=>(seed=seed*16807%2147483647)/2147483647;
 const near=(pts,p,d)=>{for(let i=1;i<pts.length;i++){const [ax,ay]=pts[i-1],[bx,by]=pts[i];const L=(bx-ax)**2+(by-ay)**2,u=clamp(((p.x-ax)*(bx-ax)+(p.y-ay)*(by-ay))/L,0,1);if(Math.hypot(p.x-ax-u*(bx-ax),p.y-ay-u*(by-ay))<d)return true;}return false;};
@@ -181,7 +181,7 @@ function receptorLevel(){
   };
 }
 
-export const DIVE={color:'#EE6F82',top:{label:'Heart',size:'10 cm'},
+export const DIVE={color:'#F07FA0',top:{label:'Heart',size:'10 cm'},
   target:({centreOf,V3})=>centreOf(['Wall of heart']).add(V3(-.025,.03,0)),view:{dist:.2,azim:-30,elev:8},
   text:'Into the patient\'s heart, to the sinus node where every beat starts: see how standing speeds it and how propranolol takes the edge off. Then down to the beta receptors themselves, in the heart and the airways, and what that means in a severe allergic reaction.',
   steps:[['Pacemaker, 0.5 mm.','The cells that set the pace. Stand the patient up and compare no propranolol with the low and high doses of a 2009 study.'],['Receptor, 10 nm.','Beta-1 and beta-2 receptors with propranolol in them. Try standing, low blood sugar, epinephrine and glucagon.']],

@@ -11,7 +11,7 @@ export const GUIDE_P={
     text:['They release norepinephrine onto blood vessels (squeeze) and the heart (faster, stronger). Standing should mainly tighten the small arteries in the legs and gut, and the large veins of the gut, which hold much of the body\'s spare blood; in the legs the calf-muscle pump does much of the work.','In neuropathic POTS the nerves to the legs squeeze too weakly; in hyperadrenergic POTS the system is turned up too high.']},
   vagus:{name:'Vagus nerve',kind:'Nerve',size:'brainstem to the gut',draw:(x,cx,cy,s)=>{x.strokeStyle='#78A0F4';x.lineWidth=4*s;x.beginPath();x.moveTo(cx,cy-40*s);x.bezierCurveTo(cx+20*s,cy-10*s,cx-20*s,cy+10*s,cx,cy+40*s);x.stroke();},
     text:['The brake on the heart. Standing eases off the brake so the heart speeds up a little; that is normal.','It also carries the pressure reports from the aortic arch, and runs much of the gut, one reason POTS and gut symptoms travel together.']},
-  propr:{name:'Propranolol',kind:'Medicine',size:'about 1 nm',draw:(x,cx,cy,s)=>{x.strokeStyle='#EE6F82';x.lineWidth=4*s;for(let i=0;i<2;i++){x.beginPath();for(let k=0;k<6;k++){const a=k/6*TAU;x.lineTo(cx-14*s+i*28*s+Math.cos(a)*12*s,cy+Math.sin(a)*12*s);}x.closePath();x.stroke();}},
+  propr:{name:'Propranolol',kind:'Medicine',size:'about 1 nm',draw:(x,cx,cy,s)=>{x.strokeStyle='#F07FA0';x.lineWidth=4*s;for(let i=0;i<2;i++){x.beginPath();for(let k=0;k<6;k++){const a=k/6*TAU;x.lineTo(cx-14*s+i*28*s+Math.cos(a)*12*s,cy+Math.sin(a)*12*s);}x.closePath();x.stroke();}},
     text:['Blocks the heart\'s beta receptors, so the same sympathetic push raises the rate less. In a small 2009 study of single doses, a smaller dose eased symptoms better than a larger one, though the larger one slowed the heart more.','It treats the racing, not the pooling, which is why fluids, salt and compression come first.']},
 };
 
@@ -59,7 +59,7 @@ function circuitLevel(){
       const [hx,hy]=pt(34,410);const hr=70+S.hr*s;const beat=Math.pow(Math.max(0,Math.sin(t*hr/60*Math.PI)),8);x.fillStyle='#C23447';x.beginPath();x.arc(hx,hy,12+beat*4,0,TAU);x.fill();
       // squeeze rings on the leg veins
       for(let k=0;k<3;k++){const [X,Y]=pt(-6,120+k*80);x.strokeStyle=rgba('#F2A65A',.2+.6*drive*S.sq/2);x.lineWidth=2;x.beginPath();x.ellipse(X,Y,14*(1-.3*s*S.sq),6,0,0,TAU);x.stroke();}
-      x.fillStyle='rgba(236,230,218,.6)';x.font='11px "Martian Mono", monospace';x.textAlign='left';const lab=(n,a,b)=>{const [X,Y]=pt(a,b);x.fillText(n,X+16,Y);};
+      x.fillStyle='rgba(236,230,218,.8)';x.font='11px "Martian Mono", monospace';x.textAlign='left';const lab=(n,a,b)=>{const [X,Y]=pt(a,b);x.fillText(n,X+16,Y);};
       lab('brainstem',20,566);lab('neck sensors',36,470);lab('heart',40,405);lab('leg veins',0,160);
       const q=s=>api.card.querySelector(s);if(q('#pc-hr')){q('#pc-hr').textContent=Math.round(hr)+' bpm'+(s>.5?` (+${Math.round(S.hr*s)})`:'');q('#pc-bp').textContent=Math.round(112+S.bp*s)+' mmHg';q('#pc-pool').textContent=Math.round(S.pool*s/10)*10+' mL';}
     },
@@ -112,7 +112,7 @@ function rhythmLevel(){
       // the lane
       x.fillStyle='#0E161B';x.fillRect(-400,380,1800,160);x.strokeStyle='rgba(236,230,218,.9)';x.lineWidth=3;x.beginPath();x.moveTo(HIT,370);x.lineTo(HIT,550);x.stroke();
       x.fillStyle='rgba(127,211,163,.10)';x.fillRect(HIT-46,380,92,160);
-      for(const b of S.beats){const col=b.hit?'#7FD3A3':b.missed?'#5A3A40':'#EE6F82';x.save();x.globalCompositeOperation='lighter';if(!b.missed)glow(x,b.x,460,30,rgba(col,.7));x.restore();x.fillStyle=col;x.beginPath();x.arc(b.x,460,12,0,TAU);x.fill();}
+      for(const b of S.beats){const col=b.hit?'#7FD3A3':b.missed?'#5A3A40':'#F07FA0';x.save();x.globalCompositeOperation='lighter';if(!b.missed)glow(x,b.x,460,30,rgba(col,.7));x.restore();x.fillStyle=col;x.beginPath();x.arc(b.x,460,12,0,TAU);x.fill();}
       for(const f of S.fx){f.t+=dt;x.strokeStyle=f.bad?`rgba(242,112,95,${1-f.t*2})`:`rgba(127,211,163,${1-f.t*2})`;x.lineWidth=3;x.beginPath();x.arc(HIT,460,20+f.t*120,0,TAU);x.stroke();}
       S.fx=S.fx.filter(f=>f.t<.5);
       x.fillStyle='rgba(236,230,218,.75)';x.font='14px "Atkinson Hyperlegible", sans-serif';x.textAlign='center';x.fillText(S.on?(S.done?'Done. Change something and start again.':S.pots?'tap on the beat':'a typical body squeezes on every beat by itself: just watch'):'press Start, then tap on the beat',HIT+300,600);

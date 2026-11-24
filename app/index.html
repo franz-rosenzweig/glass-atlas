@@ -10,7 +10,7 @@
   color-scheme:dark;
   --void:#0A0F11;--vitrine:rgba(14,21,23,.86);--solid:#111A1C;--line:#25353A;--line-2:#33474C;
   --bone:#ECE6DA;--bone-2:#B9B6AD;--dim:#7E8E90;--glass:#BFE6E1;--alert:#F2705F;--ok:#7FD3A3;
-  --structural:#B193E3;--autonomic:#EE6F82;--immune:#F29A55;--endocrine:#40C7AA;--neuro:#78A0F4;--digestive:#DDB741;--reproductive:#62BED3;
+  --structural:#B193E3;--autonomic:#F07FA0;--immune:#F29A55;--endocrine:#40C7AA;--neuro:#78A0F4;--digestive:#DDB741;--reproductive:#62BED3;
   --display:"Gloock",Georgia,"Times New Roman",serif;
   --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Martian Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -22,8 +22,8 @@
 :root[data-theme="light"]{
   color-scheme:light;
   --void:#F4F1EA;--vitrine:rgba(252,250,245,.9);--solid:#FFFDF8;--line:#DFD8CA;--line-2:#CCC4B4;
-  --bone:#1E2426;--bone-2:#4A5254;--dim:#687275;--glass:#2C7D74;--alert:#C63F2C;--ok:#23875A;
-  --structural:#7652C2;--autonomic:#C8364F;--immune:#C4651C;--endocrine:#13896F;--neuro:#3A64C8;--digestive:#A87400;--reproductive:#1F7F96;
+  --bone:#1E2426;--bone-2:#4A5254;--dim:#626C6F;--glass:#25776E;--alert:#C63F2C;--ok:#0A794D;
+  --structural:#7652C2;--autonomic:#B8325E;--immune:#AD5000;--endocrine:#007A61;--neuro:#3A64C8;--digestive:#925F00;--reproductive:#0B758B;
   --hi:20 26 28;--lo:252 250 245;--bg-a:#FFFFFF;--bg-b:#F6F3EC;--well:#FFFDF8;--input:#FFFFFF;--scope:#F7F4EE;
   --warn-bg:rgba(198,63,44,.07);--warn-bg-2:rgba(198,63,44,.05);--scrim:rgba(40,34,28,.28);
 }
@@ -31,7 +31,7 @@
 html,body{height:100%}
 body{margin:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,var(--bg-a) 0%,var(--bg-b) 48%,var(--void) 100%);color:var(--bone);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-:focus-visible{outline:2px solid var(--glass);outline-offset:2px}
+:focus-visible{outline:2px solid var(--bone);outline-offset:2px}
 #app{position:relative;height:100%;overflow:hidden;overflow:clip}
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 
@@ -47,7 +47,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .top>*{pointer-events:auto}
 .brand h1{font:400 30px/1 var(--display);margin:0}
 .brand p{margin:6px 0 0;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.layers{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.layers{margin-left:auto;position:relative}
+.lpop{position:absolute;right:0;top:calc(100% + 6px);z-index:35;display:grid;gap:4px;min-width:170px;padding:6px;background:var(--solid);border:1px solid var(--line-2);border-radius:6px;box-shadow:0 10px 30px rgb(0 0 0 / .25)}
+.lpop .tg{align-items:center}
 .acts{display:flex;gap:4px}
 .chip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line-2);border-radius:3px;color:var(--dim);background:rgb(var(--lo) / .6)}
 .chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:rgb(var(--hi) / .08)}
@@ -64,7 +66,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .panel h2{font:400 23px/1.1 var(--display);margin:0 0 6px;text-wrap:balance}
 .lede{color:var(--bone-2);font-size:13.5px;margin:0 0 10px}
 .group{margin-top:14px}
-.ghead{display:flex;align-items:center;gap:8px;font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:3px}
+.ghead{display:flex;align-items:center;gap:8px;font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin:0 0 3px}
 .ghead i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;width:100%;text-align:left;padding:7px 8px;border-radius:3px;border-left:2px solid transparent}
 .row:hover{background:rgb(var(--hi) / .04)}
@@ -91,6 +93,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .close{font:10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:6px 2px}
 .close:hover{color:var(--bone)}
 .drawer h2{font:400 28px/1.05 var(--display);margin:10px 0 4px;text-wrap:balance}
+.dr-top>h2{margin:0}
 .fig{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 .dtabs{display:flex;gap:2px;margin-top:12px;border-bottom:1px solid var(--line)}
 .dtab{font:10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px 10px 9px;border-bottom:2px solid transparent;margin-bottom:-1px}
@@ -162,7 +165,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .tn{font:11px var(--mono);color:var(--dim)}.tk{font-size:13px}
 .tp{font:11px var(--mono);color:var(--dim)}.tp.hit{color:var(--structural)}
 .chart{width:100%;height:auto;display:block;margin:6px 0 0}
-.chart text{font:9px var(--mono);fill:var(--dim)}
+.chart text{font:10.5px var(--body);fill:var(--dim)}
 .legend{font-size:11.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;margin:2px 0 6px}
 .sw{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:4px}
 .sw-d{background:var(--digestive)}.sw-n{border-top:2px dashed var(--dim);height:0}.sw-c{width:7px;height:7px;border:1px solid var(--dim);border-radius:50%}
@@ -175,7 +178,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .steps{margin:6px 0 0;padding:0;list-style:none;counter-reset:a}
 .steps li{counter-increment:a;position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line);font-size:14px;color:var(--bone-2)}
 .steps li::before{content:counter(a);position:absolute;left:0;top:8px;font:11px var(--mono);color:var(--dim)}
-.illus,.mon-sim,.dbody .illus{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+.illus,.mon-sim,.dbody .illus{font:12px var(--body);color:var(--dim);margin:0 0 10px}
 .dbody .em{padding:0}
 .dr-back{font-size:13px;color:var(--bone-2);padding:6px 0}.dr-back:hover{color:var(--bone)}
 
@@ -189,7 +192,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @media (prefers-reduced-motion:reduce){.warn.hot{animation:none}}
 .bar.band{background:linear-gradient(90deg,var(--line) 0 62%,color-mix(in srgb,var(--alert) 35%,var(--line)) 80%,color-mix(in srgb,var(--alert) 60%,var(--line)))}
 .bar.band i{background:var(--neuro,#78A0F4);opacity:.85}
-.mon-sim{font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.mon-sim{margin-bottom:4px}
 .em{list-style:none;margin:8px 0 14px;padding:0;display:grid;gap:8px}
 .em li{border:1px solid color-mix(in srgb,var(--alert) 45%,transparent);background:var(--warn-bg-2);border-radius:3px;padding:9px 11px;font-size:13.5px;color:var(--bone-2)}
 .em li b{display:block;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--alert);margin-bottom:3px}
@@ -201,7 +204,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .srcs a{color:var(--glass)}
 .srcline{font-size:12px;color:var(--dim);margin-top:14px;line-height:1.6}
 .srcline button{all:unset;cursor:pointer;color:var(--glass);border-bottom:1px dotted color-mix(in srgb,var(--glass) 60%,transparent)}
-.srcline button:focus-visible{outline:2px solid var(--glass);outline-offset:2px}
+.srcline button:focus-visible{outline:2px solid var(--bone);outline-offset:2px}
 .srcs li.flash{background:color-mix(in srgb,var(--glass) 10%,transparent)}
 
 
@@ -219,19 +222,20 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .icons i{aspect-ratio:1;border-radius:50%;transition:background .4s}
 .planner{width:100%;height:auto;display:block;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .planner text{font:9px var(--mono);fill:var(--dim)}.planner .pl{font:11px var(--body);fill:var(--bone-2)}.planner .pl.hi{fill:var(--bone);font-weight:700}
-.planner .tm{font:8.5px var(--mono);fill:var(--dim)}.planner .hd{cursor:grab}
+.planner .tm{font:8.5px var(--mono);fill:var(--dim)}.planner .hd{cursor:grab;outline:none}.planner .hd:focus-visible circle:first-child,.planner .hd:focus-visible rect{stroke:var(--bone);stroke-width:3}
 .legend span{display:inline-flex;align-items:center;gap:5px}.sw.dot{width:8px;height:8px;border-radius:50%}
 .rules{list-style:none;margin:8px 0;padding:0}
 .rules li{position:relative;padding:6px 0 6px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--bone-2)}
 .rules li::before{content:"";position:absolute;left:2px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
-.rules li.warn::before{background:var(--alert)}.rules li.note::before{background:#F2A65A}
-.zy-helps li.no::before{background:var(--alert)}.zy-helps li.some::before{background:#F2A65A}
+.rules li.warn::before{background:var(--alert)}.rules li.note::before{background:none;border:2px solid var(--bone-2)}
+.zy-helps li.no::before{background:var(--alert)}.zy-helps li.some::before{background:none;border:2px solid var(--bone-2)}
 .zy-helps li b{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--bone);margin-right:3px}
 
 .web-labels{position:absolute;inset:0;z-index:18;pointer-events:none}
 .web-labels[hidden]{display:none}
 .wl{position:absolute;left:0;top:0;pointer-events:auto;font:10px var(--mono);letter-spacing:.06em;padding:4px 7px;border-radius:999px;background:rgb(var(--lo) / .82);border:1px solid var(--c);color:var(--bone);white-space:nowrap;transition:opacity .2s}
 .wl.dim{opacity:.25!important}.wl.on{background:var(--c);color:var(--void)}
+.w-pills{display:none}
 .w-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11.5px;color:var(--dim);margin:4px 0}
 .w-legend span{display:inline-flex;align-items:center;gap:5px}.w-legend i{width:14px;height:3px;border-radius:2px}
 .wlink{display:grid;grid-template-columns:1fr auto;gap:2px 8px;width:100%;text-align:left;padding:9px 10px;border-top:1px solid var(--line);border-left:3px solid var(--s)}
@@ -260,24 +264,102 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 #app.touring .panel,#app.touring .drawer{display:none}
 .tour{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(760px,calc(100% - 32px));z-index:40;background:var(--vitrine);border:1px solid var(--line);border-top:3px solid var(--bone);border-radius:3px;padding:12px 16px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .tour[hidden]{display:none}
-.tour-top{display:flex;align-items:baseline;gap:10px}.tour-n{font:10px var(--mono);color:var(--dim);letter-spacing:.1em}.tour-t{font:400 20px var(--display)}.tour-x{margin-left:auto;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.tour-top{display:flex;align-items:baseline;gap:10px}.tour-n{font:10px var(--mono);color:var(--dim);letter-spacing:.1em}.tour-t{font:400 20px var(--display)}.tour-x{margin-left:auto;color:var(--dim)}
 .tour-c{font-size:14.5px;color:var(--bone-2);margin:6px 0 8px;max-height:7.5em;overflow:auto}
-.tour-ctl{display:flex;align-items:center;gap:8px}.tour-ctl button{font:16px var(--mono);border:1px solid var(--line-2);border-radius:3px;padding:4px 12px}.tour-play{font:10.5px var(--mono)!important;letter-spacing:.08em;text-transform:uppercase;background:var(--bone);color:var(--void);border-color:var(--bone)!important;padding:8px 14px!important}
+.tour-ctl{display:flex;align-items:center;gap:8px}.tour-ctl button{font:16px var(--mono);border:1px solid var(--line-2);border-radius:3px;padding:4px 12px}.tour-play{font:700 14px var(--body)!important;background:var(--bone);color:var(--void);border-color:var(--bone)!important;padding:8px 14px!important}
 .tour-dots{display:flex;gap:4px;margin-left:auto}.tour-dots i{width:16px;height:3px;background:var(--line-2);border-radius:2px}.tour-dots i.done{background:var(--bone-2)}.tour-dots i.on{background:var(--bone)}
-@media (max-width:860px){
+/* ---------- round 2: one look. Type: Atkinson 12 caption / 14 UI / 15 body / 17 lead; Gloock 24/28/34;
+   mono only for numbers. Five control types: button, quiet button, choice pill, tab, list row. ---------- */
+.brand h1{font-size:34px}
+.chip{font:14px/1.2 var(--body);letter-spacing:0;text-transform:none;padding:7px 12px;border-radius:6px;background:var(--solid);color:var(--bone-2)}
+.chip:hover{border-color:var(--bone-2);color:var(--bone)}
+.chip[aria-pressed="true"]{color:var(--bone);border-color:var(--bone-2);background:color-mix(in srgb,var(--bone) 10%,var(--solid))}
+.chip.alert{color:var(--alert);border-color:color-mix(in srgb,var(--alert) 60%,transparent)}
+.chip.alert:hover{border-color:var(--alert);color:var(--alert)}
+.chip.alert[aria-pressed="true"]{background:color-mix(in srgb,var(--alert) 12%,var(--solid))}
+.chip.theme{width:36px;height:34px}
+.panel h2{font:400 28px/1.1 var(--display)}
+.ghead{font:700 12px var(--body);letter-spacing:.04em;color:var(--bone-2)}
+.row .nm{font-size:15px}
+.row .nm small,.medlist .row .nm small{display:block;font:12px/1.35 var(--body);color:var(--dim);margin-top:2px}
+.badge{border:0;padding:0;background:none;font:12px var(--body);letter-spacing:0;text-transform:none;color:var(--dim)}
+.medfind{border-radius:6px}
+.lswitch{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 0 12px;border:1px solid var(--line-2);border-radius:999px;padding:2px}
+.lswitch button{font:14px var(--body);padding:6px 10px;border-radius:999px;color:var(--bone-2)}
+.lswitch button[aria-pressed="true"]{background:color-mix(in srgb,var(--bone) 14%,transparent);color:var(--bone);font-weight:700}
+.tag{font:700 12px var(--body);letter-spacing:.04em;text-transform:none;color:var(--bone-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.fig{font:13px/1.35 var(--body);letter-spacing:0;text-transform:none;color:var(--bone-2)}
+.drawer h2{font-size:28px}
+.dtab{font:14px var(--body);letter-spacing:0;text-transform:none;color:var(--bone-2);padding:9px 12px 10px}
+.dtab:hover{color:var(--bone)}
+.dtab[aria-selected="true"]{font-weight:700}
+.dbody h3,.dbody .eyebrow{font:700 15px/1.3 var(--body);letter-spacing:0;text-transform:none;color:var(--bone);margin:20px 0 6px}
+.dbody p,.dbody li{font-size:15px}
+.tldr{font-size:17px}
+.warn b,.em li b{font:700 13px var(--body);letter-spacing:0;text-transform:none}
+.btn{font:14px/1.25 var(--body);letter-spacing:0;text-transform:none;padding:9px 14px;border:1px solid var(--line-2);border-radius:6px;background:rgb(var(--hi) / .03);color:var(--bone)}
+.btn:hover{border-color:var(--bone-2);background:rgb(var(--hi) / .06)}
+.btn:active{background:rgb(var(--hi) / .1)}
+.btn.primary,.tour-play{background:var(--bone);color:var(--void);border-color:var(--bone);font-weight:700}
+.btn small{font-size:12px}
+.close,.tour-x,.note-del,.dr-back{font:14px var(--body);letter-spacing:0;text-transform:none;text-decoration:none;color:var(--bone-2);padding:10px 4px}
+.close:hover,.tour-x:hover,.note-del:hover,.dr-back:hover{color:var(--bone)}
+.seg button{font:13px var(--body);padding:6px 12px;color:var(--bone-2)}
+.seg button:hover{border-color:var(--bone-2)}
+.seg button[aria-checked="true"]{background:color-mix(in srgb,var(--c,var(--bone-2)) 16%,transparent);border-color:var(--c,var(--bone-2));color:var(--bone);font-weight:700}
+.row:hover,.wlink:hover,.dy-ev:hover,.test:hover{background:rgb(var(--hi) / .05)}
+.ctl-l,.tg-t,.ro>span:first-child,.struct,.verdict,.tk,.dy-ev,.em li,.rules li{font-size:14px}
+.ctl-v{font-size:14px}
+.ro b{font:700 15px var(--body);font-variant-numeric:tabular-nums}
+.ro b.sm{font:700 14px/1.35 var(--body)}
+.ro .note,.mon-row .note,.fine,.srcline,.srcs li,.legend,.w-legend,.credit,.tg-t small,.score-t,.note-f,.rq-ctx{font-size:12px!important}
+.mon-l,.mon-u{font-weight:400}
+.mon-bp{font-weight:400}.mon-row b{font-weight:400}
+.regtext,.lede-s,.dy-now,.quotes li,.wl-t,.note-t{font-size:15px!important}
+.wl-x{font-size:14px}
+.wl-pair,.wl-s,.note-k,.note-w{font:12px var(--body);letter-spacing:0;text-transform:none}
+.wl-s{font-weight:700}
+#tip small{font:12px var(--body);letter-spacing:0;text-transform:none}
+#loading b{font-size:34px}
+#loading p{font:12px var(--body);letter-spacing:0;text-transform:none}
+.zy-helps li b{font:700 13px var(--body);letter-spacing:0;text-transform:none}
+.tour-t{font-size:24px}.tour-c{font-size:15px}
+.tour-ctl button{font:16px var(--body)}
+.wl{font:12px var(--body);letter-spacing:0}
+.rules li.note::before,.zy-helps li.some::before{background:none;border:2px solid var(--bone-2)}
+.dy-dial text{font:15px var(--mono)}
+.planner text,.planner .tm{font:9.5px var(--body)}
+.medlist .none{font:12px var(--body)}
+.layers-btn{display:none}
+@media (pointer:coarse){
+  .chip,.dtab,.close,.dr-back,.btn,.seg button,.lswitch button,.tour-ctl button{min-height:44px}
+  .chip{display:inline-flex;align-items:center;justify-content:center}
+  .row{min-height:44px}
+  input[type=range]{height:44px}
+}
+/* a phone held sideways keeps the side-by-side layout, narrower: a bottom sheet there would be 80 px tall */
+@media (max-width:860px) and (max-height:520px){
+  :root{--left:250px;--right:330px}
+  .top{top:calc(8px + env(safe-area-inset-top,0px))}.brand h1{font-size:24px}
+  .panel,.drawer{top:calc(58px + env(safe-area-inset-top,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+  .drawer h2{font-size:24px}.panel h2{font-size:24px}
+}
+@media (max-width:860px) and (min-height:521px){
   :root{--left:auto;--right:auto}
-  .brand h1{font-size:24px}
+  .brand h1{font-size:28px}
   .top{flex-wrap:wrap;gap:8px 14px}
-  .layers{margin-left:0;width:100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}
-  .chip{padding:7px 8px;font-size:9.5px;flex:none}
-  .chip.theme{order:1;margin-left:auto;width:31px;height:29px;padding:0}.layers{order:2}
-  .acts{order:3;width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.acts .chip{text-align:center}
+  .layers{order:1;margin-left:auto}.chip.theme{order:1}
+  .top .chip.suggest{margin-left:0}
+  .acts{order:3;width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.acts .chip{text-align:center;padding:7px 4px}
   .panel{top:auto;right:var(--gut);height:42%;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
   .drawer{left:var(--gut);right:var(--gut);top:auto;height:56%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% + 60px))}
   .drawer.open{transform:none}
-  .drawer h2{font-size:23px}
+  .drawer h2{font-size:24px;margin:2px 0 2px}
+  .dr-head{padding:6px 14px 0}.dtabs{margin-top:4px}.dbody{padding:12px 14px 18px}
+  .w-pills{display:flex}.web-labels{display:none!important}
+  /* the tilt table's controls come first on a phone, so the monitor's numbers sit just under them */
+  .inst-grid:has(>.mon){display:flex;flex-direction:column}.inst-grid:has(>.mon)>.ctl{order:-2}.inst-grid:has(>.mon)>.btns{order:-1}
   .tour-dots i{width:8px}.tour-c{max-height:5.2em}
-  .wl{font-size:8.5px;padding:3px 6px}
 }
 @media (prefers-reduced-motion:reduce){.drawer,#loading{transition:none}}
 </style>
@@ -286,12 +368,15 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   <canvas id="gl" aria-label="Interactive 3D anatomy. Drag to rotate, scroll or pinch to zoom, point at any structure to name it."></canvas>
   <header class="top">
     <div class="brand"><h1>Glass Atlas</h1></div>
-    <div class="layers" role="group" aria-label="Layers">
-      <button class="chip" data-layer="skin" aria-pressed="true">Skin</button>
-      <button class="chip" data-layer="skeleton" aria-pressed="true">Skeleton</button>
-      <button class="chip" data-layer="organs" aria-pressed="true">Organs</button>
-      <button class="chip" data-layer="vessels" aria-pressed="true">Vessels</button>
-      <button class="chip" data-layer="nerves" aria-pressed="false">Nerves</button>
+    <div class="layers">
+      <button class="chip" id="layersBtn" type="button" aria-expanded="false" aria-controls="lpop">Layers</button>
+      <div class="lpop" id="lpop" role="group" aria-label="Layers" hidden>
+        <button class="tg" data-layer="skin" aria-pressed="true" type="button"><span class="tg-box"></span><span class="tg-t">Skin</span></button>
+        <button class="tg" data-layer="skeleton" aria-pressed="true" type="button"><span class="tg-box"></span><span class="tg-t">Skeleton</span></button>
+        <button class="tg" data-layer="organs" aria-pressed="true" type="button"><span class="tg-box"></span><span class="tg-t">Organs</span></button>
+        <button class="tg" data-layer="vessels" aria-pressed="true" type="button"><span class="tg-box"></span><span class="tg-t">Vessels</span></button>
+        <button class="tg" data-layer="nerves" aria-pressed="false" type="button"><span class="tg-box"></span><span class="tg-t">Nerves</span></button>
+      </div>
     </div>
     <div class="acts">
       <button class="chip" id="webBtn" type="button">Connections</button>
@@ -305,7 +390,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   </header>
   <aside class="panel" id="panel"></aside>
   <aside class="drawer" id="drawer" aria-label="Details" inert></aside>
-  <div id="tip" role="status"></div>
+  <div id="tip" aria-hidden="true"></div>
   <div id="loading"><div class="in"><b>Glass Atlas</b><p id="ltxt">Loading</p><div class="bar"><i id="lbar"></i></div></div></div>
 </div>
 
@@ -341,7 +426,7 @@ import { REFS, REF_GROUPS } from './refs.js';
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const isPhone=()=>innerWidth<=860;
+const isPhone=()=>innerWidth<=860&&innerHeight>520;
 const CREDIT=`<p class="credit">Anatomy: <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/" target="_blank" rel="noopener">BodyParts3D</a>, Copyright © 2008 Life Science Integrated Database Center, licensed under <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en" target="_blank" rel="noopener">CC BY-SA 2.1 Japan</a> (Mitsuhashi et al., Nucleic Acids Res 2009), via K. Moerman's repository. Decimated; skin surface adapted to a female form; thyroid gland, uterus, ovaries, nerve and leg-vein courses modelled. General education, not medical advice: a patient's own clinicians decide their care. In an emergency, call 911.</p>`;
 const byId=Object.fromEntries(CONDS.map(c=>[c.id,c]));
 const WORD=['no','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'],CAP=w=>w[0].toUpperCase()+w.slice(1);
@@ -354,7 +439,7 @@ function band(){
   const W=canvas.clientWidth,H=canvas.clientHeight,open=drawer.classList.contains('open');
   if($('#app').classList.contains('touring'))return {top:70,bottom:H-(isPhone()?250:190),left:0,right:W};
   if(isPhone()){const top=$('.top').offsetTop+$('.top').offsetHeight+6;const bottom=(open?drawer.offsetTop:panel.offsetTop)-6;return {top,bottom:Math.max(bottom,top+140),left:0,right:W};}
-  return {top:70,bottom:H-20,left:16+300+8,right:open?W-16-400-8:W-8};
+  return {top:70,bottom:H-20,left:16+panel.offsetWidth+8,right:open?W-16-drawer.offsetWidth-8:W-8};
 }
 function fitOffset(){const W=canvas.clientWidth,H=canvas.clientHeight,b=band();A.viewOffT.x=isPhone()?0:(b.left+b.right)/2-W/2;A.viewOffT.y=H/2-(b.top+b.bottom)/2;}
 function homeDist(){const b=band(),H=canvas.clientHeight;return 1.82/(2*Math.tan(15*Math.PI/180))*H/Math.max(b.bottom-b.top,120);}
@@ -362,26 +447,30 @@ function home(){A.flyTo({target:[0,0.84,0],dist:homeDist(),azim:16,elev:4},{raw:
 function zoomFactor(){const b=band();return Math.min(1.9,Math.max(1,Math.sqrt(810/Math.max(b.bottom-b.top,120))));}
 
 /* ---------- left panel ---------- */
+const yr=c=>c.suspected?'Suspected':String(c.year).replace(/^c\. ?/,'about ');
 function renderPanel(){
+  let h=`<h2>The patient's chart</h2><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">Connections</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Tour</span><span class="badge">8 min</span></button>
+    <div class="lswitch" role="group" aria-label="List"><button type="button" id="toChart" aria-pressed="${listMode==='chart'}">Conditions</button><button type="button" id="toMeds" aria-pressed="${listMode==='meds'}">Medicines</button></div>`;
   if(listMode==='chart'){
-    let h=`<h2>The patient's chart</h2><button class="row" id="toWeb" style="--c:var(--bone)"><span class="nm">Connections</span></button><button class="row" id="toDay" style="--c:var(--bone)"><span class="nm">A day in the patient's body</span></button><button class="row" id="toTour" style="--c:var(--bone)"><span class="nm">Tour</span><span class="badge">8 min</span></button>`;
     for(const s of SYS_ORDER){const list=CONDS.filter(c=>c.sys===s);if(!list.length)continue;
-      h+=`<div class="group" style="--c:${cc(SYS[s].c)}"><div class="ghead"><i></i>${SYS[s].label}</div>`;
-      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}</span><span class="badge">${esc(c.suspected?'Suspected':c.year)}</span></button>`;
+      h+=`<div class="group" style="--c:${cc(SYS[s].c)}"><h3 class="ghead"><i></i>${SYS[s].label}</h3>`;
+      for(const c of list)h+=`<button class="row${active===c.id?' on':''}" data-cond="${c.id}" style="--c:${cc(SYS[s].c)}"><span class="nm">${esc(c.name)}</span><span class="badge">${esc(yr(c))}</span></button>`;
       h+='</div>';}
-    h+=`<div class="group"><button class="row" id="toMeds" style="--c:var(--dim)"><span class="nm">Medicines</span><span class="badge">${MEDS.length}</span></button><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources</span><span class="badge">${Object.keys(REFS).length}</span></button></div>`;
-    panel.innerHTML=h+CREDIT;
-    $('#toMeds').onclick=()=>{listMode='meds';renderPanel();};$('#toSrc').onclick=()=>openSources();$('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
+    h+=`<div class="group"><button class="row" id="toSrc" style="--c:var(--dim)"><span class="nm">Sources</span><span class="badge">${Object.keys(REFS).length}</span></button></div>`;
   }else{
-    let h=`<button class="dr-back" id="toChart" type="button">‹ The patient's chart</button><h2>Medicines</h2><input class="medfind" id="medFind" type="search" placeholder="Search" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">Medicine schedule</span></button>`;
+    h+=`<input class="medfind" id="medFind" type="search" placeholder="Search" aria-label="Search medicines by name or kind" autocomplete="off" spellcheck="false"><div class="group medlist"><button class="row" data-med="" style="--c:var(--bone)"><span class="nm">Medicine schedule</span></button>`;
     for(const m of MEDS)h+=`<button class="row" data-med="${m.id}" data-find="${esc((m.name+' '+m.cls).toLowerCase())}" style="--c:${cc(SYS[m.sys].c)}"><span class="nm">${esc(m.name)}<small>${esc(m.cls)} · ${esc(m.when)}</small></span></button>`;
-    panel.innerHTML=h+'<p class="none" hidden>No matches</p></div>'+CREDIT;
-    $('#toChart').onclick=()=>{medQ='';listMode='chart';renderPanel();};
-    const f=$('#medFind'),filt=()=>{medQ=f.value;const q=medQ.trim().toLowerCase();let n=0;
-      panel.querySelectorAll('.medlist [data-find]').forEach(r=>{const ok=r.dataset.find.includes(q);r.hidden=!ok;n+=ok;});
-      panel.querySelector('.medlist [data-med=""]').hidden=!!q;panel.querySelector('.medlist .none').hidden=n>0;};
-    f.value=medQ;f.oninput=filt;f.onkeydown=e=>{if(e.key==='Escape'&&f.value){f.value='';filt();e.stopPropagation();}};filt();
+    h+='<p class="none" hidden>No matches</p></div>';
   }
+  panel.innerHTML=h+CREDIT;
+  $('#toWeb').onclick=openWeb;$('#toDay').onclick=openDay;$('#toTour').onclick=()=>tour.start();
+  const sw=(m,id)=>()=>{if(listMode===m)return;if(m==='chart')medQ='';listMode=m;renderPanel();$(id).focus();};
+  $('#toChart').onclick=sw('chart','#toChart');$('#toMeds').onclick=sw('meds','#toMeds');
+  if(listMode==='chart'){$('#toSrc').onclick=()=>openSources();return;}
+  const f=$('#medFind'),filt=()=>{medQ=f.value;const q=medQ.trim().toLowerCase();let n=0;
+    panel.querySelectorAll('.medlist [data-find]').forEach(r=>{const ok=r.dataset.find.includes(q);r.hidden=!ok;n+=ok;});
+    panel.querySelector('.medlist [data-med=""]').hidden=!!q;panel.querySelector('.medlist .none').hidden=n>0;};
+  f.value=medQ;f.oninput=filt;f.onkeydown=e=>{if(e.key==='Escape'&&f.value){f.value='';filt();e.stopPropagation();}};filt();
 }
 panel.addEventListener('click',e=>{
   const c=e.target.closest('[data-cond]');if(c)return open(c.dataset.cond);
@@ -393,23 +482,29 @@ panel.addEventListener('click',e=>{
 const TABN={Instrument:'Try it',Dive:'Zoom in',Read:'Read'};
 // back: {label, go} for a one-step return to the page a link came from
 function shell(c,col,title,fig,tabs,back){
+  if(!drawer.classList.contains('open'))opener=document.activeElement;
   drawer.style.setProperty('--c',cc(col));
-  drawer.innerHTML=`<div class="dr-head"><div class="dr-top">${back?`<button class="dr-back" type="button">‹ ${esc(back.label)}</button>`:c?`<span class="tag"><i></i>${esc(c)}</span>`:'<span></span>'}<button class="close" type="button">Close</button></div>
-    <h2>${esc(title)}</h2>${fig?`<div class="fig">${esc(fig)}</div>`:''}
+  // a page with no tag or back button puts its title on the Close row
+  const lead=back?`<button class="dr-back" type="button">‹ ${esc(back.label)}</button>`:c?`<span class="tag"><i></i>${esc(c)}</span>`:'';
+  drawer.innerHTML=`<div class="dr-head"><div class="dr-top">${lead||`<h2>${esc(title)}</h2>`}<button class="close" type="button">Close</button></div>
+    ${lead?`<h2>${esc(title)}</h2>`:''}${fig?`<div class="fig">${esc(fig)}</div>`:''}
     ${tabs?`<div class="dtabs" role="tablist">${tabs.map((t,i)=>`<button class="dtab" role="tab" data-t="${t}" aria-selected="${i===0}">${TABN[t]||t}</button>`).join('')}</div>`:''}</div>
     <div class="dbody" id="dbody"></div>`;
   drawer.querySelector('.close').onclick=closeAll;
   if(back)drawer.querySelector('.dr-back').onclick=back.go;
-  page=null;drawer.inert=false;drawer.classList.add('open');pushLayer(1);requestAnimationFrame(fitOffset);
+  page=null;document.querySelectorAll('.acts .chip').forEach(b=>b.setAttribute('aria-pressed','false'));drawer.inert=false;drawer.classList.add('open');pushLayer(1);requestAnimationFrame(fitOffset);
+  const h=drawer.querySelector('h2');h.tabIndex=-1;if(!diveOpen())h.focus({preventScroll:true});
   return drawer.querySelector('#dbody');
 }
-// the page now in the drawer, so a link inside it can offer a way back
-let page=null;
+// the page now in the drawer, so a link inside it can offer a way back; and what opened the drawer, for focus
+let page=null,opener=null;
+const refind=el=>!el?null:el.isConnected?el:el.id?document.getElementById(el.id):el.dataset?.cond?panel.querySelector(`[data-cond="${el.dataset.cond}"]`):el.dataset?.med!=null?panel.querySelector(`[data-med="${el.dataset.med}"]`):null;
 const backTo=()=>{if(!page)return null;const p=page,t=drawer.querySelector('#dbody')?.dataset.tab;return {label:p.label,go:()=>p.go(t)};};
 /* ---------- the phone's Back and Esc close the top layer: drawer = history depth 1, dive = 2 ---------- */
 let popping=false,expectPop=false;
 const depth=()=>history.state?.ga||0,diveOpen=()=>!!(dive&&!dive.root.hidden);
 function pushLayer(n){if(!popping&&depth()<n)history.pushState({ga:n},'');}
+if(depth())history.replaceState(null,'');  // a reload starts with nothing open
 function popTo(n){const d=depth();if(d>n){expectPop=true;history.go(n-d);}}
 addEventListener('popstate',()=>{const d=depth();
   if(expectPop){expectPop=false;if(drawer.classList.contains('open'))pushLayer(1);if(diveOpen())pushLayer(2);return;}
@@ -437,7 +532,7 @@ const DIVES={
   mcas:{color:'#F29A55',make:()=>mastDive(),top:{label:'Forearm',size:'10 cm'},target:()=>{const H=A.hand.right;return H.wrist.clone().lerp(H.elbow,.5).add(new A.THREE.Vector3(0,0,.02));},view:{dist:.14,azim:-30,elev:10},
     text:'Under the skin of the patient\'s forearm: watch histamine cause a red spot, a spreading flare, a hive and itch. Then shrink to a single mast cell and keep it calm while triggers drift in.',
     steps:[['Skin, 1 mm.','The triple response: red spot, flare and wheal, plus the itch, and what an antihistamine changes.'],['One mast cell, 20 µm.','Bat away triggers; see where cromolyn, H1 and H2 blockers each act.']]},
-  pots:{color:'#EE6F82',make:()=>potsDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['Right common carotid artery']),view:{dist:.2,azim:-40,elev:6},
+  pots:{color:'#F07FA0',make:()=>potsDive(),top:{label:'Neck',size:'10 cm'},target:()=>centreOf(['Right common carotid artery']),view:{dist:.2,azim:-40,elev:6},
     text:'Follow the reflex that keeps blood in the head when the patient stands, and see the four ways it can fall short. Then play it: every heartbeat you catch on time fires a squeeze.',
     steps:[['The circuit, 1 m.','Sensors, brainstem, nerves, heart and veins, for four POTS types.'],['The rhythm game.','Ten minutes upright in sixty seconds. Try compression, fluids and propranolol.']]},
   iron:{color:SYS.autonomic.c,make:()=>ironDive(),top:{label:'Gut',size:'10 cm'},target:()=>centreOf(['Duodenum']),view:{dist:.2,azim:20,elev:6},
@@ -460,12 +555,16 @@ async function startDive(key,o={}){
   const D=await diveDef(key);stopStation();
   diveBack=o.back||(D.med?()=>{openMed(D.med,'Dive');home();}:()=>{open(key,'Dive');home();});
   if(!dive||diveFor!==key){dive?.root.remove();const m=D.make({jump});dive=createDive(A,{levels:m.levels,guide:m.guide,color:D.color,top:D.top,onExit:exitDive});dive.guideKeys=Object.keys(m.guide);diveFor=key;diveLevels=m.levels;}
-  dive.root.querySelector('.dv-exit').textContent=o.backLabel||'Back to the body';
+  const long=o.backLabel||'Back to the body',ex=dive.root.querySelector('.dv-exit');ex.textContent=isPhone()?'Back':long;ex.setAttribute('aria-label',long);
   const p=D.target({A,centreOf,V3:(x,y,z)=>new A.THREE.Vector3(x,y,z)});K0.setMode({layers:{skin:.5,skeleton:.5,organs:.8,vessels:.9}});
   A.flyTo({target:[p.x,p.y,p.z],...D.view});
-  setTimeout(()=>dive.open(o.level,o.opt),1150);
+  setTimeout(()=>{dive.open(o.level,o.opt);behind(true);},1150);
 }
-function exitDive(){diving=false;const f=diveBack;diveBack=null;f?.();if(!diving&&depth()>=2){expectPop=true;history.back();}}
+// while a dive is open the page behind it takes no focus or clicks
+function behind(v){for(const el of $('#app').children){if(el===dive?.root||el.id==='loading')continue;
+  if(v&&!el.inert){el.inert=true;el.dataset.dv=1;}else if(!v&&el.dataset.dv){el.inert=false;delete el.dataset.dv;}}}
+function exitDive(){diving=false;behind(false);const f=diveBack;diveBack=null;f?.();if(!diving&&depth()>=2){expectPop=true;history.back();}
+  if(!diving&&drawer.classList.contains('open'))(drawer.querySelector('#startDive')||drawer.querySelector('h2'))?.focus({preventScroll:true});}
 // from inside one dive straight into another; its exit comes back to the same level of the first
 function jump(key,o={}){const from=diveFor,back=diveBack,bl=dive.root.querySelector('.dv-exit').textContent;
   const i=+(dive.root.querySelector('.dv-stop[aria-current="true"]')?.dataset.i||0),lv=diveLevels[i-1]?.id;
@@ -521,7 +620,7 @@ function openMed(id,tab,back){
 function srcLine(keys){keys=(keys||[]).filter(k=>REFS[k]);if(!keys.length)return '';
   return `<p class="srcline">Sources: ${keys.map(k=>`<button type="button" data-src="${k}">${esc(REFS[k].s)}</button>`).join(' · ')}</p>`;}
 function openSources(focusKey,back){stopStation();active=null;renderPanel();
-  const b=shell('','#BFE6E1','Sources',null,null,back);
+  const b=shell('','#ECE6DA','Sources',null,null,back);
   let h=`<p class="fine" style="margin-top:0!important">Checked October–November 2026 by AI reviewers (not physicians) against guidelines, FDA labels and published studies. Models are illustrative.</p>`;
   for(const [g,label] of REF_GROUPS){const ks=Object.keys(REFS).filter(k=>REFS[k].g===g);if(!ks.length)continue;
     h+=`<h3>${esc(label)}</h3><ul class="srcs">${ks.map(k=>`<li id="src-${k}"><b>${esc(REFS[k].s)}.</b> ${esc(REFS[k].c)} <a href="${esc(REFS[k].u)}" target="_blank" rel="noopener">Link</a></li>`).join('')}</ul>`;}
@@ -529,22 +628,28 @@ function openSources(focusKey,back){stopStation();active=null;renderPanel();
   if(focusKey){const el=b.querySelector('#src-'+focusKey);if(el){el.classList.add('flash');el.scrollIntoView({block:'center'});}}}
 drawer.addEventListener('click',e=>{const s=e.target.closest('[data-src]');if(s){e.stopPropagation();openSources(s.dataset.src,backTo());}},true);
 function overlay(id,col,title){stopStation();active=null;renderPanel();const st=ST[id];
-  const body=shell('',col,title,null,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));}
-const openWeb=()=>overlay('web','#ECE6DA','Connections'),openDay=()=>overlay('day','#ECE6DA','A day in the patient\'s body'),openNotes=()=>overlay('notes','#BFE6E1','Notes');
-function closeAll(){stopStation();active=null;page=null;drawer.classList.remove('open');drawer.inert=true;renderPanel();A.refresh();
+  const body=shell('',col,title,null,null);body.innerHTML='<div id="inst"></div>';curStation=st;st.enter(body.querySelector('#inst'));$('#'+{web:'webBtn',notes:'notesBtn'}[id])?.setAttribute('aria-pressed','true');}
+const openWeb=()=>overlay('web','#ECE6DA','Connections'),openDay=()=>overlay('day','#ECE6DA','A day in the patient\'s body'),openNotes=()=>overlay('notes','#ECE6DA','Notes');
+function closeAll(){const back=drawer.contains(document.activeElement);stopStation();active=null;page=null;document.querySelectorAll('.acts .chip').forEach(b=>b.setAttribute('aria-pressed','false'));drawer.classList.remove('open');drawer.inert=true;renderPanel();A.refresh();
   if(!popping&&!diveOpen())popTo(0);
+  if(back)(refind(opener)||$('#toWeb'))?.focus({preventScroll:true});
   requestAnimationFrame(()=>{fitOffset();if(!drawer.classList.contains('open'))home();});}
 drawer.addEventListener('click',e=>{const m=e.target.closest('.lk[data-med]');if(m)return openMed(m.dataset.med,undefined,backTo());const c=e.target.closest('.lk[data-cond]');if(c)open(c.dataset.cond,undefined,backTo());});
 // the top bar's buttons end the tour first: the tour hides the drawer
 const act=f=>()=>{if(tour?.active)tour.end();f();};
 $('#webBtn').onclick=act(openWeb);
 $('#notesBtn').onclick=act(openNotes);
-$('#alertBtn').onclick=act(()=>{stopStation();active=null;renderPanel();const b=shell('','#F2705F','Emergency',null,null);
+$('#alertBtn').onclick=act(()=>{stopStation();active=null;renderPanel();const b=shell('','#F2705F','Emergency',null,null);$('#alertBtn').setAttribute('aria-pressed','true');
   b.innerHTML=`<h3 style="margin-top:0">In an emergency</h3><ul class="em">${EMERGENCY.map(([t,sig,act])=>`<li><b>${esc(t)}</b><i>${esc(sig)}</i><span>${esc(act)}</span></li>`).join('')}</ul>
     <h3>Tell any provider</h3><ol class="alerts">${ALERTS.map(a=>`<li><b>${esc(a[0])}</b> ${esc(a[1])}</li>`).join('')}</ol>`+srcLine(['wao2020','cdcseizure','esc2018','girft','lbl_hcq','lbl_ntx','lbl_tiz','oka2014','audit2025','crediblemeds']);A.refresh();home();});
 
 /* ---------- layers ---------- */
 document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.layer;A.layerOn[k]=!A.layerOn[k];b.setAttribute('aria-pressed',A.layerOn[k]);A.refresh();}));
+const lBtn=$('#layersBtn'),lPop=$('#lpop');
+function layersOpen(v){lPop.hidden=!v;lBtn.setAttribute('aria-expanded',v);}
+lBtn.onclick=()=>layersOpen(lPop.hidden);
+addEventListener('pointerdown',e=>{if(!lPop.hidden&&!e.target.closest('.layers'))layersOpen(false);},true);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!lPop.hidden){layersOpen(false);lBtn.focus();e.stopImmediatePropagation();}},true);
 
 /* ---------- hover / tap naming ---------- */
 const tip=$('#tip');let lastPick=0,downAt=null;
@@ -584,7 +689,7 @@ onTheme(syncTheme);syncTheme();
     makeRequests({context:()=>({screen:where(),theme:theme(),size:innerWidth+'×'+innerHeight,
         device:matchMedia('(pointer:coarse)').matches?(innerWidth<=860?'phone':'tablet'):'computer'}),
       onOpen:render=>{if(dive&&!dive.root.hidden)dive.close();stopStation();active=null;renderPanel();
-        render(shell('','#BFE6E1','Suggest',null,null));A.refresh();}});
+        render(shell('','#ECE6DA','Suggest',null,null));A.refresh();}});
     tour=makeTour(A,{onStart:()=>{stopStation();active=null;drawer.classList.remove('open');drawer.inert=true;popTo(0);$('#app').classList.add('touring');requestAnimationFrame(fitOffset);},onEnd:()=>{$('#app').classList.remove('touring');closeAll();},showWeb:v=>ST.web.show(v)});
     window.__atlas={tour,A,ST,open,closeAll,openMed,openSources,startDive,get dive(){return dive;}};window.__ready=true;
     const hash=location.hash.slice(1);if(byId[hash])open(hash);else if(hash==='sources')openSources();
